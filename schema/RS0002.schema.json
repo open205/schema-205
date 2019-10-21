@@ -50,8 +50,8 @@
                         "description":"Model number of the indoor unit",
                         "type":"string"
                       },
-                      "refrigerant_type":{"$ref": "definitions.schema.json#/definitions/RefrigerantType"},
-                      "compressor_type":{"$ref": "definitions.schema.json#/definitions/CompressorType"}
+                      "refrigerant_type":{"$ref": "ASHRAE205.schema.json#/definitions/RefrigerantType"},
+                      "compressor_type":{"$ref": "ASHRAE205.schema.json#/definitions/CompressorType"}
                     },
                     "required":["outdoor_unit_manufacturer","outdoor_unit_model_number"],
                     "additionalProperties":false
