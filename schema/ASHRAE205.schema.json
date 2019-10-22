@@ -20,11 +20,6 @@
           "enum": ["RS0001", "RS0002", "RS0003"],
           "notes": "Identifies the representation specification used to generate this representation"
         },
-        "RS_title":{
-          "description":"Descriptive name of Representation specification",
-          "type": "string",
-          "notes": "Copied from the title of the representation specification having the RSID and RSVersion."
-        },
         "ID":{
           "description":"Unique equipment identifier",
           "type": "string",
@@ -61,7 +56,7 @@
           ]
         }
       },
-      "required":["RS_ID","schema_version","RS_title","ID","data_timestamp","RS_instance"],
+      "required":["RS_ID","schema_version","ID","data_timestamp","RS_instance"],
       "additionalProperties":false
     }
   },
