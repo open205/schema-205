@@ -8,19 +8,19 @@
     "ASHRAE205":{
       "type": "object",
       "properties":{
-        "RSID":{
-          "description":"Representation specification identifier",
-          "type": "string",
-          "enum": ["RS0001", "RS0002", "RS0003"],
-          "notes": "Identifies the representation specification used to generate this representation"
-        },
-        "RSVersion":{
+        "schema_version":{
           "description":"Representation specification version",
           "type": "string",
           "pattern": "[0-9]+\\.[0-9]+\\.[0-9]+",
           "notes": "Identifies the version of the representation specification used to generate this representation"
         },
-        "RSTitle":{
+        "RS_ID":{
+          "description":"Representation specification identifier",
+          "type": "string",
+          "enum": ["RS0001", "RS0002", "RS0003"],
+          "notes": "Identifies the representation specification used to generate this representation"
+        },
+        "RS_title":{
           "description":"Descriptive name of Representation specification",
           "type": "string",
           "notes": "Copied from the title of the representation specification having the RSID and RSVersion."
@@ -53,7 +53,7 @@
           "description":"Additional Information",
           "type": "string"
         },
-        "RSInstance":{
+        "RS_instance":{
           "oneOf":[
             {"$ref": "RS0001.schema.json#/0001Spec"},
             {"$ref": "RS0002.schema.json#/0002Spec"},
@@ -61,7 +61,7 @@
           ]
         }
       },
-      "required":["RSID","RSVersion","RSTitle","ID","data_timestamp","RSInstance"],
+      "required":["RS_ID","schema_version","RS_title","ID","data_timestamp","RS_instance"],
       "additionalProperties":false
     }
   },

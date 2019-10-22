@@ -19,7 +19,6 @@
     "type":"object",
     "properties":{
       "RS0001":{
-          "version": "0.1.0",
           "type":"object",
           "properties" :{
             "description":{
