@@ -1,7 +1,7 @@
 {
   "$schema": "http://json-schema.org/draft-07/schema#",
-  "title": "ASHRAE 205 RS0001 JSON Schema",
-  "description": "A schema for ASHRAE 205 annex RS0001 Water-Cooled Chillers",
+  "title": "Liquid-Cooler Chillers",
+  "description": "Schema for ASHRAE 205 annex RS0001: Liquid-Cooler Chillers",
 
   "definitions": {
     "SpeedControlType":{
