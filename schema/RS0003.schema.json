@@ -20,58 +20,61 @@
         "type":"object",
         "properties" :{
           "description":{
-            "product_information":{
-              "type":"object",
-                  "properties":{
-                    "manufacturer":{
-                      "description":"Name of the assembly/unit manufacturer",
-                      "type":"string"
+            "type": "object",
+            "properties": {
+              "product_information":{
+                "type":"object",
+                    "properties":{
+                      "manufacturer":{
+                        "description":"Name of the assembly/unit manufacturer",
+                        "type":"string"
+                      },
+                      "model_number":{
+                        "description":"Model number of the assembly / unit",
+                        "type":"string"
+                      },
+                      "has_motor":{
+                        "description":"Assembly includes a motor",
+                        "type":"boolean",
+                        "notes": "True indicates input power is electrical power. False implies input power is shaft power driven externally."
+                      },
+                      "enclosed":{
+                        "description":"Fan assembly is enclosed",
+                        "type":"boolean",
+                        "notes": "If true, the performance data reflects the static pressure difference across the enclosure"
+                      },
+                      "impeller_type":{"$ref": "#/definitions/ImpellerType"},
+                      "direct_drive_impeller":{
+                        "description":"Motor and impeller are directly coupled",
+                        "type":"boolean",
+                        "notes": "False if impeller is belt driven or if assembly does not include a motor."
+                      },
+                      "number_of_impellers":{
+                        "description":"Number of impellers included in the fan assembly",
+                        "type":"integer"
+                      }
                     },
-                    "model_number":{
-                      "description":"Model number of the assembly / unit",
-                      "type":"string"
-                    },
-                    "has_motor":{
-                      "description":"Assembly includes a motor",
-                      "type":"boolean",
-                      "notes": "True indicates input power is electrical power. False implies input power is shaft power driven externally."
-                    },
-                    "enclosed":{
-                      "description":"Fan assembly is enclosed",
-                      "type":"boolean",
-                      "notes": "If true, the performance data reflects the static pressure difference across the enclosure"
-                    },
-                    "impeller_type":{"$ref": "#/definitions/ImpellerType"},
-                    "direct_drive_impeller":{
-                      "description":"Motor and impeller are directly coupled",
-                      "type":"boolean",
-                      "notes": "False if impeller is belt driven or if assembly does not include a motor."
-                    },
-                    "number_of_impellers":{
-                      "description":"Number of impellers included in the fan assembly",
-                      "type":"integer"
-                    }
+                    "required":["manufacturer","model_number","has_motor","enclosed"],
+                    "additionalProperties":false
                   },
-                  "required":["manufacturer","model_number","has_motor","enclosed"],
-                  "additionalProperties":false
-                },
-                "assembly_components":{
-                  "type":"array",
-                  "list":{
-                    "component_type":{"$ref": "#/definitions/ComponentType"},
-                    "component_description":{
-                      "description":"Informative description of the component",
-                      "type":"string"
+                  "assembly_components":{
+                    "type":"array",
+                    "list":{
+                      "component_type":{"$ref": "#/definitions/ComponentType"},
+                      "component_description":{
+                        "description":"Informative description of the component",
+                        "type":"string"
+                      },
+                      "component_ID":{
+                        "description":"Identifier of the corresponding Standard 205 representation",
+                        "type": "string",
+                        "pattern": "[0-9,a-f,A-F]{8}-[0-9,a-f,A-F]{4}-[0-9,a-f,A-F]{4}-[0-9,a-f,A-F]{4}-[0-9,a-f,A-F]{12}",
+                        "notes": "Optionally provided if the component has a Standard 205 representation."
+                      }
                     },
-                    "component_ID":{
-                      "description":"Identifier of the corresponding Standard 205 representation",
-                      "type": "string",
-                      "pattern": "[0-9,a-f,A-F]{8}-[0-9,a-f,A-F]{4}-[0-9,a-f,A-F]{4}-[0-9,a-f,A-F]{4}-[0-9,a-f,A-F]{12}",
-                      "notes": "Optionally provided if the component has a Standard 205 representation."
-                    }
-                  },
-                  "required":["component_type"],
-                  "additionalProperties":false
+                    "required":["component_type"],
+                    "additionalProperties":false
+                  }
                 }
               },
               "performance":{
