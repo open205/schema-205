@@ -414,6 +414,7 @@
               "additionalProperties":false
             }
           },
+          "required":["performance"],
           "additionalProperties":false
       }
     },
