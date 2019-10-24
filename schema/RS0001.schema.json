@@ -261,6 +261,7 @@
                             "minimum":0,
                             "maximum":1
                           },
+                          "units": "-",
                           "notes": "Ratio of net_evaporator_capacity to the maximum evaporator capacity at the same operating conditions"
                         }
                       },
