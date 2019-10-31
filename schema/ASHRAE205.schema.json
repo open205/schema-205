@@ -90,26 +90,23 @@
     },
     "LiquidConstituent":{
       "type":"string",
-      "enum":["water","propyleneGlycol","ethyleneGlycol"]
+      "enum":["water","propyleneGlycol","ethyleneGlycol","seaWater"]
     },
     "ConcentrationType":{
-      "description":"Type of condenser",
+      "description":"Defines whether concentration is defined on a volume or mass basis",
       "type":"string",
       "enum":["byVolume","byMass"]
     },
     "LiquidComponent":{
       "description":"A list of all liquid components within the liquid mixture",
-      "type":"array",
-      "items":[
-        {
-          "type":"string",
-          "enum":["water","propyleneGlycol","ethyleneGlycol","seaWater"]
-        },
-        {
+      "type":"object",
+      "properties":{
+        "liquid_constituent": {"$ref": "#/definitions/LiquidConstituent" },
+        "concentration": {
           "type":"number",
           "minimum":0
         }
-      ],
+      },
       "additionalItems": false,
       "minItems": 1
     },
@@ -117,12 +114,11 @@
       "description":"Type of liquid in evaporator",
       "type":"object",
       "properties":{
-        "liquid_components":{"$ref": "#/definitions/LiquidComponent" },
-        "concentration_type":{
-          "description":"Defines whether concentration is defined on a volume or mass basis",
-          "type":"string",
-          "enum":["byVolume","byMass"]
-        }
+        "liquid_components": {
+          "type":"array",
+          "items": {"$ref": "#/definitions/LiquidComponent" }
+        },
+        "concentration_type":{"$ref": "#/definitions/ConcentrationType" }
       }
     }
   }

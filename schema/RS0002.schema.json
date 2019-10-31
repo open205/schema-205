@@ -18,7 +18,7 @@
     },
     "AHRI340360TestStandardYear":{
       "type":"string",
-      "enum":["2007","2015","IP/2019"]
+      "enum":["2007","2015","IP_2019"]
     }
   },
   "0002Spec":{

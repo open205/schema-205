@@ -44,11 +44,15 @@
         },
         "performance":{
             "evaporator_liquid_type": {
-              "liquid_components":["water",1],
+              "liquid_components":[
+                {"liquid_constituent":"water","concentration":1}
+              ],
               "concentration_type":"byVolume"
             },
             "condenser_liquid_type": {
-              "liquid_components":["water",1],
+              "liquid_components":[
+                {"liquid_constituent":"water","concentration":1}
+              ],
               "concentration_type":"byVolume"
             },
             "evaporator_fouling_factor": 1.80e-5,
