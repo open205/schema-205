@@ -2,6 +2,7 @@
   "$schema": "http://json-schema.org/draft-07/schema#",
   "title": "ASHRAE 205",
   "description": "Base schema for ASHRAE 205 representations",
+  "version": "0.1.0",
 
   "type":"object",
   "properties" :{
