@@ -18,10 +18,10 @@
             "nominal_voltage":460,
             "nominal_frequency":60,
             "tolerance_standard":"AHRI 551/591-2015",
-            "compressor_type":"centrifugal",
+            "compressor_type":"CENTRIFUGAL",
             "speed_control_type":"VariableSpeed",
             "liquid_data_source":"AHRI 551/591-2015",
-            "refrigerant_type":"R134a",
+            "refrigerant_type":"R134A",
             "hotgas_bypass_installed":false
           },
           "rating_AHRI":{
@@ -45,15 +45,15 @@
         "performance":{
             "evaporator_liquid_type": {
               "liquid_components":[
-                {"liquid_constituent":"water","concentration":1}
+                {"liquid_constituent":"WATER","concentration":1}
               ],
-              "concentration_type":"byVolume"
+              "concentration_type":"BY_VOLUME"
             },
             "condenser_liquid_type": {
               "liquid_components":[
-                {"liquid_constituent":"water","concentration":1}
+                {"liquid_constituent":"WATER","concentration":1}
               ],
-              "concentration_type":"byVolume"
+              "concentration_type":"BY_VOLUME"
             },
             "evaporator_fouling_factor": 1.80e-5,
             "condenser_fouling_factor": 4.40e-5,

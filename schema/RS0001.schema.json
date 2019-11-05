@@ -7,12 +7,14 @@
     "SpeedControlType":{
       "description":"Type of electrical motor drive",
       "type":"string",
-      "enum":["ConstantSpeed","VariableSpeed"]
+      "enum":["ConstantSpeed","VariableSpeed"],
+      "enum_text":["ConstantSpeed","VariableSpeed"]
     },
     "StandardRatingVersion":{
       "description":"Version",
       "type":"string",
-      "enum":["AHRI_550_590_2015","AHRI_551_591_2015","AHRI_550_590_2015_Addendum1","AHRI_551_591_2015_Addendum1","AHRI_550_590_2018","AHRI_551_591_2018"]
+      "enum":["AHRI_550_590_2015","AHRI_551_591_2015","AHRI_550_590_2015_ADDENDUM_1","AHRI_551_591_2015_ADDENDUM_1","AHRI_550_590_2018","AHRI_551_591_2018"],
+      "enum_text":["AHRI 550/590 2015","AHRI 551/591 2015","AHRI 550/590 2015 Addendum 1","AHRI 551/591 2015 Addendum 1","AHRI 550/590 2018","AHRI 551/591 2018"]
     }
   },
   "0001Spec":{

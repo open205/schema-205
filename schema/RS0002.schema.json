@@ -6,11 +6,13 @@
   "definitions":{
     "CompressorControlMethod":{
       "type":"string",
-      "enum":["Staged","Dynamic"]
+      "enum":["STAGED","DYNAMIC"],
+      "enum_text":["Staged","Dynamic"]
     },
     "FanPosition":{
       "type":"string",
-      "enum":["BlowThrough","DrawThrough"]
+      "enum":["BLOW_THROUGH","DRAW_THROUGH"],
+      "enum_text":["Blow Through","Draw Through"]
     },
     "AHRI210240TestStandardYear":{
       "type":"string",
@@ -18,7 +20,8 @@
     },
     "AHRI340360TestStandardYear":{
       "type":"string",
-      "enum":["2007","2015","IP_2019"]
+      "enum":["2007","2015","IP_2019"],
+      "enum_text":["2007","2015","IP/2019"]
     }
   },
   "0002Spec":{

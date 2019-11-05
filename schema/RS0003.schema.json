@@ -4,13 +4,20 @@
   "description": "Schema for ASHRAE 205 annex RS0003: Fan Assembly",
 
   "definitions":{
+    "FanOperationType": {
+      "type":"string",
+      "enum":["DISCRETE","CONTINUOUS"],
+      "enum_text":["Discrete","Continuous"]
+    },
     "ImpellerType":{
       "type":"string",
-      "enum":["CentrifugalForwardCurved","CentrifugalBackwardCurved","CentrifugalAirFoil","Axial","Propeller"]
+      "enum":["CENTRIFIGUL_FORWARD_CURVED","CENTRIFIGUL_BACKWARD_CURVED","CENTRIFIGUL_AIR_FOIL","AXIAL","PROPELLER"],
+      "enum_text":["Centrifugal Forward Curved","Centrifugal Backward Curved","Centrifugal Air Foil","Axial","Propeller"]
     },
     "ComponentType":{
       "type":"string",
-      "enum":["Coil","Furnace","Filter","HeatExchanger","ElectricResistanceElement","Other"]
+      "enum":["COIL","FURNACE","FILTER","HEAT_EXCHANGER","ELECTRIC_RESISTANCE_ELEMENT","OTHER"],
+      "enum_text":["Coil","Furnace","Filter","HeatExchanger","ElectricResistanceElement","Other"]
     }
   },
   "0003Spec":{
@@ -59,17 +66,20 @@
               },
               "assembly_components":{
                 "type":"array",
-                "list":{
-                  "component_type":{"$ref": "#/definitions/ComponentType"},
-                  "component_description":{
-                    "description":"Informative description of the component",
-                    "type":"string"
-                  },
-                  "component_ID":{
-                    "description":"Identifier of the corresponding Standard 205 representation",
-                    "type": "string",
-                    "pattern": "[0-9,a-f,A-F]{8}-[0-9,a-f,A-F]{4}-[0-9,a-f,A-F]{4}-[0-9,a-f,A-F]{4}-[0-9,a-f,A-F]{12}",
-                    "notes": "Optionally provided if the component has a Standard 205 representation."
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "component_type":{"$ref": "#/definitions/ComponentType"},
+                    "component_description":{
+                      "description":"Informative description of the component",
+                      "type":"string"
+                    },
+                    "component_ID":{
+                      "description":"Identifier of the corresponding Standard 205 representation",
+                      "type": "string",
+                      "pattern": "[0-9,a-f,A-F]{8}-[0-9,a-f,A-F]{4}-[0-9,a-f,A-F]{4}-[0-9,a-f,A-F]{4}-[0-9,a-f,A-F]{12}",
+                      "notes": "Optionally provided if the component has a Standard 205 representation."
+                    }
                   }
                 },
                 "required":["component_type"],
@@ -87,7 +97,7 @@
                 "units": "m3/s",
                 "notes": "Nominal or rated air flow rate"
               },
-              "wet_surface_pressure_drop":{
+              "wet_coil_pressure_drop":{
                 "description":"Additional static pressure drop if cooling coil component is collecting condensate",
                 "type":"number",
                 "minimum":0,
@@ -107,6 +117,10 @@
                 "type":"number",
                 "minimum":0,
                 "units": "W"
+              },
+              "fan_operation_type":{
+                "description":"Type of fan operation (discrete or continuous)",
+                "$ref": "#/definitions/FanOperationType"
               },
               "performance_map":{
                 "oneOf":[
@@ -240,7 +254,7 @@
                 ]
               }
             },
-            "required":["nominal_volumetric_air_flow_rate","wet_surface_pressure_drop","motor_heat_fraction","standby_power","performance_map"],
+            "required":["nominal_volumetric_air_flow_rate","wet_coil_pressure_drop","motor_heat_fraction","standby_power","fan_operation_type","performance_map"],
             "additionalProperties":false
           }
         },

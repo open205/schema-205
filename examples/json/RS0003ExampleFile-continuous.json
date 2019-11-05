@@ -16,28 +16,29 @@
             "model_number":"RTU-15",
             "has_motor":false,
             "enclosed":true,
-            "impeller_type":"CentrifugalForwardCurved",
+            "impeller_type":"CENTRIFIGUL_FORWARD_CURVED",
             "direct_drive_impeller":false,
             "number_of_impellers":1
           },
           "assembly_components":[{
-            "component_type": "Furnace",
+            "component_type": "FURNACE",
             "component_description": "Furnance HX"
           },
           {
-            "component_type": "Filter",
+            "component_type": "FILTER",
             "component_description": "Filter Section"
           },
           {
-            "component_type": "Coil",
+            "component_type": "COIL",
             "component_description": "DX Coil"
           }]
         },
         "performance":{
             "nominal_volumetric_air_flow_rate": 2.83,
-            "wet_surface_pressure_drop": 50,
+            "wet_coil_pressure_drop": 50,
             "motor_heat_fraction": 1,
             "standby_power": 0,
+            "fan_operation_type": "CONTINUOUS",
             "performance_map":{
               "grid_variables":{
                 "volumetric_air_flow_rate": [1.3,1.42,1.53,1.65,1.77,1.89,2.01,2.12,2.24,2.36,2.48,2.6,2.71,2.83,2.95,3.07,3.19,3.3,3.42,3.54,3.66,3.78,3.89,4.01,4.13,4.25,4.37,4.48,4.6,4.72,4.84,4.96,5.07,5.19],
