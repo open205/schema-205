@@ -4,10 +4,15 @@
   "description": "Schema for ASHRAE 205 annex RS0003: Fan Assembly",
 
   "definitions":{
-    "FanOperationType": {
+    "FanPerformanceMapType": {
       "type":"string",
       "enum":["DISCRETE","CONTINUOUS"],
       "enum_text":["Discrete","Continuous"]
+    },
+    "FanSpeedControlType": {
+      "type":"string",
+      "enum":["FIXED","VARIABLE"],
+      "enum_text":["Fixed","Variable"]
     },
     "ImpellerType":{
       "type":"string",
@@ -118,9 +123,13 @@
                 "minimum":0,
                 "units": "W"
               },
-              "fan_operation_type":{
-                "description":"Type of fan operation (discrete or continuous)",
-                "$ref": "#/definitions/FanOperationType"
+              "fan_performance_map_type":{
+                "description":"Type of performance map (discrete or continuous)",
+                "$ref": "#/definitions/FanPerformanceMapType"
+              },
+              "fan_speed_control_type":{
+                "description":"Type of fan impeller speed control installed with the fan assembly",
+                "$ref": "#/definitions/FanSpeedControlType"
               },
               "performance_map":{
                 "oneOf":[
@@ -132,14 +141,14 @@
                         "description":"Data group describing grid variables for continuous fan performance",
                         "type":"object",
                         "properties":{
-                          "volumetric_air_flow_rate":{
-                            "description":"Volumetric air flow rate through fan assembly",
+                          "impeller_speed":{
+                            "description":"Rotational speed of fan impeller",
                             "type":"array",
                             "items":{
                               "type":"number",
                               "minimum":0
                             },
-                            "units": "m3/s"
+                            "units": "rev/s"
                           },
                           "static_pressure_difference":{
                             "description":"Static pressure across fan assembly at dry coil conditions",
@@ -152,21 +161,21 @@
                             "notes": "Or external static"
                           }
                         },
-                        "required":["volumetric_air_flow_rate","static_pressure_difference"],
+                        "required":["impeller_speed","static_pressure_difference"],
                         "additionalProperties":false
                       },
                       "lookup_variables":{
                         "description":"Data group describing lookup variables for continuous fan performance",
                         "type":"object",
                         "properties":{
-                          "impeller_speed":{
-                            "description":"Rotational speed of fan impeller",
+                          "volumetric_air_flow_rate":{
+                            "description":"Volumetric air flow rate through fan assembly",
                             "type":"array",
                             "items":{
                               "type":"number",
                               "minimum":0
                             },
-                            "units": "rev/s"
+                            "units": "m3/s"
                           },
                           "input_power":{
                             "description":"Power input to fan assembly",
@@ -179,7 +188,7 @@
                             "notes": "Shaft or electric power depending on 'has_motor'"
                           }
                         },
-                        "required":["impeller_speed","input_power"],
+                        "required":["volumetric_air_flow_rate","input_power"],
                         "additionalProperties":false
                       }
                     },
