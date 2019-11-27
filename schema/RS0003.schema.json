@@ -263,7 +263,7 @@
                 ]
               }
             },
-            "required":["nominal_volumetric_air_flow_rate","wet_coil_pressure_drop","motor_heat_fraction","standby_power","fan_operation_type","performance_map"],
+            "required":["nominal_volumetric_air_flow_rate","wet_coil_pressure_drop","motor_heat_fraction","standby_power","fan_performance_map_type","fan_speed_control_type","performance_map"],
             "additionalProperties":false
           }
         },
