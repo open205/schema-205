@@ -38,8 +38,8 @@
             "wet_coil_pressure_drop": 50,
             "motor_heat_fraction": 1,
             "standby_power": 0,
-            "fan_performance_map_type": "CONTINUOUS",
-            "fan_speed_control_type": "VARIABLE",
+            "performance_map_type": "CONTINUOUS",
+            "speed_control_type": "VARIABLE",
             "performance_map":{
               "grid_variables":{
                 "impeller_speed":[],
