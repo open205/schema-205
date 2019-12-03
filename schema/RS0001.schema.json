@@ -278,7 +278,7 @@
                           "description":"Total power input to the packaged chiller",
                           "type":"array",
                           "items":{
-                            "type":"number",
+                            "type":["number","null"],
                             "exclusiveMinimum":0
                           },
                           "units": "W",
@@ -288,7 +288,7 @@
                           "description":"Unit refrigeration capacity",
                           "type":"array",
                           "items":{
-                            "type":"number",
+                            "type":["number","null"],
                             "minimum":0
                           },
                           "units": "W",
@@ -298,7 +298,7 @@
                           "description":"Condenser heat rejection",
                           "type":"array",
                           "items":{
-                            "type":"number",
+                            "type":["number","null"],
                             "minimum":0
                           },
                           "units": "W",
@@ -308,7 +308,7 @@
                           "description":"Entering evaporator liquid temperature",
                           "type":"array",
                           "items":{
-                            "type":"number",
+                            "type":["number","null"],
                             "exclusiveMinimum":0
                           },
                           "units": "K"
@@ -317,7 +317,7 @@
                           "description":"Leaving condenser liquid temperature",
                           "type":"array",
                           "items":{
-                            "type":"number",
+                            "type":["number","null"],
                             "exclusiveMinimum":0
                           },
                           "units": "K"
@@ -326,7 +326,7 @@
                           "description":"Pressure drop across the evaporator",
                           "type":"array",
                           "items":{
-                            "type":"number",
+                            "type":["number","null"],
                             "exclusiveMinimum":0
                           },
                           "units": "Pa"
@@ -335,7 +335,7 @@
                           "description":"Pressure drop across the condenser",
                           "type":"array",
                           "items":{
-                            "type":"number",
+                            "type":["number","null"],
                             "exclusiveMinimum":0
                           },
                           "units": "Pa"
@@ -344,7 +344,7 @@
                           "description":"Heat rejected by the chiller oil cooler (if separate stream crossing the control volume boundary)",
                           "type":"array",
                           "items":{
-                            "type":"number",
+                            "type":["number","null"],
                             "exclusiveMinimum":0
                           },
                           "units": "W",
@@ -354,7 +354,7 @@
                           "description":"Heat rejected by the motor control center cooling (if separate stream crossing the control volume boundary)",
                           "type":"array",
                           "items":{
-                            "type":"number",
+                            "type":["number","null"],
                             "exclusiveMinimum":0
                           },
                           "units": "W",
@@ -398,7 +398,7 @@
                           "description":"Total power consumed by the chiller when not running. Value shall include all power sources and all auxiliary equipment provided with the chiller.",
                           "type":"array",
                           "items":{
-                            "type":"number",
+                            "type":["number","null"],
                             "minimum":0
                           },
                           "units": "W",

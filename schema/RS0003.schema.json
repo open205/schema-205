@@ -172,7 +172,7 @@
                             "description":"Volumetric air flow rate through fan assembly",
                             "type":"array",
                             "items":{
-                              "type":"number",
+                              "type":["number","null"],
                               "minimum":0
                             },
                             "units": "m3/s"
@@ -181,7 +181,7 @@
                             "description":"Power input to fan assembly",
                             "type":"array",
                             "items":{
-                              "type":"number",
+                              "type":["number","null"],
                               "minimum":0
                             },
                             "units": "W",
@@ -237,7 +237,7 @@
                             "description":"Volumetric air flow rate through fan assembly",
                             "type":"array",
                             "items":{
-                              "type":"number",
+                              "type":["number","null"],
                               "minimum":0
                             },
                             "units": "m3/s"
@@ -246,7 +246,7 @@
                             "description":"Power input to fan assembly",
                             "type":"array",
                             "items":{
-                              "type":"number",
+                              "type":["number","null"],
                               "minimum":0
                             },
                             "units": "W",

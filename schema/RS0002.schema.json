@@ -252,7 +252,7 @@
                           "description":"Total heat removed by the indoor coil",
                           "type":"array",
                           "items":{
-                            "type":"number",
+                            "type":["number","null"],
                             "exclusiveMinimum":0
                           },
                           "units": "W",
@@ -262,7 +262,7 @@
                           "description":"Sensible heat removed by the indoor coil",
                           "type":"array",
                           "items":{
-                            "type":"number",
+                            "type":["number","null"],
                             "exclusiveMinimum":0
                           },
                           "units": "W",
@@ -272,7 +272,7 @@
                           "description":"Gross power draw (of the outdoor unit)",
                           "type":"array",
                           "items":{
-                            "type":"number",
+                            "type":["number","null"],
                             "exclusiveMinimum":0
                           },
                           "units": "W",
@@ -315,7 +315,7 @@
                           "description":"Gross power draw (of the outdoor unit)",
                           "type":"array",
                           "items":{
-                            "type":"number",
+                            "type":["number","null"],
                             "minimum":0
                           },
                           "units": "W",
