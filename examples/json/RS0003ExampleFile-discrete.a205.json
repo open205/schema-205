@@ -16,7 +16,7 @@
             "model_number":"F060",
             "has_motor":true,
             "enclosed":true,
-            "impeller_type":"CENTRIFIGUL_FORWARD_CURVED",
+            "impeller_type":"CENTRIFUGAL_FORWARD_CURVED",
             "direct_drive_impeller":true,
             "number_of_impellers":1
           },

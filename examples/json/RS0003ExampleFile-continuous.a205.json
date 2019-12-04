@@ -16,7 +16,7 @@
             "model_number":"RTU-15",
             "has_motor":false,
             "enclosed":true,
-            "impeller_type":"CENTRIFIGUL_FORWARD_CURVED",
+            "impeller_type":"CENTRIFUGAL_FORWARD_CURVED",
             "direct_drive_impeller":false,
             "number_of_impellers":1
           },

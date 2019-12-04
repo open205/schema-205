@@ -16,7 +16,7 @@
     },
     "ImpellerType":{
       "type":"string",
-      "enum":["CENTRIFIGUL_FORWARD_CURVED","CENTRIFIGUL_BACKWARD_CURVED","CENTRIFIGUL_AIR_FOIL","AXIAL","PROPELLER"],
+      "enum":["CENTRIFUGAL_FORWARD_CURVED","CENTRIFUGAL_BACKWARD_CURVED","CENTRIFUGAL_AIR_FOIL","AXIAL","PROPELLER"],
       "enum_text":["Centrifugal Forward Curved","Centrifugal Backward Curved","Centrifugal Air Foil","Axial","Propeller"]
     },
     "ComponentType":{
