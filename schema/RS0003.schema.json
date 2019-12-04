@@ -4,19 +4,19 @@
   "description": "Schema for ASHRAE 205 annex RS0003: Fan Assembly",
 
   "definitions":{
-    "FanPerformanceMapType": {
+    "PerformanceMapType": {
       "type":"string",
       "enum":["DISCRETE","CONTINUOUS"],
       "enum_text":["Discrete","Continuous"]
     },
-    "FanSpeedControlType": {
+    "SpeedControlType": {
       "type":"string",
       "enum":["FIXED","VARIABLE"],
       "enum_text":["Fixed","Variable"]
     },
     "ImpellerType":{
       "type":"string",
-      "enum":["CENTRIFIGUL_FORWARD_CURVED","CENTRIFIGUL_BACKWARD_CURVED","CENTRIFIGUL_AIR_FOIL","AXIAL","PROPELLER"],
+      "enum":["CENTRIFUGAL_FORWARD_CURVED","CENTRIFUGAL_BACKWARD_CURVED","CENTRIFUGAL_AIR_FOIL","AXIAL","PROPELLER"],
       "enum_text":["Centrifugal Forward Curved","Centrifugal Backward Curved","Centrifugal Air Foil","Axial","Propeller"]
     },
     "ComponentType":{
@@ -123,18 +123,18 @@
                 "minimum":0,
                 "units": "W"
               },
-              "fan_performance_map_type":{
+              "performance_map_type":{
                 "description":"Type of performance map (discrete or continuous)",
-                "$ref": "#/definitions/FanPerformanceMapType"
+                "$ref": "#/definitions/PerformanceMapType"
               },
-              "fan_speed_control_type":{
+              "speed_control_type":{
                 "description":"Type of fan impeller speed control installed with the fan assembly",
-                "$ref": "#/definitions/FanSpeedControlType"
+                "$ref": "#/definitions/SpeedControlType"
               },
               "performance_map":{
                 "oneOf":[
                   {
-                    "description":"Data group describing fan performance in terms of air flow, static pressure, impeller speed, and fan electrical or shaft power",
+                    "description":"Data group describing fan performance in terms of impeller speed, static pressure, air flow, and fan electrical or shaft power",
                     "type":"object",
                     "properties":{
                       "grid_variables":{
@@ -263,7 +263,7 @@
                 ]
               }
             },
-            "required":["nominal_volumetric_air_flow_rate","wet_coil_pressure_drop","motor_heat_fraction","standby_power","fan_performance_map_type","fan_speed_control_type","performance_map"],
+            "required":["nominal_volumetric_air_flow_rate","wet_coil_pressure_drop","motor_heat_fraction","standby_power","performance_map_type","speed_control_type","performance_map"],
             "additionalProperties":false
           }
         },
