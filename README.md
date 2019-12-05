@@ -75,6 +75,6 @@ The general development workflow for making changes to Schema 205 are as follows
     git push --set-upstream origin new-toolkit-branch-name
     ```
 
-10. Allow the *Toolkit 205* repository CI to test the composite changes to both repositories on all platforms
+11. Allow the *Toolkit 205* repository CI to test the composite changes to both repositories on all platforms
 
-11. Perform any appropriate pull request, merging, tagging, and releasing steps in the *Toolkit 205* repository
+12. Perform any appropriate pull request, merging, tagging, and releasing steps in the *Toolkit 205* repository
