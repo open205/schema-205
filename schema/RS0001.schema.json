@@ -88,83 +88,83 @@
                       "notes": "The certification number as stated on the certificate."
                     },
                     "standard_rating_version":{"$ref": "#/definitions/StandardRatingVersion"},
-                    "design_net_refrigerating_capacity":{
+                    "net_refrigerating_capacity":{
                       "description":"Unit rated refrigeration capacity",
                       "type":"number",
                       "exclusiveMinimum":0,
                       "units": "W",
                       "notes": "The available cooling capacity of the evaporator to the thermal load calculated using only the sensible heat transfer at full load rating condition."
                     },
-                    "design_input_power":{
-                      "description":"Total unit power",
+                    "input_power":{
+                      "description":"Total unit power at design point",
                       "type":"number",
                       "minimum":0,
                       "units": "W",
                       "notes": "Total power input to the chiller package.  See testing standard for details."
                     },
-                    "design_COP":{
+                    "COP":{
                       "description":"Efficiency at design point as ratio of unit of cooling per unit of power consumed",
                       "type":"number",
                       "exclusiveMinimum":0,
                       "units": "-",
                       "notes": "COP kWc/kWin"
                     },
-                    "design_part_load_value":{
+                    "part_load_value":{
                       "description":"Rated part load efficiency over an integrated load profile",
                       "type":"number",
                       "units": "-",
                       "notes": "Represents the IPLV.SI, IPLV.IP, NPLV.SI, NPLV.IP, or other part load metric as appropriate for the 'standard_rating_version' expressed as the dimensionless ratio of cooling per unit of power consumed."
                     },
-                    "design_evaporator_liquid_volumetric_flow_rate":{
+                    "evaporator_liquid_volumetric_flow_rate":{
                       "description":"Chilled liquid flow at the full load design point rating condition",
                       "type":"number",
                       "exclusiveMinimum":0,
                       "units": "m3/s",
                       "notes": "Evaporator liquid volumetric flow rate at the full load rating condition. Density calculations shall be made at the inlet temperature of the heat exchanger at full load rating condition."
                     },
-                    "design_evaporator_liquid_leaving_temperature":{
+                    "evaporator_liquid_leaving_temperature":{
                       "description":"Leaving evaporator liquid temperature at the full load design point rating condition",
                       "type":"number",
                       "exclusiveMinimum":0,
                       "units": "K",
                       "notes": "Evaporator liquid temperature at the exit flange of the chiller’s evaporator at full load rating condition. See testing standard for details."
                     },
-                    "design_evaporator_liquid_entering_temperature":{
+                    "evaporator_liquid_entering_temperature":{
                       "description":"Entering evaporator liquid temperature at the full load design point rating condition",
                       "type":"number",
                       "exclusiveMinimum":0,
                       "units": "K",
                       "notes": "Evaporator liquid temperature at the entry flange of the chiller’s evaporator at full load rating condition."
                     },
-                    "design_evaporator_liquid_differential_pressure":{
-                      "description":"Pressure drop across the evaporator at the full load rating condition",
+                    "evaporator_liquid_differential_pressure":{
+                      "description":"Pressure drop across the evaporator at the full load design point rating condition",
                       "type":"number",
                       "exclusiveMinimum":0,
                       "units": "Pa",
                       "notes": "Pressure drop is as defined in the applicable rating standard"
                     },
-                    "design_condenser_liquid_volumetric_flow_rate":{
+                    "condenser_liquid_volumetric_flow_rate":{
                       "description":"Condenser liquid flow at the full load design point rating condition",
                       "type":"number",
                       "exclusiveMinimum":0,
                       "units": "m3/s",
                       "notes": "Condenser liquid volumetric flow rate at the full load rating condition. Density calculations shall be made at the inlet temperature of the heat exchanger."
                     },
-                    "design_condenser_liquid_entering_temperature":{
+                    "condenser_liquid_entering_temperature":{
                       "description":"Entering condenser liquid temperature at the full load design point rating condition",
                       "type":"number",
                       "exclusiveMinimum":0,
                       "units": "K",
                       "notes": "Condenser liquid temperature at the entry flange of the chiller’s condenser at full load rating condition.  See testing standard for details."
                     },
-                    "design_condenser_liquid_leaving_temperature":{
+                    "condenser_liquid_leaving_temperature":{
                       "description":"Leaving condenser liquid temperature at the full load design point rating condition",
                       "type":"number",
                       "exclusiveMinimum":0,
                       "units": "K",
                       "notes": "Condenser liquid temperature at the exit flange of the chiller’s condenser at full load rating condition."
                     },
-                    "design_condenser_liquid_dfferential_pressure":{
+                    "condenser_liquid_dfferential_pressure":{
                       "description":"Pressure drop across the condenser at the full load design point rating condition",
                       "type":"number",
                       "exclusiveMinimum":0,
@@ -278,7 +278,7 @@
                           "description":"Total power input to the packaged chiller",
                           "type":"array",
                           "items":{
-                            "type":"number",
+                            "type":["number","null"],
                             "exclusiveMinimum":0
                           },
                           "units": "W",
@@ -288,7 +288,7 @@
                           "description":"Unit refrigeration capacity",
                           "type":"array",
                           "items":{
-                            "type":"number",
+                            "type":["number","null"],
                             "minimum":0
                           },
                           "units": "W",
@@ -298,7 +298,7 @@
                           "description":"Condenser heat rejection",
                           "type":"array",
                           "items":{
-                            "type":"number",
+                            "type":["number","null"],
                             "minimum":0
                           },
                           "units": "W",
@@ -308,7 +308,7 @@
                           "description":"Entering evaporator liquid temperature",
                           "type":"array",
                           "items":{
-                            "type":"number",
+                            "type":["number","null"],
                             "exclusiveMinimum":0
                           },
                           "units": "K"
@@ -317,7 +317,7 @@
                           "description":"Leaving condenser liquid temperature",
                           "type":"array",
                           "items":{
-                            "type":"number",
+                            "type":["number","null"],
                             "exclusiveMinimum":0
                           },
                           "units": "K"
@@ -326,7 +326,7 @@
                           "description":"Pressure drop across the evaporator",
                           "type":"array",
                           "items":{
-                            "type":"number",
+                            "type":["number","null"],
                             "exclusiveMinimum":0
                           },
                           "units": "Pa"
@@ -335,7 +335,7 @@
                           "description":"Pressure drop across the condenser",
                           "type":"array",
                           "items":{
-                            "type":"number",
+                            "type":["number","null"],
                             "exclusiveMinimum":0
                           },
                           "units": "Pa"
@@ -344,7 +344,7 @@
                           "description":"Heat rejected by the chiller oil cooler (if separate stream crossing the control volume boundary)",
                           "type":"array",
                           "items":{
-                            "type":"number",
+                            "type":["number","null"],
                             "exclusiveMinimum":0
                           },
                           "units": "W",
@@ -354,7 +354,7 @@
                           "description":"Heat rejected by the motor control center cooling (if separate stream crossing the control volume boundary)",
                           "type":"array",
                           "items":{
-                            "type":"number",
+                            "type":["number","null"],
                             "exclusiveMinimum":0
                           },
                           "units": "W",
@@ -398,7 +398,7 @@
                           "description":"Total power consumed by the chiller when not running. Value shall include all power sources and all auxiliary equipment provided with the chiller.",
                           "type":"array",
                           "items":{
-                            "type":"number",
+                            "type":["number","null"],
                             "minimum":0
                           },
                           "units": "W",
