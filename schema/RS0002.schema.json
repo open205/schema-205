@@ -161,7 +161,7 @@
               "type":"object",
               "properties":{
                 "compressor_control_method":{"$ref": "#/definitions/CompressorControlMethod"},
-                "fan_RS":{"$ref": "ASHRAE205.schema.json#","RS": "RS0003"},
+                "fan_representation":{"$ref": "ASHRAE205.schema.json#","RS": "RS0003"},
                 "fan_position":{"$ref": "#/definitions/FanPosition"},
                 "nominal_volumetric_air_flow_rate":{
                   "description":"Volumetric air flow rate leaving the indoor coil used to scale the flow ratios in the PerformanceMap",
