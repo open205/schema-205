@@ -1,0 +1,225 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Air-to-Air Direct Expansion Refrigerant Coil System",
+  "description": "Schema for ASHRAE 205 annex RS0004: Air-to-Air Direct Expansion Refrigerant Coil System",
+
+  "definitions":{
+    "CompressorControlMethod":{
+      "type":"string",
+      "enum":["STAGED","DYNAMIC"],
+      "enum_text":["Staged","Dynamic"]
+    }
+  },
+  "0004Spec":{
+    "type": "object",
+    "properties":{
+      "RS0004":{
+          "type":"object",
+          "properties" :{
+            "description":{
+              "type": "object",
+              "properties":{
+                "product_information":{
+                  "type":"object",
+                  "properties":{
+                    "outdoor_unit_manufacturer":{
+                      "description":"Name of the outdoor unit manufacturer",
+                      "type":"string"
+                    },
+                    "outdoor_unit_model_number":{
+                      "description":"Model number of the outdoor unit",
+                      "type":"string"
+                    },
+                    "indoor_unit_manufacturer":{
+                      "description":"Name of the indoor unit manufacturer",
+                      "type":"string"
+                    },
+                    "indoor_unit_model_number":{
+                      "description":"Model number of the indoor unit",
+                      "type":"string"
+                    },
+                    "refrigerant_type":{"$ref": "ASHRAE205.schema.json#/definitions/RefrigerantType"},
+                    "compressor_type":{"$ref": "ASHRAE205.schema.json#/definitions/CompressorType"}
+                  },
+                  "required":["outdoor_unit_manufacturer","outdoor_unit_model_number"],
+                  "additionalProperties":false
+                }
+              },
+              "additionalProperties": false
+            },
+            "performance":{
+              "type":"object",
+              "properties":{
+                "compressor_control_method":{"$ref": "#/definitions/CompressorControlMethod"},
+                "cycling_degradation_coefficient":{
+                  "description":"Cycling degradation coefficient (CD) as described in AHRI 210/240",
+                  "type":"number",
+                  "minimum":0,
+                  "exclusiveMaximum":1
+                },
+                "performance_map_cooling":{
+                  "description":"Data group describing cooling performance over a range of conditions",
+                  "type":"object",
+                  "properties":{
+                    "grid_variables":{
+                      "description":"Data group defining the grid variables for cooling performance",
+                      "type":"object",
+                      "properties":{
+                        "outdoor_coil_entering_dry_bulb_temperature":{
+                          "description":"Dry bulb temperature of the air entering the outdoor coil",
+                          "type":"array",
+                          "items":{
+                            "type":"number",
+                            "minimum":0
+                          },
+                          "units": "K"
+                        },
+                        "indoor_coil_entering_relative_humidity":{
+                          "description":"Relative humidity of the air entering the indoor coil",
+                          "type":"array",
+                          "items":{
+                            "type":"number",
+                            "minimum":0,
+                            "maximum":1
+                          },
+                          "units": "K",
+                          "notes": "As measured immediately before entering the coil (i.e., after the fan in a blow-through configuration)."
+                        },
+                        "indoor_coil_entering_dry_bulb_temperature":{
+                          "description":"Dry bulb temperature of the air entering the indoor coil",
+                          "type":"array",
+                          "items":{
+                            "type":"number",
+                            "minimum":0
+                          },
+                          "units": "K",
+                          "notes": "As measured immediately before entering the coil (i.e., after the fan in a blow-through configuration)."
+                        },
+                        "indoor_coil_air_mass_flow_rate":{
+                          "description":"Mass flow rate of air entering the indoor coil",
+                          "type":"array",
+                          "items":{
+                            "type":"number",
+                            "exclusiveMinimum":0
+                          },
+                          "units": "kg/s"
+                        },
+                        "compressor_sequence_number":{
+                          "description":"Index indicating the relative order of the compressor speed/stage",
+                          "type":"array",
+                          "items":{
+                            "type":"integer",
+                            "minimum":0
+                          },
+                          "notes": "Expressed in order from initial stage/speed to final stage/speed"
+                        },
+                        "ambient_absolute_air_pressure":{
+                          "description":"Ambient absolute air pressure",
+                          "type":"array",
+                          "items":{
+                            "type":"number"
+                          },
+                          "units": "Pa"
+                        }
+                      },
+                      "required":["outdoor_coil_entering_dry_bulb_temperature","indoor_coil_entering_relative_humidity","indoor_coil_entering_dry_bulb_temperature","indoor_coil_air_mass_flow_rate","compressor_sequence_number","ambient_absolute_air_pressure"],
+                      "additionalProperties":false
+                    },
+                    "lookup_variables":{
+                      "description":"Data group defining the lookup variables for cooling performance",
+                      "type":"object",
+                      "properties":{
+                        "gross_total_cooling_capacity":{
+                          "description":"Total heat removed by the indoor coil",
+                          "type":"array",
+                          "items":{
+                            "type":["number","null"],
+                            "exclusiveMinimum":0
+                          },
+                          "units": "W",
+                          "notes": "Does not account for heat added by the fan"
+                        },
+                        "gross_sensible_cooling_capacity":{
+                          "description":"Sensible heat removed by the indoor coil",
+                          "type":"array",
+                          "items":{
+                            "type":["number","null"],
+                            "exclusiveMinimum":0
+                          },
+                          "units": "W",
+                          "notes": "Does not account for heat added by the fan"
+                        },
+                        "gross_cooling_power":{
+                          "description":"Gross power draw (of the outdoor unit)",
+                          "type":"array",
+                          "items":{
+                            "type":["number","null"],
+                            "exclusiveMinimum":0
+                          },
+                          "units": "W",
+                          "notes": "Does not include power drawn by the indoor fan. Includes compressor, outdoor fan, and any auxiliary power used by the unit’s controls and any sump heater."
+                        }
+                      },
+                      "required":["gross_total_cooling_capacity","gross_sensible_cooling_capacity","gross_cooling_power"],
+                      "additionalProperties":false
+                    }
+                  },
+                  "required":["grid_variables","lookup_variables"],
+                  "additionalProperties":false
+                },
+                "performance_map_standby":{
+                  "description":"Data group describing standby performance",
+                  "type":"object",
+                  "properties":{
+                    "grid_variables":{
+                      "description":"Data group defining the grid variables for standby performance",
+                      "type":"object",
+                      "properties":{
+                        "outdoor_coil_environment_dry_bulb_temperature":{
+                          "description":"Dry bulb temperature of the air in the environment of the outdoor coil",
+                          "type":"array",
+                          "items":{
+                            "type":"number",
+                            "minimum":0
+                          },
+                          "units": "K"
+                        }
+                      },
+                      "required":["outdoor_coil_environment_dry_bulb_temperature"],
+                      "additionalProperties":false
+                    },
+                    "lookup_variables":{
+                      "description":"Data group defining the grid variables for standby performance",
+                      "type":"object",
+                      "properties":{
+                        "gross_power":{
+                          "description":"Gross power draw (of the outdoor unit)",
+                          "type":"array",
+                          "items":{
+                            "type":["number","null"],
+                            "minimum":0
+                          },
+                          "units": "W",
+                          "notes": "Does not account for power drawn from the indoor fan. Includes compressor, outdoor fan, and any auxiliary power used by the unit’s controls, and any sump heater."
+                        }
+                      },
+                      "required":["gross_power"],
+                      "additionalProperties":false
+                    }
+                  },
+                  "required":["grid_variables","lookup_variables"],
+                  "additionalProperties":false
+                }
+              },
+              "required":["compressor_control_method","cycling_degradation_coefficient","performance_map_cooling","performance_map_standby"],
+              "additionalProperties":false
+            }
+          },
+          "required":["performance"],
+          "additionalProperties":false
+      }
+    },
+    "required":["RS0004"],
+    "additionalProperties": false
+  }
+}

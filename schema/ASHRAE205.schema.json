@@ -18,7 +18,7 @@
         "RS_ID":{
           "description":"Representation specification identifier",
           "type": "string",
-          "enum": ["RS0001", "RS0002", "RS0003"],
+          "enum": ["RS0001", "RS0002", "RS0003", "RS0004"],
           "notes": "Identifies the representation specification used to generate this representation"
         },
         "ID":{
@@ -57,7 +57,8 @@
           "oneOf":[
             {"$ref": "RS0001.schema.json#/0001Spec"},
             {"$ref": "RS0002.schema.json#/0002Spec"},
-            {"$ref": "RS0003.schema.json#/0003Spec"}
+            {"$ref": "RS0003.schema.json#/0003Spec"},
+            {"$ref": "RS0004.schema.json#/0004Spec"}
           ]
         }
       },
