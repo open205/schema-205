@@ -117,6 +117,51 @@
                 "units": "-",
                 "notes": "Used to determine amount of heat from motor (and drive)"
               },
+              "maximum_power":{
+                "description":"Maximum power draw of the fan motor",
+                "type":"number",
+                "minimum":0,
+                "units": "W",
+                "notes": "If fan is externally driven, use a suitably high number."
+              },
+              "maximum_impeller_speed":{
+                "description":"Maximum impeller rotational speed",
+                "type":"number",
+                "minimum":0,
+                "units": "rev/s"
+              },
+              "minimum_impeller_speed":{
+                "description":"Minimum impeller rotational speed",
+                "type":"number",
+                "minimum":0,
+                "units": "rev/s",
+                "notes": "If no mimumum, use zero."
+              },
+              "maximum_system_curve":{
+                "description":"Maximum system curve for system selection",
+                "type":"object",
+                "properties":{
+                  "volumetric_air_flow_rate":{
+                    "description": "Volumetric air flow rate through an air distribution system",
+                    "type":"array",
+                    "items":{
+                      "type": "number",
+                      "minimum": 0
+                    },
+                    "units": "m3/s"
+                  },
+                  "static_pressure_difference":{
+                    "description": "Static pressure drop of an air distribution",
+                    "type":"array",
+                    "items":{
+                      "type": "number",
+                      "minimum": 0
+                    },
+                    "units": "Pa"
+                  }
+                },
+                "required": ["volumetric_air_flow_rate","static_pressure_difference"]
+              },
               "standby_power":{
                 "description":"Assembly power draw when fan is not operating",
                 "type":"number",
@@ -141,14 +186,14 @@
                         "description":"Data group describing grid variables for continuous fan performance",
                         "type":"object",
                         "properties":{
-                          "impeller_speed":{
-                            "description":"Rotational speed of fan impeller",
+                          "volumetric_air_flow_rate":{
+                            "description":"Volumetric air flow rate through fan assembly",
                             "type":"array",
                             "items":{
-                              "type":"number",
+                              "type":["number","null"],
                               "minimum":0
                             },
-                            "units": "rev/s"
+                            "units": "m3/s"
                           },
                           "static_pressure_difference":{
                             "description":"Static pressure across fan assembly at dry coil conditions",
@@ -161,21 +206,21 @@
                             "notes": "Or external static"
                           }
                         },
-                        "required":["impeller_speed","static_pressure_difference"],
+                        "required":["volumetric_air_flow_rate","static_pressure_difference"],
                         "additionalProperties":false
                       },
                       "lookup_variables":{
                         "description":"Data group describing lookup variables for continuous fan performance",
                         "type":"object",
                         "properties":{
-                          "volumetric_air_flow_rate":{
-                            "description":"Volumetric air flow rate through fan assembly",
+                          "impeller_speed":{
+                            "description":"Rotational speed of fan impeller",
                             "type":"array",
                             "items":{
-                              "type":["number","null"],
+                              "type":"number",
                               "minimum":0
                             },
-                            "units": "m3/s"
+                            "units": "rev/s"
                           },
                           "input_power":{
                             "description":"Power input to fan assembly",
@@ -188,7 +233,7 @@
                             "notes": "Shaft or electric power depending on 'has_motor'"
                           }
                         },
-                        "required":["volumetric_air_flow_rate","input_power"],
+                        "required":["impeller_speed","input_power"],
                         "additionalProperties":false
                       }
                     },
@@ -263,7 +308,7 @@
                 ]
               }
             },
-            "required":["nominal_volumetric_air_flow_rate","wet_coil_pressure_drop","motor_heat_fraction","standby_power","performance_map_type","speed_control_type","performance_map"],
+            "required":["nominal_volumetric_air_flow_rate","wet_coil_pressure_drop","motor_heat_fraction","maximum_power","maximum_impeller_speed","minimum_impeller_speed","standby_power","performance_map_type","speed_control_type","performance_map"],
             "additionalProperties":false
           }
         },

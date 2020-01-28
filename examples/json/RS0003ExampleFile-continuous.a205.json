@@ -37,16 +37,19 @@
             "nominal_volumetric_air_flow_rate": 2.83,
             "wet_coil_pressure_drop": 50,
             "motor_heat_fraction": 1,
+            "maximum_power": 9999999,
+            "maximum_impeller_speed": 99999999,
+            "minimum_impeller_speed": 0,
             "standby_power": 0,
             "performance_map_type": "CONTINUOUS",
             "speed_control_type": "VARIABLE",
             "performance_map":{
               "grid_variables":{
-                "impeller_speed":[],
+                "volumetric_air_flow_rate": [],
                 "static_pressure_difference":[]
               },
               "lookup_variables":{
-                "volumetric_air_flow_rate": [],
+                "impeller_speed":[],
                 "input_power":[]
               }
             }
