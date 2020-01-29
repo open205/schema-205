@@ -7,8 +7,8 @@
     "SpeedControlType":{
       "description":"Type of electrical motor drive",
       "type":"string",
-      "enum":["ConstantSpeed","VariableSpeed"],
-      "enum_text":["ConstantSpeed","VariableSpeed"]
+      "enum":["CONSTANT_SPEED","VARIABLE_SPEED"],
+      "enum_text":["Constant Speed","Variable Speed"]
     },
     "StandardRatingVersion":{
       "description":"Version",
@@ -31,8 +31,7 @@
                   "properties":{
                     "manufacturer":{
                       "description":"Name of the manufacturer",
-                      "type": "string",
-                      "notes": "Shall be the same as 'unit manufacturer' when referring to AHRI 550/590 or AHRI 551/591"
+                      "type": "string"
                     },
                     "manufacturer_software_version":{
                         "description":"Version of the software used to generate the performance map",
@@ -42,7 +41,7 @@
                     "model_number":{
                         "description":"Model number for this chiller",
                         "type": "string",
-                        "notes": "Complete model number string for the unit; special characters are acceptable."
+                        "notes": "Pattern shall match all model numbers that can be represented by the representation"
                     },
                     "nominal_voltage":{
                       "description":"Unit nominal voltage",
@@ -83,7 +82,7 @@
                   "type": "object",
                   "properties":{
                     "certification_reference_number":{
-                      "description":"certification reference number",
+                      "description":"Certification reference number",
                       "type":"string",
                       "notes": "The certification number as stated on the certificate."
                     },
@@ -177,9 +176,9 @@
                       "notes": "Mark this field as yes if the rating values in this table can be reproduced using the performance data in the representation within the tolerance of the rating standard."
                     }
                   },
-                  "required":["certification_reference_number","standard_rating_version","design_net_refrigerating_capacity","design_input_power","design_COP","design_part_load_value",
-                    "design_evaporator_liquid_volumetric_flow_rate","design_evaporator_liquid_leaving_temperature","design_evaporator_liquid_entering_temperature","design_evaporator_liquid_differential_pressure",
-                    "design_condenser_liquid_volumetric_flow_rate","design_condenser_liquid_entering_temperature","design_condenser_liquid_leaving_temperature","design_condenser_liquid_dfferential_pressure",
+                  "required":["certification_reference_number","standard_rating_version","net_refrigerating_capacity","input_power","COP","part_load_value",
+                    "evaporator_liquid_volumetric_flow_rate","evaporator_liquid_leaving_temperature","evaporator_liquid_entering_temperature","evaporator_liquid_differential_pressure",
+                    "condenser_liquid_volumetric_flow_rate","condenser_liquid_entering_temperature","condenser_liquid_leaving_temperature","condenser_liquid_dfferential_pressure",
                     "rating_reproducible_from_performance_data"]
                 }
               },
@@ -194,14 +193,14 @@
                   "description":"Factor of heat transfer inhibition due to heat exchanger fouling layer",
                   "type":"number",
                   "minimum":0,
-                  "units": "m3-K/W",
-                  "notes": "Evaporator fouling factor at which the performance matrix was created. This may be different from the certification data supplied"
+                  "units": "m2-K/W",
+                  "notes": "Evaporator fouling factor at which the performance map was created. This may be different from the certification data supplied. If unknown, a value of _ can be used as a reasonable. "
                 },
                 "condenser_fouling_factor":{
                   "description":"Factor of heat transfer inhibition due to heat exchanger fouling layer",
                   "type":"number",
                   "minimum":0,
-                  "units": "m3-K/W",
+                  "units": "m2-K/W",
                   "notes": "Condenser fouling factor at which the performance matrix was created. This may be different from the certification data supplied"
                 },
                 "unit_power_limit":{
@@ -345,7 +344,7 @@
                           "type":"array",
                           "items":{
                             "type":["number","null"],
-                            "exclusiveMinimum":0
+                            "Minimum":0
                           },
                           "units": "W",
                           "notes": "Heat transferred to another liquid crossing the control volume boundary from the chiller oil cooler. NULL if not present"
@@ -355,7 +354,7 @@
                           "type":"array",
                           "items":{
                             "type":["number","null"],
-                            "exclusiveMinimum":0
+                            "Minimum":0
                           },
                           "units": "W",
                           "notes": "Heat transferred to another liquid crossing the control volume boundary from the chiller motor controller (inverter drive, starter, etc). NULL if not present"

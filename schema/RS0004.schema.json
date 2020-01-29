@@ -28,7 +28,8 @@
                     },
                     "outdoor_unit_model_number":{
                       "description":"Model number of the outdoor unit",
-                      "type":"string"
+                      "type":"string",
+                      "notes":"Pattern shall match all model numbers that can be represented by the representation"
                     },
                     "indoor_unit_manufacturer":{
                       "description":"Name of the indoor unit manufacturer",
@@ -36,7 +37,8 @@
                     },
                     "indoor_unit_model_number":{
                       "description":"Model number of the indoor unit",
-                      "type":"string"
+                      "type":"string",
+                      "notes":"Pattern shall match all model numbers that can be represented by the representation"
                     },
                     "refrigerant_type":{"$ref": "ASHRAE205.schema.json#/definitions/RefrigerantType"},
                     "compressor_type":{"$ref": "ASHRAE205.schema.json#/definitions/CompressorType"}
@@ -55,7 +57,8 @@
                   "description":"Cycling degradation coefficient (CD) as described in AHRI 210/240",
                   "type":"number",
                   "minimum":0,
-                  "exclusiveMaximum":1
+                  "exclusiveMaximum":1,
+                  "notes":"Used for the lowest stage where the unit cycles to meet a setpoint. Informative note: 340/360 specifies a fixed cycling degradation coefficient of approximately 0.12."
                 },
                 "performance_map_cooling":{
                   "description":"Data group describing cooling performance over a range of conditions",
@@ -82,7 +85,7 @@
                             "minimum":0,
                             "maximum":1
                           },
-                          "units": "K",
+                          "units": "-",
                           "notes": "As measured immediately before entering the coil (i.e., after the fan in a blow-through configuration)."
                         },
                         "indoor_coil_entering_dry_bulb_temperature":{

@@ -9,11 +9,17 @@
     "ASHRAE205":{
       "type": "object",
       "properties":{
+        "standard_version":{
+          "description":"ASHRAE 205 standard version",
+          "type": "string",
+          "enum": ["PPR2"],
+          "notes": "Identifies the version of the ASHRAE 205 Standard this representation complies with."
+        }, 
         "schema_version":{
-          "description":"Representation specification version",
+          "description":"ASHRAE 205 schema version",
           "type": "string",
           "pattern": "[0-9]+\\.[0-9]+\\.[0-9]+",
-          "notes": "Identifies the version of the representation specification used to generate this representation"
+          "notes": "Identifies the version of the ASHRAE 205 JSON schema this representation complies with."
         },
         "RS_ID":{
           "description":"Representation specification identifier",
@@ -21,11 +27,15 @@
           "enum": ["RS0001", "RS0002", "RS0003", "RS0004"],
           "notes": "Identifies the representation specification used to generate this representation"
         },
+        "description":{
+          "description":"Free-form description of equipment (suitable for display)",
+          "type": "string"
+        },
         "ID":{
           "description":"Unique equipment identifier",
           "type": "string",
           "pattern": "[0-9,a-f,A-F]{8}-[0-9,a-f,A-F]{4}-[0-9,a-f,A-F]{4}-[0-9,a-f,A-F]{4}-[0-9,a-f,A-F]{12}",
-          "notes": "Assigned by data publisher to identify specific equipment.  ID shall remain unchanged for revised representations for the same equipment."
+          "notes": "Assigned by data publisher to identify specific equipment. ID shall remain unchanged for revised representations for the same equipment."
         },
         "data_timestamp":{
           "description":"Date of publication",
@@ -34,12 +44,9 @@
           "notes": "Date/time of publication of this representation."
         },
         "data_version":{
-          "description":"Free-form version identifier for this representation",
-          "type": "string"
-        },
-        "description":{
-          "description":"Free-form description of equipment (suitable for display)",
-          "type": "string"
+          "description":"Integer version identifier for the data in the representation",
+          "type": "integer",
+          "notes": "Used by data publisher to track revisions of the data for a specific representation. The value shall be incremented for each data revision."
         },
         "data_source":{
           "description":"Free-form identification of the source of this data",
@@ -62,7 +69,7 @@
           ]
         }
       },
-      "required":["RS_ID","schema_version","ID","data_timestamp","RS_instance"],
+      "required":["standard_version","schema_version","RS_ID","description","ID","data_timestamp","data_version","RS_instance"],
       "additionalProperties":false
     }
   },
