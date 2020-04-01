@@ -86,7 +86,7 @@
                     "rating_reproducible_from_performance_data":{
                       "description":"Whether this rating can be reproduced using the performance data in the representation",
                       "type":"boolean",
-                      "notes": "Mark this field as yes if the rating values in this table can be reproduced using the performance data in the representation within the tolerance of the rating standard."
+                      "notes": "Mark this field as true if the rating values in this table can be reproduced using the performance data in the representation within the tolerance of the rating standard."
                     }
                   },
                   "required":["certified_reference_number","test_standard_year","manufacturer_data_source_version","SEER","EER","capacity","rating_reproducible_from_performance_data"],
@@ -134,7 +134,7 @@
                     "rating_reproducible_from_performance_data":{
                       "description":"Whether this rating can be reproduced using the performance data in the representation",
                       "type":"boolean",
-                      "notes": "Mark this field as yes if the rating values in this table can be reproduced using the performance data in the representation within the tolerance of the rating standard."
+                      "notes": "Mark this field as true if the rating values in this table can be reproduced using the performance data in the representation within the tolerance of the rating standard."
                     }
                   },
                   "required":["certified_reference_number","test_standard_year","manufacturer_data_source_version","IEER","EER","capacity","rating_reproducible_from_performance_data"],
@@ -146,11 +146,18 @@
             "performance":{
               "type":"object",
               "properties":{
+                "standby_power":
+                {
+                  "description": "Continuous unit power draw regardless of whether the fan or DX system are operating.",
+                  "type": "number",
+                  "units": "W",
+                  "notes": "Includes on-board controls and other power not otherwise included in the fan or dx system representations."
+                },
                 "fan_representation":{"$ref": "ASHRAE205.schema.json#","RS": "RS0003"},
                 "fan_position":{"$ref": "#/definitions/FanPosition"},
-                "coil_system_representation":{"$ref": "ASHRAE205.schema.json#","RS": "RS0004"}
+                "DX_system_representation":{"$ref": "ASHRAE205.schema.json#","RS": "RS0004"}
               },
-              "required":["fan_position", "coil_system_representation"],
+              "required":["standby_power","fan_position", "coil_system_representation"],
               "additionalProperties":false
             }
           },

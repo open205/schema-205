@@ -13,8 +13,9 @@
           "description":"ASHRAE 205 standard version",
           "type": "string",
           "enum": ["PPR2"],
+          "enum_text":["ASHRAE 205 -- 2020 Publication Public Review 2 (Unpublished)"],
           "notes": "Identifies the version of the ASHRAE 205 Standard this representation complies with."
-        }, 
+        },
         "schema_version":{
           "description":"ASHRAE 205 schema version",
           "type": "string",
@@ -24,7 +25,8 @@
         "RS_ID":{
           "description":"Representation specification identifier",
           "type": "string",
-          "enum": ["RS0001", "RS0002", "RS0003", "RS0004"],
+          "enum": ["RS0001", "RS0002", "RS0003", "RS0004", "RS0005", "RS0006"],
+          "enum_text": [],
           "notes": "Identifies the representation specification used to generate this representation"
         },
         "description":{
@@ -65,7 +67,9 @@
             {"$ref": "RS0001.schema.json#/0001Spec"},
             {"$ref": "RS0002.schema.json#/0002Spec"},
             {"$ref": "RS0003.schema.json#/0003Spec"},
-            {"$ref": "RS0004.schema.json#/0004Spec"}
+            {"$ref": "RS0004.schema.json#/0004Spec"},
+            {"$ref": "RS0005.schema.json#/0005Spec"},
+            {"$ref": "RS0006.schema.json#/0006Spec"}
           ]
         }
       },
@@ -133,7 +137,8 @@
         "liquid_constituent": {"$ref": "#/definitions/LiquidConstituent" },
         "concentration": {
           "type":"number",
-          "minimum":0
+          "minimum":0,
+          "maximum":1
         }
       },
       "additionalItems": false,

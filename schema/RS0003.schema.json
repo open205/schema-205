@@ -51,23 +51,22 @@
                         "type":"boolean",
                         "notes": "True indicates input power is electrical power. False implies input power is shaft power driven externally."
                       },
-                      "enclosed":{
+                      "is_enclosed":{
                         "description":"Fan assembly is enclosed",
                         "type":"boolean",
                         "notes": "If true, the performance data reflects the static pressure difference across the enclosure"
                       },
                       "impeller_type":{"$ref": "#/definitions/ImpellerType"},
-                      "direct_drive_impeller":{
-                        "description":"Motor and impeller are directly coupled",
+                      "has_belt_drive":{
+                        "description":"The fan impeller is driven by a belt and pulley system",
                         "type":"boolean",
-                        "notes": "False if impeller is belt driven or if assembly does not include a motor."
                       },
                       "number_of_impellers":{
                         "description":"Number of impellers included in the fan assembly",
                         "type":"integer"
                       }
                     },
-                "required":["manufacturer","model_number","has_motor","enclosed"],
+                "required":["manufacturer","model_number","has_motor","is_enclosed"],
                 "additionalProperties":false
               },
               "assembly_components":{
@@ -101,7 +100,7 @@
                 "type":"number",
                 "minimum":0,
                 "units": "m3/s",
-                "notes": "Nominal or rated air flow rate . Used for calculating wet coil pressure drop."
+                "notes": "Nominal or rated air flow rate at standard air conditions. Used for calculating wet coil pressure drop."
               },
               "wet_coil_pressure_drop":{
                 "description":"Additional static pressure drop if cooling coil component is collecting condensate",
@@ -110,20 +109,13 @@
                 "units": "Pa",
                 "notes": "Corresponds to pressure drop at nominal_volumetric_air_flow_rate. If unknown, a value of 75 Pa shall be used."
               },
-              "motor_heat_fraction":{
+              "heat_loss_fraction":{
                 "description":"Fraction of motor heat into the air stream",
                 "type":"number",
                 "minimum":0,
                 "maximum":1,
                 "units": "-",
                 "notes": "Used to determine amount of heat from motor (and drive)"
-              },
-              "maximum_power":{
-                "description":"Maximum power draw of the fan motor",
-                "type":"number",
-                "minimum":0,
-                "units": "W",
-                "notes": "If fan is externally driven, use a suitably high number."
               },
               "maximum_impeller_speed":{
                 "description":"Maximum impeller rotational speed",
@@ -138,9 +130,8 @@
                 "units": "rev/s",
                 "notes": "If no mimumum, use zero."
               },
-              "maximum_system_curve":{
-                "description":"A description of the maximum system curve for system selection ",
-                "notes":"If fan assembly does not connect to a larger system, this data element shall be omitted.",
+              "stability_curve":{
+                "description":"A description of the stability area for system selection ",
                 "type":"object",
                 "properties":{
                   "volumetric_air_flow_rate":{
@@ -164,12 +155,6 @@
                 },
                 "required": ["volumetric_air_flow_rate","static_pressure_difference"]
               },
-              "standby_power":{
-                "description":"Assembly power draw when fan is not operating",
-                "type":"number",
-                "minimum":0,
-                "units": "W"
-              },
               "performance_map_type":{
                 "description":"Type of performance map (discrete or continuous)",
                 "$ref": "#/definitions/PerformanceMapType"
@@ -177,6 +162,12 @@
               "speed_control_type":{
                 "description":"Type of fan impeller speed control installed with the fan assembly",
                 "$ref": "#/definitions/SpeedControlType"
+              },
+              "motor_representation": {
+                "description": "The corresponding Standard 205 motor representation",
+                "notes": "Included if the fan is packaged with a motor. If this is not provided, the fan input power shall represent mechanical shaft power. If this is provided, the input power shall represent either mechanical shaft power or electrical power depending on the data provided by the motor representation.",
+                "$ref": "ASHRAE205.schema.json#",
+                "RS": "RS0005"
               },
               "performance_map":{
                 "oneOf":[
@@ -195,7 +186,8 @@
                               "type":"number",
                               "minimum":0
                             },
-                            "units": "m3/s"
+                            "units": "m3/s",
+                            "notes": "At *standard air conditions*."
                           },
                           "static_pressure_difference":{
                             "description":"Static pressure across fan assembly at dry coil conditions",
@@ -232,7 +224,7 @@
                               "minimum":0
                             },
                             "units": "W",
-                            "notes": "Shaft or electric power depending on 'has_motor'"
+                            "notes": "Mechanical shaft power or electric power depending on the data provided by the motor representation."
                           }
                         },
                         "required":["impeller_speed","input_power"],
@@ -287,7 +279,8 @@
                               "type":["number","null"],
                               "minimum":0
                             },
-                            "units": "m3/s"
+                            "units": "m3/s",
+                            "notes": "At *standard air conditions*."
                           },
                           "input_power":{
                             "description":"Power input to fan assembly",
@@ -297,7 +290,7 @@
                               "minimum":0
                             },
                             "units": "W",
-                            "notes": "Shaft or electric power depending on 'has_motor'"
+                            "notes": "Mechanical shaft power or electric power depending on the data provided by the motor representation."
                           }
                         },
                         "required":["volumetric_air_flow_rate","input_power"],
