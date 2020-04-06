@@ -17,9 +17,8 @@
             "manufacturer":"ABC HVAC Co",
             "model_number":"RTU-15",
             "has_motor":false,
-            "enclosed":true,
+            "is_enclosed":true,
             "impeller_type":"CENTRIFUGAL_FORWARD_CURVED",
-            "direct_drive_impeller":false,
             "number_of_impellers":1
           },
           "assembly_components":[{
@@ -38,11 +37,9 @@
         "performance":{
             "nominal_volumetric_air_flow_rate": 2.83,
             "wet_coil_pressure_drop": 50,
-            "motor_heat_fraction": 1,
-            "maximum_power": 9999999,
+            "heat_loss_fraction": 1,
             "maximum_impeller_speed": 99999999,
             "minimum_impeller_speed": 0,
-            "standby_power": 0,
             "performance_map_type": "CONTINUOUS",
             "speed_control_type": "VARIABLE",
             "performance_map":{

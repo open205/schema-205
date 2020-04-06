@@ -157,7 +157,7 @@
                 "fan_position":{"$ref": "#/definitions/FanPosition"},
                 "DX_system_representation":{"$ref": "ASHRAE205.schema.json#","RS": "RS0004"}
               },
-              "required":["standby_power","fan_position", "coil_system_representation"],
+              "required":["standby_power","fan_position", "DX_system_representation"],
               "additionalProperties":false
             }
           },

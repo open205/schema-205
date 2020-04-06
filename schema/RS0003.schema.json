@@ -59,7 +59,7 @@
                       "impeller_type":{"$ref": "#/definitions/ImpellerType"},
                       "has_belt_drive":{
                         "description":"The fan impeller is driven by a belt and pulley system",
-                        "type":"boolean",
+                        "type":"boolean"
                       },
                       "number_of_impellers":{
                         "description":"Number of impellers included in the fan assembly",
@@ -303,7 +303,7 @@
                 ]
               }
             },
-            "required":["nominal_volumetric_air_flow_rate","wet_coil_pressure_drop","motor_heat_fraction","maximum_power","maximum_impeller_speed","minimum_impeller_speed","standby_power","performance_map_type","speed_control_type","performance_map"],
+            "required":["nominal_volumetric_air_flow_rate","wet_coil_pressure_drop","heat_loss_fraction","maximum_impeller_speed","minimum_impeller_speed","performance_map_type","speed_control_type","performance_map"],
             "additionalProperties":false
           }
         },

@@ -25,8 +25,9 @@
         },
         "performance":
         {
+          "standby_power": 999,
           "fan_position": "BLOW_THROUGH",
-          "coil_system_representation":
+          "DX_system_representation":
           {
             "ASHRAE205":
             {
