@@ -38,8 +38,7 @@
                     },
                     "number_of_poles": {
                       "description": "Number of poles",
-                      "type": "integer",
-                      "minimum": 0
+                      "type": "integer"
                     }
                   },
                   "required":["manufacturer","model_number","input_voltage","input_frequency"],
@@ -61,7 +60,7 @@
                 },
                 "standby_power":
                 {
-                  "description": "Assembly power draw when motor is not operating",
+                  "description": "Power draw when motor is not operating",
                   "type": "number",
                   "units": "W",
                   "minimum": 0
