@@ -16,9 +16,9 @@
           "product_information":{
             "manufacturer":"XYZFurnace Co",
             "model_number":"F060",
-            "has_motor":true,
             "is_enclosed":true,
             "impeller_type":"CENTRIFUGAL_FORWARD_CURVED",
+            "has_belt_drive":true,
             "number_of_impellers":1
           },
           "assembly_components":[{
