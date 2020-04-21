@@ -46,11 +46,6 @@
                         "type":"string",
                         "notes":"Pattern shall match all model numbers that can be represented by the representation"
                       },
-                      "has_motor":{
-                        "description":"Assembly includes a motor",
-                        "type":"boolean",
-                        "notes": "True indicates input power is electrical power. False implies input power is shaft power driven externally."
-                      },
                       "is_enclosed":{
                         "description":"Fan assembly is enclosed",
                         "type":"boolean",
@@ -66,7 +61,7 @@
                         "type":"integer"
                       }
                     },
-                "required":["manufacturer","model_number","has_motor","is_enclosed"],
+                "required":["manufacturer","model_number","is_enclosed"],
                 "additionalProperties":false
               },
               "assembly_components":{
@@ -110,12 +105,12 @@
                 "notes": "Corresponds to pressure drop at nominal_volumetric_air_flow_rate. If unknown, a value of 75 Pa shall be used."
               },
               "heat_loss_fraction":{
-                "description":"Fraction of motor heat into the air stream",
+                "description":"Fraction of efficiency losses added as heat transferred into the air stream",
                 "type":"number",
                 "minimum":0,
                 "maximum":1,
                 "units": "-",
-                "notes": "Used to determine amount of heat from motor (and drive)"
+                "notes": "Used to determine amount of heat from the motor added to the air stream."
               },
               "maximum_impeller_speed":{
                 "description":"Maximum impeller rotational speed",
@@ -131,7 +126,7 @@
                 "notes": "If no mimumum, use zero."
               },
               "stability_curve":{
-                "description":"A description of the stability area for system selection ",
+                "description":"A description of the stability area for system selection",
                 "type":"object",
                 "properties":{
                   "volumetric_air_flow_rate":{
@@ -233,7 +228,7 @@
                     },
                     "required":["grid_variables","lookup_variables"],
                     "additionalProperties":false,
-                    "notes": "Applies for fan assemblies that can operate continuously over a range of shaft speeds. "
+                    "notes": "Applies for fan assemblies that can operate continuously over a range of shaft speeds."
                   },
                   {
                     "description":"Data group describing fan performance in terms of speed setting, static pressure, air flow, and power",

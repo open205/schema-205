@@ -114,7 +114,7 @@
                       "description":"Rated part load efficiency over an integrated load profile",
                       "type":"number",
                       "units": "-",
-                      "notes": "Represents the  IPLV.IP or NPLV.IP based on the COP."
+                      "notes": "Represents the IPLV.IP or NPLV.IP based on the COP."
                     },
                     "part_load_rating_points":
                     {
@@ -128,46 +128,47 @@
                             "description": "The percent full load cooling capacity for this data point",
                             "type": "number",
                             "minimum": 0,
-                            "maximum": 100
+                            "maximum": 100,
+                            "units":"%"
                           },
                           "cooling_capacity": {
                             "description": "The actual cooling capacity for the data point",
                             "type": "number",
                             "units": "Btu/h",
-                            "minimum": 0
+                            "exclusiveMinimum": 0
                           },
                           "unit_power": {
                             "description": "The total unit power consumption for the data point",
                             "type": "number",
                             "units": "kW",
-                            "minimum": 0
+                            "exclusiveMinimum": 0
                           },
                           "evaporator_liquid_entering_temperature": {
                             "description": "Entering evaporator liquid temperature for the data point",
                             "type": "number",
                             "units": "F",
-                            "minimum": 0,
+                            "exclusiveMinimum": 0,
                             "notes": "Evaporator liquid temperature at the entry flange of the chiller’s evaporator for the part load data point"
                           },
                           "evaporator_liquid_leaving_temperature": {
                             "description": "Leaving evaporator liquid temperature for the data point",
                             "type": "number",
                             "units": "F",
-                            "minimum": 0,
+                            "exclusiveMinimum": 0,
                             "notes": "Evaporator liquid temperature at the exit flange of the chiller’s evaporator for the pat load data point"
                           },
                           "evaporator_liquid_volumetric_flow_rate": {
                             "description": "Chilled liquid flow for the data point",
                             "type": "number",
                             "units": "gpm",
-                            "minimum": 0,
+                            "exclusiveMinimum": 0,
                             "notes": "Evaporator liquid volumetric flow rate for the part load data point. Density calculations shall be made at the inlet temperature of the heat exchanger."
                           },
                           "evaporator_liquid_differential_pressure": {
                             "description": "Pressure drop across the evaporator for the data point",
                             "type": "number",
                             "units": "ft of water",
-                            "minimum": 0,
+                            "exclusiveMinimum": 0,
                             "notes": "Pressure drop is as defined in the applicable rating standard."
                           },
                           "evaporator_fouling_factor": {
@@ -181,28 +182,28 @@
                             "description": "Entering condenser liquid temperature for the data point.",
                             "type": "number",
                             "units": "F",
-                            "minimum": 0,
+                            "exclusiveMinimum": 0,
                             "notes": "Condenser liquid temperature at the entry flange of the chiller’s condenser for the part load data point"
                           },
                           "condenser_liquid_leaving_temperature": {
                             "description": "Leaving condenser liquid temperature for the data point",
                             "type": "number",
                             "units": "F",
-                            "minimum": 0,
+                            "exclusiveMinimum": 0,
                             "notes": "Condenser liquid temperature at the exit flange of the chiller’s condenser for the part load data point"
                           },
                           "condenser_liquid_volumetric_flow_rate": {
                             "description": "Condenser liquid flow for the data point.",
                             "type": "number",
                             "units": "gpm",
-                            "minimum": 0,
+                            "exclusiveMinimum": 0,
                             "notes": "Condenser liquid volumetric flow rate for the part load data point. Density calculations shall be made at the inlet temperature of the heat exchanger."
                           },
                           "condenser_liquid_dfferential_pressure": {
                             "description": "Pressure drop across the condenser for the data point.",
                             "type": "number",
                             "units": "ft of water",
-                            "minimum": 0,
+                            "exclusiveMinimum": 0,
                             "notes": "Pressure drop is as defined in the applicable rating standard."
                           },
                           "condenser_fouling_factor": {
@@ -214,7 +215,7 @@
                           }
                         },
                         "required": ["percent_full_load_capacity","cooling_capacity","unit_power",
-                          "evaporator_liquid_entering_temperature","evaporator_liquid_leaving_temperature","evaporator_liquid_volumetric_flow_rate","evaporator_liquid_volumetric_flow_rate","evaporator_liquid_differential_pressure","evaporator_fouling_factor",
+                          "evaporator_liquid_entering_temperature","evaporator_liquid_leaving_temperature","evaporator_liquid_volumetric_flow_rate","evaporator_liquid_differential_pressure","evaporator_fouling_factor",
                           "condenser_liquid_entering_temperature","condenser_liquid_leaving_temperature","condenser_liquid_volumetric_flow_rate","condenser_liquid_dfferential_pressure","condenser_fouling_factor"
                         ]
                       },
@@ -252,7 +253,7 @@
                     "full_load_evaporator_fouling_factor":{
                       "description":"Factor of heat transfer inhibition due to heat exchanger fouling layer at the full load design point rating condition",
                       "type":"number",
-                      "exclusiveMinimum":0,
+                      "minimum":0,
                       "units": "h-ft2-F/Btu",
                       "notes": "Evaporator fouling factor at which the full rating condition was measured."
                     },
@@ -287,9 +288,9 @@
                     "full_load_condenser_fouling_factor":{
                       "description":"Factor of heat transfer inhibition due to heat exchanger fouling layer at the full load design point rating condition",
                       "type":"number",
-                      "exclusiveMinimum":0,
+                      "minimum":0,
                       "units": "h-ft2-F/Btu",
-                      "notes": "Condenser fouling factor at which the full rating condition was measured.."
+                      "notes": "Condenser fouling factor at which the full rating condition was measured."
                     },
                     "rating_reproducible_from_performance_data":{
                       "description":"Whether this rating can be reproduced using the performance data in the representation",
@@ -297,7 +298,7 @@
                       "notes": "Mark this field as true if the rating values in this table can be reproduced using the performance data in the representation within the tolerance of the rating standard."
                     }
                   },
-                  "required":["certification_reference_number","standard_rating_version","net_refrigerating_capacity","input_power","COP","part_load_value","part_load_rating_points",
+                  "required":["certification_reference_number","standard_rating_version","net_refrigerating_capacity","input_power","COP","part_load_value",
                     "full_load_evaporator_liquid_volumetric_flow_rate","full_load_evaporator_liquid_leaving_temperature","full_load_evaporator_liquid_entering_temperature","full_load_evaporator_liquid_differential_pressure","full_load_evaporator_fouling_factor",
                     "full_load_condenser_liquid_volumetric_flow_rate","full_load_condenser_liquid_entering_temperature","full_load_condenser_liquid_leaving_temperature","full_load_condenser_liquid_dfferential_pressure","full_load_condenser_fouling_factor",
                     "rating_reproducible_from_performance_data"]
@@ -351,46 +352,47 @@
                             "description": "The percent full load cooling capacity for this data point",
                             "type": "number",
                             "minimum": 0,
-                            "maximum": 100
+                            "maximum": 100,
+                            "units": "%"
                           },
                           "cooling_capacity": {
                             "description": "The actual cooling capacity for the data point",
                             "type": "number",
                             "units": "kW",
-                            "minimum": 0
+                            "exclusiveMinimum": 0
                           },
                           "unit_power": {
                             "description": "The total unit power consumption for the data point",
                             "type": "number",
                             "units": "kW",
-                            "minimum": 0
+                            "exclusiveMinimum": 0
                           },
                           "evaporator_liquid_entering_temperature": {
                             "description": "Entering evaporator liquid temperature for the data point",
                             "type": "number",
                             "units": "C",
-                            "minimum": 0,
+                            "exclusiveMinimum": 0,
                             "notes": "Evaporator liquid temperature at the entry flange of the chiller’s evaporator for the part load data point"
                           },
                           "evaporator_liquid_leaving_temperature": {
                             "description": "Leaving evaporator liquid temperature for the data point",
                             "type": "number",
                             "units": "C",
-                            "minimum": 0,
+                            "exclusiveMinimum": 0,
                             "notes": "Evaporator liquid temperature at the exit flange of the chiller’s evaporator for the pat load data point"
                           },
                           "evaporator_liquid_volumetric_flow_rate": {
                             "description": "Chilled liquid flow for the data point",
                             "type": "number",
                             "units": "l/s",
-                            "minimum": 0,
+                            "exclusiveMinimum": 0,
                             "notes": "Evaporator liquid volumetric flow rate for the part load data point. Density calculations shall be made at the inlet temperature of the heat exchanger."
                           },
                           "evaporator_liquid_differential_pressure": {
                             "description": "Pressure drop across the evaporator for the data point",
                             "type": "number",
                             "units": "kPa",
-                            "minimum": 0,
+                            "exclusiveMinimum": 0,
                             "notes": "Pressure drop is as defined in the applicable rating standard."
                           },
                           "evaporator_fouling_factor": {
@@ -404,28 +406,28 @@
                             "description": "Entering condenser liquid temperature for the data point.",
                             "type": "number",
                             "units": "C",
-                            "minimum": 0,
+                            "exclusiveMinimum": 0,
                             "notes": "Condenser liquid temperature at the entry flange of the chiller’s condenser for the part load data point"
                           },
                           "condenser_liquid_leaving_temperature": {
                             "description": "Leaving condenser liquid temperature for the data point",
                             "type": "number",
                             "units": "C",
-                            "minimum": 0,
+                            "exclusiveMinimum": 0,
                             "notes": "Condenser liquid temperature at the exit flange of the chiller’s condenser for the part load data point"
                           },
                           "condenser_liquid_volumetric_flow_rate": {
                             "description": "Condenser liquid flow for the data point.",
                             "type": "number",
                             "units": "gpm",
-                            "minimum": 0,
+                            "exclusiveMinimum": 0,
                             "notes": "Condenser liquid volumetric flow rate for the part load data point. Density calculations shall be made at the inlet temperature of the heat exchanger."
                           },
                           "condenser_liquid_dfferential_pressure": {
                             "description": "Pressure drop across the condenser for the data point.",
                             "type": "number",
                             "units": "kPa",
-                            "minimum": 0,
+                            "exclusiveMinimum": 0,
                             "notes": "Pressure drop is as defined in the applicable rating standard."
                           },
                           "condenser_fouling_factor": {
@@ -437,7 +439,7 @@
                           }
                         },
                         "required": ["percent_full_load_capacity","cooling_capacity","unit_power",
-                          "evaporator_liquid_entering_temperature","evaporator_liquid_leaving_temperature","evaporator_liquid_volumetric_flow_rate","evaporator_liquid_volumetric_flow_rate","evaporator_liquid_differential_pressure","evaporator_fouling_factor",
+                          "evaporator_liquid_entering_temperature","evaporator_liquid_leaving_temperature","evaporator_liquid_volumetric_flow_rate","evaporator_liquid_differential_pressure","evaporator_fouling_factor",
                           "condenser_liquid_entering_temperature","condenser_liquid_leaving_temperature","condenser_liquid_volumetric_flow_rate","condenser_liquid_dfferential_pressure","condenser_fouling_factor"
                         ]
                       },
@@ -475,7 +477,7 @@
                     "full_load_evaporator_fouling_factor":{
                       "description":"Factor of heat transfer inhibition due to heat exchanger fouling layer at the full load design point rating condition",
                       "type":"number",
-                      "exclusiveMinimum":0,
+                      "minimum":0,
                       "units": "m2-K/kW",
                       "notes": "Evaporator fouling factor at which the full rating condition was measured."
                     },
@@ -510,9 +512,9 @@
                     "full_load_condenser_fouling_factor":{
                       "description":"Factor of heat transfer inhibition due to heat exchanger fouling layer at the full load design point rating condition",
                       "type":"number",
-                      "exclusiveMinimum":0,
+                      "minimum":0,
                       "units": "m2-K/kW",
-                      "notes": "Condenser fouling factor at which the full rating condition was measured.."
+                      "notes": "Condenser fouling factor at which the full rating condition was measured."
                     },
                     "rating_reproducible_from_performance_data":{
                       "description":"Whether this rating can be reproduced using the performance data in the representation",
@@ -520,7 +522,7 @@
                       "notes": "Mark this field as true if the rating values in this table can be reproduced using the performance data in the representation within the tolerance of the rating standard."
                     }
                   },
-                  "required":["certification_reference_number","standard_rating_version","net_refrigerating_capacity","input_power","COP","part_load_value","part_load_rating_points",
+                  "required":["certification_reference_number","standard_rating_version","net_refrigerating_capacity","input_power","COP","part_load_value",
                     "full_load_evaporator_liquid_volumetric_flow_rate","full_load_evaporator_liquid_leaving_temperature","full_load_evaporator_liquid_entering_temperature","full_load_evaporator_liquid_differential_pressure","full_load_evaporator_fouling_factor",
                     "full_load_condenser_liquid_volumetric_flow_rate","full_load_condenser_liquid_entering_temperature","full_load_condenser_liquid_leaving_temperature","full_load_condenser_liquid_dfferential_pressure","full_load_condenser_fouling_factor",
                     "rating_reproducible_from_performance_data"]
@@ -560,7 +562,7 @@
                   "minimum":0,
                   "maximum":1,
                   "units": "-",
-                  "notes": "Used for the lowest stage where the unit cycles to meet a setpoint. "
+                  "notes": "Used for the lowest stage where the unit cycles to meet a setpoint."
                 },
                 "performance_map_cooling":{
                   "description":"Data group describing cooling performance over a range of conditions",
@@ -696,7 +698,7 @@
                           "type":"array",
                           "items":{
                             "type":["number","null"],
-                            "Minimum":0
+                            "minimum":0
                           },
                           "units": "W",
                           "notes": "Heat transferred to another liquid crossing the control volume boundary from the chiller oil cooler. NULL if not present"
@@ -706,7 +708,7 @@
                           "type":"array",
                           "items":{
                             "type":["number","null"],
-                            "Minimum":0
+                            "minimum":0
                           },
                           "units": "W",
                           "notes": "Heat transferred to another liquid crossing the control volume boundary from the chiller motor controller (inverter drive, starter, etc). NULL if not present"

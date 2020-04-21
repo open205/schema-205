@@ -57,7 +57,7 @@
                   "description":"Cycling degradation coefficient (CD) as described in AHRI 210/240",
                   "type":"number",
                   "minimum":0,
-                  "exclusiveMaximum":1,
+                  "maximum":1,
                   "notes":"Used for the lowest stage where the unit cycles to meet a setpoint. Informative note: 340/360 specifies a fixed cycling degradation coefficient of approximately 0.12."
                 },
                 "performance_map_cooling":{

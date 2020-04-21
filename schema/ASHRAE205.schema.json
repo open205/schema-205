@@ -131,7 +131,7 @@
       "enum_text":["By Volume","By Mass"]
     },
     "LiquidComponent":{
-      "description":"A list of all liquid components within the liquid mixture",
+      "description":"A constituent liquid component within the liquid mixture",
       "type":"object",
       "properties":{
         "liquid_constituent": {"$ref": "#/definitions/LiquidConstituent" },
@@ -145,7 +145,7 @@
       "minItems": 1
     },
     "LiquidMixture":{
-      "description":"Type of liquid in evaporator",
+      "description":"Type of liquid made up of constituent liquid components",
       "type":"object",
       "properties":{
         "liquid_components": {
