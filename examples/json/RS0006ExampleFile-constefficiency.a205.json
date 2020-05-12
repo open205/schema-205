@@ -19,15 +19,15 @@
                     }
                 },
                 "performance": {
-                    "maximum_power": 300,
-                    "standby_power": 1,
+                    "maximum_power": 10000,
+                    "standby_power": 10,
                     "cooling_method": "PASSIVE_COOLED",
                     "performance_map": {
                         "grid_variables": {
-                            "output_power": [5000, 10000]
+                            "output_power": [4052, 8105]
                         },
                         "lookup_variables": {
-                            "efficiency": [0.9, 0.9]
+                            "efficiency": [0.985, 0.985]
                         }
                     }
                 }

@@ -45,15 +45,15 @@
                                         }
                                     },
                                     "performance": {
-                                        "maximum_power": 300,
-                                        "standby_power": 1,
+                                        "maximum_power": 10000,
+                                        "standby_power": 10,
                                         "cooling_method": "PASSIVE_COOLED",
                                         "performance_map": {
                                             "grid_variables": {
-                                                "output_power": [5000, 10000]
+                                                "output_power": [4052, 8105]
                                             },
                                             "lookup_variables": {
-                                                "efficiency": [0.90, 0.90]
+                                                "efficiency": [0.985, 0.985]
                                             }
                                         }
                                     }
@@ -63,10 +63,10 @@
                     },
                     "performance_map": {
                         "grid_variables": {
-                            "shaft_power": [3726, 7452]
+                            "shaft_power": [3726, 7450]
                         },
                         "lookup_variables": {
-                                    "efficiency": [0.90, 0.90],
+                                    "efficiency": [0.92, 0.92],
                                     "power_factor": [0.90, 0.90]
                         }
                     }
