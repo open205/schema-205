@@ -71,6 +71,7 @@
                         "outdoor_coil_entering_dry_bulb_temperature":{
                           "description":"Dry bulb temperature of the air entering the outdoor coil",
                           "type":"array",
+                          "minItems": 1,
                           "items":{
                             "type":"number",
                             "minimum":0
@@ -80,6 +81,7 @@
                         "indoor_coil_entering_relative_humidity":{
                           "description":"Relative humidity of the air entering the indoor coil",
                           "type":"array",
+                          "minItems": 1,
                           "items":{
                             "type":"number",
                             "minimum":0,
@@ -91,6 +93,7 @@
                         "indoor_coil_entering_dry_bulb_temperature":{
                           "description":"Dry bulb temperature of the air entering the indoor coil",
                           "type":"array",
+                          "minItems": 1,
                           "items":{
                             "type":"number",
                             "minimum":0
@@ -101,6 +104,7 @@
                         "indoor_coil_air_mass_flow_rate":{
                           "description":"Mass flow rate of air entering the indoor coil",
                           "type":"array",
+                          "minItems": 1,
                           "items":{
                             "type":"number",
                             "exclusiveMinimum":0
@@ -110,6 +114,7 @@
                         "compressor_sequence_number":{
                           "description":"Index indicating the relative order of the compressor speed/stage",
                           "type":"array",
+                          "minItems": 1,
                           "items":{
                             "type":"integer",
                             "minimum":0
@@ -119,6 +124,7 @@
                         "ambient_absolute_air_pressure":{
                           "description":"Ambient absolute air pressure",
                           "type":"array",
+                          "minItems": 1,
                           "items":{
                             "type":"number"
                           },
@@ -135,6 +141,7 @@
                         "gross_total_cooling_capacity":{
                           "description":"Total heat removed by the indoor coil",
                           "type":"array",
+                          "minItems": 1,
                           "items":{
                             "type":["number","null"],
                             "exclusiveMinimum":0
@@ -145,6 +152,7 @@
                         "gross_sensible_cooling_capacity":{
                           "description":"Sensible heat removed by the indoor coil",
                           "type":"array",
+                          "minItems": 1,
                           "items":{
                             "type":["number","null"],
                             "exclusiveMinimum":0
@@ -155,6 +163,7 @@
                         "gross_cooling_power":{
                           "description":"Gross power draw (of the outdoor unit)",
                           "type":"array",
+                          "minItems": 1,
                           "items":{
                             "type":["number","null"],
                             "exclusiveMinimum":0
@@ -181,6 +190,7 @@
                         "outdoor_coil_environment_dry_bulb_temperature":{
                           "description":"Dry bulb temperature of the air in the environment of the outdoor coil",
                           "type":"array",
+                          "minItems": 1,
                           "items":{
                             "type":"number",
                             "minimum":0
@@ -198,6 +208,7 @@
                         "gross_power":{
                           "description":"Gross power draw (of the outdoor unit)",
                           "type":"array",
+                          "minItems": 1,
                           "items":{
                             "type":["number","null"],
                             "minimum":0

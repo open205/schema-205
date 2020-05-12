@@ -575,6 +575,7 @@
                         "evaporator_liquid_volumetric_flow_rate":{
                           "description":"Chilled liquid (evaporator) flow",
                           "type":"array",
+                          "minItems": 1,
                           "items":{
                             "type":"number",
                             "exclusiveMinimum":0
@@ -584,6 +585,7 @@
                         "evaporator_liquid_leaving_temperature":{
                           "description":"Leaving evaporator liquid temperature",
                           "type":"array",
+                          "minItems": 1,
                           "items":{
                             "type":"number",
                             "exclusiveMinimum":0
@@ -593,6 +595,7 @@
                         "condenser_liquid_volumetric_flow_rate":{
                           "description":"Condenser liquid flow",
                           "type":"array",
+                          "minItems": 1,
                           "items":{
                             "type":"number",
                             "exclusiveMinimum":0
@@ -602,6 +605,7 @@
                         "condenser_liquid_entering_temperature":{
                           "description":"Entering condenser liquid temperature",
                           "type":"array",
+                          "minItems": 1,
                           "items":{
                             "type":"number",
                             "exclusiveMinimum":0
@@ -611,6 +615,7 @@
                         "net_evaporator_capacity_fraction":{
                           "description":"Fraction of maximum net capacity at the same operating conditions.",
                           "type":"array",
+                          "minItems": 1,
                           "items":{
                             "type":"number",
                             "minimum":0,
@@ -630,6 +635,7 @@
                         "input_power":{
                           "description":"Total power input to the packaged chiller",
                           "type":"array",
+                          "minItems": 1,
                           "items":{
                             "type":["number","null"],
                             "exclusiveMinimum":0
@@ -640,6 +646,7 @@
                         "net_evaporator_capacity":{
                           "description":"Unit refrigeration capacity",
                           "type":"array",
+                          "minItems": 1,
                           "items":{
                             "type":["number","null"],
                             "minimum":0
@@ -650,6 +657,7 @@
                         "net_condenser_capacity":{
                           "description":"Condenser heat rejection",
                           "type":"array",
+                          "minItems": 1,
                           "items":{
                             "type":["number","null"],
                             "minimum":0
@@ -660,6 +668,7 @@
                         "evaporator_liquid_entering_temperature":{
                           "description":"Entering evaporator liquid temperature",
                           "type":"array",
+                          "minItems": 1,
                           "items":{
                             "type":["number","null"],
                             "exclusiveMinimum":0
@@ -669,6 +678,7 @@
                         "condenser_liquid_leaving_temperature":{
                           "description":"Leaving condenser liquid temperature",
                           "type":"array",
+                          "minItems": 1,
                           "items":{
                             "type":["number","null"],
                             "exclusiveMinimum":0
@@ -678,6 +688,7 @@
                         "evaporator_liquid_differential_pressure":{
                           "description":"Pressure drop across the evaporator",
                           "type":"array",
+                          "minItems": 1,
                           "items":{
                             "type":["number","null"],
                             "exclusiveMinimum":0
@@ -687,6 +698,7 @@
                         "condenser_liquid_differential_pressure":{
                           "description":"Pressure drop across the condenser",
                           "type":"array",
+                          "minItems": 1,
                           "items":{
                             "type":["number","null"],
                             "exclusiveMinimum":0
@@ -696,6 +708,7 @@
                         "oil_cooler_heat":{
                           "description":"Heat rejected by the chiller oil cooler (if separate stream crossing the control volume boundary)",
                           "type":"array",
+                          "minItems": 1,
                           "items":{
                             "type":["number","null"],
                             "minimum":0
@@ -706,6 +719,7 @@
                         "motor_controller_heat":{
                           "description":"Heat rejected by the motor control center cooling (if separate stream crossing the control volume boundary)",
                           "type":"array",
+                          "minItems": 1,
                           "items":{
                             "type":["number","null"],
                             "minimum":0
@@ -733,6 +747,7 @@
                         "chiller_environment_dry_bulb_temperature":{
                           "description":"Dry bulb temperature of the air in the environment of the chiller",
                           "type":"array",
+                          "minItems": 1,
                           "items":{
                             "type":"number",
                             "exclusiveMinimum":0
@@ -750,6 +765,7 @@
                         "input_power":{
                           "description":"Total power consumed by the chiller when not running. Value shall include all power sources and all auxiliary equipment provided with the chiller.",
                           "type":"array",
+                          "minItems": 1,
                           "items":{
                             "type":["number","null"],
                             "minimum":0

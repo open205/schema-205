@@ -71,6 +71,7 @@
                         "output_power":{
                           "description":"Power delivered to the motor",
                           "type":"array",
+                          "minItems": 1,
                           "items":{
                             "type":"number",
                             "minimum":0
@@ -88,6 +89,7 @@
                         "efficiency":{
                           "description":"Efficiency of drive",
                           "type":"array",
+                          "minItems": 1,
                           "items":{
                             "type":["number","null"],
                             "minimum":0,

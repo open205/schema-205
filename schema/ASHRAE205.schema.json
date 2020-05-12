@@ -150,7 +150,8 @@
       "properties":{
         "liquid_components": {
           "type":"array",
-          "items": {"$ref": "#/definitions/LiquidComponent" }
+          "items": {"$ref": "#/definitions/LiquidComponent" },
+          "minItems": 1
         },
         "concentration_type":{"$ref": "#/definitions/ConcentrationType" }
       }
