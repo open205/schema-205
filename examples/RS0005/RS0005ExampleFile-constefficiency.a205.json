@@ -16,7 +16,7 @@
                     "product_information": {
                         "manufacturer": "MotorsRUs",
                         "model_number": "1357",
-                        "input_voltage": 120,
+                        "input_voltage": 240,
                         "input_frequency": 60,
                         "number_of_poles": 4
                     }
@@ -45,15 +45,15 @@
                                         }
                                     },
                                     "performance": {
-                                        "maximum_power": 300,
-                                        "standby_power": 1,
+                                        "maximum_power": 10000,
+                                        "standby_power": 10,
                                         "cooling_method": "PASSIVE_COOLED",
                                         "performance_map": {
                                             "grid_variables": {
-                                                "output_power": [75]
+                                                "output_power": [4052, 8105]
                                             },
                                             "lookup_variables": {
-                                                "efficiency": [0.75]
+                                                "efficiency": [0.985, 0.985]
                                             }
                                         }
                                     }
@@ -63,11 +63,11 @@
                     },
                     "performance_map": {
                         "grid_variables": {
-                            "shaft_power": []
+                            "shaft_power": [3726, 7450]
                         },
                         "lookup_variables": {
-                                    "efficiency": [0.80],
-                                    "power_factor": [0.60]
+                                    "efficiency": [0.92, 0.92],
+                                    "power_factor": [0.90, 0.90]
                         }
                     }
                 }
