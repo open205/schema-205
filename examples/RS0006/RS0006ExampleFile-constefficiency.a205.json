@@ -11,25 +11,31 @@
         "disclaimer": "Example file - not for simulation",
         "notes": "This is a JSON version of the sample RS0006 file",
         "RS_instance": {
-                "description": {
-                    "product_information": {
-                        "manufacturer": "DrivesRUs",
-                        "model_number": "5791"
-                    }
-                },
-                "performance": {
-                    "maximum_power": 10000,
-                    "standby_power": 10,
-                    "cooling_method": "PASSIVE_COOLED",
-                    "performance_map": {
-                        "grid_variables": {
-                            "output_power": [4052, 8105]
-                        },
-                        "lookup_variables": {
-                            "efficiency": [0.985, 0.985]
-                        }
+            "description": {
+                "product_information": {
+                    "manufacturer": "DrivesRUs",
+                    "model_number": "5791"
+                }
+            },
+            "performance": {
+                "maximum_power": 10000,
+                "standby_power": 10,
+                "cooling_method": "PASSIVE_COOLED",
+                "performance_map": {
+                    "grid_variables": {
+                        "output_power": [
+                            4052,
+                            8105
+                        ]
+                    },
+                    "lookup_variables": {
+                        "efficiency": [
+                            0.985,
+                            0.985
+                        ]
                     }
                 }
+            }
         }
     }
 }
