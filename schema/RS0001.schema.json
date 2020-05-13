@@ -17,9 +17,6 @@
       "enum_text":["AHRI 550/590 2015","AHRI 551/591 2015","AHRI 550/590 2015 Addendum 1","AHRI 551/591 2015 Addendum 1","AHRI 550/590 2018","AHRI 551/591 2018"]
     }
   },
-  "0001Spec":{
-    "type":"object",
-    "properties":{
       "RS0001":{
           "type":"object",
           "properties" :{
@@ -789,8 +786,4 @@
           "required":["performance"],
           "additionalProperties":false
       }
-    },
-    "required":["RS0001"],
-    "additionalProperties": false
-  }
 }

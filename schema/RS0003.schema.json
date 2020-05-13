@@ -25,9 +25,6 @@
       "enum_text":["Coil","Furnace","Filter","Heat Exchanger","Electric Resistance Element","Other"]
     }
   },
-  "0003Spec":{
-    "type": "object",
-    "properties":{
       "RS0003":{
         "type":"object",
         "properties" :{
@@ -314,8 +311,4 @@
         "required":["performance"],
         "additionalProperties":false
       }
-    },
-    "required":["RS0003"],
-    "additionalProperties": false
-  }
 }

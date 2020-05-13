@@ -10,9 +10,6 @@
       "enum_text":["Staged","Dynamic"]
     }
   },
-  "0004Spec":{
-    "type": "object",
-    "properties":{
       "RS0004":{
           "type":"object",
           "properties" :{
@@ -232,8 +229,4 @@
           "required":["performance"],
           "additionalProperties":false
       }
-    },
-    "required":["RS0004"],
-    "additionalProperties": false
-  }
 }

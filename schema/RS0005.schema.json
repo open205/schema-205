@@ -3,9 +3,6 @@
   "title": "Motor",
   "description": "Schema for ASHRAE 205 annex RS0005: Motor",
 
-  "0005Spec":{
-    "type": "object",
-    "properties":{
       "RS0005":{
           "type":"object",
           "properties" :{
@@ -135,8 +132,4 @@
           "required":["performance"],
           "additionalProperties":false
       }
-    },
-    "required":["RS0005"],
-    "additionalProperties": false
-  }
 }

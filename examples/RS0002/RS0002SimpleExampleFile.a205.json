@@ -13,8 +13,6 @@
     "notes":"This is a simple example of a JSON file for RS0002 - this file should not be used for simulation",
     "RS_instance":
     {
-      "RS0002":
-      {
         "description":
         {
           "product_information":
@@ -43,8 +41,6 @@
               "notes":"This is a simple example of a JSON file for RS0002 - this file should not be used for simulation",
               "RS_instance":
               {
-                "RS0004":
-                {
                   "description":
                   {
                     "product_information":
@@ -91,12 +87,10 @@
                       }
                     }
                   }
-                }
               }
             }
           }
         }
-      }
     }
   }
 }

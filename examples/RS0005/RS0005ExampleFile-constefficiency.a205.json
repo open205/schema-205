@@ -11,7 +11,6 @@
         "disclaimer": "Example file - not for simulation",
         "notes": "This is a JSON version of the sample RS0005 file",
         "RS_instance": {
-            "RS0005": {
                 "description": {
                     "product_information": {
                         "manufacturer": "MotorsRUs",
@@ -37,7 +36,6 @@
                             "disclaimer": "Example file - not for simulation",
                             "notes": "This is a JSON version of the sample RS0006 file",
                             "RS_instance": {
-                                "RS0006": {
                                     "description": {
                                         "product_information": {
                                             "manufacturer": "DrivesRUs",
@@ -56,7 +54,6 @@
                                                 "efficiency": [0.985, 0.985]
                                             }
                                         }
-                                    }
                                 }
                             }
                         }
@@ -71,7 +68,6 @@
                         }
                     }
                 }
-            }
         }
     }
 }

@@ -19,9 +19,6 @@
       "enum_text":["2007","2015","IP/2019"]
     }
   },
-  "0002Spec":{
-    "type": "object",
-    "properties":{
       "RS0002":{
           "type":"object",
           "properties" :{
@@ -165,8 +162,4 @@
           "required":["performance"],
           "additionalProperties":false
       }
-    },
-    "required":["RS0002"],
-    "additionalProperties": false
-  }
 }
