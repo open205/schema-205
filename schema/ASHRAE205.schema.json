@@ -14,8 +14,7 @@
         },
         "schema_version": {
           "description": "ASHRAE 205 schema version",
-          "type": "string",
-          "pattern": "[0-9]+\\.[0-9]+\\.[0-9]+",
+          "$ref": "#/definitions/Version",
           "notes": "Identifies the version of the ASHRAE 205 JSON schema this representation complies with."
         },
         "RS_ID": {
@@ -29,14 +28,12 @@
         },
         "ID": {
           "description": "Unique equipment identifier",
-          "type": "string",
-          "pattern": "[0-9,a-f,A-F]{8}-[0-9,a-f,A-F]{4}-[0-9,a-f,A-F]{4}-[0-9,a-f,A-F]{4}-[0-9,a-f,A-F]{12}",
+          "$ref": "#/definitions/UUID",
           "notes": "Assigned by data publisher to identify specific equipment. ID shall remain unchanged for revised representations for the same equipment."
         },
         "data_timestamp": {
           "description": "Date of publication",
-          "type": "string",
-          "pattern": "[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}Z",
+          "$ref": "#/definitions/Timestamp",
           "notes": "Date/time of publication of this representation."
         },
         "data_version": {
@@ -90,6 +87,26 @@
         "RS_instance"
       ],
       "additionalProperties": false
+    },
+    "UUID": {
+      "type": "string",
+      "pattern": "[0-9,a-f,A-F]{8}-[0-9,a-f,A-F]{4}-[0-9,a-f,A-F]{4}-[0-9,a-f,A-F]{4}-[0-9,a-f,A-F]{12}"
+    },
+    "Date": {
+      "type": "string",
+      "pattern": "[0-9]{4}-[0-9]{2}-[0-9]{2}"
+    },
+    "Timestamp": {
+      "type": "string",
+      "pattern": "[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}Z"
+    },
+    "Version": {
+      "type": "string",
+      "pattern": "^(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)(?:-((?:0|[1-9][0-9]*|[0-9]*[a-zA-Z-][0-9a-zA-Z-]*)(?:\\.(?:0|[1-9][0-9]*|[0-9]*[a-zA-Z-][0-9a-zA-Z-]*))*))?(?:\\+([0-9a-zA-Z-]+(?:\\.[0-9a-zA-Z-]+)*))?$"
+    },
+    "Pattern": {
+      "type": "string",
+      "regex": true
     },
     "ASHRAE205Version": {
       "type": "string",

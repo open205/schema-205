@@ -82,7 +82,7 @@
         },
         "model_number": {
           "description": "Model number",
-          "type": "string",
+          "$ref": "ASHRAE205.schema.json#/definitions/Pattern",
           "note": "Pattern shall match all model numbers that can be represented by the representation"
         }
       },

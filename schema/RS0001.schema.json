@@ -88,7 +88,7 @@
         },
         "model_number": {
           "description": "Model number for this chiller",
-          "type": "string",
+          "$ref": "ASHRAE205.schema.json#/definitions/Pattern",
           "notes": "Pattern shall match all model numbers that can be represented by the representation"
         },
         "nominal_voltage": {
