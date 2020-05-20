@@ -190,14 +190,14 @@
             "notes": "Includes on-board controls and other power not otherwise included in the fan or dx system representations."
           },
           "fan_representation": {
-            "$ref": "ASHRAE205.schema.json#",
+            "$ref": "ASHRAE205.schema.json#definitions/ASHRAE205",
             "RS": "RS0003"
           },
           "fan_position": {
             "$ref": "#/definitions/FanPosition"
           },
           "DX_system_representation": {
-            "$ref": "ASHRAE205.schema.json#",
+            "$ref": "ASHRAE205.schema.json#definitions/ASHRAE205",
             "RS": "RS0004"
           }
         },

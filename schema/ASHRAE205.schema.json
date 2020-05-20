@@ -3,8 +3,7 @@
   "title": "ASHRAE 205",
   "description": "Base schema for ASHRAE 205 representations",
   "version": "0.1.0",
-  "type": "object",
-  "properties": {
+  "definitions": {
     "ASHRAE205": {
       "type": "object",
       "properties": {
@@ -106,10 +105,7 @@
         "RS_instance"
       ],
       "additionalProperties": false
-    }
-  },
-  "additionalProperties": false,
-  "definitions": {
+    },
     "RefrigerantType": {
       "description": "Type of refrigerant",
       "type": "string",
@@ -533,5 +529,6 @@
         }
       }
     }
-  }
+  },
+  "$ref": "ASHRAE205.schema.json#/definitions/ASHRAE205"
 }

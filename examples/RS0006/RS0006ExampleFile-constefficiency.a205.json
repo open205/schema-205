@@ -1,39 +1,37 @@
 {
-    "ASHRAE205": {
-        "standard_version": "PPR2",
-        "schema_version": "0.1.0",
-        "RS_ID": "RS0006",
-        "description": "Electronic Motor Drive",
-        "ID": "bcf8b859-67a3-42f4-8f8d-4e57af1ccf22",
-        "data_timestamp": "2020-04-08T00:00Z",
-        "data_version": 1,
-        "data_source": "MotorSelect",
-        "disclaimer": "Example file - not for simulation",
-        "notes": "This is a JSON version of the sample RS0006 file",
-        "RS_instance": {
-            "description": {
-                "product_information": {
-                    "manufacturer": "DrivesRUs",
-                    "model_number": "5791"
-                }
-            },
-            "performance": {
-                "maximum_power": 10000,
-                "standby_power": 10,
-                "cooling_method": "PASSIVE_COOLED",
-                "performance_map": {
-                    "grid_variables": {
-                        "output_power": [
-                            4052,
-                            8105
-                        ]
-                    },
-                    "lookup_variables": {
-                        "efficiency": [
-                            0.985,
-                            0.985
-                        ]
-                    }
+    "standard_version": "PPR2",
+    "schema_version": "0.1.0",
+    "RS_ID": "RS0006",
+    "description": "Electronic Motor Drive",
+    "ID": "bcf8b859-67a3-42f4-8f8d-4e57af1ccf22",
+    "data_timestamp": "2020-04-08T00:00Z",
+    "data_version": 1,
+    "data_source": "MotorSelect",
+    "disclaimer": "Example file - not for simulation",
+    "notes": "This is a JSON version of the sample RS0006 file",
+    "RS_instance": {
+        "description": {
+            "product_information": {
+                "manufacturer": "DrivesRUs",
+                "model_number": "5791"
+            }
+        },
+        "performance": {
+            "maximum_power": 10000,
+            "standby_power": 10,
+            "cooling_method": "PASSIVE_COOLED",
+            "performance_map": {
+                "grid_variables": {
+                    "output_power": [
+                        4052,
+                        8105
+                    ]
+                },
+                "lookup_variables": {
+                    "efficiency": [
+                        0.985,
+                        0.985
+                    ]
                 }
             }
         }

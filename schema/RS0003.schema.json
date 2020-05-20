@@ -209,7 +209,7 @@
           "motor_representation": {
             "description": "The corresponding Standard 205 motor representation",
             "notes": "Included if the fan is packaged with a motor. If this is not provided, the fan input power shall represent mechanical shaft power. If this is provided, the input power shall represent either mechanical shaft power or electrical power depending on the data provided by the motor representation.",
-            "$ref": "ASHRAE205.schema.json#",
+            "$ref": "ASHRAE205.schema.json#definitions/ASHRAE205",
             "RS": "RS0005"
           },
           "performance_map": {
