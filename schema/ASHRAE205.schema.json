@@ -9,14 +9,8 @@
       "properties": {
         "standard_version": {
           "description": "ASHRAE 205 standard version",
-          "type": "string",
-          "enum": [
-            "PPR2"
-          ],
-          "enum_text": [
-            "ASHRAE 205 -- 2020 Publication Public Review 2 (Unpublished)"
-          ],
-          "notes": "Identifies the version of the ASHRAE 205 Standard this representation complies with."
+          "notes": "Identifies the version of the ASHRAE 205 Standard this representation complies with.",
+          "$ref": "#/definitions/ASHRAE205Version"
         },
         "schema_version": {
           "description": "ASHRAE 205 schema version",
@@ -26,17 +20,8 @@
         },
         "RS_ID": {
           "description": "Representation specification identifier",
-          "type": "string",
-          "enum": [
-            "RS0001",
-            "RS0002",
-            "RS0003",
-            "RS0004",
-            "RS0005",
-            "RS0006"
-          ],
-          "enum_text": [],
-          "notes": "Identifies the representation specification used to generate this representation"
+          "notes": "Identifies the representation specification used to generate this representation",
+          "$ref": "#/definitions/RS_ID"
         },
         "description": {
           "description": "Free-form description of equipment (suitable for display)",
@@ -74,10 +59,10 @@
         "RS_instance": {
           "oneOf": [
             {
-              "$ref": "RS0001.schema.json#/RS0001"
+              "$ref": "RS0001.schema.json#/definitions/RS0001"
             },
             {
-              "$ref": "RS0002.schema.json#/RS0002"
+              "$ref": "RS0002.schema.json#/definitions/RS0002"
             },
             {
               "$ref": "RS0003.schema.json#/RS0003"
@@ -105,6 +90,34 @@
         "RS_instance"
       ],
       "additionalProperties": false
+    },
+    "ASHRAE205Version": {
+      "type": "string",
+      "enum": [
+        "PPR2"
+      ],
+      "enum_text": [
+        "ASHRAE 205 -- 2020 Publication Public Review 2 (Unpublished)"
+      ]
+    },
+    "RS_ID": {
+      "type": "string",
+      "enum": [
+        "RS0001",
+        "RS0002",
+        "RS0003",
+        "RS0004",
+        "RS0005",
+        "RS0006"
+      ],
+      "descriptions": [
+        "Liquid-Cooled Chiller",
+        "Unitary Cooling Air-Conditioning Equipment",
+        "Fan Assembly",
+        "Air-to-Air Direct Expansion Refrigerant Coil System",
+        "Motor",
+        "Electronic Motor Drive"
+      ]
     },
     "RefrigerantType": {
       "description": "Type of refrigerant",
@@ -498,7 +511,6 @@
       ]
     },
     "LiquidComponent": {
-      "description": "A constituent liquid component within the liquid mixture",
       "type": "object",
       "properties": {
         "liquid_constituent": {
@@ -510,11 +522,9 @@
           "maximum": 1
         }
       },
-      "additionalItems": false,
-      "minItems": 1
+      "additionalProperties": false
     },
     "LiquidMixture": {
-      "description": "Type of liquid made up of constituent liquid components",
       "type": "object",
       "properties": {
         "liquid_components": {
@@ -527,7 +537,8 @@
         "concentration_type": {
           "$ref": "#/definitions/ConcentrationType"
         }
-      }
+      },
+      "additionalProperties": false
     }
   },
   "$ref": "ASHRAE205.schema.json#/definitions/ASHRAE205"
