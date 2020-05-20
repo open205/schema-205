@@ -510,20 +510,6 @@
         "By Mass"
       ]
     },
-    "LiquidComponent": {
-      "type": "object",
-      "properties": {
-        "liquid_constituent": {
-          "$ref": "#/definitions/LiquidConstituent"
-        },
-        "concentration": {
-          "type": "number",
-          "minimum": 0,
-          "maximum": 1
-        }
-      },
-      "additionalProperties": false
-    },
     "LiquidMixture": {
       "type": "object",
       "properties": {
@@ -538,6 +524,27 @@
           "$ref": "#/definitions/ConcentrationType"
         }
       },
+      "required": [
+        "liquid_components",
+        "concentration_type"
+      ],
+      "additionalProperties": false
+    },
+    "LiquidComponent": {
+      "type": "object",
+      "properties": {
+        "liquid_constituent": {
+          "$ref": "#/definitions/LiquidConstituent"
+        },
+        "concentration": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        }
+      },
+      "required": [
+        "liquid_constituent"
+      ],
       "additionalProperties": false
     }
   },
