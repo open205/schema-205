@@ -65,7 +65,7 @@
               "$ref": "RS0003.schema.json#/definitions/RS0003"
             },
             {
-              "$ref": "RS0004.schema.json#/RS0004"
+              "$ref": "RS0004.schema.json#/definitions/RS0004"
             },
             {
               "$ref": "RS0005.schema.json#/RS0005"
