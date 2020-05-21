@@ -14,125 +14,156 @@
         "Passive Cooled",
         "Active Air Cooled",
         "Active Liquid Cooled"
+      ],
+      "descriptions": [
+        "Drive is cooled using natural air convection within the surrounding environment",
+        "Drive is cooled using forced air convection within the surrounding environment",
+        "Drive is cooled using forced liquid convection, transferring heat to the liquid"
+      ],
+      "notes": [
+        "All drive efficiency losses are assumed to be added as heat to the surrounding environment.",
+        "Electrical power required for the active cooling system shall be included in the efficiency of the drive. All drive efficiency losses are assumed to be added as heat to the surrounding environment.",
+        "Any liquid pumping power shall be modeled external to the drive by the application software. All drive efficiency losses are assumed to be added as heat to the liquid stream."
       ]
-    }
-  },
-  "RS0006": {
-    "type": "object",
-    "properties": {
-      "description": {
-        "type": "object",
-        "properties": {
-          "product_information": {
-            "type": "object",
-            "properties": {
-              "manufacturer": {
-                "description": "Name of the manufacturer",
-                "type": "string"
-              },
-              "model_number": {
-                "description": "Model number",
-                "type": "string",
-                "note": "Pattern shall match all model numbers that can be represented by the *representation*"
-              }
-            },
-            "required": [
-              "manufacturer",
-              "model_number"
-            ],
-            "additionalProperties": false
-          }
-        },
-        "additionalProperties": false
-      },
-      "performance": {
-        "type": "object",
-        "properties": {
-          "maximum_power": {
-            "description": "Maximum power draw of the drive",
-            "type": "number",
-            "units": "W",
-            "minimum": 0
-          },
-          "standby_power": {
-            "description": "Power draw when the motor is not operating",
-            "type": "number",
-            "units": "W",
-            "minimum": 0
-          },
-          "cooling_method": {
-            "description": "Method used to cool the electronic drive.",
-            "$ref": "#/definitions/CoolingMethod"
-          },
-          "performance_map": {
-            "description": "Data group describing drive performance when operating",
-            "type": "object",
-            "properties": {
-              "grid_variables": {
-                "description": "Data group describing grid variables for drive performance",
-                "type": "object",
-                "properties": {
-                  "output_power": {
-                    "description": "Power delivered to the motor",
-                    "type": "array",
-                    "minItems": 1,
-                    "items": {
-                      "type": "number",
-                      "minimum": 0
-                    },
-                    "units": "W"
-                  }
-                },
-                "required": [
-                  "output_power"
-                ],
-                "additionalProperties": false
-              },
-              "lookup_variables": {
-                "description": "Data group describing lookup variables for drive performance",
-                "type": "object",
-                "properties": {
-                  "efficiency": {
-                    "description": "Efficiency of drive",
-                    "type": "array",
-                    "minItems": 1,
-                    "items": {
-                      "type": [
-                        "number",
-                        "null"
-                      ],
-                      "minimum": 0,
-                      "maximum": 1
-                    },
-                    "units": "-",
-                    "notes": "Defined as the ratio of electrical output power (to the motor) to electrical input power (into the drive). Input power shall include any power required to provide active air cooling for the drive."
-                  }
-                },
-                "required": [
-                  "efficiency"
-                ],
-                "additionalProperties": false
-              }
-            },
-            "required": [
-              "grid_variables",
-              "lookup_variables"
-            ],
-            "additionalProperties": false
-          }
-        },
-        "required": [
-          "maximum_power",
-          "standby_power",
-          "cooling_method",
-          "performance_map"
-        ],
-        "additionalProperties": false
-      }
     },
-    "required": [
-      "performance"
-    ],
-    "additionalProperties": false
+    "RS0006": {
+      "type": "object",
+      "properties": {
+        "description": {
+          "description": "Data group describing product and rating information",
+          "$ref": "#/definitions/Description"
+        },
+        "performance": {
+          "description": "Data group containing performance information",
+          "$ref": "#/definitions/Performance"
+        }
+      },
+      "required": [
+        "performance"
+      ],
+      "additionalProperties": false
+    },
+    "Description": {
+      "type": "object",
+      "properties": {
+        "product_information": {
+          "description": "Data group describing product information",
+          "$ref": "#/definitions/ProductInformation"
+        }
+      },
+      "additionalProperties": false
+    },
+    "ProductInformation": {
+      "type": "object",
+      "properties": {
+        "manufacturer": {
+          "description": "Name of the manufacturer",
+          "type": "string"
+        },
+        "model_number": {
+          "description": "Model number",
+          "$ref": "ASHRAE205.schema.json#/definitions/Pattern",
+          "note": "Pattern shall match all model numbers that can be represented by the *representation*"
+        }
+      },
+      "required": [
+        "manufacturer",
+        "model_number"
+      ],
+      "additionalProperties": false
+    },
+    "Performance": {
+      "type": "object",
+      "properties": {
+        "maximum_power": {
+          "description": "Maximum power draw of the drive",
+          "type": "number",
+          "units": "W",
+          "minimum": 0
+        },
+        "standby_power": {
+          "description": "Power draw when the motor is not operating",
+          "type": "number",
+          "units": "W",
+          "minimum": 0
+        },
+        "cooling_method": {
+          "description": "Method used to cool the electronic drive.",
+          "$ref": "#/definitions/CoolingMethod"
+        },
+        "performance_map": {
+          "description": "Data group describing drive performance when operating",
+          "$ref": "#/definitions/PerformanceMap"
+        }
+      },
+      "required": [
+        "maximum_power",
+        "standby_power",
+        "cooling_method",
+        "performance_map"
+      ],
+      "additionalProperties": false
+    },
+    "PerformanceMap": {
+      "type": "object",
+      "properties": {
+        "grid_variables": {
+          "description": "Data group describing grid variables for drive performance",
+          "$ref": "#/definitions/GridVariables"
+        },
+        "lookup_variables": {
+          "description": "Data group describing lookup variables for drive performance",
+          "$ref": "#/definitions/LookupVariables"
+        }
+      },
+      "required": [
+        "grid_variables",
+        "lookup_variables"
+      ],
+      "additionalProperties": false
+    },
+    "GridVariables": {
+      "type": "object",
+      "properties": {
+        "output_power": {
+          "description": "Power delivered to the motor",
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "number",
+            "minimum": 0
+          },
+          "units": "W"
+        }
+      },
+      "required": [
+        "output_power"
+      ],
+      "additionalProperties": false
+    },
+    "LookupVariables": {
+      "type": "object",
+      "properties": {
+        "efficiency": {
+          "description": "Efficiency of drive",
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": [
+              "number",
+              "null"
+            ],
+            "minimum": 0,
+            "maximum": 1
+          },
+          "units": "-",
+          "notes": "Defined as the ratio of electrical output power (to the motor) to electrical input power (into the drive). Input power shall include any power required to provide active air cooling for the drive."
+        }
+      },
+      "required": [
+        "efficiency"
+      ],
+      "additionalProperties": false
+    }
   }
 }
