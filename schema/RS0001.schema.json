@@ -183,11 +183,9 @@
         "part_load_rating_points": {
           "description": "The four measured data points used to calculate the part load rating value",
           "type": "array",
-          "items": [
-            {
-              "$ref": "#/definitions/PartLoadRatingPoint550590"
-            }
-          ],
+          "items": {
+            "$ref": "#/definitions/PartLoadRatingPoint550590"
+          },
           "notes": "The measured data for all 4 points used to calculate the IPLV or NPLV rating point shall be given.",
           "minItems": 4,
           "maxItems": 4,
@@ -441,11 +439,9 @@
         "part_load_rating_points": {
           "description": "The four measured data points used to calculate the part load rating value",
           "type": "array",
-          "items": [
-            {
-              "$ref": "#/definitions/PartLoadRatingPoint551591"
-            }
-          ],
+          "items": {
+            "$ref": "#/definitions/PartLoadRatingPoint551591"
+          },
           "notes": "The measured data for all 4 points used to calculate the IPLV or NPLV rating point shall be given.",
           "minItems": 4,
           "maxItems": 4,
