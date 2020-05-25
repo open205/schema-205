@@ -23,11 +23,11 @@
       "properties": {
         "description": {
           "description": "Data group describing product and rating information",
-          "$ref": "#/definitions/Description"
+          "$ref": "RS0004.schema.json#/definitions/Description"
         },
         "performance": {
           "description": "Data group containing performance information",
-          "$ref": "#/definitions/Performance"
+          "$ref": "RS0004.schema.json#/definitions/Performance"
         }
       },
       "required": [
@@ -40,7 +40,7 @@
       "properties": {
         "product_information": {
           "description": "Data group describing product information",
-          "$ref": "#/definitions/ProductInformation"
+          "$ref": "RS0004.schema.json#/definitions/ProductInformation"
         }
       },
       "additionalProperties": false
@@ -86,7 +86,7 @@
       "properties": {
         "compressor_control_method": {
           "description": "Method used to control different speeds of the compressor",
-          "$ref": "#/definitions/CompressorControlMethod"
+          "$ref": "RS0004.schema.json#/definitions/CompressorControlMethod"
         },
         "cycling_degradation_coefficient": {
           "description": "Cycling degradation coefficient (CD) as described in AHRI 210/240",
@@ -97,11 +97,11 @@
         },
         "performance_map_cooling": {
           "description": "Data group describing cooling performance over a range of conditions",
-          "$ref": "#/definitions/PerformanceMapCooling"
+          "$ref": "RS0004.schema.json#/definitions/PerformanceMapCooling"
         },
         "performance_map_standby": {
           "description": "Data group describing standby performance",
-          "$ref": "#/definitions/PerformanceMapStandby"
+          "$ref": "RS0004.schema.json#/definitions/PerformanceMapStandby"
         }
       },
       "required": [
@@ -117,11 +117,11 @@
       "properties": {
         "grid_variables": {
           "description": "Data group defining the grid variables for cooling performance",
-          "$ref": "#/definitions/GridVariablesCooling"
+          "$ref": "RS0004.schema.json#/definitions/GridVariablesCooling"
         },
         "lookup_variables": {
           "description": "Data group defining the lookup variables for cooling performance",
-          "$ref": "#/definitions/LookupVariablesCooling"
+          "$ref": "RS0004.schema.json#/definitions/LookupVariablesCooling"
         }
       },
       "required": [
@@ -264,11 +264,11 @@
       "properties": {
         "grid_variables": {
           "description": "Data group defining the grid variables for standby performance",
-          "$ref": "#/definitions/GridVariablesStandby"
+          "$ref": "RS0004.schema.json#/definitions/GridVariablesStandby"
         },
         "lookup_variables": {
           "description": "Data group defining the grid variables for standby performance",
-          "$ref": "#/definitions/LookupVariablesStandby"
+          "$ref": "RS0004.schema.json#/definitions/LookupVariablesStandby"
         }
       },
       "required": [

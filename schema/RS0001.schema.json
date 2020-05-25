@@ -44,11 +44,11 @@
       "properties": {
         "description": {
           "description": "Data group describing product and rating information",
-          "$ref": "#/definitions/Description"
+          "$ref": "RS0001.schema.json#/definitions/Description"
         },
         "performance": {
           "description": "Data group containing performance information",
-          "$ref": "#/definitions/Performance"
+          "$ref": "RS0001.schema.json#/definitions/Performance"
         }
       },
       "required": [
@@ -61,15 +61,15 @@
       "properties": {
         "product_information": {
           "description": "Data group describing product information",
-          "$ref": "#/definitions/ProductInformation"
+          "$ref": "RS0001.schema.json#/definitions/ProductInformation"
         },
         "rating_AHRI_550_590": {
           "description": "Data group containing information relevant to products rated under AHRI 550/590",
-          "$ref": "#/definitions/RatingAHRI550590"
+          "$ref": "RS0001.schema.json#/definitions/RatingAHRI550590"
         },
         "rating_AHRI_551_591": {
           "description": "Data group containing information relevant to products rated under AHRI 551/591",
-          "$ref": "#/definitions/RatingAHRI551591"
+          "$ref": "RS0001.schema.json#/definitions/RatingAHRI551591"
         }
       },
       "additionalProperties": false
@@ -117,7 +117,7 @@
         },
         "speed_control_type": {
           "description": "Type of electrical motor drive",
-          "$ref": "#/definitions/SpeedControlType",
+          "$ref": "RS0001.schema.json#/definitions/SpeedControlType",
           "notes": "See RS0001.3.1 Local Enumerations"
         },
         "liquid_data_source": {
@@ -151,7 +151,7 @@
         },
         "standard_rating_version": {
           "description": "Version",
-          "$ref": "#/definitions/StandardRatingVersion"
+          "$ref": "RS0001.schema.json#/definitions/StandardRatingVersion"
         },
         "net_refrigerating_capacity": {
           "description": "Unit rated refrigeration capacity",
@@ -184,7 +184,7 @@
           "description": "The four measured data points used to calculate the part load rating value",
           "type": "array",
           "items": {
-            "$ref": "#/definitions/PartLoadRatingPoint550590"
+            "$ref": "RS0001.schema.json#/definitions/PartLoadRatingPoint550590"
           },
           "notes": "The measured data for all 4 points used to calculate the IPLV or NPLV rating point shall be given.",
           "minItems": 4,
@@ -407,7 +407,7 @@
         },
         "standard_rating_version": {
           "description": "Version",
-          "$ref": "#/definitions/StandardRatingVersion"
+          "$ref": "RS0001.schema.json#/definitions/StandardRatingVersion"
         },
         "net_refrigerating_capacity": {
           "description": "Unit rated refrigeration capacity",
@@ -440,7 +440,7 @@
           "description": "The four measured data points used to calculate the part load rating value",
           "type": "array",
           "items": {
-            "$ref": "#/definitions/PartLoadRatingPoint551591"
+            "$ref": "RS0001.schema.json#/definitions/PartLoadRatingPoint551591"
           },
           "notes": "The measured data for all 4 points used to calculate the IPLV or NPLV rating point shall be given.",
           "minItems": 4,
@@ -698,11 +698,11 @@
         },
         "performance_map_cooling": {
           "description": "Data group describing cooling performance over a range of conditions",
-          "$ref": "#/definitions/PerformanceMapCooling"
+          "$ref": "RS0001.schema.json#/definitions/PerformanceMapCooling"
         },
         "performance_map_standby": {
           "description": "Data group describing standby performance",
-          "$ref": "#/definitions/PerformanceMapStandby"
+          "$ref": "RS0001.schema.json#/definitions/PerformanceMapStandby"
         }
       },
       "required": [
@@ -721,11 +721,11 @@
       "properties": {
         "grid_variables": {
           "description": "Data group defining the grid variables for cooling performance",
-          "$ref": "#/definitions/GridVariablesCooling"
+          "$ref": "RS0001.schema.json#/definitions/GridVariablesCooling"
         },
         "lookup_variables": {
           "description": "Data group defining the lookup variables for cooling performance",
-          "$ref": "#/definitions/LookupVariablesCooling"
+          "$ref": "RS0001.schema.json#/definitions/LookupVariablesCooling"
         }
       },
       "required": [
@@ -943,11 +943,11 @@
       "properties": {
         "grid_variables": {
           "description": "Data group defining the grid variables for standby performance",
-          "$ref": "#/definitions/GridVariablesStandby"
+          "$ref": "RS0001.schema.json#/definitions/GridVariablesStandby"
         },
         "lookup_variables": {
           "description": "Data group defining the lookup variables for standby performance",
-          "$ref": "#/definitions/LookupVariablesStandby"
+          "$ref": "RS0001.schema.json#/definitions/LookupVariablesStandby"
         }
       },
       "required": [
