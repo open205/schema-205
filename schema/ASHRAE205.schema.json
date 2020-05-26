@@ -54,6 +54,7 @@
           "type": "string"
         },
         "RS_instance": {
+          "description": "*Representation Specification* Data Group",
           "oneOf": [
             {
               "$ref": "RS0001.schema.json#/definitions/RS0001"
@@ -76,6 +77,7 @@
           ]
         }
       },
+      "notes": "Data Group defined by specific *representation specification*. E.g., 'RS0001'.",
       "required": [
         "standard_version",
         "schema_version",
