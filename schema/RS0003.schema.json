@@ -286,6 +286,7 @@
             "type": "number",
             "minimum": 0
           },
+          "minItems": 2,
           "units": "m3/s"
         },
         "static_pressure_difference": {
@@ -295,6 +296,7 @@
             "type": "number",
             "minimum": 0
           },
+          "minItems": 2,
           "units": "Pa"
         }
       },
