@@ -108,11 +108,11 @@
       "properties": {
         "description": {
           "description": "Data group describing product and rating information",
-          "$ref": "#/definitions/Description"
+          "$ref": "RS0003.schema.json#/definitions/Description"
         },
         "performance": {
           "description": "Data group containing performance information",
-          "$ref": "#/definitions/Performance"
+          "$ref": "RS0003.schema.json#/definitions/Performance"
         }
       },
       "required": [
@@ -125,13 +125,13 @@
       "properties": {
         "product_information": {
           "description": "Data group describing product information",
-          "$ref": "#/definitions/ProductInformation"
+          "$ref": "RS0003.schema.json#/definitions/ProductInformation"
         },
         "assembly_components": {
           "description": "An array of components included in the fan assembly air stream",
           "type": "array",
           "items": {
-            "$ref": "#/definitions/AssemblyComponent"
+            "$ref": "RS0003.schema.json#/definitions/AssemblyComponent"
           },
           "minItems": 1
         }
@@ -155,7 +155,7 @@
           "notes": "If true, the performance data reflects the static pressure difference across the enclosure"
         },
         "impeller_type": {
-          "$ref": "#/definitions/ImpellerType"
+          "$ref": "RS0003.schema.json#/definitions/ImpellerType"
         },
         "has_belt_drive": {
           "description": "The fan impeller is driven by a belt and pulley system",
@@ -178,7 +178,7 @@
       "properties": {
         "component_type": {
           "description": "Type of component",
-          "$ref": "#/definitions/ComponentType"
+          "$ref": "RS0003.schema.json#/definitions/ComponentType"
         },
         "component_description": {
           "description": "Informative description of the component",
@@ -235,15 +235,15 @@
         },
         "stability_curve": {
           "description": "A description of the stability area for system selection",
-          "$ref": "#/definitions/SystemCurve"
+          "$ref": "RS0003.schema.json#/definitions/SystemCurve"
         },
         "performance_map_type": {
           "description": "Type of performance map (discrete or continuous)",
-          "$ref": "#/definitions/PerformanceMapType"
+          "$ref": "RS0003.schema.json#/definitions/PerformanceMapType"
         },
         "speed_control_type": {
           "description": "Type of fan impeller speed control installed with the fan assembly",
-          "$ref": "#/definitions/SpeedControlType"
+          "$ref": "RS0003.schema.json#/definitions/SpeedControlType"
         },
         "motor_representation": {
           "description": "The corresponding Standard 205 motor representation",
@@ -255,10 +255,10 @@
           "description": "Data group describing fan performance when operating",
           "oneOf": [
             {
-              "$ref": "#/definitions/PerformanceMapContinuous"
+              "$ref": "RS0003.schema.json#/definitions/PerformanceMapContinuous"
             },
             {
-              "$ref": "#/definitions/PerformanceMapDiscrete"
+              "$ref": "RS0003.schema.json#/definitions/PerformanceMapDiscrete"
             }
           ],
           "notes": "The performance map data group should reflect the type and operation of the fan.\n\nPerformanceMapContinuous describes fan performance in terms of air flow, static pressure, impeller speed, and fan electrical or shaft power.\n\nPerformanceMapDiscrete describes fan performance in terms of speed setting, static pressure, air flow, and power."
@@ -286,6 +286,7 @@
             "type": "number",
             "minimum": 0
           },
+          "minItems": 2,
           "units": "m3/s"
         },
         "static_pressure_difference": {
@@ -295,6 +296,7 @@
             "type": "number",
             "minimum": 0
           },
+          "minItems": 2,
           "units": "Pa"
         }
       },
@@ -310,11 +312,11 @@
       "properties": {
         "grid_variables": {
           "description": "Data group describing grid variables for continuous fan performance",
-          "$ref": "#/definitions/GridVariablesContinuous"
+          "$ref": "RS0003.schema.json#/definitions/GridVariablesContinuous"
         },
         "lookup_variables": {
           "description": "Data group describing lookup variables for continuous fan performance",
-          "$ref": "#/definitions/LookupVariablesContinuous"
+          "$ref": "RS0003.schema.json#/definitions/LookupVariablesContinuous"
         }
       },
       "required": [
@@ -399,11 +401,11 @@
       "properties": {
         "grid_variables": {
           "description": "Data group describing grid variables for discrete fan performance",
-          "$ref": "#/definitions/GridVariablesDiscrete"
+          "$ref": "RS0003.schema.json#/definitions/GridVariablesDiscrete"
         },
         "lookup_variables": {
           "discription": "Data group describing lookup variables for discrete fan performance",
-          "$ref": "#/definitions/LookupVariablesDiscrete"
+          "$ref": "RS0003.schema.json#/definitions/LookupVariablesDiscrete"
         }
       },
       "required": [

@@ -43,11 +43,11 @@
       "properties": {
         "description": {
           "description": "Data group describing product and rating information",
-          "$ref": "#/definitions/Description"
+          "$ref": "RS0002.schema.json#/definitions/Description"
         },
         "performance": {
           "description": "Data group containing performance information",
-          "$ref": "#/definitions/Performance"
+          "$ref": "RS0002.schema.json#/definitions/Performance"
         }
       },
       "required": [
@@ -60,15 +60,15 @@
       "properties": {
         "product_information": {
           "description": "Data group describing product information",
-          "$ref": "#/definitions/ProductInformation"
+          "$ref": "RS0002.schema.json#/definitions/ProductInformation"
         },
         "rating_AHRI_210_240": {
           "description": "Data group containing information relevant to products rated under AHRI 210/240",
-          "$ref": "#/definitions/RatingAHRI210240"
+          "$ref": "RS0002.schema.json#/definitions/RatingAHRI210240"
         },
         "rating_AHRI_340_360": {
           "description": "Data group containing information relevant to products rated under AHRI 340/360",
-          "$ref": "#/definitions/RatingAHRI340360"
+          "$ref": "RS0002.schema.json#/definitions/RatingAHRI340360"
         }
       },
       "additionalProperties": false
@@ -101,7 +101,7 @@
         },
         "test_standard_year": {
           "description": "Name and version of the AHRI test standard",
-          "$ref": "#/definitions/AHRI210240TestStandardYear"
+          "$ref": "RS0002.schema.json#/definitions/AHRI210240TestStandardYear"
         },
         "manufacturer_data_source_version": {
           "description": "Version of the software used to generate the AHRI rating and the performance maps",
@@ -160,7 +160,7 @@
         },
         "test_standard_year": {
           "description": "Name and version of the AHRI test standard",
-          "$ref": "#/definitions/AHRI340360TestStandardYear"
+          "$ref": "RS0002.schema.json#/definitions/AHRI340360TestStandardYear"
         },
         "manufacturer_data_source_version": {
           "description": "Version of the software used to generate the AHRI rating and the performance maps",
@@ -228,7 +228,7 @@
         },
         "fan_position": {
           "description": "Position of the fan relative to the indoor coil",
-          "$ref": "#/definitions/FanPosition"
+          "$ref": "RS0002.schema.json#/definitions/FanPosition"
         },
         "DX_system_representation": {
           "description": "The corresponding Standard 205 direct expansion coil system representation",

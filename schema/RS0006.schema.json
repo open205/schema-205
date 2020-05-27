@@ -31,11 +31,11 @@
       "properties": {
         "description": {
           "description": "Data group describing product and rating information",
-          "$ref": "#/definitions/Description"
+          "$ref": "RS0006.schema.json#/definitions/Description"
         },
         "performance": {
           "description": "Data group containing performance information",
-          "$ref": "#/definitions/Performance"
+          "$ref": "RS0006.schema.json#/definitions/Performance"
         }
       },
       "required": [
@@ -48,7 +48,7 @@
       "properties": {
         "product_information": {
           "description": "Data group describing product information",
-          "$ref": "#/definitions/ProductInformation"
+          "$ref": "RS0006.schema.json#/definitions/ProductInformation"
         }
       },
       "additionalProperties": false
@@ -89,11 +89,11 @@
         },
         "cooling_method": {
           "description": "Method used to cool the electronic drive.",
-          "$ref": "#/definitions/CoolingMethod"
+          "$ref": "RS0006.schema.json#/definitions/CoolingMethod"
         },
         "performance_map": {
           "description": "Data group describing drive performance when operating",
-          "$ref": "#/definitions/PerformanceMap"
+          "$ref": "RS0006.schema.json#/definitions/PerformanceMap"
         }
       },
       "required": [
@@ -109,11 +109,11 @@
       "properties": {
         "grid_variables": {
           "description": "Data group describing grid variables for drive performance",
-          "$ref": "#/definitions/GridVariables"
+          "$ref": "RS0006.schema.json#/definitions/GridVariables"
         },
         "lookup_variables": {
           "description": "Data group describing lookup variables for drive performance",
-          "$ref": "#/definitions/LookupVariables"
+          "$ref": "RS0006.schema.json#/definitions/LookupVariables"
         }
       },
       "required": [
