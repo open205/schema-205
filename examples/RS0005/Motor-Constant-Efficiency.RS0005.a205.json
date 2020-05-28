@@ -2,13 +2,13 @@
     "standard_version": "PPR2",
     "schema_version": "0.1.0",
     "RS_ID": "RS0005",
-    "description": "Electric Motor",
+    "description": "Electric Motor with Constant Efficiency",
     "ID": "bcf8b859-67a3-42f4-8f8d-4e57af1ccf22",
     "data_timestamp": "2020-04-08T00:00Z",
     "data_version": 1,
-    "data_source": "MotorSelect",
-    "disclaimer": "Example file - not for simulation",
-    "notes": "This is a JSON version of the sample RS0005 file",
+    "data_source": "Committee",
+    "disclaimer": "Example data not to be used for simulation",
+    "notes": "An example representation that applies a constant efficiency of 0.92",
     "RS_instance": {
         "description": {
             "product_information": {
@@ -26,13 +26,13 @@
                 "standard_version": "PPR2",
                 "schema_version": "0.1.0",
                 "RS_ID": "RS0006",
-                "description": "Electronic Motor Drive",
+                "description": "Electronic Motor Drive with Constant Efficiency",
                 "ID": "bcf8b859-67a3-42f4-8f8d-4e57af1ccf22",
                 "data_timestamp": "2020-04-08T00:00Z",
                 "data_version": 1,
-                "data_source": "MotorSelect",
-                "disclaimer": "Example file - not for simulation",
-                "notes": "This is a JSON version of the sample RS0006 file",
+                "data_source": "Committee",
+                "disclaimer": "Example data not to be used for simulation",
+                "notes": "An example representation that applies a constant efficiency of 0.985",
                 "RS_instance": {
                     "description": {
                         "product_information": {
