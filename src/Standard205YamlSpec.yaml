@@ -1,0 +1,21 @@
+#Enumeration
+Name_of_Enumeration:
+  Type: Enumeration
+  Items:
+    -Item_1:
+      Definition: "The definition of the item"
+      Name: "The human readable name of the item"
+    -Item_2:
+      Definition: "The definition of the item"
+      Name: "The human readable name of the item"
+#Data Group
+Name_of_Date_Group:
+  Type: DataGroup
+  Elements:
+    -Name_1:
+      Description: "The description of the data element"
+      DataType: "The type of data element"
+      Units: "The units for the data element"
+      Range: "The acceptable range for the data element (<,>,<=,>=)"
+      Required: "Whether the data element is required (True/False)"
+      Notes: "Any notes needed for the data element"
