@@ -1,0 +1,75 @@
+---
+# ASHRAE205.schema.yaml
+# The purpose of this "open205 schema" is to provide a single source generator format from which 
+# all open205 standard materials, both normative and informative, will be created.
+
+# YAML single-source files will be created in accordance with the open205 schema.
+definitions:
+  ASHRAE205:
+    type: DataGroup
+    DataElements:
+      standard_version:
+        type: DataElement
+        description: "ASHRAE 205 standard version"
+        notes: "Identifies the version of the ASHRAE 205 Standard this representation complies with."
+        $ref: "#/definitions/ASHRAE205Version"
+      schema_version:
+        type: DataElement
+        description: "ASHRAE 205 schema version"
+        notes: "Identifies the version of the ASHRAE 205 JSON schema this representation complies with."
+        $ref: "#/definitions/Version"
+      RS_ID:
+        type: DataElement
+        description: "Representation specification identifier"
+        notes: "Identifies the representation specification used to generate this representation"
+        $ref: "#/definitions/RS_ID"
+      description:
+        description: "Free-form description of equipment (suitable for display)"
+        type: string
+      ID:
+        description: "Unique equipment identifier"
+        $ref: "#/definitions/UUID"
+        notes: "Assigned by data publisher to identify specific equipment. ID shall remain unchanged for revised representations for the same equipment."
+      data_timestamp:
+        description: "Date of publication"
+        $ref: "#/definitions/Timestamp"
+        notes: "Date/time of publication of this representation."
+      data_version":
+        description: "Integer version identifier for the data in the representation"
+        type: "integer"
+        notes: "Used by data publisher to track revisions of the data for a specific representation. The value shall be incremented for each data revision."
+      data_source:
+        description: "Free-form identification of the source of this data"
+        type": string
+      disclaimer:
+        description: "Free-form characterization of accuracy, limitations, and applicability of this data"
+        type: string
+      notes:
+        type: DataElement
+        description: "Additional Information"
+      RS_instance:
+        description: "*Representation Specification* Data Group"
+        oneOf: [
+          {
+            "$ref": "RS0001.schema.json#/definitions/RS0001"
+          },
+          {
+            "$ref": "RS0002.schema.json#/definitions/RS0002"
+          },
+          {
+            "$ref": "RS0003.schema.json#/definitions/RS0003"
+          },
+          {
+            "$ref": "RS0004.schema.json#/definitions/RS0004"
+          },
+          {
+            "$ref": "RS0005.schema.json#/definitions/RS0005"
+          },
+          {
+            "$ref": "RS0006.schema.json#/definitions/RS0006"
+          }
+          ]
+        }
+      },
+      notes: "Data Group defined by specific *representation specification*. E.g., 'RS0001'.",
+---
