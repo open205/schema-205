@@ -1,3 +1,11 @@
+#Data Element
+Name_of_Data_Element:
+  Type: DataElement
+  DataType: "The type of data for the data element (integer, numeric, string, UUID, etc"
+  Description: "The description of the data element type"
+  JSON_schema_type: "The type as defined by JSON types"
+  Examples: "Examples for the data element type"
+  JSON_schema_pattern: "The regular expression defining the allowable construction for specific string data elements"
 #Enumeration
 Name_of_Enumeration:
   Type: Enumeration
