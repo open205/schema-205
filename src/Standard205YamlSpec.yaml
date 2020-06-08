@@ -1,28 +1,27 @@
-#Data Element
-Name_of_Data_Element:
-  Type: DataElement
-  DataType: "The type of data for the data element (integer, numeric, string, UUID, etc"
+#Data Type
+NameOfDataType:
+  Type: DataType
   Description: "The description of the data element type"
-  JSON_schema_type: "The type as defined by JSON types"
+  JSON schema type: "The type as defined by JSON types"
   Examples: "Examples for the data element type"
-  JSON_schema_pattern: "The regular expression defining the allowable construction for specific string data elements"
+  JSON schema pattern: "The regular expression defining the allowable construction for specific string data elements"
 #Enumeration
-Name_of_Enumeration:
+NameOfEnumeration:
   Type: Enumeration
   Items:
-    -Item_1:
+    -Item 1:
       Definition: "The definition of the item"
       Name: "The human readable name of the item"
-    -Item_2:
+    -Item 2:
       Definition: "The definition of the item"
       Name: "The human readable name of the item"
 #Data Group
-Name_of_Date_Group:
+NameOfDataGroup:
   Type: DataGroup
-  Elements:
-    -Name_1:
+  Data Elements:
+    -Element 1:
       Description: "The description of the data element"
-      DataType: "The type of data element"
+      Data Type: "The type of data element"
       Units: "The units for the data element"
       Range: "The acceptable range for the data element (<,>,<=,>=)"
       Required: "Whether the data element is required (True/False)"
