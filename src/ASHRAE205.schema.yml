@@ -4,6 +4,96 @@
 # all open205 standard materials, both normative and informative, will be created.
 
 # YAML single-source files will be created in accordance with the open205 schema.
+
+# Common Enumerations
+ASHRAE205Version:
+  type: Enumeration
+  Items:
+    - PPR2:
+      Definition: "ASHRAE205 - 2020 Publication Public Review 2"
+
+RS_ID:
+  type: Enumeration
+  Items:
+    - RS0001:
+      Definition: "Liquid-Cooled Chiller"
+    - RS0002:
+      Definition: "Unitary Cooling Air-Conditioning Equipment"
+    - RS0003:
+      Definition: "Fan Assembly" 
+    - RS0004:
+      Definition: "Air-to-Air Direct Expansion Refrigerant Coil System"
+    - RS0005:
+      Definition: "Motor"
+    - RS0006:
+      Definition: "Electronic Motor Drive"
+
+RefrigerantType:
+  type: Enumeration
+  Items:
+    - "R11"
+    - "R12"
+# Will need to add the remaining refigerants
+
+CompressorType:
+  type: Enumeration
+  Items:
+    - RECIPROCATING:
+      Definition: "Reciprocating compressor"
+      Display Text: "Reciprocating"
+    - SCREW:
+      Definition: "Screw compressor"
+      Display Text: "Screw"
+    - CENTRIFUGAL:
+      Definition: "Centrifugal compressor"
+      Display Text: "Centrifugal"
+    - ROTARY:
+      Definition: "Rotary compressor"
+      Display Text: "Rotary"
+    - SCROLL:
+      Definition: "Scroll compressor"
+      Display Text: "Scroll"
+
+CondenserType:
+  type: Enumeration
+  Items:
+    - AIR:
+      Definition: "Air-cooled condener"
+      Display Text: "Air"    
+    - WATER:
+      Definition: "Water-cooled condener"
+      Display Text: "Water"               
+    - EVAPORATIVE:
+      Definition: "Evaporative condener"
+      Display Text: "Evaporative"  
+      
+LiquidConstituent:
+  type: Enumeration
+  Items:
+    - WATER:
+      Definition: "Water"
+      Display Text: "Water"
+    - PROPYLENE_GLYCOL:     
+      Definition: "Propylene glycol"
+      Display Text: "Propylene Glycol" 
+    - ETHYLENE_GLYCOL:     
+      Definition: "Ethylene glycol"
+      Display Text: "Ethylene Glycol" 
+    - SEA_WATER:     
+      Definition: "Salt water from a sea"
+      Display Text: "Sea Water"
+      
+ConcentrationType:
+  type: Enumeration
+  Items:
+    - BY_VOLUME:
+      Definition: "Concentration is defined as a fraction of total liquid mixture volume"  
+      Display Text: "By Volume"    
+    - BY_MASS:
+      Definition: "Concentration is defined as a fraction of total liquid mixture mass"  
+      Display Text: "By Mass"   
+
+#Common Data Groups
 ASHRAE205:
   type: DataGroup
   Data Elements:
