@@ -1,4 +1,3 @@
----
 # ASHRAE205.schema.yaml
 # The purpose of this "open205 schema" is to provide a single source generator format from which 
 # all open205 standard materials, both normative and informative, will be created.
@@ -144,4 +143,3 @@ ASHRAE205:
       Description: "*Representation Specification* Data Group"
       Data Type: ({RSXXXX})
       Notes: "Data Group defined by specific *representation specification*. E.g., 'RS0001'."
----
