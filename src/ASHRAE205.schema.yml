@@ -255,50 +255,50 @@ ConcentrationType:
 ASHRAE205:
   type: DataGroup
   Data Elements:
-    - standard_version:
+    standard_version:
       Description: "*ASHRAE 205 standard* version"
       Data Type: <ASHRAE205Version>
       Required: True
       Notes: "Identifies the version of the *ASHRAE 205 Standard* this representation complies with."
-    - schema_version:
+    schema_version:
       Description: "*ASHRAE 205 schema* version"
       Data Type: Version
       Required: True
       Notes: "Identifies the version of the ASHRAE 205 JSON schema this representation complies with."
-    - RS_ID:
+    RS_ID:
       Description: "*Representation specification* identifier"
       Data Type: <RS_ID>
       Required: True
       Notes: "Identifies the *representation specification* used to generate this *representation*"
-    - description:
+    description:
       Description: "Free-form description of equipment (suitable for display)"
       Data Type: string
       Required: True
-    - ID:
+    ID:
       Description: "Unique equipment identifier"
       Data Type: UUID
       Required: True
       Notes: "Assigned by *data publisher* to identify specific equipment. ID shall remain unchanged for revised *representations* for the same equipment."
-    - data_timestamp:
+    data_timestamp:
       Description: "Date of publication"
       Data Type: Timestamp
       Required: True
       Notes: "Date/time of publication of this *representation*."
-    - data_version:
+    data_version:
       Description: "Integer version identifier for the data in the *representation*"
       Data Type: Integer
       Required: True
       Notes: "Used by *data publisher* to track revisions of the data for a specific *representation*. The value shall be incremented for each data revision."
-    - data_source:
+    data_source:
       Description: "Free-form identification of the source of this data"
       Data Type": String
-    - disclaimer:
+    disclaimer:
       Description: "Free-form characterization of accuracy, limitations, and applicability of this data"
       Data Type: String
-    - notes:
+    notes:
       Description: "Additional Information"
       Data Type: String
-    - RS_instance:
+    RS_instance:
       Description: "*Representation Specification* Data Group"
       Data Type: ({RSXXXX})
       Notes: "Data Group defined by specific *representation specification*. E.g., 'RS0001'."
