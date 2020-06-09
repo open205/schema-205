@@ -8,18 +8,20 @@ NameOfDataType:
 #Enumeration
 NameOfEnumeration:
   Type: Enumeration
-  Items:
-    -Item 1:
-      Definition: "The definition of the item"
-      Name: "The human readable name of the item"
-    -Item 2:
-      Definition: "The definition of the item"
-      Name: "The human readable name of the item"
+  Enumerators:
+    Enumerator Name:
+      Description: "The definition of the item"
+      Display Text: "The human readable name of the item"
+      Notes: "Any notes for the enumerator."
+    Enumerator Name:
+      Description: "The definition of the item"
+      Display Text: "The human readable name of the item"
+      Notes: "Any notes for the enumerator."
 #Data Group
 NameOfDataGroup:
   Type: DataGroup
   Data Elements:
-    -Element 1:
+    Element 1:
       Description: "The description of the data element"
       Data Type: "The type of data element"
       Units: "The units for the data element"

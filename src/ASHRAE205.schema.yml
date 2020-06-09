@@ -7,248 +7,248 @@
 # Common Enumerations
 ASHRAE205Version:
   type: Enumeration
-  Items:
-    - PPR2:
-      Definition: "ASHRAE205 - 2020 Publication Public Review 2"
+  Enumerators:
+    PPR2:
+      Description: "ASHRAE205 - 2020 Publication Public Review 2"
 
 RS_ID:
   type: Enumeration
-  Items:
-    - RS0001:
-      Definition: "Liquid-Cooled Chiller"
-    - RS0002:
-      Definition: "Unitary Cooling Air-Conditioning Equipment"
-    - RS0003:
-      Definition: "Fan Assembly" 
-    - RS0004:
-      Definition: "Air-to-Air Direct Expansion Refrigerant Coil System"
-    - RS0005:
-      Definition: "Motor"
-    - RS0006:
-      Definition: "Electronic Motor Drive"
+  Enumerators:
+    RS0001:
+      Description: "Liquid-Cooled Chiller"
+    RS0002:
+      Description: "Unitary Cooling Air-Conditioning Equipment"
+    RS0003:
+      Description: "Fan Assembly" 
+    RS0004:
+      Description: "Air-to-Air Direct Expansion Refrigerant Coil System"
+    RS0005:
+      Description: "Motor"
+    RS0006:
+      Description: "Electronic Motor Drive"
 
 RefrigerantType:
   type: Enumeration
-  Items:
-    - "R11"
-    - "R12"
-    - "R12B1"
-    - "R13"
-    - "R13B1"
-    - "R14e"
-    - "R21"
-    - "R22"
-    - "R23"
-    - "R30"
-    - "R31"
-    - "R32"
-    - "R40"
-    - "R41"
-    - "R50"
-    - "R113"
-    - "R114"
-    - "R115"
-    - "R116"
-    - "R123"
-    - "R124"
-    - "R125"
-    - "R134A"
-    - "R141B"
-    - "R142B"
-    - "R143A"
-    - "R152A"
-    - "R170"
-    - "RE170"
-    - "R218"
-    - "R227EA"
-    - "R236FA"
-    - "R245FA"
-    - "R290"
-    - "RC318"
-    - "R600"
-    - "R600A"
-    - "R601"
-    - "R601A"
-    - "R610"
-    - "R611"
-    - "R620"
-    - "R630"
-    - "R631"
-    - "R702"
-    - "R704"
-    - "R717"
-    - "R718"
-    - "R720"
-    - "R728"
-    - "R732"
-    - "R740"
-    - "R744"
-    - "R744A"
-    - "R764"
-    - "R1150"
-    - "R1234YF"
-    - "R1234ZEE"
-    - "R1270"
-    - "R400"
-    - "R401A"
-    - "R401B"
-    - "R401C"
-    - "R402A"
-    - "R402B"
-    - "R403A"
-    - "R403B"
-    - "R404A"
-    - "R405A"
-    - "R406A"
-    - "R407A"
-    - "R407B"
-    - "R407C"
-    - "R407D"
-    - "R407E"
-    - "R407F"
-    - "R407G"
-    - "R407H"
-    - "R408A"
-    - "R409A"
-    - "R409B"
-    - "R410A"
-    - "R410B"
-    - "R411A"
-    - "R411B"
-    - "R412A"
-    - "R413A"
-    - "R414A"
-    - "R414B"
-    - "R415A"
-    - "R415B"
-    - "R416A"
-    - "R417A"
-    - "R417B"
-    - "R417C"
-    - "R418A"
-    - "R419A"
-    - "R419B"
-    - "R420A"
-    - "R421A"
-    - "R421B"
-    - "R422A"
-    - "R422B"
-    - "R422C"
-    - "R422D"
-    - "R422E"
-    - "R423A"
-    - "R424A"
-    - "R425A"
-    - "R426A"
-    - "R427A"
-    - "R428A"
-    - "R429A"
-    - "R430A"
-    - "R431A"
-    - "R432A"
-    - "R433A"
-    - "R433B"
-    - "R433C"
-    - "R434A"
-    - "R435A"
-    - "R436A"
-    - "R436B"
-    - "R437A"
-    - "R438A"
-    - "R439A"
-    - "R440A"
-    - "R441A"
-    - "R442A"
-    - "R443A"
-    - "R444A"
-    - "R445A"
-    - "R447B"
-    - "R449C"
-    - "R452B"
-    - "R452C"
-    - "R454C"
-    - "R455A"
-    - "R456A"
-    - "R457A"
-    - "R458A"
-    - "R459A"
-    - "R459B"
-    - "R460A"
-    - "R460B"
-    - "R500"
-    - "R501"
-    - "R502"
-    - "R503"
-    - "R504"
-    - "R505"
-    - "R506"
-    - "R507A"
-    - "R508A"
-    - "R508B"
-    - "R509A"
-    - "R510A"
-    - "R511A"
-    - "R512A"
-    - "R513B"
-    - "R514A"
-    - "R515A"
+  Enumerators:
+    R11:
+    R12:
+    R12B1:
+    R13:
+    R13B1:
+    R14e:
+    R21:
+    R22:
+    R23:
+    R30:
+    R31:
+    R32:
+    R40:
+    R41:
+    R50:
+    R113:
+    R114:
+    R115:
+    R116:
+    R123:
+    R124:
+    R125:
+    R134A:
+    R141B:
+    R142B:
+    R143A:
+    R152A:
+    R170:
+    RE170:
+    R218:
+    R227EA:
+    R236FA:
+    R245FA:
+    R290:
+    RC318:
+    R600:
+    R600A:
+    R601:
+    R601A:
+    R610:
+    R611:
+    R620:
+    R630:
+    R631:
+    R702:
+    R704:
+    R717:
+    R718:
+    R720:
+    R728:
+    R732:
+    R740:
+    R744:
+    R744A:
+    R764:
+    R1150:
+    R1234YF:
+    R1234ZEE:
+    R1270:
+    R400:
+    R401A:
+    R401B:
+    R401C:
+    R402A:
+    R402B:
+    R403A:
+    R403B:
+    R404A:
+    R405A:
+    R406A:
+    R407A:
+    R407B:
+    R407C:
+    R407D:
+    R407E:
+    R407F:
+    R407G:
+    R407H:
+    R408A:
+    R409A:
+    R409B:
+    R410A:
+    R410B:
+    R411A:
+    R411B:
+    R412A:
+    R413A:
+    R414A:
+    R414B:
+    R415A:
+    R415B:
+    R416A:
+    R417A:
+    R417B:
+    R417C:
+    R418A:
+    R419A:
+    R419B:
+    R420A:
+    R421A:
+    R421B:
+    R422A:
+    R422B:
+    R422C:
+    R422D:
+    R422E:
+    R423A:
+    R424A:
+    R425A:
+    R426A:
+    R427A:
+    R428A:
+    R429A:
+    R430A:
+    R431A:
+    R432A:
+    R433A:
+    R433B:
+    R433C:
+    R434A:
+    R435A:
+    R436A:
+    R436B:
+    R437A:
+    R438A:
+    R439A:
+    R440A:
+    R441A:
+    R442A:
+    R443A:
+    R444A:
+    R445A:
+    R447B:
+    R449C:
+    R452B:
+    R452C:
+    R454C:
+    R455A:
+    R456A:
+    R457A:
+    R458A:
+    R459A:
+    R459B:
+    R460A:
+    R460B:
+    R500:
+    R501:
+    R502:
+    R503:
+    R504:
+    R505:
+    R506:
+    R507A:
+    R508A:
+    R508B:
+    R509A:
+    R510A:
+    R511A:
+    R512A:
+    R513B:
+    R514A:
+    R515A:
 
 CompressorType:
   type: Enumeration
-  Items:
-    - RECIPROCATING:
-      Definition: "Reciprocating compressor"
+  Enumerators:
+    RECIPROCATING:
+      Description: "Reciprocating compressor"
       Display Text: "Reciprocating"
-    - SCREW:
-      Definition: "Screw compressor"
+    SCREW:
+      Description: "Screw compressor"
       Display Text: "Screw"
-    - CENTRIFUGAL:
-      Definition: "Centrifugal compressor"
+    CENTRIFUGAL:
+      Description: "Centrifugal compressor"
       Display Text: "Centrifugal"
-    - ROTARY:
-      Definition: "Rotary compressor"
+    ROTARY:
+      Description: "Rotary compressor"
       Display Text: "Rotary"
-    - SCROLL:
-      Definition: "Scroll compressor"
+    SCROLL:
+      Description: "Scroll compressor"
       Display Text: "Scroll"
 
 CondenserType:
   type: Enumeration
-  Items:
-    - AIR:
-      Definition: "Air-cooled condenser"
+  Enumerators:
+    AIR:
+      Description: "Air-cooled condenser"
       Display Text: "Air"    
-    - WATER:
-      Definition: "Water-cooled condenser"
+    WATER:
+      Description: "Water-cooled condenser"
       Display Text: "Water"
-    - EVAPORATIVE:
-      Definition: "Evaporative condenser"
+    EVAPORATIVE:
+      Description: "Evaporative condenser"
       Display Text: "Evaporative"  
       
 LiquidConstituent:
   type: Enumeration
-  Items:
-    - WATER:
-      Definition: "Water"
+  Enumerators:
+    WATER:
+      Description: "Water"
       Display Text: "Water"
-    - PROPYLENE_GLYCOL:     
-      Definition: "Propylene glycol"
+    PROPYLENE_GLYCOL:     
+      Description: "Propylene glycol"
       Display Text: "Propylene Glycol" 
-    - ETHYLENE_GLYCOL:     
-      Definition: "Ethylene glycol"
+    ETHYLENE_GLYCOL:     
+      Description: "Ethylene glycol"
       Display Text: "Ethylene Glycol" 
-    - SEA_WATER:     
-      Definition: "Salt water from a sea"
+    SEA_WATER:     
+      Description: "Salt water from a sea"
       Display Text: "Sea Water"
       
 ConcentrationType:
   type: Enumeration
-  Items:
-    - BY_VOLUME:
-      Definition: "Concentration is defined as a fraction of total liquid mixture volume"  
+  Enumerators:
+    BY_VOLUME:
+      Description: "Concentration is defined as a fraction of total liquid mixture volume"  
       Display Text: "By Volume"    
-    - BY_MASS:
-      Definition: "Concentration is defined as a fraction of total liquid mixture mass"  
+    BY_MASS:
+      Description: "Concentration is defined as a fraction of total liquid mixture mass"  
       Display Text: "By Mass"   
 
 #Common Data Groups
@@ -257,48 +257,75 @@ ASHRAE205:
   Data Elements:
     standard_version:
       Description: "*ASHRAE 205 standard* version"
-      Data Type: <ASHRAE205Version>
+      Data Type: "<ASHRAE205Version>"
       Required: True
       Notes: "Identifies the version of the *ASHRAE 205 Standard* this representation complies with."
     schema_version:
       Description: "*ASHRAE 205 schema* version"
-      Data Type: Version
+      Data Type: "Version"
       Required: True
       Notes: "Identifies the version of the ASHRAE 205 JSON schema this representation complies with."
     RS_ID:
       Description: "*Representation specification* identifier"
-      Data Type: <RS_ID>
+      Data Type: "<RS_ID>"
       Required: True
       Notes: "Identifies the *representation specification* used to generate this *representation*"
     description:
       Description: "Free-form description of equipment (suitable for display)"
-      Data Type: string
+      Data Type: "String"
       Required: True
     ID:
       Description: "Unique equipment identifier"
-      Data Type: UUID
+      Data Type: "UUID"
       Required: True
       Notes: "Assigned by *data publisher* to identify specific equipment. ID shall remain unchanged for revised *representations* for the same equipment."
     data_timestamp:
       Description: "Date of publication"
-      Data Type: Timestamp
+      Data Type: "Timestamp"
       Required: True
       Notes: "Date/time of publication of this *representation*."
     data_version:
       Description: "Integer version identifier for the data in the *representation*"
-      Data Type: Integer
+      Data Type: "Integer"
       Required: True
       Notes: "Used by *data publisher* to track revisions of the data for a specific *representation*. The value shall be incremented for each data revision."
     data_source:
       Description: "Free-form identification of the source of this data"
-      Data Type": String
+      Data Type": "String"
     disclaimer:
       Description: "Free-form characterization of accuracy, limitations, and applicability of this data"
-      Data Type: String
+      Data Type: "String"
     notes:
       Description: "Additional Information"
-      Data Type: String
+      Data Type: "String"
     RS_instance:
       Description: "*Representation Specification* Data Group"
-      Data Type: ({RSXXXX})
+      Data Type: "({RSXXXX})"
       Notes: "Data Group defined by specific *representation specification*. E.g., 'RS0001'."
+
+# Reusable Data Groups
+LiquidMixture:
+  type: DataGroup
+  Data Elements:
+    liquid_components:
+      Description: "An array of all liquid components within the liquid mixture"
+      Data Type: "[{LiquidComponent}]"	
+      Required: True
+      Notes: "Array may contain a single component."
+    concentration_type:
+      Description: "Defines whether concentration is defined on a volume or mass basis"
+      Data Type: "<ConcentrationType>"	
+      Required: True
+
+LiquidComponent:
+  type: DataGroup
+  Data Elements:
+    liquid_constituent:
+      Description: "Substance of this component of the mixture"
+      Data Type: "<LiquidConstituent>"	
+      Required: True
+    concentration:
+      Description: "Concentration of this component of the mixture"
+      Data Type: "Numeric"	
+      Range: ">=0, <=1.0"
+      Notes: "If omitted, it is assumed to share equal portions with any other component with no defined concentration. e.g., can be left blank for the primary component."  
