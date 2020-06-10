@@ -10,6 +10,7 @@ ASHRAE205Version:
   Enumerators:
     PPR2:
       Description: "ASHRAE205 - 2020 Publication Public Review 2"
+      Display Text: "ASHRAE205 - 2020 Publication Public Review 2"
 
 RS_ID:
   type: Enumeration
@@ -29,6 +30,7 @@ RS_ID:
 
 RefrigerantType:
   type: Enumeration
+  Description: "Type of refrigerant"
   Enumerators:
     R11:
     R12:
@@ -309,12 +311,12 @@ LiquidMixture:
   Data Elements:
     liquid_components:
       Description: "An array of all liquid components within the liquid mixture"
-      Data Type: "[{LiquidComponent}]"	
+      Data Type: "[{LiquidComponent}]"
       Required: True
       Notes: "Array may contain a single component."
     concentration_type:
       Description: "Defines whether concentration is defined on a volume or mass basis"
-      Data Type: "<ConcentrationType>"	
+      Data Type: "<ConcentrationType>"
       Required: True
 
 LiquidComponent:
@@ -322,10 +324,11 @@ LiquidComponent:
   Data Elements:
     liquid_constituent:
       Description: "Substance of this component of the mixture"
-      Data Type: "<LiquidConstituent>"	
+      Data Type: "<LiquidConstituent>"
       Required: True
     concentration:
       Description: "Concentration of this component of the mixture"
-      Data Type: "Numeric"	
+      Data Type: "Numeric"
       Range: ">=0, <=1.0"
-      Notes: "If omitted, it is assumed to share equal portions with any other component with no defined concentration. e.g., can be left blank for the primary component."  
+      Notes: "If omitted, it is assumed to share equal portions with any other component with no defined concentration. e.g., can be left blank for the primary component." 
+      

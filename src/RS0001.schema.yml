@@ -731,8 +731,3 @@ LookupVariablesStandby:
       Range: ">=0"
       Required: True
       Notes: "Power consumed by chiller during off cycle. An example is a VSD cooling fan or sump heater."
-
-
-
-
-      ---
