@@ -6,14 +6,14 @@
 
 # Common Enumerations
 ASHRAE205Version:
-  type: Enumeration
+  Object Type: "Enumeration"
   Enumerators:
     PPR2:
       Description: "ASHRAE205 - 2020 Publication Public Review 2"
       Display Text: "ASHRAE205 - 2020 Publication Public Review 2"
 
 RS_ID:
-  type: Enumeration
+  Object Type: "Enumeration"
   Enumerators:
     RS0001:
       Description: "Liquid-Cooled Chiller"
@@ -29,7 +29,7 @@ RS_ID:
       Description: "Electronic Motor Drive"
 
 RefrigerantType:
-  type: Enumeration
+  Object Type: "Enumeration"
   Description: "Type of refrigerant"
   Enumerators:
     R11:
@@ -196,7 +196,7 @@ RefrigerantType:
     R515A:
 
 CompressorType:
-  type: Enumeration
+  Object Type: "Enumeration"
   Enumerators:
     RECIPROCATING:
       Description: "Reciprocating compressor"
@@ -215,7 +215,7 @@ CompressorType:
       Display Text: "Scroll"
 
 CondenserType:
-  type: Enumeration
+  Object Type: "Enumeration"
   Enumerators:
     AIR:
       Description: "Air-cooled condenser"
@@ -228,7 +228,7 @@ CondenserType:
       Display Text: "Evaporative"  
       
 LiquidConstituent:
-  type: Enumeration
+  Object Type: "Enumeration"
   Enumerators:
     WATER:
       Description: "Water"
@@ -244,7 +244,7 @@ LiquidConstituent:
       Display Text: "Sea Water"
       
 ConcentrationType:
-  type: Enumeration
+  Object Type: "Enumeration"
   Enumerators:
     BY_VOLUME:
       Description: "Concentration is defined as a fraction of total liquid mixture volume"  
@@ -255,7 +255,7 @@ ConcentrationType:
 
 #Common Data Groups
 ASHRAE205:
-  type: DataGroup
+  Object Type: "Data Group"
   Data Elements:
     standard_version:
       Description: "*ASHRAE 205 standard* version"
@@ -307,7 +307,7 @@ ASHRAE205:
 
 # Reusable Data Groups
 LiquidMixture:
-  type: DataGroup
+  Object Type: "Data Group"
   Data Elements:
     liquid_components:
       Description: "An array of all liquid components within the liquid mixture"
@@ -320,7 +320,7 @@ LiquidMixture:
       Required: True
 
 LiquidComponent:
-  type: DataGroup
+  Object Type: "Data Group"
   Data Elements:
     liquid_constituent:
       Description: "Substance of this component of the mixture"

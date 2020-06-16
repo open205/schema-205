@@ -1,11 +1,17 @@
 ---
 # RS0001.schema.yaml
-# The purpose of this "RS0001 schema" is to provide a single source generator format to 
+# The purpose of this "RS0001 schema" is to provide a single source generator format to
 # generate RS0001 standard materials, both normative and informative.
+
+Schema:
+  Object Type: "Meta"
+  References:
+    - "ASHRAE205"
+  Title: "Liquid-Cooled Chiller"
 
 # Local Enumerations
 SpeedControlType:
-  type: Enumeration
+  Object Type: "Enumeration"
   Enumerators:
     CONSTANT_SPEED:
       Description: "Compressor without speed control."
@@ -15,7 +21,7 @@ SpeedControlType:
       Display Text: "Variable Speed"
 
 StandardRatingVersion:
-  type: Enumeration
+  Object Type: "Enumeration"
   Enumerators:
     AHRI_550_590_2015:
       Description: "Ratings and design points defined using IP unit version of the standard, 2015 edition."
@@ -44,7 +50,7 @@ StandardRatingVersion:
 
 # Data Groups
 RS0001:
-  type: DataGroup
+  Object Type: "Data Group"
   Data Elements:
     description:
       Description: "Data group describing product and rating information"
@@ -55,7 +61,7 @@ RS0001:
       Required: True
 
 Description:
-  type: DataGroup
+  Object Type: "Data Group"
   Data Elements:
     product_information:
       Description: "Data group describing product information"
@@ -68,7 +74,7 @@ Description:
       Data Type: "{RatingAHRI551591}"
 
 ProductInformation:
-  type: DataGroup
+  Object Type: "Data Group"
   Data Elements:
     manufacturer:
       Description: "Name of the manufacturer"
@@ -103,227 +109,227 @@ ProductInformation:
     compressor_type:
       Description: "Type of compressor"
       Data Type: "<CompressorType>"
-      Notes: "See Standard 205 Common Enumerations"      
+      Notes: "See Standard 205 Common Enumerations"
     speed_control_type:
       Description: "Type of electrical motor drive"
       Data Type: "<SpeedControlType>"
-      Notes: "See RS0001.3.1 Local Enumerations"       
+      Notes: "See RS0001.3.1 Local Enumerations"
     liquid_data_source:
       Description: "Source of the liquid properties data"
       Data Type: "String"
-      Notes: "Example: 'ASHRAE Handbook Fundamentals 2013 chapter 31'"            
+      Notes: "Example: 'ASHRAE Handbook Fundamentals 2013 chapter 31'"
     refrigerant_type:
       Description: "Refrigerant used in the chiller"
       Data Type: "<RefrigerantType>"
-      Notes: "See Standard 205 Common Enumerations"          
+      Notes: "See Standard 205 Common Enumerations"
     hotgas_bypass_installed:
       Description: "Indicates if a hot-gas bypass valve is installed on the chiller"
       Data Type: "Boolean"
-       
+
 RatingAHRI550590:
-  type: DataGroup
+  Object Type: "Data Group"
   Data Elements:
     certification_reference_number:
-      Description: "Certification reference number" 
+      Description: "Certification reference number"
       Data Type: "String"
       Required: True
-      Notes: "The certification number as stated on the certificate." 
+      Notes: "The certification number as stated on the certificate."
     standard_rating_version:
-      Description: "Version" 
+      Description: "Version"
       Data Type: "<StandardRatingVersion>"
       Required: True
     net_refrigerating_capacity:
-      Description: "Unit rated refrigeration capacity" 
+      Description: "Unit rated refrigeration capacity"
       Data Type: "Numeric"
       Units: "Btu/h"
       Range: ">0"
       Required: True
-      Notes: "The available cooling capacity of the evaporator to the thermal load calculated using only the sensible heat transfer at full load rating condition." 
+      Notes: "The available cooling capacity of the evaporator to the thermal load calculated using only the sensible heat transfer at full load rating condition."
     input_power:
-      Description: "Total unit power at design point" 
+      Description: "Total unit power at design point"
       Data Type: "Numeric"
       Units: "kW"
       Range: ">=0"
       Required: True
-      Notes: "Total power input to the chiller package.  See testing standard for details." 
+      Notes: "Total power input to the chiller package.  See testing standard for details."
     COP:
-      Description: "Efficiency at design point as ratio of unit of cooling per unit of power consumed" 
+      Description: "Efficiency at design point as ratio of unit of cooling per unit of power consumed"
       Data Type: "Numeric"
       Units: "-"
       Range: ">0"
       Required: True
     part_load_value:
-      Description: "Rated part load efficiency over an integrated load profile" 
+      Description: "Rated part load efficiency over an integrated load profile"
       Data Type: "Numeric"
       Units: "-"
       Required: True
       Notes: "Represents the IPLV.IP or NPLV.IP based on the COP."
     part_load_rating_points:
-      Description: "The four measured data points used to calculate the part load rating value" 
-      Data Type: "[{PartLoadRatingPoint550590}]"
+      Description: "The four measured data points used to calculate the part load rating value"
+      Data Type: "[{PartLoadRatingPoint550590}][4]"
       Notes: "The measured data for all 4 points used to calculate the IPLV or NPLV rating point shall be given."
     full_load_evaporator_liquid_volumetric_flow_rate:
-      Description: "Chilled liquid flow at the full load design point rating condition" 
+      Description: "Chilled liquid flow at the full load design point rating condition"
       Data Type: "Numeric"
       Units: "gpm"
       Range: ">0"
       Required: True
       Notes: "Evaporator liquid volumetric flow rate at the full load rating condition. Density calculations shall be made at the inlet temperature of the heat exchanger at full load rating condition."
     full_load_evaporator_liquid_leaving_temperature:
-      Description: "Leaving evaporator liquid temperature at the full load design point rating condition" 
+      Description: "Leaving evaporator liquid temperature at the full load design point rating condition"
       Data Type: "Numeric"
       Units: "F"
       Range: ">0"
       Required: True
       Notes: "Evaporator liquid temperature at the exit flange of the chiller’s evaporator at full load rating condition. See testing standard for details."
     full_load_evaporator_liquid_entering_temperature:
-      Description: "Entering evaporator liquid temperature at the full load design point rating condition" 
+      Description: "Entering evaporator liquid temperature at the full load design point rating condition"
       Data Type: "Numeric"
       Units: "F"
       Range: ">0"
       Required: True
       Notes: "Evaporator liquid temperature at the entry flange of the chiller’s evaporator at full load rating condition."
     full_load_evaporator_liquid_differential_pressure:
-      Description: "Pressure drop across the evaporator at the full load design point rating condition" 
+      Description: "Pressure drop across the evaporator at the full load design point rating condition"
       Data Type: "Numeric"
       Units: "ft of water"
       Range: ">0"
       Required: True
       Notes: "Pressure drop is as defined in the applicable rating standard"
     full_load_evaporator_fouling_factor:
-      Description: "Factor of heat transfer inhibition due to heat exchanger fouling layer at the full load design point rating condition" 
+      Description: "Factor of heat transfer inhibition due to heat exchanger fouling layer at the full load design point rating condition"
       Data Type: "Numeric"
       Units: "h-ft2-F/Btu"
       Range: ">0"
       Required: True
-      Notes: "Evaporator fouling factor at which the full rating condition was measured."    
+      Notes: "Evaporator fouling factor at which the full rating condition was measured."
     full_load_condenser_liquid_volumetric_flow_rate:
-      Description: "Condenser liquid flow at the full load design point rating condition." 
+      Description: "Condenser liquid flow at the full load design point rating condition."
       Data Type: "Numeric"
       Units: "gpm"
       Range: ">0"
       Required: True
-      Notes: "Condenser liquid volumetric flow rate at the full load rating condition. Density calculations shall be made at the inlet temperature of the heat exchanger."    
+      Notes: "Condenser liquid volumetric flow rate at the full load rating condition. Density calculations shall be made at the inlet temperature of the heat exchanger."
     full_load_condenser_liquid_entering_temperature:
-      Description: "Entering condenser liquid temperature at the full load design point rating condition." 
+      Description: "Entering condenser liquid temperature at the full load design point rating condition."
       Data Type: "Numeric"
       Units: "F"
       Range: ">0"
       Required: True
-      Notes: "Condenser liquid temperature at the entry flange of the chiller’s condenser at full load rating condition.  See testing standard for details."    
+      Notes: "Condenser liquid temperature at the entry flange of the chiller’s condenser at full load rating condition.  See testing standard for details."
     full_load_condenser_liquid_leaving_temperature:
-      Description: "Leaving condenser liquid temperature at the full load design point rating condition." 
+      Description: "Leaving condenser liquid temperature at the full load design point rating condition."
       Data Type: "Numeric"
       Units: "F"
       Range: ">0"
       Required: True
-      Notes: "Condenser liquid temperature at the exit flange of the chiller’s condenser at full load rating condition."    
+      Notes: "Condenser liquid temperature at the exit flange of the chiller’s condenser at full load rating condition."
     full_load_condenser_liquid_dfferential_pressure:
-      Description: "Pressure drop across the condenser at the full load design point rating condition." 
+      Description: "Pressure drop across the condenser at the full load design point rating condition."
       Data Type: "Numeric"
       Units: "ft of water"
       Range: ">0"
       Required: True
-      Notes: "Pressure drop is as defined in the applicable rating standard"    
+      Notes: "Pressure drop is as defined in the applicable rating standard"
     full_load_condenser_fouling_factor:
-      Description: "Factor of heat transfer inhibition due to heat exchanger fouling layer at the full load design point rating condition" 
+      Description: "Factor of heat transfer inhibition due to heat exchanger fouling layer at the full load design point rating condition"
       Data Type: "Numeric"
       Units: "h-ft2-F/Btu"
       Range: ">0"
       Required: True
-      Notes: "Condenser fouling factor at which the full rating condition was measured."    
+      Notes: "Condenser fouling factor at which the full rating condition was measured."
     rating_reproducible_from_performance_data:
-      Description: "Whether this rating can be reproduced using the performance data in the representation" 
+      Description: "Whether this rating can be reproduced using the performance data in the representation"
       Data Type: "Boolean"
       Required: True
-      Notes: "Mark this field as true if the rating values in this table can be reproduced using the performance data in the representation within the tolerance of the rating standard."    
+      Notes: "Mark this field as true if the rating values in this table can be reproduced using the performance data in the representation within the tolerance of the rating standard."
 
 PartLoadRatingPoint550590:
-  type: DataGroup
+  Object Type: "Data Group"
   Data Elements:
     percent_full_load_capacity:
-      Description: "The percent full load cooling capacity for this data point" 
+      Description: "The percent full load cooling capacity for this data point"
       Data Type: "Numeric"
       Units: "%"
       Range: ">=0, <=100"
       Required: True
     cooling_capacity:
-      Description: "The actual cooling capacity for the data point" 
+      Description: "The actual cooling capacity for the data point"
       Data Type: "Numeric"
       Units: "Btu/h"
       Range: ">0"
       Required: True
     unit_power:
-      Description: "The total unit power consumption for the data point" 
+      Description: "The total unit power consumption for the data point"
       Data Type: "Numeric"
       Units: "kW"
       Range: ">0"
-      Required: True  
+      Required: True
     evaporator_liquid_entering_temperature:
-      Description: "Entering evaporator liquid temperature for the data point" 
+      Description: "Entering evaporator liquid temperature for the data point"
       Data Type: "Numeric"
       Units: "F"
       Range: ">0"
       Required: True
       Notes: "Evaporator liquid temperature at the entry flange of the chiller’s evaporator for the part load data point."
     evaporator_liquid_leaving_temperature:
-      Description: "Leaving evaporator liquid temperature for the data point" 
+      Description: "Leaving evaporator liquid temperature for the data point"
       Data Type: "Numeric"
       Units: "F"
       Range: ">0"
       Required: True
       Notes: "Evaporator liquid temperature at the exit flange of the chiller’s evaporator for the pat load data point."
     evaporator_liquid_volumetric_flow_rate:
-      Description: "Chilled liquid flow for the data point" 
+      Description: "Chilled liquid flow for the data point"
       Data Type: "Numeric"
       Units: "gpm"
       Range: ">0"
       Required: True
       Notes: "Evaporator liquid volumetric flow rate for the part load data point. Density calculations shall be made at the inlet temperature of the heat exchanger."
     evaporator_liquid_differential_pressure:
-      Description: "Pressure drop across the evaporator for the data point" 
+      Description: "Pressure drop across the evaporator for the data point"
       Data Type: "Numeric"
       Units: "ft of water"
       Range: ">0"
       Required: True
       Notes: "Pressure drop is as defined in the applicable rating standard."
     evaporator_fouling_factor:
-      Description: "Factor of heat transfer inhibition due to heat exchanger fouling layer for the data point" 
+      Description: "Factor of heat transfer inhibition due to heat exchanger fouling layer for the data point"
       Data Type: "Numeric"
       Units: "h-ft2-F/Btu"
       Range: ">=0"
       Required: True
       Notes: "Evaporator fouling factor at which the part load data was measured."
     condenser_liquid_entering_temperature:
-      Description: "Entering condenser liquid temperature for the data point" 
+      Description: "Entering condenser liquid temperature for the data point"
       Data Type: "Numeric"
       Units: "F"
       Range: ">0"
       Required: True
       Notes: "Condenser liquid temperature at the entry flange of the chiller’s condenser for the part load data point."
     condenser_liquid_leaving_temperature:
-      Description: "Leaving condenser liquid temperature for the data point" 
+      Description: "Leaving condenser liquid temperature for the data point"
       Data Type: "Numeric"
       Units: "F"
       Range: ">0"
       Required: True
       Notes: "Condenser liquid temperature at the exit flange of the chiller’s condenser for the part load data point."
     condenser_liquid_volumetric_flow_rate:
-      Description: "Condenser liquid flow for the data point" 
+      Description: "Condenser liquid flow for the data point"
       Data Type: "Numeric"
       Units: "gpm"
       Range: ">0"
       Required: True
       Notes: "Condenser liquid volumetric flow rate for the part load data point. Density calculations shall be made at the inlet temperature of the heat exchanger."
     condenser_liquid_dfferential_pressure:
-      Description: "Pressure drop across the condenser for the data point" 
+      Description: "Pressure drop across the condenser for the data point"
       Data Type: "Numeric"
       Units: "ft of water"
       Range: ">0"
       Required: True
       Notes: "Pressure drop is as defined in the applicable rating standard."
     condenser_fouling_factor:
-      Description: "Factor of heat transfer inhibition due to heat exchanger fouling layer for the data point" 
+      Description: "Factor of heat transfer inhibition due to heat exchanger fouling layer for the data point"
       Data Type: "Numeric"
       Units: "h-ft2-F/Btu"
       Range: ">=0"
@@ -331,210 +337,210 @@ PartLoadRatingPoint550590:
       Notes: "Condenser fouling factor at which the part load data was measured."
 
 RatingAHRI551591:
-  type: DataGroup
+  Object Type: "Data Group"
   Data Elements:
     certification_reference_number:
-      Description: "Certification reference number" 
+      Description: "Certification reference number"
       Data Type: "String"
       Required: True
-      Notes: "The certification number as stated on the certificate." 
+      Notes: "The certification number as stated on the certificate."
     standard_rating_version:
-      Description: "Version" 
+      Description: "Version"
       Data Type: "<StandardRatingVersion>"
       Required: True
     net_refrigerating_capacity:
-      Description: "Unit rated refrigeration capacity" 
+      Description: "Unit rated refrigeration capacity"
       Data Type: "Numeric"
       Units: "kW"
       Range: ">0"
       Required: True
-      Notes: "The available cooling capacity of the evaporator to the thermal load calculated using only the sensible heat transfer at full load rating condition." 
+      Notes: "The available cooling capacity of the evaporator to the thermal load calculated using only the sensible heat transfer at full load rating condition."
     input_power:
-      Description: "Total unit power at design point" 
+      Description: "Total unit power at design point"
       Data Type: "Numeric"
       Units: "kW"
       Range: ">=0"
       Required: True
-      Notes: "Total power input to the chiller package.  See testing standard for details." 
+      Notes: "Total power input to the chiller package.  See testing standard for details."
     COP:
-      Description: "Efficiency at design point as ratio of unit of cooling per unit of power consumed" 
+      Description: "Efficiency at design point as ratio of unit of cooling per unit of power consumed"
       Data Type: "Numeric"
       Units: "-"
       Range: ">0"
       Required: True
       Notes: "COP kWc/kWin"
     part_load_value:
-      Description: "Rated part load efficiency over an integrated load profile" 
+      Description: "Rated part load efficiency over an integrated load profile"
       Data Type: "Numeric"
       Units: "-"
       Required: True
       Notes: "Represents the IPLV.SI or NPLV.SI based on the COP."
     part_load_rating_points:
-      Description: "The four measured data points used to calculate the part load rating value" 
+      Description: "The four measured data points used to calculate the part load rating value"
       Data Type: "[{PartLoadRatingPoint551591}]"
       Notes: "The measured data for all 4 points used to calculate the IPLV or NPLV rating point shall be given."
     full_load_evaporator_liquid_volumetric_flow_rate:
-      Description: "Chilled liquid flow at the full load design point rating condition" 
+      Description: "Chilled liquid flow at the full load design point rating condition"
       Data Type: "Numeric"
       Units: "l/s"
       Range: ">0"
       Required: True
       Notes: "Evaporator liquid volumetric flow rate at the full load rating condition. Density calculations shall be made at the inlet temperature of the heat exchanger at full load rating condition."
     full_load_evaporator_liquid_leaving_temperature:
-      Description: "Leaving evaporator liquid temperature at the full load design point rating condition" 
+      Description: "Leaving evaporator liquid temperature at the full load design point rating condition"
       Data Type: "Numeric"
       Units: "C"
       Range: ">0"
       Required: True
       Notes: "Evaporator liquid temperature at the exit flange of the chiller’s evaporator at full load rating condition. See testing standard for details."
     full_load_evaporator_liquid_entering_temperature:
-      Description: "Entering evaporator liquid temperature at the full load design point rating condition" 
+      Description: "Entering evaporator liquid temperature at the full load design point rating condition"
       Data Type: "Numeric"
       Units: "C"
       Range: ">0"
       Required: True
       Notes: "Evaporator liquid temperature at the entry flange of the chiller’s evaporator at full load rating condition."
     full_load_evaporator_liquid_differential_pressure:
-      Description: "Pressure drop across the evaporator at the full load design point rating condition" 
+      Description: "Pressure drop across the evaporator at the full load design point rating condition"
       Data Type: "Numeric"
       Units: "kPa"
       Range: ">0"
       Required: True
       Notes: "Pressure drop is as defined in the applicable rating standard"
     full_load_evaporator_fouling_factor:
-      Description: "Factor of heat transfer inhibition due to heat exchanger fouling layer at the full load design point rating condition" 
+      Description: "Factor of heat transfer inhibition due to heat exchanger fouling layer at the full load design point rating condition"
       Data Type: "Numeric"
       Units: "m2-K/kW"
       Range: ">0"
       Required: True
-      Notes: "Evaporator fouling factor at which the full rating condition was measured."    
+      Notes: "Evaporator fouling factor at which the full rating condition was measured."
     full_load_condenser_liquid_volumetric_flow_rate:
-      Description: "Condenser liquid flow at the full load design point rating condition." 
+      Description: "Condenser liquid flow at the full load design point rating condition."
       Data Type: "Numeric"
       Units: "l/s"
       Range: ">0"
       Required: True
-      Notes: "Condenser liquid volumetric flow rate at the full load rating condition. Density calculations shall be made at the inlet temperature of the heat exchanger."    
+      Notes: "Condenser liquid volumetric flow rate at the full load rating condition. Density calculations shall be made at the inlet temperature of the heat exchanger."
     full_load_condenser_liquid_entering_temperature:
-      Description: "Entering condenser liquid temperature at the full load design point rating condition." 
+      Description: "Entering condenser liquid temperature at the full load design point rating condition."
       Data Type: "Numeric"
       Units: "C"
       Range: ">0"
       Required: True
-      Notes: "Condenser liquid temperature at the entry flange of the chiller’s condenser at full load rating condition.  See testing standard for details."    
+      Notes: "Condenser liquid temperature at the entry flange of the chiller’s condenser at full load rating condition.  See testing standard for details."
     full_load_condenser_liquid_leaving_temperature:
-      Description: "Leaving condenser liquid temperature at the full load design point rating condition." 
+      Description: "Leaving condenser liquid temperature at the full load design point rating condition."
       Data Type: "Numeric"
       Units: "C"
       Range: ">0"
       Required: True
-      Notes: "Condenser liquid temperature at the exit flange of the chiller’s condenser at full load rating condition."    
+      Notes: "Condenser liquid temperature at the exit flange of the chiller’s condenser at full load rating condition."
     full_load_condenser_liquid_dfferential_pressure:
-      Description: "Pressure drop across the condenser at the full load design point rating condition." 
+      Description: "Pressure drop across the condenser at the full load design point rating condition."
       Data Type: "Numeric"
       Units: "kPa"
       Range: ">0"
       Required: True
-      Notes: "Pressure drop is as defined in the applicable rating standard"    
+      Notes: "Pressure drop is as defined in the applicable rating standard"
     full_load_condenser_fouling_factor:
-      Description: "Factor of heat transfer inhibition due to heat exchanger fouling layer at the full load design point rating condition" 
+      Description: "Factor of heat transfer inhibition due to heat exchanger fouling layer at the full load design point rating condition"
       Data Type: "Numeric"
       Units: "m2-K/kW"
       Range: ">0"
       Required: True
-      Notes: "Condenser fouling factor at which the full rating condition was measured."    
+      Notes: "Condenser fouling factor at which the full rating condition was measured."
     rating_reproducible_from_performance_data:
-      Description: "Whether this rating can be reproduced using the performance data in the representation" 
+      Description: "Whether this rating can be reproduced using the performance data in the representation"
       Data Type: "Boolean"
       Required: True
-      Notes: "Mark this field as true if the rating values in this table can be reproduced using the performance data in the representation within the tolerance of the rating standard."    
+      Notes: "Mark this field as true if the rating values in this table can be reproduced using the performance data in the representation within the tolerance of the rating standard."
 
 PartLoadRatingPoint551591:
-  type: DataGroup
+  Object Type: "Data Group"
   Data Elements:
     percent_full_load_capacity:
-      Description: "The percent full load cooling capacity for this data point" 
+      Description: "The percent full load cooling capacity for this data point"
       Data Type: "Numeric"
       Units: "%"
       Range: ">=0, <=100"
       Required: True
     cooling_capacity:
-      Description: "The actual cooling capacity for the data point" 
+      Description: "The actual cooling capacity for the data point"
       Data Type: "Numeric"
       Units: "kW"
       Range: ">0"
       Required: True
     unit_power:
-      Description: "The total unit power consumption for the data point" 
+      Description: "The total unit power consumption for the data point"
       Data Type: "Numeric"
       Units: "kW"
       Range: ">0"
-      Required: True  
+      Required: True
     evaporator_liquid_entering_temperature:
-      Description: "Entering evaporator liquid temperature for the data point" 
+      Description: "Entering evaporator liquid temperature for the data point"
       Data Type: "Numeric"
       Units: "C"
       Range: ">0"
       Required: True
       Notes: "Evaporator liquid temperature at the entry flange of the chiller’s evaporator for the part load data point."
     evaporator_liquid_leaving_temperature:
-      Description: "Leaving evaporator liquid temperature for the data point" 
+      Description: "Leaving evaporator liquid temperature for the data point"
       Data Type: "Numeric"
       Units: "C"
       Range: ">0"
       Required: True
       Notes: "Evaporator liquid temperature at the exit flange of the chiller’s evaporator for the pat load data point."
     evaporator_liquid_volumetric_flow_rate:
-      Description: "Chilled liquid flow for the data point" 
+      Description: "Chilled liquid flow for the data point"
       Data Type: "Numeric"
       Units: "l/s"
       Range: ">0"
       Required: True
       Notes: "Evaporator liquid volumetric flow rate for the part load data point. Density calculations shall be made at the inlet temperature of the heat exchanger."
     evaporator_liquid_differential_pressure:
-      Description: "Pressure drop across the evaporator for the data point" 
+      Description: "Pressure drop across the evaporator for the data point"
       Data Type: "Numeric"
       Units: "kPa"
       Range: ">0"
       Required: True
       Notes: "Pressure drop is as defined in the applicable rating standard."
     evaporator_fouling_factor:
-      Description: "Factor of heat transfer inhibition due to heat exchanger fouling layer for the data point" 
+      Description: "Factor of heat transfer inhibition due to heat exchanger fouling layer for the data point"
       Data Type: "Numeric"
       Units: "m2-K/kW"
       Range: ">=0"
       Required: True
       Notes: "Evaporator fouling factor at which the part load data was measured."
     condenser_liquid_entering_temperature:
-      Description: "Entering condenser liquid temperature for the data point" 
+      Description: "Entering condenser liquid temperature for the data point"
       Data Type: "Numeric"
       Units: "C"
       Range: ">0"
       Required: True
       Notes: "Condenser liquid temperature at the entry flange of the chiller’s condenser for the part load data point."
     condenser_liquid_leaving_temperature:
-      Description: "Leaving condenser liquid temperature for the data point" 
+      Description: "Leaving condenser liquid temperature for the data point"
       Data Type: "Numeric"
       Units: "C"
       Range: ">0"
       Required: True
       Notes: "Condenser liquid temperature at the exit flange of the chiller’s condenser for the part load data point."
     condenser_liquid_volumetric_flow_rate:
-      Description: "Condenser liquid flow for the data point" 
+      Description: "Condenser liquid flow for the data point"
       Data Type: "Numeric"
       Units: "l/s"
       Range: ">0"
       Required: True
       Notes: "Condenser liquid volumetric flow rate for the part load data point. Density calculations shall be made at the inlet temperature of the heat exchanger."
     condenser_liquid_dfferential_pressure:
-      Description: "Pressure drop across the condenser for the data point" 
+      Description: "Pressure drop across the condenser for the data point"
       Data Type: "Numeric"
       Units: "kPa"
       Range: ">0"
       Required: True
       Notes: "Pressure drop is as defined in the applicable rating standard."
     condenser_fouling_factor:
-      Description: "Factor of heat transfer inhibition due to heat exchanger fouling layer for the data point" 
+      Description: "Factor of heat transfer inhibition due to heat exchanger fouling layer for the data point"
       Data Type: "Numeric"
       Units: "m2-K/kW"
       Range: ">=0"
@@ -542,157 +548,157 @@ PartLoadRatingPoint551591:
       Notes: "Condenser fouling factor at which the part load data was measured."
 
 Performance:
-  type: DataGroup
+  Object Type: "Data Group"
   Data Elements:
     evaporator_liquid_type:
-      Description: "Type of liquid in evaporator" 
+      Description: "Type of liquid in evaporator"
       Data Type: "{LiquidMixture}"
       Required: True
       Notes: "LiquidMixture specifies liquid constituents and their concentrations, see Standard 205 Common Enumerations. Density shall be evaluated at the evaporator inlet liquid temperature."
     condenser_liquid_type:
-      Description: "Type of liquid in condenser" 
+      Description: "Type of liquid in condenser"
       Data Type: "{LiquidMixture}"
       Required: True
       Notes: "LiquidMixture specifies liquid constituents and their concentrations, see Standard 205 Common Enumerations. Density shall be evaluated at the condenser inlet liquid temperature."
     evaporator_fouling_factor:
-      Description: "Factor of heat transfer inhibition due to heat exchanger fouling layer" 
+      Description: "Factor of heat transfer inhibition due to heat exchanger fouling layer"
       Data Type: "Numeric"
       Units: "m2-K/W"
       Range: ">=0"
       Required: True
       Notes: "Evaporator fouling factor at which the performance map was created. This may be different from the certification data supplied."
     condenser_fouling_factor:
-      Description: "Factor of heat transfer inhibition due to heat exchanger fouling layer" 
+      Description: "Factor of heat transfer inhibition due to heat exchanger fouling layer"
       Data Type: "Numeric"
       Units: "m2-K/W"
       Range: ">=0"
       Required: True
       Notes: "Condenser fouling factor at which the performance map was created. This may be different from the certification data supplied."
     unit_power_limit:
-      Description: "Maximum unit power input" 
+      Description: "Maximum unit power input"
       Data Type: "Numeric"
       Units: "W"
       Range: ">0"
       Notes: "Maximum power input the chiller can operate at reliably and continuously at any condition in the operating envelope."
     cycling_degradation_coefficient:
-      Description: "Cycling degradation coefficient (CD) as described in AHRI 550/590 or AHRI 551/591" 
+      Description: "Cycling degradation coefficient (CD) as described in AHRI 550/590 or AHRI 551/591"
       Data Type: "Numeric"
       Units: "-"
       Range: ">=0, <=1.0"
       Required: True
       Notes: "Used for the lowest stage where the unit cycles to meet a setpoint."
     performance_map_cooling:
-      Description: "Data group describing cooling performance over a range of conditions" 
+      Description: "Data group describing cooling performance over a range of conditions"
       Data Type: "{PerformanceMapCooling}"
       Required: True
     performance_map_standby:
-      Description: "Data group describing standby performance" 
+      Description: "Data group describing standby performance"
       Data Type: "{PerformanceMapStandby}"
       Required: True
 
 PerformanceMapCooling:
-  type: DataGroup
+  Object Type: "Data Group"
   Data Elements:
     grid_variables:
-      Description: "Data group defining the grid variables for cooling performance" 
+      Description: "Data group defining the grid variables for cooling performance"
       Data Type: "{GridVariablesCooling}"
       Required: True
     lookup_variables:
-      Description: "Data group defining the lookup variables for cooling performance" 
+      Description: "Data group defining the lookup variables for cooling performance"
       Data Type: "{LookupVariablesCooling}"
       Required: True
 
 GridVariablesCooling:
-  type: DataGroup
+  Object Type: "Data Group"
   Data Elements:
     evaporator_liquid_volumetric_flow_rate:
-      Description: "Chilled liquid (evaporator) flow" 
+      Description: "Chilled liquid (evaporator) flow"
       Data Type: "[Numeric]"
       Units: "m3/s"
       Range: ">0"
       Required: True
     evaporator_liquid_leaving_temperature:
-      Description: "Leaving evaporator liquid temperature" 
+      Description: "Leaving evaporator liquid temperature"
       Data Type: "[Numeric]"
       Units: "K"
       Range: ">0"
       Required: True
     condenser_liquid_volumetric_flow_rate:
-      Description: "Condenser liquid flow" 
+      Description: "Condenser liquid flow"
       Data Type: "[Numeric]"
       Units: "m3/s"
       Range: ">0"
       Required: True
     condenser_liquid_entering_temperature:
-      Description: "Entering condenser liquid temperature" 
+      Description: "Entering condenser liquid temperature"
       Data Type: "[Numeric]"
       Units: "K"
       Range: ">0"
       Required: True
     net_evaporator_capacity_fraction:
-      Description: "Fraction of maximum net capacity at the same operating conditions" 
+      Description: "Fraction of maximum net capacity at the same operating conditions"
       Data Type: "[Numeric]"
       Range: ">=0, <=1"
       Required: True
       Notes: "Ratio of net_evaporator_capacity to the maximum evaporator capacity at the same operating conditions"
 
 LookupVariablesCooling:
-  type: DataGroup
+  Object Type: "Data Group"
   Data Elements:
     input_power:
-      Description: "Total power input to the packaged chiller" 
+      Description: "Total power input to the packaged chiller"
       Data Type: "[Numeric]"
       Units: "W"
       Range: ">0"
       Required: True
       Notes: "All power consumed by the chiller, including controls, motors, variable speed drives, purge units, sump heaters, fans, etc."
     net_evaporator_capacity:
-      Description: "Unit refrigeration capacity" 
+      Description: "Unit refrigeration capacity"
       Data Type: "[Numeric]"
       Units: "W"
       Range: ">=0"
       Required: True
       Notes: "The available cooling capacity of the evaporator to the thermal load calculated using only the sensible heat transfer."
     net_condenser_capacity:
-      Description: "Condenser heat rejection" 
+      Description: "Condenser heat rejection"
       Data Type: "[Numeric]"
       Units: "W"
       Range: ">=0"
       Required: True
       Notes: "The capacity of the condenser transferred to the condenser cooling stream using only the sensible heat transfer."
     evaporator_liquid_entering_temperature:
-      Description: "Entering evaporator liquid temperature" 
+      Description: "Entering evaporator liquid temperature"
       Data Type: "[Numeric]"
       Units: "K"
       Range: ">0"
       Required: True
     condenser_liquid_leaving_temperature:
-      Description: "Leaving condenser liquid temperature" 
+      Description: "Leaving condenser liquid temperature"
       Data Type: "[Numeric]"
       Units: "K"
       Range: ">0"
       Required: True
     evaporator_liquid_differential_pressure:
-      Description: "Pressure drop across the evaporator" 
+      Description: "Pressure drop across the evaporator"
       Data Type: "[Numeric]"
       Units: "Pa"
       Range: ">0"
       Required: True
     condenser_liquid_differential_pressure:
-      Description: "Pressure drop across the condenser" 
+      Description: "Pressure drop across the condenser"
       Data Type: "[Numeric]"
       Units: "Pa"
       Range: ">0"
       Required: True
     oil_cooler_heat:
-      Description: "Heat rejected by the motor control center cooling (if separate stream crossing the control volume boundary)" 
+      Description: "Heat rejected by the motor control center cooling (if separate stream crossing the control volume boundary)"
       Data Type: "[Numeric]"
       Units: "W"
       Range: ">=0"
       Required: True
       Notes: "Heat transferred to another liquid crossing the control volume boundary from the chiller oil cooler. /nNULL if not present."
     motor_controller_heat:
-      Description: "Heat rejected by the motor control center cooling (if separate stream crossing the control volume boundary)" 
+      Description: "Heat rejected by the motor control center cooling (if separate stream crossing the control volume boundary)"
       Data Type: "[Numeric]"
       Units: "W"
       Range: ">=0"
@@ -700,32 +706,32 @@ LookupVariablesCooling:
       Notes: "Heat transferred to another liquid crossing the control volume boundary from the chiller motor controller (inverter drive, starter, etc)./nNULL if not present."
 
 PerformanceMapStandby:
-  type: DataGroup
+  Object Type: "Performance Map"
   Data Elements:
     grid_variables:
-      Description: "Data group defining the grid variables for standby performance" 
+      Description: "Data group defining the grid variables for standby performance"
       Data Type: "{GridVariablesStandby}"
       Required: True
     lookup_variables:
-      Description: "Data group defining the lookup variables for standby performance" 
+      Description: "Data group defining the lookup variables for standby performance"
       Data Type: "{LookupVariablesStandby}"
       Required: True
 
 GridVariablesStandby:
-  type: DataGroup
+  Object Type: "Grid Variables"
   Data Elements:
     chiller_environment_dry_bulb_temperature:
-      Description: "Dry bulb temperature of the air in the environment of the chiller" 
+      Description: "Dry bulb temperature of the air in the environment of the chiller"
       Data Type: "[Numeric]"
       Units: "K"
       Range: ">0"
       Required: True
 
 LookupVariablesStandby:
-  type: DataGroup
+  Object Type: "Lookup Variables"
   Data Elements:
     input_power:
-      Description: "Total power consumed by the chiller when not running. Value shall include all power sources and all auxiliary equipment provided with the chiller." 
+      Description: "Total power consumed by the chiller when not running. Value shall include all power sources and all auxiliary equipment provided with the chiller."
       Data Type: "[Numeric]"
       Units: "W"
       Range: ">=0"
