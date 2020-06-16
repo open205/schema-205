@@ -1,0 +1,60 @@
+{
+    "type": "object",
+    "properties": {
+        "Object Type": {
+            "enum": ["Data Element", "Enumeration", "Data Group"]
+        }
+    },
+    "allOf": [
+      {
+        "if": {
+          "properties": { "Object Type": { "const": "Data Element" } }
+        },
+        "then": {
+          "properties": {
+            "Description": {"type": "string"},
+            "JSON schema type":  {"type": "string"},
+            "Examples":  {"type": "string"},
+            "JSON schema pattern":  {"type": "string"}
+          }
+        }
+      },
+      {
+        "if": {
+          "properties": { "Object Type": { "const": "Enumeration" } }
+        },
+        "then": {
+          "properties": {
+              "Enumerators": {
+                "type": "object",
+                "properties": {
+                    "Description": {"type": "string"},
+                    "Display Text": {"type": "string"},
+                    "Notes": {"type": "string"}
+                }
+              }
+            }
+        }
+      },
+      {
+        "if": {
+            "properties": { "Object Type": { "const": "Data Group" } }
+          },
+          "then": {
+            "properties": {
+                "Data Elements": {
+                  "type": "object",
+                  "properties": {
+                      "Description": {"type": "string"},
+                      "Data Type": {"type": "string"},
+                      "Units": {"type": "string"},
+                      "Range": {"type": "string"},
+                      "Required": {"type": "boolean"},
+                      "Notes": {"type": "string"}
+                  }
+                }
+              }
+          }
+        }
+    ]
+  }
