@@ -28,3 +28,40 @@ NameOfDataGroup:
       Range: "The acceptable range for the data element (<,>,<=,>=)"
       Required: "Whether the data element is required (True/False)"
       Notes: "Any notes needed for the data element"
+
+
+Data Types:
+  - NameOfDataType1:
+      Description: "The description of the data element type"
+      JSON schema type: "The type as defined by JSON types"
+      Examples: "Examples for the data element type"
+      JSON schema pattern: "The regular expression defining the allowable construction for specific string data elements"
+  - NameOfDataType2:
+      Description: "The description of the data element type"
+      JSON schema type: "The type as defined by JSON types"
+      Examples: "Examples for the data element type"
+      JSON schema pattern: "The regular expression defining the allowable construction for specific string data elements"
+
+Enumerations:
+  - NameOfEnumeration1:
+      Enumerators:
+        Enumerator Name:
+          Description: "The definition of the item"
+          Display Text: "The human readable name of the item"
+          Notes: "Any notes for the enumerator."
+        Enumerator Name:
+          Description: "The definition of the item"
+          Display Text: "The human readable name of the item"
+          Notes: "Any notes for the enumerator."
+
+DataGroups:
+  - NameOfDataGroup1:
+      Data Elements:
+        Element 1:
+          Description: "The description of the data element"
+          Data Type: "The type of data element"
+          Units: "The units for the data element"
+          Range: "The acceptable range for the data element (<,>,<=,>=)"
+          Required: "Whether the data element is required (True/False)"
+          Notes: "Any notes needed for the data element"
+
