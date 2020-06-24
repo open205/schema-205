@@ -8,10 +8,12 @@ Schema:
   References:
     - "ASHRAE205"
   Title: "Liquid-Cooled Chiller"
+  Description: "Schema for ASHRAE 205 annex RS0001: Liquid-Cooled Chiller"
 
 # Local Enumerations
 SpeedControlType:
   Object Type: "Enumeration"
+  Description: "Type of electrical motor drive"
   Enumerators:
     CONSTANT_SPEED:
       Description: "Compressor without speed control."
@@ -22,15 +24,16 @@ SpeedControlType:
 
 StandardRatingVersion:
   Object Type: "Enumeration"
+  Description: "Version"
   Enumerators:
     AHRI_550_590_2015:
       Description: "Ratings and design points defined using IP unit version of the standard, 2015 edition."
       Notes: "Published 2015, effective 2016-Apr-01."
-      Display Text: "AHRI 550 590 2015"
+      Display Text: "AHRI 550/590 2015"
     AHRI_551_591_2015:
       Description: "Ratings and design points defined using SI unit version of the standard, 2015 edition."
       Notes: "Published 2015, effective 2016-Apr-01."
-      Display Text: "AHRI 551 591 2015"
+      Display Text: "AHRI 551/591 2015"
     AHRI_550_590_2015_ADDENDUM_1:
       Description: "Ratings and design points defined using IP unit version of the standard, 2015 edition with Addendum 1."
       Notes: "Published September 2017."
@@ -200,7 +203,7 @@ RatingAHRI550590:
       Description: "Factor of heat transfer inhibition due to heat exchanger fouling layer at the full load design point rating condition"
       Data Type: "Numeric"
       Units: "h-ft2-F/Btu"
-      Range: ">0"
+      Range: ">=0"
       Required: True
       Notes: "Evaporator fouling factor at which the full rating condition was measured."
     full_load_condenser_liquid_volumetric_flow_rate:
@@ -235,7 +238,7 @@ RatingAHRI550590:
       Description: "Factor of heat transfer inhibition due to heat exchanger fouling layer at the full load design point rating condition"
       Data Type: "Numeric"
       Units: "h-ft2-F/Btu"
-      Range: ">0"
+      Range: ">=0"
       Required: True
       Notes: "Condenser fouling factor at which the full rating condition was measured."
     rating_reproducible_from_performance_data:
@@ -377,7 +380,7 @@ RatingAHRI551591:
       Notes: "Represents the IPLV.SI or NPLV.SI based on the COP."
     part_load_rating_points:
       Description: "The four measured data points used to calculate the part load rating value"
-      Data Type: "[{PartLoadRatingPoint551591}]"
+      Data Type: "[{PartLoadRatingPoint551591}][4]"
       Notes: "The measured data for all 4 points used to calculate the IPLV or NPLV rating point shall be given."
     full_load_evaporator_liquid_volumetric_flow_rate:
       Description: "Chilled liquid flow at the full load design point rating condition"
@@ -411,7 +414,7 @@ RatingAHRI551591:
       Description: "Factor of heat transfer inhibition due to heat exchanger fouling layer at the full load design point rating condition"
       Data Type: "Numeric"
       Units: "m2-K/kW"
-      Range: ">0"
+      Range: ">=0"
       Required: True
       Notes: "Evaporator fouling factor at which the full rating condition was measured."
     full_load_condenser_liquid_volumetric_flow_rate:
@@ -446,7 +449,7 @@ RatingAHRI551591:
       Description: "Factor of heat transfer inhibition due to heat exchanger fouling layer at the full load design point rating condition"
       Data Type: "Numeric"
       Units: "m2-K/kW"
-      Range: ">0"
+      Range: ">=0"
       Required: True
       Notes: "Condenser fouling factor at which the full rating condition was measured."
     rating_reproducible_from_performance_data:
