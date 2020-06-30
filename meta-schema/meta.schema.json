@@ -1,0 +1,219 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "ASHRAE Standard 205 Meta-schema",
+  "definitions": {
+    "ObjectType": {
+      "type": "string",
+      "enum": [
+        "Meta",
+        "Data Type",
+        "Enumeration",
+        "Data Group"
+      ]
+    },
+    "Meta": {
+      "type": "object",
+      "properties": {
+        "Object Type": {
+          "$ref": "meta.schema.json#/definitions/ObjectType"
+        },
+        "Title": {
+          "type": "string"
+        },
+        "Description": {
+          "type": "string"
+        },
+        "Version": {
+          "type": "string"
+        },
+        "Root Data Group": {
+          "type": "string"
+        },
+        "References": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "required": [
+        "Object Type"
+      ],
+      "additionalProperties": false
+    },
+    "DataType": {
+      "type": "object",
+      "properties": {
+        "Object Type": {
+          "$ref": "meta.schema.json#/definitions/ObjectType"
+        },
+        "Description": {
+          "type": "string"
+        },
+        "JSON Schema Type": {
+          "type": "string",
+          "enum": [
+            "string",
+            "number",
+            "integer",
+            "boolean",
+            "null"
+          ]
+        },
+        "JSON Schema Pattern": {
+          "type": "string"
+        },
+        "Examples": {
+          "type": "array"
+        },
+        "Is Regex": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "Object Type",
+        "JSON Schema Type"
+      ],
+      "additionalProperties": false
+    },
+    "Enumerator": {
+      "type": "object",
+      "patternProperties": {
+        "(^([A-Z]*)(_([A-Z]*|[0-9]*))*$)": {
+          "type": "object",
+          "properties": {
+            "Description": {
+              "type": "string"
+            },
+            "Display Text": {
+              "type": "string"
+            },
+            "Notes": {
+              "type": "string"
+            }
+          },
+          "required": []
+        }
+      }
+    },
+    "Enumeration": {
+      "type": "object",
+      "properties": {
+        "Object Type": {
+          "$ref": "meta.schema.json#/definitions/ObjectType"
+        },
+        "Enumerators": {
+          "$ref": "meta.schema.json#/definitions/Enumerator"
+        }
+      },
+      "required": [
+        "Object Type",
+        "Enumerators"
+      ],
+      "additionalProperties": false
+    },
+    "DataElement": {
+      "type": "object",
+      "patternProperties": {
+        "(^([A-Z]*|[a-z]*)(_([a-z]*|[0-9]*)|([A-Z]*|[0-9]*))*$)": {
+          "type": "object",
+          "properties": {
+            "Description": {
+              "type": "string"
+            },
+            "Data Type": {
+              "type": "string"
+            },
+            "Range": {
+              "type": "string"
+            },
+            "Required": {
+              "type": "boolean"
+            },
+            "Notes": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "Description",
+            "Data Type"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    },
+    "DataGroup": {
+      "type": "object",
+      "properties": {
+        "Object Type": {
+          "$ref": "meta.schema.json#/definitions/ObjectType"
+        },
+        "Data Elements": {
+          "$ref": "meta.schema.json#/definitions/DataElement"
+        }
+      },
+      "required": [
+        "Object Type",
+        "Data Elements"
+      ],
+      "additionalProperties": false
+    }
+  },
+  "type": "object",
+  "patternProperties": {
+    "(^[A-Z]([A-Z]|[a-z]|[0-9])*$)": {
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "Object Type": {
+                "const": "Meta"
+              }
+            }
+          },
+          "then": {
+            "$ref": "meta.schema.json#/definitions/Meta"
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "Object Type": {
+                "const": "Data Type"
+              }
+            }
+          },
+          "then": {
+            "$ref": "meta.schema.json#/definitions/DataType"
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "Object Type": {
+                "const": "Data Group"
+              }
+            }
+          },
+          "then": {
+            "$ref": "meta.schema.json#/definitions/DataGroup"
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "Object Type": {
+                "const": "Enumeration"
+              }
+            }
+          },
+          "then": {
+            "$ref": "meta.schema.json#/definitions/Enumeration"
+          }
+        }
+      ]
+    }
+  },
+  "additionalProperties": false
+}
