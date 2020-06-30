@@ -1,5 +1,5 @@
 # ASHRAE205.schema.yaml
-# The purpose of this "open205 schema" is to provide a single source generator format from which 
+# The purpose of this "open205 schema" is to provide a single source generator format from which
 # all open205 standard materials, both normative and informative, will be created.
 
 # YAML single-source files will be created in accordance with the open205 schema.
@@ -106,7 +106,7 @@ RSID:
     RS0002:
       Description: "Unitary Cooling Air-Conditioning Equipment"
     RS0003:
-      Description: "Fan Assembly" 
+      Description: "Fan Assembly"
     RS0004:
       Description: "Air-to-Air Direct Expansion Refrigerant Coil System"
     RS0005:
@@ -304,39 +304,39 @@ CondenserType:
   Enumerators:
     AIR:
       Description: "Air-cooled condenser"
-      Display Text: "Air"    
+      Display Text: "Air"
     WATER:
       Description: "Water-cooled condenser"
       Display Text: "Water"
     EVAPORATIVE:
       Description: "Evaporative condenser"
-      Display Text: "Evaporative"  
-      
+      Display Text: "Evaporative"
+
 LiquidConstituent:
   Object Type: "Enumeration"
   Enumerators:
     WATER:
       Description: "Water"
       Display Text: "Water"
-    PROPYLENE_GLYCOL:     
+    PROPYLENE_GLYCOL:
       Description: "Propylene glycol"
-      Display Text: "Propylene Glycol" 
-    ETHYLENE_GLYCOL:     
+      Display Text: "Propylene Glycol"
+    ETHYLENE_GLYCOL:
       Description: "Ethylene glycol"
-      Display Text: "Ethylene Glycol" 
-    SEA_WATER:     
+      Display Text: "Ethylene Glycol"
+    SEA_WATER:
       Description: "Salt water from a sea"
       Display Text: "Sea Water"
-      
+
 ConcentrationType:
   Object Type: "Enumeration"
   Enumerators:
     BY_VOLUME:
-      Description: "Concentration is defined as a fraction of total liquid mixture volume"  
-      Display Text: "By Volume"    
+      Description: "Concentration is defined as a fraction of total liquid mixture volume"
+      Display Text: "By Volume"
     BY_MASS:
-      Description: "Concentration is defined as a fraction of total liquid mixture mass"  
-      Display Text: "By Mass"   
+      Description: "Concentration is defined as a fraction of total liquid mixture mass"
+      Display Text: "By Mass"
 
 #Common Data Groups
 ASHRAE205:
@@ -415,5 +415,4 @@ LiquidComponent:
       Description: "Concentration of this component of the mixture"
       Data Type: "Numeric"
       Range: ">=0, <=1.0"
-      Notes: "If omitted, it is assumed to share equal portions with any other component with no defined concentration. e.g., can be left blank for the primary component." 
-      
+      Notes: "If omitted, it is assumed to share equal portions with any other component with no defined concentration. e.g., can be left blank for the primary component."
