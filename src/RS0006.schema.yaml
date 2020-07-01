@@ -8,7 +8,6 @@ Schema:
 # Local Enumerations
 CoolingMethod:
   Object Type: "Enumeration"
-  Description: "Type of electrical motor drive"
   Enumerators:
     PASSIVE_COOLED:
       Description: "Drive is cooled using natural air convection within the surrounding environment"
@@ -52,7 +51,7 @@ ProductInformation:
       model_number:
         Description: "Model number"
         Data Type: "Pattern"
-        Note: "Pattern shall match all model numbers that can be represented by the *representation*"
+        Notes: "Pattern shall match all model numbers that can be represented by the *representation*"
         Required: True
 
 Performance:

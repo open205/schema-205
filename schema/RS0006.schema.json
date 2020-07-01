@@ -63,7 +63,7 @@
         "model_number": {
           "description": "Model number",
           "$ref": "ASHRAE205.schema.json#/definitions/Pattern",
-          "note": "Pattern shall match all model numbers that can be represented by the *representation*"
+          "notes": "Pattern shall match all model numbers that can be represented by the *representation*"
         }
       },
       "required": [
@@ -79,13 +79,13 @@
           "description": "Maximum power draw of the drive",
           "type": "number",
           "units": "W",
-          "minimum": 0
+          "minimum": 0.0
         },
         "standby_power": {
           "description": "Power draw when the motor is not operating",
           "type": "number",
           "units": "W",
-          "minimum": 0
+          "minimum": 0.0
         },
         "cooling_method": {
           "description": "Method used to cool the electronic drive.",
@@ -131,7 +131,7 @@
           "minItems": 1,
           "items": {
             "type": "number",
-            "minimum": 0
+            "minimum": 0.0
           },
           "units": "W"
         }
@@ -153,8 +153,8 @@
               "number",
               "null"
             ],
-            "minimum": 0,
-            "maximum": 1
+            "minimum": 0.0,
+            "maximum": 1.0
           },
           "units": "-",
           "notes": "Defined as the ratio of electrical output power (to the motor) to electrical input power (into the drive). Input power shall include any power required to provide active air cooling for the drive."
