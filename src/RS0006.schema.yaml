@@ -1,0 +1,113 @@
+Schema:
+  Object Type: "Meta"
+  References:
+    - "ASHRAE205"
+  Title: "Electronic Motor Drive"
+  Description: "Schema for ASHRAE 205 annex RS0006: Electronic Motor Drive"
+
+# Local Enumerations
+CoolingMethod:
+  Object Type: "Enumeration"
+  Description: "Type of electrical motor drive"
+  Enumerators:
+    PASSIVE_COOLED:
+      Description: "Drive is cooled using natural air convection within the surrounding environment"
+      Display Text: "Passive Cooled"
+      Notes: "All drive efficiency losses are assumed to be added as heat to the surrounding environment."
+    ACTIVE_AIR_COOLED:
+      Description: "Drive is cooled using forced air convection within the surrounding environment"
+      Display Text: "Active Air Cooled"
+      Notes: "Electrical power required for the active cooling system shall be included in the efficiency of the drive. All drive efficiency losses are assumed to be added as heat to the surrounding environment."
+    ACTIVE_LIQUID_COOLED:
+      Description: "Drive is cooled using forced liquid convection, transferring heat to the liquid"
+      Display Text: "Active Liquid Cooled"
+      Notes: "Any liquid pumping power shall be modeled external to the drive by the application software. All drive efficiency losses are assumed to be added as heat to the liquid stream."
+
+# Data Groups
+RS0006:
+  Object Type: "Data Group"
+  Data Elements:
+    description:
+      Description: "Data group describing product and rating information"
+      Data Type: "{Description}"
+    performance:
+      Description: "Data group containing performance information"
+      Data Type: "{Performance}"
+      Required: True
+
+Description:
+  Object Type: "Data Group"
+  Data Elements:
+    product_information:
+      Description: "Data group describing product information"
+      Data Type: "{ProductInformation}"
+
+ProductInformation:
+  Object Type: "Data Group"
+  Data Elements:
+      manufacturer:
+        Description: "Name of the manufacturer"
+        Data Type: "String"
+        Required: True
+      model_number:
+        Description: "Model number"
+        Data Type: "Pattern"
+        Note: "Pattern shall match all model numbers that can be represented by the *representation*"
+        Required: True
+
+Performance:
+  Object Type: "Data Group"
+  Data Elements:
+    maximum_power:
+      Description: "Maximum power draw of the drive"
+      Data Type: "Numeric"
+      Units: "W"
+      Range: ">=0"
+      Required: True
+    standby_power:
+      Description: "Power draw when the motor is not operating"
+      Data Type: "Numeric"
+      Units: "W"
+      Range: ">=0"
+      Required: True
+    cooling_method:
+      Description: "Method used to cool the electronic drive."
+      Data Type: "{CoolingMethod}"
+      Required: True
+    performance_map:
+      Description: "Data group describing drive performance when operating"
+      Data Type: "{PerformanceMap}"
+      Required: True
+
+PerformanceMap:
+  Object Type: "Performance Map"
+  Data Elements:
+    grid_variables:
+      Description: "Data group describing grid variables for drive performance"
+      Data Type: "{GridVariables}"
+      Required: True
+    lookup_variables:
+      Description: "Data group describing lookup variables for drive performance"
+      Data Type: "{LookupVariables}"
+      Required: True
+
+GridVariables:
+  Object Type: "Grid Variables"
+  Data Elements:
+    output_power:
+      Description: "Power delivered to the motor"
+      Data Type: "[Numeric]"
+      Range: ">=0"
+      Units: "W"
+      Required: True
+
+LookupVariables:
+  Object Type: "Lookup Variables"
+  Data Elements:
+    efficiency:
+      Description: "Efficiency of drive"
+      Data Type: "[Numeric]"
+      Range: ">=0,<=1"
+      Units: "-"
+      Notes: "Defined as the ratio of electrical output power (to the motor) to electrical input power (into the drive). Input power shall include any power required to provide active air cooling for the drive."
+      Required: True

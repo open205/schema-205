@@ -600,7 +600,7 @@ Performance:
       Required: True
 
 PerformanceMapCooling:
-  Object Type: "Data Group"
+  Object Type: "Performance Map"
   Data Elements:
     grid_variables:
       Description: "Data group defining the grid variables for cooling performance"
@@ -612,7 +612,7 @@ PerformanceMapCooling:
       Required: True
 
 GridVariablesCooling:
-  Object Type: "Data Group"
+  Object Type: "Grid Variables"
   Data Elements:
     evaporator_liquid_volumetric_flow_rate:
       Description: "Chilled liquid (evaporator) flow"
@@ -646,7 +646,7 @@ GridVariablesCooling:
       Notes: "Ratio of net_evaporator_capacity to the maximum evaporator capacity at the same operating conditions"
 
 LookupVariablesCooling:
-  Object Type: "Data Group"
+  Object Type: "Lookup Variables"
   Data Elements:
     input_power:
       Description: "Total power input to the packaged chiller"
