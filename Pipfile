@@ -10,3 +10,4 @@ pipenv = "*"
 [packages]
 jsonschema = "*"
 pyyaml = "*"
+pytablewriter = "*"
