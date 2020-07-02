@@ -7,6 +7,7 @@
       "enum": [
         "Meta",
         "Data Type",
+        "String Type",
         "Enumeration",
         "Data Group"
       ]
@@ -60,6 +61,27 @@
             "null"
           ]
         },
+        "Examples": {
+          "type": "array"
+        }
+      },
+      "required": [
+        "Object Type",
+        "Description",
+        "JSON Schema Type",
+        "Examples"
+      ],
+      "additionalProperties": false
+    },
+    "StringType": {
+      "type": "object",
+      "properties": {
+        "Object Type": {
+          "$ref": "meta.schema.json#/definitions/ObjectType"
+        },
+        "Description": {
+          "type": "string"
+        },
         "JSON Schema Pattern": {
           "type": "string"
         },
@@ -72,15 +94,16 @@
       },
       "required": [
         "Object Type",
-        "JSON Schema Type"
+        "Description",
+        "Examples"
       ],
       "additionalProperties": false
     },
     "Enumerator": {
       "type": "object",
       "patternProperties": {
-        "(^([A-Z]*)(_([A-Z]*|[0-9]*))*$)": {
-          "type": "object",
+        "(^([A-Z]+([A-Z]|[0-9])*)(_([A-Z]*|[0-9]*))*$)": {
+          "type": ["object", "null"],
           "properties": {
             "Description": {
               "type": "string"
@@ -92,9 +115,11 @@
               "type": "string"
             }
           },
-          "required": []
+          "required": [],
+          "additionalProperties": false
         }
-      }
+      },
+      "additionalProperties": false
     },
     "Enumeration": {
       "type": "object",
@@ -122,6 +147,9 @@
               "type": "string"
             },
             "Data Type": {
+              "type": "string"
+            },
+            "Units": {
               "type": "string"
             },
             "Range": {
@@ -186,6 +214,18 @@
           },
           "then": {
             "$ref": "meta.schema.json#/definitions/DataType"
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "Object Type": {
+                "const": "String Type"
+              }
+            }
+          },
+          "then": {
+            "$ref": "meta.schema.json#/definitions/StringType"
           }
         },
         {
