@@ -26,4 +26,8 @@ jobs:
         run: pipenv run validate
       - name: Build Markdown Documentation
         run: pipenv run doc
-
+      - name: Upload Markdown Documentation
+        uses: actions/upload-artifact@v2
+        with:
+          name: markdown-tables
+          path: build/docs
