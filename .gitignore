@@ -1,1 +1,3 @@
-scripts/RefrigerantType.schema.yaml
+schema205/RefrigerantType.schema.yaml
+build/
+*.egg-info/

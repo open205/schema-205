@@ -5,9 +5,15 @@ verify_ssl = true
 
 [dev-packages]
 pytest = "*"
-pipenv = "*"
+pbr = "*"
 
 [packages]
 jsonschema = "*"
 pyyaml = "*"
 pytablewriter = "*"
+
+schema205 = {editable = true,path = "."}
+
+[scripts]
+validate = "python schema205/validate.py"
+doc = "python schema205/markdown.py"

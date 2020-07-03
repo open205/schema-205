@@ -13,7 +13,6 @@ Schema:
 # Local Enumerations
 SpeedControlType:
   Object Type: "Enumeration"
-  Description: "Type of electrical motor drive"
   Enumerators:
     CONSTANT_SPEED:
       Description: "Compressor without speed control."
@@ -24,7 +23,6 @@ SpeedControlType:
 
 StandardRatingVersion:
   Object Type: "Enumeration"
-  Description: "Version"
   Enumerators:
     AHRI_550_590_2015:
       Description: "Ratings and design points defined using IP unit version of the standard, 2015 edition."
@@ -612,7 +610,7 @@ PerformanceMapCooling:
       Required: True
 
 GridVariablesCooling:
-  Object Type: "Grid Variables"
+  Object Type: "Map Variables"
   Data Elements:
     evaporator_liquid_volumetric_flow_rate:
       Description: "Chilled liquid (evaporator) flow"
@@ -646,7 +644,7 @@ GridVariablesCooling:
       Notes: "Ratio of net_evaporator_capacity to the maximum evaporator capacity at the same operating conditions"
 
 LookupVariablesCooling:
-  Object Type: "Lookup Variables"
+  Object Type: "Map Variables"
   Data Elements:
     input_power:
       Description: "Total power input to the packaged chiller"
@@ -721,7 +719,7 @@ PerformanceMapStandby:
       Required: True
 
 GridVariablesStandby:
-  Object Type: "Grid Variables"
+  Object Type: "Map Variables"
   Data Elements:
     chiller_environment_dry_bulb_temperature:
       Description: "Dry bulb temperature of the air in the environment of the chiller"
@@ -731,7 +729,7 @@ GridVariablesStandby:
       Required: True
 
 LookupVariablesStandby:
-  Object Type: "Lookup Variables"
+  Object Type: "Map Variables"
   Data Elements:
     input_power:
       Description: "Total power consumed by the chiller when not running. Value shall include all power sources and all auxiliary equipment provided with the chiller."

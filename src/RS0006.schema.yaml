@@ -91,7 +91,7 @@ PerformanceMap:
       Required: True
 
 GridVariables:
-  Object Type: "Grid Variables"
+  Object Type: "Map Variables"
   Data Elements:
     output_power:
       Description: "Power delivered to the motor"
@@ -101,7 +101,7 @@ GridVariables:
       Required: True
 
 LookupVariables:
-  Object Type: "Lookup Variables"
+  Object Type: "Map Variables"
   Data Elements:
     efficiency:
       Description: "Efficiency of drive"

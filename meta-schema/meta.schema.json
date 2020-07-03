@@ -9,7 +9,9 @@
         "Data Type",
         "String Type",
         "Enumeration",
-        "Data Group"
+        "Data Group",
+        "Performance Map",
+        "Map Variables"
       ]
     },
     "Meta": {
@@ -103,7 +105,10 @@
       "type": "object",
       "patternProperties": {
         "(^([A-Z]+([A-Z]|[0-9])*)(_([A-Z]*|[0-9]*))*$)": {
-          "type": ["object", "null"],
+          "type": [
+            "object",
+            "null"
+          ],
           "properties": {
             "Description": {
               "type": "string"
@@ -137,31 +142,56 @@
       ],
       "additionalProperties": false
     },
+    "DataElementAttributes": {
+      "type": "object",
+      "properties": {
+        "Description": {
+          "type": "string"
+        },
+        "Data Type": {
+          "type": "string"
+        },
+        "Units": {
+          "type": "string",
+          "enum": [
+            "-",
+            "m",
+            "K",
+            "W",
+            "m3/s",
+            "Pa",
+            "m2-K/W",
+            "F",
+            "gpm",
+            "ft of water",
+            "Btu/h",
+            "%",
+            "h-ft2-F/Btu",
+            "Hz",
+            "V",
+            "C",
+            "kW",
+            "m2-K/kW",
+            "kPa",
+            "l/s"
+          ]
+        },
+        "Range": {
+          "type": "string"
+        },
+        "Required": {
+          "type": "boolean"
+        },
+        "Notes": {
+          "type": "string"
+        }
+      }
+    },
     "DataElement": {
       "type": "object",
       "patternProperties": {
         "(^([A-Z]*|[a-z]*)(_([a-z]*|[0-9]*)|([A-Z]*|[0-9]*))*$)": {
-          "type": "object",
-          "properties": {
-            "Description": {
-              "type": "string"
-            },
-            "Data Type": {
-              "type": "string"
-            },
-            "Units": {
-              "type": "string"
-            },
-            "Range": {
-              "type": "string"
-            },
-            "Required": {
-              "type": "boolean"
-            },
-            "Notes": {
-              "type": "string"
-            }
-          },
+          "$ref": "meta.schema.json#/definitions/DataElementAttributes",
           "required": [
             "Description",
             "Data Type"
@@ -172,6 +202,63 @@
       "additionalProperties": false
     },
     "DataGroup": {
+      "type": "object",
+      "properties": {
+        "Object Type": {
+          "$ref": "meta.schema.json#/definitions/ObjectType"
+        },
+        "Data Elements": {
+          "$ref": "meta.schema.json#/definitions/DataElement"
+        }
+      },
+      "required": [
+        "Object Type",
+        "Data Elements"
+      ],
+      "additionalProperties": false
+    },
+    "PerformanceMap": {
+      "type": "object",
+      "properties": {
+        "Object Type": {
+          "$ref": "meta.schema.json#/definitions/ObjectType"
+        },
+        "Data Elements": {
+          "type": "object",
+          "properties": {
+            "grid_variables": {
+              "$ref": "meta.schema.json#/definitions/DataElementAttributes",
+              "required": [
+                "Description",
+                "Data Type",
+                "Required"
+              ],
+              "additionalProperties": false
+            },
+            "lookup_variables": {
+              "$ref": "meta.schema.json#/definitions/DataElementAttributes",
+              "required": [
+                "Description",
+                "Data Type",
+                "Required"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "required": [
+            "grid_variables",
+            "lookup_variables"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "required": [
+        "Object Type",
+        "Data Elements"
+      ],
+      "additionalProperties": false
+    },
+    "MapVariables": {
       "type": "object",
       "properties": {
         "Object Type": {
@@ -232,6 +319,18 @@
           "if": {
             "properties": {
               "Object Type": {
+                "const": "Enumeration"
+              }
+            }
+          },
+          "then": {
+            "$ref": "meta.schema.json#/definitions/Enumeration"
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "Object Type": {
                 "const": "Data Group"
               }
             }
@@ -244,13 +343,36 @@
           "if": {
             "properties": {
               "Object Type": {
-                "const": "Enumeration"
+                "const": "Performance Map"
               }
             }
           },
           "then": {
-            "$ref": "meta.schema.json#/definitions/Enumeration"
+            "$ref": "meta.schema.json#/definitions/PerformanceMap"
           }
+        },
+        {
+          "if": {
+            "properties": {
+              "Object Type": {
+                "const": "Map Variables"
+              }
+            }
+          },
+          "then": {
+            "$ref": "meta.schema.json#/definitions/MapVariables"
+          }
+        },
+        {
+          "type": "object",
+          "properties": {
+            "Object Type": {
+              "$ref": "meta.schema.json#/definitions/ObjectType"
+            }
+          },
+          "required": [
+            "Object Type"
+          ]
         }
       ]
     }
