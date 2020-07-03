@@ -76,7 +76,7 @@ def write_tables(instance, output_path, append=True):
 
     # Data Groups
     writer.headers = ["Data Element Name", "Description", "Data Type", "Units", "Range", "Req", "Notes"]
-    if len(data_types) > 0:
+    if len(data_groups) > 0:
       for dg in data_groups:
         writer.table_name = dg
         data_elements = []
