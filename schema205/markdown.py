@@ -38,7 +38,7 @@ def write_tables(instance, output_path, append=True):
   writer = MarkdownTableWriter()
   writer.margin = 1
 
-  with open(output_path, 'a' if append else 'w') as output_file:
+  with open(output_path, 'a' if append else 'w', encoding="utf-8") as output_file:
 
     # Data Types
     if len(data_types) > 0:
