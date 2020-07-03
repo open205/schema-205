@@ -29,5 +29,5 @@ jobs:
       - name: Upload Markdown Documentation
         uses: actions/upload-artifact@v2
         with:
-          name: markdown-tables
+          name: markdown-tables-${{ matrix.os }}
           path: build/docs
