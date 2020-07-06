@@ -75,7 +75,7 @@ Performance:
         
     drive_representation:
       Description: "The corresponding Standard 205 drive representation"
-      Data Type: "{ASHRAE205}(RS0006)"
+      Data Type: "{ASHRAE205(RS_ID=RS0006)}"
         
     performance_map:
       Description: "Data group describing motor performance when operating"
@@ -96,7 +96,7 @@ PerformanceMap:
       Required: True
       
 GridVariables:
-  Object Type: "Grid Variables"
+  Object Type: "Map Variables"
   Data Elements:
     shaft_power:
       Description: "Delivered rotational shaft power"
@@ -106,11 +106,11 @@ GridVariables:
       Required: True
     
 LookupVariables:
-  Object Type: "Lookup Variables"
+  Object Type: "Map Variables"
   Data Elements:
     efficiency:
       Description: "Efficiency of motor"
-      Data Type: "[Numeric]"
+      Data Type: "[Numeric/Null]"
       Range: ">=0, <=1"
       Units: "-"
       Notes: "Defined as the ratio of mechanical shaft power to electrical input power of the motor."
@@ -118,7 +118,7 @@ LookupVariables:
         
     power_factor:
       Description: "Power factor of the motor"
-      Data Type: "[Numeric]"
+      Data Type: "[Numeric/Null]"
       Range: ">=0, <=1"
       Units: "-"
       Required: True
