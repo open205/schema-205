@@ -79,14 +79,14 @@ class DataGroup:
                     target_dict['minItems'] = 1
                 # 3. 'items' entry
                 target_dict['items'] = dict()
-                k, v = self._get_simple_type(m[0])
-                target_dict['items'][k] = v
+                self._get_simple_type(m[0], target_dict['items'])
+                #target_dict['items'][k] = v
                 if 'Range' in parent_dict:
                     self._get_simple_minmax(parent_dict['Range'], target_dict['items'])
             else:
-                k, v = self._get_simple_type(parent_dict['Data Type'])
+                self._get_simple_type(parent_dict['Data Type'], target_dict)
                 # 1. 'type' entry
-                target_dict[k] = v
+                #target_dict[k] = v
                 # 2. 'm[in/ax]imum' entry
                 self._get_simple_minmax(parent_dict['Range'], target_dict)
         except KeyError as ke:
@@ -94,28 +94,45 @@ class DataGroup:
             pass
 
 
-    def _get_simple_type(self, type_str):
+    def _get_simple_type(self, type_str, target_dict_to_append):
         ''' Return the internal type described by type_str, along with its json-appropriate key.
 
             First, attempt to capture enum, definition, or special string type as references; 
             then default to fundamental types with simple key "type". 
         '''
         enum_or_def = r'(\{|\<)(.*)(\}|\>)'
+        internal_type = None
+        nested_type = None
         m = re.match(enum_or_def, type_str)
         if m:
-            internal_type = m.group(2)
+            m_nested = re.match(r'.*?\((.*)\)', m.group(2))
+            if m_nested:
+                # Rare case of a nested specification has an RS type in parenthesis
+                internal_type = m.group(2).split('(')[0]
+                nested_type = m_nested.group(1)
+            else:
+                internal_type = m.group(2)
         else:
             internal_type = type_str
         for key in self._refs:
             if internal_type in self._refs[key]:
                 internal_type = key + '.schema.json#/definitions/' + internal_type
-                return ('$ref', internal_type)
+                target_dict_to_append['$ref'] = internal_type
+                if nested_type:
+                    # Always in the form 'RS_ID=RSXXXX'
+                    target_dict_to_append['RS_ID'] = nested_type.split('=')[1]
+                return
 
         try:
-            return ('type', self._types[type_str])
+            if '/' in type_str:
+                # e.g. "Numeric/Null" becomes a list of 'type's
+                #return ('type', [self._types[t] for t in type_str.split('/')])
+                target_dict_to_append['type'] = [self._types[t] for t in type_str.split('/')]
+            else:
+                target_dict_to_append['type'] = self._types[type_str]
         except KeyError:
             print('Type not processed:', type_str)
-            return (None, None)
+        return
 
 
     def _get_simple_minmax(self, range_str, target_dict):
@@ -129,11 +146,11 @@ class DataGroup:
                 try:
                     numerical_value = re.findall(r'\d+', r)[0]
                     if '>' in r:
-                        minimum = (float(numerical_value) if target_dict['type'] == 'number' else int(numerical_value))
+                        minimum = (float(numerical_value) if 'number' in target_dict['type'] else int(numerical_value))
                         mn = 'exclusiveMinimum' if '=' not in r else 'minimum'
                         target_dict[mn] = minimum
                     elif '<' in r:
-                        maximum = (float(numerical_value) if target_dict['type'] == 'number' else int(numerical_value))
+                        maximum = (float(numerical_value) if 'number' in target_dict['type']  else int(numerical_value))
                         mx = 'exclusiveMaximum' if '=' not in r else 'maximum'
                         target_dict[mx] = maximum
                 except ValueError:
@@ -202,8 +219,7 @@ class JSON_translator:
                     sch = {**sch, **(self._process_enumeration(base_level_tag))}
                 if (obj_type == 'Data Group' or
                     obj_type == 'Performance Map' or 
-                    obj_type == 'Grid Variables' or
-                    obj_type == 'Lookup Variables'):
+                    obj_type == 'Map Variables'):
                     dg = DataGroup(base_level_tag, self._fundamental_data_types, self._references)
                     sch = {**sch, **(dg.add_data_group(base_level_tag, 
                                      self._contents[base_level_tag]['Data Elements']))}
@@ -225,8 +241,7 @@ class JSON_translator:
                     ['Enumeration', 
                      'Data Group',
                      'String Type',
-                     'Grid Variables', 
-                     'Lookup Variables', 
+                     'Map Variables', 
                      'Performance Map'])]:
                     external_objects.append(base_item)
                 self._references[ref_file] = external_objects
