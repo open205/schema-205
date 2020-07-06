@@ -196,6 +196,8 @@ class JSON_translator:
                 if obj_type == 'String Type':
                     if 'Is Regex' in self._contents[base_level_tag]:
                         sch = {**sch, **({base_level_tag : {"type":"string", "regex":True}})}
+                    else:
+                        sch = {**sch, **({base_level_tag : {"type":"string", "pattern":self._contents[base_level_tag]['JSON Schema Pattern']}})}
                 if obj_type == 'Enumeration':
                     sch = {**sch, **(self._process_enumeration(base_level_tag))}
                 if (obj_type == 'Data Group' or
