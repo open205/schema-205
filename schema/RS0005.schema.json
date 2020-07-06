@@ -46,13 +46,13 @@
           "description": "Input voltage",
           "type": "number",
           "units": "V",
-          "minimum": 0
+          "minimum": 0.0
         },
         "input_frequency": {
           "description": "Input frequency",
           "type": "number",
           "units": "Hz",
-          "minimum": 0
+          "minimum": 0.0
         },
         "number_of_poles": {
           "description": "Number of poles",
@@ -74,18 +74,18 @@
           "description": "Maximum operational input power to the motor",
           "type": "number",
           "units": "W",
-          "minimum": 0,
+          "minimum": 0.0,
           "notes": "This is the operational limit set to prevent overheating or overcurrent. This is not the rated name plate power."
         },
         "standby_power": {
           "description": "Power draw when motor is not operating",
           "type": "number",
           "units": "W",
-          "minimum": 0
+          "minimum": 0.0
         },
         "drive_representation": {
           "description": "The corresponding Standard 205 drive representation",
-          "$ref": "ASHRAE205.schema.json#definitions/ASHRAE205",
+          "$ref": "ASHRAE205.schema.json#/definitions/ASHRAE205",
           "RS": "RS0006"
         },
         "performance_map": {
@@ -127,7 +127,7 @@
           "minItems": 1,
           "items": {
             "type": "number",
-            "minimum": 0
+            "minimum": 0.0
           },
           "units": "W"
         }
@@ -149,8 +149,8 @@
               "number",
               "null"
             ],
-            "minimum": 0,
-            "maximum": 1
+            "minimum": 0.0,
+            "maximum": 1.0
           },
           "units": "-",
           "notes": "Defined as the ratio of mechanical shaft power to electrical input power of the motor."
@@ -164,8 +164,8 @@
               "number",
               "null"
             ],
-            "minimum": 0,
-            "maximum": 1
+            "minimum": 0.0,
+            "maximum": 1.0
           },
           "units": "-"
         }

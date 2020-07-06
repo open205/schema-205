@@ -217,7 +217,7 @@
           "description": "Continuous unit power draw regardless of whether the fan or DX system are operating.",
           "type": "number",
           "units": "W",
-          "minimum": 0,
+          "minimum": 0.0,
           "notes": "Includes on-board controls and other power not otherwise included in the fan or dx system representations."
         },
         "fan_representation": {

@@ -91,7 +91,7 @@
         "cycling_degradation_coefficient": {
           "description": "Cycling degradation coefficient (CD) as described in AHRI 210/240",
           "type": "number",
-          "minimum": 0,
+          "minimum": 0.0,
           "maximum": 1,
           "notes": "Used for the lowest stage where the unit cycles to meet a setpoint. *Informative note:* 340/360 specifies a fixed cycling degradation coefficient of approximately 0.12."
         },
@@ -139,7 +139,7 @@
           "minItems": 1,
           "items": {
             "type": "number",
-            "minimum": 0
+            "minimum": 0.0
           },
           "units": "K"
         },
@@ -149,7 +149,7 @@
           "minItems": 1,
           "items": {
             "type": "number",
-            "minimum": 0,
+            "minimum": 0.0,
             "maximum": 1
           },
           "units": "-",
@@ -161,7 +161,7 @@
           "minItems": 1,
           "items": {
             "type": "number",
-            "minimum": 0
+            "minimum": 0.0
           },
           "units": "K",
           "notes": "As measured immediately before entering the coil (i.e., after the fan in a blow-through configuration)."
@@ -286,7 +286,7 @@
           "minItems": 1,
           "items": {
             "type": "number",
-            "minimum": 0
+            "minimum": 0.0
           },
           "units": "K"
         }
@@ -308,7 +308,7 @@
               "number",
               "null"
             ],
-            "minimum": 0
+            "minimum": 0.0
           },
           "units": "W",
           "notes": "Does not account for power drawn from the indoor fan. Includes compressor, outdoor fan, and any auxiliary power used by the unit’s controls, and any sump heater."

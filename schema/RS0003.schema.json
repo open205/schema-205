@@ -201,21 +201,21 @@
         "nominal_volumetric_air_flow_rate": {
           "description": "Nominal air flow rate for fan assembly",
           "type": "number",
-          "minimum": 0,
+          "minimum": 0.0,
           "units": "m3/s",
           "notes": "Nominal or rated air flow rate at standard air conditions. Used for calculating wet coil pressure drop."
         },
         "wet_coil_pressure_drop": {
           "description": "Additional static pressure drop if cooling coil component is collecting condensate",
           "type": "number",
-          "minimum": 0,
+          "minimum": 0.0,
           "units": "Pa",
           "notes": "Corresponds to pressure drop at nominal_volumetric_air_flow_rate. If unknown, a value of 75 Pa shall be used."
         },
         "heat_loss_fraction": {
           "description": "Fraction of efficiency losses added as heat transferred into the air stream",
           "type": "number",
-          "minimum": 0,
+          "minimum": 0.0,
           "maximum": 1,
           "units": "-",
           "notes": "Used to determine amount of heat from the motor added to the air stream."
@@ -223,13 +223,13 @@
         "maximum_impeller_speed": {
           "description": "Maximum impeller rotational speed",
           "type": "number",
-          "minimum": 0,
+          "minimum": 0.0,
           "units": "rev/s"
         },
         "minimum_impeller_speed": {
           "description": "Minimum impeller rotational speed",
           "type": "number",
-          "minimum": 0,
+          "minimum": 0.0,
           "units": "rev/s",
           "notes": "If no mimumum, use zero."
         },
@@ -284,7 +284,7 @@
           "type": "array",
           "items": {
             "type": "number",
-            "minimum": 0
+            "minimum": 0.0
           },
           "minItems": 2,
           "units": "m3/s"
@@ -294,7 +294,7 @@
           "type": "array",
           "items": {
             "type": "number",
-            "minimum": 0
+            "minimum": 0.0
           },
           "minItems": 2,
           "units": "Pa"
@@ -335,7 +335,7 @@
           "minItems": 1,
           "items": {
             "type": "number",
-            "minimum": 0
+            "minimum": 0.0
           },
           "units": "m3/s",
           "notes": "At *standard air conditions*."
@@ -346,7 +346,7 @@
           "minItems": 1,
           "items": {
             "type": "number",
-            "minimum": 0
+            "minimum": 0.0
           },
           "units": "Pa",
           "notes": "Or external static"
@@ -370,7 +370,7 @@
               "number",
               "null"
             ],
-            "minimum": 0
+            "minimum": 0.0
           },
           "units": "rev/s"
         },
@@ -383,7 +383,7 @@
               "number",
               "null"
             ],
-            "minimum": 0
+            "minimum": 0.0
           },
           "units": "W",
           "notes": "Mechanical shaft power or electric power depending on the data provided by the motor representation."
@@ -434,7 +434,7 @@
           "minItems": 1,
           "items": {
             "type": "number",
-            "minimum": 0
+            "minimum": 0.0
           },
           "units": "Pa",
           "notes": "Or external static"
@@ -458,7 +458,7 @@
               "number",
               "null"
             ],
-            "minimum": 0
+            "minimum": 0.0
           },
           "units": "m3/s",
           "notes": "At *standard air conditions*."
@@ -472,7 +472,7 @@
               "number",
               "null"
             ],
-            "minimum": 0
+            "minimum": 0.0
           },
           "units": "W",
           "notes": "Mechanical shaft power or electric power depending on the data provided by the motor representation."
