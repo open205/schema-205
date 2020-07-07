@@ -218,7 +218,6 @@ SystemCurve:
       Required: True
 
 PerformanceMapContinuous:
-  Description: "Data group describing fan performance in terms of impeller speed static pressure air flow and fan electrical or shaft power"
   Object Type: "Performance Map"
   Data Elements:
     grid_variables:
@@ -266,7 +265,6 @@ LookupVariablesContinuous:
       Required: True
 
 PerformanceMapDiscrete:
-  Description: "Data group describing fan performance in terms of speed setting static pressure air flow and power"
   Object Type: "Performance Map"
   Data Elements:
     grid_variables:
