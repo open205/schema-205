@@ -173,7 +173,8 @@
             "kW",
             "m2-K/kW",
             "kPa",
-            "l/s"
+            "l/s",
+            "rev/s"
           ]
         },
         "Range": {
