@@ -17,3 +17,4 @@ schema205 = {editable = true,path = "."}
 [scripts]
 validate = "python schema205/validate.py"
 doc = "python schema205/markdown.py"
+translate = "python schema205/json_translate.py"

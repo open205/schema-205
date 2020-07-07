@@ -4,7 +4,6 @@ import os
 from collections import OrderedDict
 import re
 import enum
-import sys
 
 def get_extension(file):
     return os.path.splitext(file)[1]
@@ -73,8 +72,13 @@ class DataGroup:
                 target_dict['type'] = 'array'
                 # 2. 'm[in/ax]Items' entry
                 if len(m) > 1:
-                    target_dict['minItems'] = int(m[1])
-                    target_dict['maxItems'] = int(m[1])
+                    # Parse ellipsis range-notation
+                    mnmx = re.match(r'([0-9]*)(\.*\.*)([0-9]*)', m[1])
+                    target_dict['minItems'] = int(mnmx.group(1))
+                    if (mnmx.group(2) and mnmx.group(3)):
+                        target_dict['maxItems'] = int(mnmx.group(3))
+                    elif not mnmx.group(2):
+                        target_dict['maxItems'] = int(mnmx.group(1))
                 else:
                     target_dict['minItems'] = 1
                 # 3. 'items' entry
@@ -84,11 +88,20 @@ class DataGroup:
                 if 'Range' in parent_dict:
                     self._get_simple_minmax(parent_dict['Range'], target_dict['items'])
             else:
-                self._get_simple_type(parent_dict['Data Type'], target_dict)
-                # 1. 'type' entry
-                #target_dict[k] = v
-                # 2. 'm[in/ax]imum' entry
-                self._get_simple_minmax(parent_dict['Range'], target_dict)
+                # If the type is oneOf a set
+                m = re.findall(r'^\((.*)\)', parent_dict['Data Type'])
+                if m:
+                    target_dict['oneOf'] = list()
+                    choices = m[0].split(',')
+                    for c in choices:
+                        c = c.strip()
+                        target_dict['oneOf'].append(dict())
+                        self._get_simple_type(c, target_dict['oneOf'][-1])
+                else:
+                    # 1. 'type' entry
+                    self._get_simple_type(parent_dict['Data Type'], target_dict)
+                    # 2. 'm[in/ax]imum' entry
+                    self._get_simple_minmax(parent_dict['Range'], target_dict)
         except KeyError as ke:
             #print('KeyError; no key exists called', ke)
             pass
@@ -196,10 +209,11 @@ class JSON_translator:
         self._fundamental_data_types = dict()
 
 
-    def load_metaschema(self, input_rs):
+    def load_metaschema(self, source_dir, input_rs):
         ''' '''
         self._input_rs = input_rs
-        input_file_path = os.path.join('..', 'src', input_rs + '.schema.yaml')
+        self._source_dir = source_dir
+        input_file_path = os.path.join(source_dir, input_rs + '.schema.yaml')
         self._contents = load(input_file_path)
         sch = dict()
         # Iterate through the dictionary, looking for known types
@@ -235,7 +249,7 @@ class JSON_translator:
             refs = schema_section['References']
             refs.append(self._input_rs)
             for ref_file in schema_section['References']:
-                ext_dict = load(os.path.join('..', 'src', ref_file + '.schema.yaml'))
+                ext_dict = load(os.path.join(self._source_dir, ref_file + '.schema.yaml'))
                 external_objects = list()
                 for base_item in [name for name in ext_dict if ext_dict[name]['Object Type'] in (
                     ['Enumeration', 
@@ -272,9 +286,27 @@ class JSON_translator:
 
 # -------------------------------------------------------------------------------------------------
 if __name__ == '__main__':
-    j = JSON_translator()
-    sch = j.load_metaschema(sys.argv[1])
-    dump(sch, 'out.json')
+    import sys
+    import glob
 
+    j = JSON_translator()
+    source_dir = os.path.join(os.path.dirname(__file__),'..','src')
+    build_dir = os.path.join(os.path.dirname(__file__),'..','build')
+    if not os.path.exists(build_dir):
+        os.mkdir(build_dir)
+    dump_dir = os.path.join(build_dir,'json')
+    if not os.path.exists(dump_dir):
+        os.mkdir(dump_dir)
+
+    if len(sys.argv) == 2:
+        sch = j.load_metaschema(source_dir, sys.argv[1])
+        dump(sch, os.path.join(dump_dir, sys.argv[1] + '.schema.json'))
+    else:
+        yml = glob.glob(os.path.join(source_dir, 'RS*.schema.yaml'))
+        yml.extend(glob.glob(os.path.join(source_dir, 'ASHRAE205.schema.yaml')))
+        for file_name in yml:
+            file_name_root = os.path.splitext(os.path.splitext(os.path.basename(file_name))[0])[0]
+            dump(j.load_metaschema(source_dir, file_name_root), 
+                 os.path.join(dump_dir, file_name_root + '.schema.json'))
 
 
