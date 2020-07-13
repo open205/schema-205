@@ -267,7 +267,7 @@
           "$ref": "RS0004.schema.json#/definitions/GridVariablesStandby"
         },
         "lookup_variables": {
-          "description": "Data group defining the grid variables for standby performance",
+          "description": "Data group defining the lookup variables for standby performance",
           "$ref": "RS0004.schema.json#/definitions/LookupVariablesStandby"
         }
       },
