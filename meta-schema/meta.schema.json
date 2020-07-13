@@ -165,6 +165,8 @@
             "gpm",
             "ft of water",
             "Btu/h",
+            "Btu/W-h",
+            "W/(m3/s)",
             "%",
             "h-ft2-F/Btu",
             "Hz",
