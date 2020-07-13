@@ -8,6 +8,7 @@ import enum
 def get_extension(file):
     return os.path.splitext(file)[1]
 
+
 def load(input_file_path):
     ext = get_extension(input_file_path).lower()
     if (ext == '.json'):
@@ -18,6 +19,7 @@ def load(input_file_path):
             return yaml.load(input_file, Loader=yaml.FullLoader)
     else:
         raise Exception(f"Unsupported input \"{ext}\".")
+
 
 def dump(content, output_file_path):
     ext = get_extension(output_file_path).lower()
@@ -30,6 +32,45 @@ def dump(content, output_file_path):
 
     else:
         raise Exception(f"Unsupported output \"{ext}\".")
+
+
+def compare_dicts(yaml_file, json_file, error_list):
+    j = load(json_file)
+    y = load(yaml_file)
+    return dict_compare(j, y, error_list)
+
+
+# https://stackoverflow.com/questions/4527942/comparing-two-dictionaries-and-checking-how-many-key-value-pairs-are-equal
+def dict_compare(d1, d2, errors, level=0, lineage=None):
+    if not lineage:
+        lineage = list()
+    if d1 == d2:
+        return True
+    else:
+        if isinstance(d1, dict) and isinstance(d2, dict):
+            d1_keys = sorted(list(d1.keys()))
+            d2_keys = sorted(list(d2.keys()))
+            if d1_keys != d2_keys:
+                added = [k for k in d2_keys if k not in d1_keys]
+                removed = [k for k in d1_keys if k not in d2_keys]
+                err = ''
+                if added:
+                    errors.append(f'Keys added to second dictionary at level {level}, lineage {lineage}: {added}')
+                if removed:
+                    errors.append(f'Keys removed from first dictionary at level {level}, lineage {lineage}: {removed}.')
+                return False
+            else:
+            # Enter this part of the code if both dictionaries have all keys shared at this level
+                shared_keys = d1_keys
+                for k in shared_keys:
+                    dict_compare(d1[k], d2[k], errors, level+1, lineage+[k])
+        elif d1 != d2:
+            # Here, we could use the util.objects_near_equal to compare objects. Currently, d1 and
+            # d2 may have any type, i.e. float 1.0 will be considered equal to int 1.
+            err = f'Mismatch in values: "{d1}" vs. "{d2}" at lineage {lineage}.'
+            errors.append(err)
+            return False
+
 
 # -------------------------------------------------------------------------------------------------
 class DataGroup:
@@ -175,11 +216,11 @@ class Enumeration:
 
     def __init__(self, name, description=None):
         self._name = name
-        self._description = description
         self._enumerants = list() # list of tuple:[value, description, display_text, notes]
         self.entry = dict()
         self.entry[self._name] = dict()
-        self.entry[self._name]['description'] = self._description
+        if description:
+            self.entry[self._name]['description'] = description
 
     def add_enumerator(self, value, description=None, display_text=None, notes=None):
         self._enumerants.append((value, description, display_text, notes))
@@ -222,8 +263,8 @@ class JSON_translator:
                 obj_type = self._contents[base_level_tag]['Object Type']
                 if obj_type == 'Meta':
                     self._load_meta_info(self._contents[base_level_tag])
-                if obj_type == 'Data Type':
-                    self._load_data_type_info(self._contents[base_level_tag])
+                # if obj_type == 'Data Type':
+                #     self._load_data_type_info(self._contents[base_level_tag])
                 if obj_type == 'String Type':
                     if 'Is Regex' in self._contents[base_level_tag]:
                         sch = {**sch, **({base_level_tag : {"type":"string", "regex":True}})}
@@ -244,27 +285,28 @@ class JSON_translator:
     def _load_meta_info(self, schema_section):
         self._schema['title'] = schema_section['Title']
         self._schema['description'] = schema_section['Description']
+        if 'Version' in schema_section:
+            self._schema['version'] = schema_section['Version']
+        if 'Root Data Group' in schema_section:
+            pass
         # Create a dictionary of available external objects for reference
+        refs = list()
         if 'References' in schema_section:
             refs = schema_section['References']
-            refs.append(self._input_rs)
-            for ref_file in schema_section['References']:
-                ext_dict = load(os.path.join(self._source_dir, ref_file + '.schema.yaml'))
-                external_objects = list()
-                for base_item in [name for name in ext_dict if ext_dict[name]['Object Type'] in (
-                    ['Enumeration', 
-                     'Data Group',
-                     'String Type',
-                     'Map Variables', 
-                     'Performance Map'])]:
-                    external_objects.append(base_item)
-                self._references[ref_file] = external_objects
-                for base_item in [name for name in ext_dict if ext_dict[name]['Object Type'] == 'Data Type']:
-                    self._fundamental_data_types[base_item] = ext_dict[base_item]['JSON Schema Type']
-
-
-    def _load_data_type_info(self, schema_section):
-        return
+        refs.append(self._input_rs)
+        for ref_file in refs:
+            ext_dict = load(os.path.join(self._source_dir, ref_file + '.schema.yaml'))
+            external_objects = list()
+            for base_item in [name for name in ext_dict if ext_dict[name]['Object Type'] in (
+                ['Enumeration', 
+                    'Data Group',
+                    'String Type',
+                    'Map Variables', 
+                    'Performance Map'])]:
+                external_objects.append(base_item)
+            self._references[ref_file] = external_objects
+            for base_item in [name for name in ext_dict if ext_dict[name]['Object Type'] == 'Data Type']:
+                self._fundamental_data_types[base_item] = ext_dict[base_item]['JSON Schema Type']
 
 
     def _process_enumeration(self, name_key):
@@ -292,15 +334,21 @@ if __name__ == '__main__':
     j = JSON_translator()
     source_dir = os.path.join(os.path.dirname(__file__),'..','src')
     build_dir = os.path.join(os.path.dirname(__file__),'..','build')
+    schema_dir = os.path.join(os.path.dirname(__file__),'..','schema')
     if not os.path.exists(build_dir):
         os.mkdir(build_dir)
     dump_dir = os.path.join(build_dir,'json')
     if not os.path.exists(dump_dir):
         os.mkdir(dump_dir)
 
+    err = list()
     if len(sys.argv) == 2:
-        sch = j.load_metaschema(source_dir, sys.argv[1])
-        dump(sch, os.path.join(dump_dir, sys.argv[1] + '.schema.json'))
+        file_name_root = sys.argv[1]
+        sch = j.load_metaschema(source_dir, file_name_root)
+        dump(sch, os.path.join(dump_dir, file_name_root + '.schema.json'))
+        same = compare_dicts(os.path.join(schema_dir, file_name_root + '.schema.json'),
+                             os.path.join(dump_dir, file_name_root + '.schema.json'),
+                             err)
     else:
         yml = glob.glob(os.path.join(source_dir, 'RS*.schema.yaml'))
         yml.extend(glob.glob(os.path.join(source_dir, 'ASHRAE205.schema.yaml')))
@@ -308,5 +356,12 @@ if __name__ == '__main__':
             file_name_root = os.path.splitext(os.path.splitext(os.path.basename(file_name))[0])[0]
             dump(j.load_metaschema(source_dir, file_name_root), 
                  os.path.join(dump_dir, file_name_root + '.schema.json'))
+            same = compare_dicts(os.path.join(schema_dir, file_name_root + '.schema.json'),
+                                 os.path.join(dump_dir, file_name_root + '.schema.json'),
+                                 err)
+    if not same:
+        print(f'\nError matching {file_name_root}: Original(1) vs Generated(2)')
+        for e in err:
+            print(e)
 
 
