@@ -11,6 +11,13 @@ Schema:
   Title: "ASHRAE 205"
   Description: "Base schema for ASHRAE 205 representations"
   Version: "0.1.0"
+  References:
+    - "RS0001"
+    - "RS0002"
+    - "RS0003"
+    - "RS0004"
+    - "RS0005"
+    - "RS0006"
   Root Data Group: "ASHRAE205"
 
 # Data Types
