@@ -81,7 +81,7 @@ ComponentType:
     HEAT_EXCHANGER:
       Display Text: "Heat Exchanger"
       Description: "Additional heat exchanger"
-      Notes: "e.g. an air-to-air heat exchanger"
+      Notes: "e.g., an air-to-air heat exchanger."
     ELECTRIC_RESISTANCE_ELEMENT:
       Display Text: "Electric Resistance Element"
       Description: "Electric resistance heater elements"
@@ -116,7 +116,7 @@ ProductInformation:
     is_enclosed:
       Description: "Fan assembly is enclosed"
       Data Type: "Boolean"
-      Notes: "If true the performance data reflects the static pressure difference across the enclosure"
+      Notes: "If true, the performance data reflects the static pressure difference across the enclosure."
       Required: True
     impeller_type:
       Description: "Type of impeller in fan assembly"
@@ -158,7 +158,7 @@ Performance:
       Data Type: "Numeric"
       Range: ">=0"
       Units: "Pa"
-      Notes: "Corresponds to pressure drop at nominal_volumetric_air_flow_rate. If unknown a value of 75 Pa shall be used."
+      Notes: "Corresponds to pressure drop at nominal_volumetric_air_flow_rate. If unknown, a value of 75 Pa shall be used."
       Required: True
     heat_loss_fraction:
       Description: "Fraction of efficiency losses added as heat transferred into the air stream"
@@ -178,7 +178,7 @@ Performance:
       Data Type: "Numeric"
       Range: ">=0"
       Units: "rev/s"
-      Notes: "If no mimumum use zero."
+      Notes: "If no mimumum, use zero."
       Required: True
     stability_curve:
       Description: "A description of the stability area for system selection"
@@ -193,12 +193,12 @@ Performance:
       Required: True
     motor_representation:
       Description: "The corresponding Standard 205 motor representation"
-      Notes: "Included if the fan is packaged with a motor. If this is not provided the fan input power shall represent mechanical shaft power. If this is provided the input power shall represent either mechanical shaft power or electrical power depending on the data provided by the motor representation."
+      Notes: "Included if the fan is packaged with a motor. If this is not provided, the fan input power shall represent mechanical shaft power. If this is provided, the input power shall represent either mechanical shaft power or electrical power depending on the data provided by the motor representation."
       Data Type: "{ASHRAE205(RS_ID=RS0005)}"
     performance_map:
       Description: "Data group describing fan performance when operating"
       Data Type: "({PerformanceMapContinuous}, {PerformanceMapDiscrete})"
-      Notes: "The performance map data group should reflect the type and operation of the fan.\n\nPerformanceMapContinuous describes fan performance in terms of air flow static pressure impeller speed and fan electrical or shaft power.\n\nPerformanceMapDiscrete describes fan performance in terms of speed setting static pressure air flow and power."
+      Notes: "The performance map data group should reflect the type and operation of the fan.\n\nPerformanceMapContinuous describes fan performance in terms of air flow, static pressure, impeller speed, and fan electrical or shaft power.\n\nPerformanceMapDiscrete describes fan performance in terms of speed setting, static pressure, air flow, and power."
       Required: True
 
 SystemCurve:
@@ -254,13 +254,13 @@ LookupVariablesContinuous:
       Description: "Rotational speed of fan impeller"
       Data Type: "[Numeric/Null]"
       Range: ">=0"
-      Units:: "rev/s"
+      Units: "rev/s"
       Required: True
     input_power:
       Description: "Power input to fan assembly"
       Data Type: "[Numeric/Null]"
       Range: ">=0"
-      Units:: "W"
+      Units: "W"
       Notes: "Mechanical shaft power or electric power depending on the data provided by the motor representation."
       Required: True
 
@@ -280,7 +280,7 @@ GridVariablesDiscrete:
   Object Type: "Map Variables"
   Data Elements:
     speed_number:
-      Description: "Numeric indicating discrete speed of fan impeller"
+      Description: "Number indicating discrete speed of fan impeller"
       Data Type: "[Integer]"
       Range: ">=0"
       Units: "-"
@@ -301,7 +301,7 @@ LookupVariablesDiscrete:
       Description: "Volumetric air flow rate through fan assembly"
       Data Type: "[Numeric/Null]"
       Range: ">=0"
-      Units:: "m3/s"
+      Units: "m3/s"
       Notes: "At *standard air conditions*."
       Required: True
     input_power:

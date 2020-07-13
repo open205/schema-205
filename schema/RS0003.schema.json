@@ -98,7 +98,7 @@
         "",
         "",
         "",
-        "e.g., an air-to-air heat exchanger",
+        "e.g., an air-to-air heat exchanger.",
         "",
         ""
       ]
@@ -135,7 +135,8 @@
           },
           "minItems": 1
         }
-      }
+      },
+      "additionalProperties": false
     },
     "ProductInformation": {
       "type": "object",
@@ -147,14 +148,15 @@
         "model_number": {
           "description": "Model number of the assembly / unit",
           "$ref": "ASHRAE205.schema.json#/definitions/Pattern",
-          "notes": "Pattern shall match all model numbers that can be represented by the representation"
+          "notes": "Pattern shall match all model numbers that can be represented by the representation."
         },
         "is_enclosed": {
           "description": "Fan assembly is enclosed",
           "type": "boolean",
-          "notes": "If true, the performance data reflects the static pressure difference across the enclosure"
+          "notes": "If true, the performance data reflects the static pressure difference across the enclosure."
         },
         "impeller_type": {
+          "description": "Type of impeller in fan assembly",
           "$ref": "RS0003.schema.json#/definitions/ImpellerType"
         },
         "has_belt_drive": {
@@ -216,7 +218,7 @@
           "description": "Fraction of efficiency losses added as heat transferred into the air stream",
           "type": "number",
           "minimum": 0.0,
-          "maximum": 1,
+          "maximum": 1.0,
           "units": "-",
           "notes": "Used to determine amount of heat from the motor added to the air stream."
         },
@@ -248,8 +250,8 @@
         "motor_representation": {
           "description": "The corresponding Standard 205 motor representation",
           "notes": "Included if the fan is packaged with a motor. If this is not provided, the fan input power shall represent mechanical shaft power. If this is provided, the input power shall represent either mechanical shaft power or electrical power depending on the data provided by the motor representation.",
-          "$ref": "ASHRAE205.schema.json#definitions/ASHRAE205",
-          "RS": "RS0005"
+          "$ref": "ASHRAE205.schema.json#/definitions/ASHRAE205",
+          "RS_ID": "RS0005"
         },
         "performance_map": {
           "description": "Data group describing fan performance when operating",
@@ -307,7 +309,6 @@
       "additionalProperties": false
     },
     "PerformanceMapContinuous": {
-      "description": "Data group describing fan performance in terms of impeller speed, static pressure, air flow, and fan electrical or shaft power",
       "type": "object",
       "properties": {
         "grid_variables": {
@@ -323,8 +324,7 @@
         "grid_variables",
         "lookup_variables"
       ],
-      "additionalProperties": false,
-      "notes": "Applies for fan assemblies that can operate continuously over a range of shaft speeds."
+      "additionalProperties": false 
     },
     "GridVariablesContinuous": {
       "type": "object",
@@ -349,7 +349,7 @@
             "minimum": 0.0
           },
           "units": "Pa",
-          "notes": "Or external static"
+          "notes": "Or external static."
         }
       },
       "required": [
@@ -396,7 +396,6 @@
       "additionalProperties": false
     },
     "PerformanceMapDiscrete": {
-      "description": "Data group describing fan performance in terms of speed setting, static pressure, air flow, and power",
       "type": "object",
       "properties": {
         "grid_variables": {
@@ -404,7 +403,7 @@
           "$ref": "RS0003.schema.json#/definitions/GridVariablesDiscrete"
         },
         "lookup_variables": {
-          "discription": "Data group describing lookup variables for discrete fan performance",
+          "description": "Data group describing lookup variables for discrete fan performance",
           "$ref": "RS0003.schema.json#/definitions/LookupVariablesDiscrete"
         }
       },
@@ -426,7 +425,7 @@
             "minimum": 0
           },
           "units": "-",
-          "notes": "In rank order"
+          "notes": "In rank order."
         },
         "static_pressure_difference": {
           "description": "Static pressure across fan assembly at dry coil conditions",
@@ -437,7 +436,7 @@
             "minimum": 0.0
           },
           "units": "Pa",
-          "notes": "Or external static"
+          "notes": "Or external static."
         }
       },
       "required": [
