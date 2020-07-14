@@ -14,8 +14,8 @@
         "Dynamic"
       ],
       "descriptions": [
-        "Compressor loading is controlled by cycling between discrete stages.",
-        "Compressor loading is controlled by continuously varying the speed of the compressor."
+        "Compressor loading is controlled by cycling between discrete stages",
+        "Compressor loading is controlled by continuously varying the speed of the compressor"
       ]
     },
     "RS0004": {
@@ -181,10 +181,11 @@
           "type": "array",
           "minItems": 1,
           "items": {
-            "type": "integer",
+            "type": "number",
             "minimum": 0
           },
-          "notes": "Expressed in order from initial stage/speed to final stage/speed"
+          "units": "-",
+          "notes": "Expressed in order from initial stage/speed to final stage/speed."
         },
         "ambient_absolute_air_pressure": {
           "description": "Ambient absolute air pressure",
@@ -221,7 +222,7 @@
             "exclusiveMinimum": 0
           },
           "units": "W",
-          "notes": "Does not account for heat added by the fan"
+          "notes": "Does not account for heat added by the fan."
         },
         "gross_sensible_cooling_capacity": {
           "description": "Sensible heat removed by the indoor coil",
@@ -235,7 +236,7 @@
             "exclusiveMinimum": 0
           },
           "units": "W",
-          "notes": "Does not account for heat added by the fan"
+          "notes": "Does not account for heat added by the fan."
         },
         "gross_cooling_power": {
           "description": "Gross power draw (of the outdoor unit)",
@@ -249,7 +250,7 @@
             "exclusiveMinimum": 0
           },
           "units": "W",
-          "notes": "Does not include power drawn by the indoor fan. Includes compressor, outdoor fan, and any auxiliary power used by the unit’s controls and any sump heater."
+          "notes": "Does not include power drawn by the indoor fan. Includes compressor, outdoor fan, and any auxiliary power used by the unit's controls and any sump heater."
         }
       },
       "required": [

@@ -29,17 +29,17 @@ FanPosition:
 AHRI210240TestStandardYear:
   Object Type: "Enumeration"
   Enumerators:
-    IP_2008:
+    "2008":
       Display Text: "2008"
-    IP_2017:
+    "2017":
       Display Text: "2017"
 
 AHRI340360TestStandardYear:
   Object Type: "Enumeration"
   Enumerators:
-    IP_2007:
+    "2007":
       Display Text: "2007"
-    IP_2015:
+    "2015":
       Display Text: "2015"
     IP_2019:
       Display Text: "I-P/2019"
@@ -67,7 +67,7 @@ ProductInformation:
     model_number:
       Description: "Model number"
       Data Type: "Pattern"
-      Notes: "Pattern shall match all model numbers that can be represented by the *representation*"
+      Notes: "Pattern shall match all model numbers that can be represented by the *representation*."
       Required: True
 
 
@@ -111,7 +111,7 @@ RatingAHRI210240:
       Data Type: "Numeric"
       Units: "W/(m3/s)"  # TODO: Should be IP units?
       Range: ">0.0"
-      Notes: "Used for verification of the rated SEER value (see SEER calculation procedures in AHRI 210/240)"
+      Notes: "Used for verification of the rated SEER value (see SEER calculation procedures in AHRI 210/240)."
     rating_reproducible_from_performance_data:
       Description: "Whether this rating can be reproduced using the performance data in the representation"
       Data Type: "Boolean"
@@ -158,7 +158,7 @@ RatingAHRI340360:
       Data Type: "Numeric"
       Units: "W/(m3/s)"  # TODO: Should be IP units?
       Range: ">0.0"
-      Notes: "Used for verification of the rated IEER value (see IEER calculation procedures in AHRI 340/360)"
+      Notes: "Used for verification of the rated IEER value (see IEER calculation procedures in AHRI 340/360)."
     rating_reproducible_from_performance_data:
       Description: "Whether this rating can be reproduced using the performance data in the representation"
       Data Type: "Boolean"

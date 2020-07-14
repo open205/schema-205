@@ -34,14 +34,14 @@ def dump(content, output_file_path):
         raise Exception(f"Unsupported output \"{ext}\".")
 
 
-def compare_dicts(yaml_file, json_file, error_list):
-    j = load(json_file)
-    y = load(yaml_file)
-    return dict_compare(j, y, error_list)
+def compare_dicts(original, modified, error_list):
+    o = load(original)
+    m = load(modified)
+    return dict_compare(o, m, error_list, level=0, lineage=None)
 
 
 # https://stackoverflow.com/questions/4527942/comparing-two-dictionaries-and-checking-how-many-key-value-pairs-are-equal
-def dict_compare(d1, d2, errors, level=0, lineage=None):
+def dict_compare(d1, d2, errors, level=0, lineage=None, hide_value_mismatches=False, hide_key_mismatches=False):
     if not lineage:
         lineage = list()
     if d1 == d2:
@@ -54,21 +54,22 @@ def dict_compare(d1, d2, errors, level=0, lineage=None):
                 added = [k for k in d2_keys if k not in d1_keys]
                 removed = [k for k in d1_keys if k not in d2_keys]
                 err = ''
-                if added:
+                if added and not hide_key_mismatches:
                     errors.append(f'Keys added to second dictionary at level {level}, lineage {lineage}: {added}')
-                if removed:
+                if removed and not hide_key_mismatches:
                     errors.append(f'Keys removed from first dictionary at level {level}, lineage {lineage}: {removed}.')
                 return False
             else:
             # Enter this part of the code if both dictionaries have all keys shared at this level
                 shared_keys = d1_keys
                 for k in shared_keys:
-                    dict_compare(d1[k], d2[k], errors, level+1, lineage+[k])
+                    dict_compare(d1[k], d2[k], errors, level+1, lineage+[k], hide_value_mismatches, hide_key_mismatches)
         elif d1 != d2:
             # Here, we could use the util.objects_near_equal to compare objects. Currently, d1 and
             # d2 may have any type, i.e. float 1.0 will be considered equal to int 1.
             err = f'Mismatch in values: "{d1}" vs. "{d2}" at lineage {lineage}.'
-            errors.append(err)
+            if not hide_value_mismatches:
+                errors.append(err)
             return False
 
 
@@ -272,9 +273,11 @@ class JSON_translator:
                         sch = {**sch, **({base_level_tag : {"type":"string", "pattern":self._contents[base_level_tag]['JSON Schema Pattern']}})}
                 if obj_type == 'Enumeration':
                     sch = {**sch, **(self._process_enumeration(base_level_tag))}
-                if (obj_type == 'Data Group' or
-                    obj_type == 'Performance Map' or 
-                    obj_type == 'Map Variables'):
+                if obj_type in ['Data Group', 
+                                'Performance Map', 
+                                'Grid Variables', 
+                                'Lookup Variables', 
+                                'Rating Data Group']:
                     dg = DataGroup(base_level_tag, self._fundamental_data_types, self._references)
                     sch = {**sch, **(dg.add_data_group(base_level_tag, 
                                      self._contents[base_level_tag]['Data Elements']))}
@@ -288,7 +291,7 @@ class JSON_translator:
         if 'Version' in schema_section:
             self._schema['version'] = schema_section['Version']
         if 'Root Data Group' in schema_section:
-            pass
+            self._schema['$ref'] = self._input_rs + '.schema.json#/definitions/' + schema_section['Root Data Group']
         # Create a dictionary of available external objects for reference
         refs = list()
         if 'References' in schema_section:
@@ -302,7 +305,10 @@ class JSON_translator:
                     'Data Group',
                     'String Type',
                     'Map Variables', 
-                    'Performance Map'])]:
+                    'Rating Data Group',
+                    'Performance Map',
+                    'Grid Variables',
+                    'Lookup Variables'])]:
                 external_objects.append(base_item)
             self._references[ref_file] = external_objects
             for base_item in [name for name in ext_dict if ext_dict[name]['Object Type'] == 'Data Type']:
@@ -360,7 +366,7 @@ if __name__ == '__main__':
                                  os.path.join(dump_dir, file_name_root + '.schema.json'),
                                  err)
     if not same:
-        print(f'\nError matching {file_name_root}: Original(1) vs Generated(2)')
+        print(f'\nError(s) while matching {file_name_root}: Original(1) vs Generated(2)')
         for e in err:
             print(e)
 

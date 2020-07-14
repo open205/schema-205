@@ -10,17 +10,17 @@
         "standard_version": {
           "description": "ASHRAE 205 standard version",
           "notes": "Identifies the version of the ASHRAE 205 Standard this representation complies with.",
-          "$ref": "#/definitions/ASHRAE205Version"
+          "$ref": "ASHRAE205.schema.json#/definitions/ASHRAE205Version"
         },
         "schema_version": {
           "description": "ASHRAE 205 schema version",
-          "$ref": "#/definitions/Version",
+          "$ref": "ASHRAE205.schema.json#/definitions/Version",
           "notes": "Identifies the version of the ASHRAE 205 JSON schema this representation complies with."
         },
         "RS_ID": {
           "description": "Representation specification identifier",
           "notes": "Identifies the representation specification used to generate this representation",
-          "$ref": "#/definitions/RS_ID"
+          "$ref": "ASHRAE205.schema.json#/definitions/RSID"
         },
         "description": {
           "description": "Free-form description of equipment (suitable for display)",
@@ -28,12 +28,12 @@
         },
         "ID": {
           "description": "Unique equipment identifier",
-          "$ref": "#/definitions/UUID",
+          "$ref": "ASHRAE205.schema.json#/definitions/UUID",
           "notes": "Assigned by data publisher to identify specific equipment. ID shall remain unchanged for revised representations for the same equipment."
         },
         "data_timestamp": {
           "description": "Date of publication",
-          "$ref": "#/definitions/Timestamp",
+          "$ref": "ASHRAE205.schema.json#/definitions/Timestamp",
           "notes": "Date/time of publication of this representation."
         },
         "data_version": {
@@ -74,10 +74,10 @@
             {
               "$ref": "RS0006.schema.json#/definitions/RS0006"
             }
-          ]
+          ],
+          "notes": "Data Group defined by specific *representation specification*. E.g., 'RS0001'."
         }
       },
-      "notes": "Data Group defined by specific *representation specification*. E.g., 'RS0001'.",
       "required": [
         "standard_version",
         "schema_version",
@@ -116,10 +116,11 @@
         "PPR2"
       ],
       "enum_text": [
-        "ASHRAE 205 -- 2020 Publication Public Review 2 (Unpublished)"
-      ]
+        "ASHRAE205 - 2020 Publication Public Review 2"
+      ],
+      "notes": "Unpublished."
     },
-    "RS_ID": {
+    "RSID": {
       "type": "string",
       "enum": [
         "RS0001",
