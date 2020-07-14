@@ -11,8 +11,6 @@ def write_tables(instance, output_path, append=True):
   string_types = []
   enumerations = {}
   data_groups = {}
-  performance_maps = {}
-  map_variables = {}
 
   for obj in instance:
     object_type = instance[obj]["Object Type"]
@@ -28,12 +26,12 @@ def write_tables(instance, output_path, append=True):
       string_types.append(new_obj)
     elif object_type == "Enumeration":
       enumerations[obj] = instance[obj]
-    elif object_type == "Data Group":
+    elif "Data Elements" in instance[obj]:
       data_groups[obj] = instance[obj]
-    elif object_type == "Performance Map":
-      performance_maps[obj] = instance[obj]
-    elif object_type == "Map Variables":
-      map_variables[obj] = instance[obj]
+    elif object_type == "Meta":
+      None
+    else:
+      print(f"Unknown object type: {object_type}.")
 
   writer = MarkdownTableWriter()
   writer.margin = 1
@@ -91,38 +89,6 @@ def write_tables(instance, output_path, append=True):
 
         output_file.writelines(format_table(writer))
 
-    # Performance Maps
-    if len(performance_maps) > 0:
-      for pm in performance_maps:
-        writer.table_name = pm
-        data_elements = []
-        for element in performance_maps[pm]["Data Elements"]:
-          new_obj = performance_maps[pm]["Data Elements"][element]
-          new_obj["Data Element Name"] = element
-          if 'Required' in new_obj:
-            new_obj["Req"] = u'\N{check mark}' if new_obj["Required"] else ''
-            new_obj.pop('Required')
-          data_elements.append(new_obj)
-        writer.value_matrix = data_elements
-
-        output_file.writelines(format_table(writer))
-
-    # Map Variables
-    if len(map_variables) > 0:
-      for mv in map_variables:
-        writer.table_name = mv
-        data_elements = []
-        for element in map_variables[mv]["Data Elements"]:
-          new_obj = map_variables[mv]["Data Elements"][element]
-          new_obj["Data Element Name"] = element
-          if 'Required' in new_obj:
-            new_obj["Req"] = u'\N{check mark}' if new_obj["Required"] else ''
-            new_obj.pop('Required')
-          data_elements.append(new_obj)
-        writer.value_matrix = data_elements
-
-        output_file.writelines(format_table(writer))
-
 if __name__ == '__main__':
   source_dir = os.path.join(os.path.dirname(__file__),'..','src')
   build_path = os.path.join(os.path.dirname(__file__),'..','build')
@@ -136,9 +102,10 @@ if __name__ == '__main__':
         instance = yaml.load(input_file, Loader=yaml.FullLoader)
     write_tables(instance, os.path.join(docs_path,f'{sys.argv[1]}.schema.md'),append=False)
   elif len(sys.argv) == 1:
-    for file_name in os.listdir(source_dir):
+    for file_name in sorted(os.listdir(source_dir)):
       if '.schema.yaml' in file_name:
         file_name_root = os.path.splitext(os.path.splitext(file_name)[0])[0]
         with open(os.path.join(source_dir,file_name), 'r') as input_file:
             instance = yaml.load(input_file, Loader=yaml.FullLoader)
         write_tables(instance, os.path.join(docs_path,f'{file_name_root}.schema.md'),append=False)
+        print(f'Markdown generation successful for {file_name}')
