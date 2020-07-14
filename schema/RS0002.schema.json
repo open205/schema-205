@@ -35,7 +35,7 @@
       "enum_text": [
         "2007",
         "2015",
-        "IP/2019"
+        "I-P/2019"
       ]
     },
     "RS0002": {
@@ -83,7 +83,7 @@
         "model_number": {
           "description": "Model number",
           "$ref": "ASHRAE205.schema.json#/definitions/Pattern",
-          "note": "Pattern shall match all model numbers that can be represented by the representation"
+          "notes": "Pattern shall match all model numbers that can be represented by the representation"
         }
       },
       "required": [
@@ -118,21 +118,21 @@
           "type": "number",
           "exclusiveMinimum": 0,
           "units": "Btu/W-h",
-          "notes": "The net efficiency (accounting for fan motor heat/power) at the AHRI 'A' operating conditions"
+          "notes": "The net efficiency (accounting for fan motor heat/power) at the AHRI 'A' operating conditions."
         },
         "capacity": {
           "description": "Total cooling capacity (A) as defined by AHRI 210/240",
           "type": "number",
           "exclusiveMinimum": 0,
           "units": "Btu/h",
-          "notes": "The net capacity (accounting for fan motor heat) at the AHRI 'A' operating conditions"
+          "notes": "The net capacity (accounting for fan motor heat) at the AHRI 'A' operating conditions."
         },
         "rating_fan_power_per_flow": {
           "description": "Power per air flow rate of the fan used in the AHRI 210/240 calculation of SEER and EER",
           "type": "number",
           "exclusiveMinimum": 0,
           "units": "W/(m3/s)",
-          "notes": "Used for verification of the rated SEER value (see SEER calculation procedures in AHRI 210/240)"
+          "notes": "Used for verification of the rated SEER value (see SEER calculation procedures in AHRI 210/240)."
         },
         "rating_reproducible_from_performance_data": {
           "description": "Whether this rating can be reproduced using the performance data in the representation",
@@ -177,21 +177,21 @@
           "type": "number",
           "exclusiveMinimum": 0,
           "units": "Btu/W-h",
-          "notes": "Net efficiency accounts for fan motor heat/power"
+          "notes": "Net efficiency accounts for fan motor heat/power."
         },
         "capacity": {
           "description": "Total cooling capacity as defined by AHRI 340/360",
           "type": "number",
           "exclusiveMinimum": 0,
           "units": "Btu/h",
-          "notes": "Net capacity accounts for fan motor heat"
+          "notes": "Net capacity accounts for fan motor heat."
         },
         "rating_fan_power_per_flow": {
           "description": "Power per air flow rate of the indoor fan used in the AHRI 340/360 calculation of IEER and EER",
           "type": "number",
           "exclusiveMinimum": 0,
           "units": "W/(m3/s)",
-          "notes": "Used for verification of the rated SEER value (see SEER calculation procedures in AHRI 340/360)"
+          "notes": "Used for verification of the rated IEER value (see IEER calculation procedures in AHRI 340/360)."
         },
         "rating_reproducible_from_performance_data": {
           "description": "Whether this rating can be reproduced using the performance data in the representation",
@@ -222,8 +222,8 @@
         },
         "fan_representation": {
           "description": "The corresponding Standard 205 enclosed fan assembly representation",
-          "$ref": "ASHRAE205.schema.json#definitions/ASHRAE205",
-          "RS": "RS0003",
+          "$ref": "ASHRAE205.schema.json#/definitions/ASHRAE205",
+          "RS_ID": "RS0003",
           "notes": "This is only required if the fan is packaged with the unitary equipment."
         },
         "fan_position": {
@@ -232,14 +232,13 @@
         },
         "DX_system_representation": {
           "description": "The corresponding Standard 205 direct expansion coil system representation",
-          "$ref": "ASHRAE205.schema.json#definitions/ASHRAE205",
-          "RS": "RS0004"
+          "$ref": "ASHRAE205.schema.json#/definitions/ASHRAE205",
+          "RS_ID": "RS0004"
         }
       },
       "required": [
         "standby_power",
-        "fan_position",
-        "DX_system_representation"
+        "fan_position"
       ],
       "additionalProperties": false
     }

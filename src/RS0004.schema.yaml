@@ -43,15 +43,15 @@ ProductInformation:
     outdoor_unit_model_number:
       Description: "Model number of the outdoor unit"
       Data Type: "Pattern"
-      Notes: "Pattern shall match all model numbers that can be represented by the *representation*"
+      Notes: "Pattern shall match all model numbers that can be represented by the *representation*."
       Required: True
     indoor_unit_manufacturer:
       Description: "Name of the indoor unit manufacturer"
       Data Type: "String"
-    outdoor_unit_model_number:
+    indoor_unit_model_number:
       Description: "Model number of the indoor unit"
       Data Type: "Pattern"
-      Notes: "Pattern shall match all model numbers that can be represented by the *representation*"
+      Notes: "Pattern shall match all model numbers that can be represented by the *representation*."
     refrigerant_type:
       Description: "Type of refrigerant used"
       Data Type: "<RefrigerantType>"
@@ -125,7 +125,7 @@ GridVariablesCooling:
       Required: True
     compressor_sequence_number:
       Description: "Index indicating the relative order of the compressor speed/stage"
-      Data Type: "[Numeric][1..]"
+      Data Type: "[Integer][1..]"
       Range: ">=0"
       Units: "-"
       Notes: "Expressed in order from initial stage/speed to final stage/speed."
@@ -160,7 +160,7 @@ LookupVariablesCooling:
       Range: ">0"
       Units: "W"
       Required: True
-      Notes: "Does not include power drawn by the indoor fan. Includes compressor, outdoor fan, any auxiliary power used by the unit’s controls, and any sump heater."
+      Notes: "Does not include power drawn by the indoor fan. Includes compressor, outdoor fan, and any auxiliary power used by the unit's controls and any sump heater."
 
 PerformanceMapStandby:
   Object Type: "Performance Map"
@@ -193,4 +193,4 @@ LookupVariablesStandby:
       Range: ">0"
       Units: "W"
       Required: True
-      Notes: "Does not include power drawn by the indoor fan. Includes compressor, outdoor fan, any auxiliary power used by the unit’s controls, and any sump heater."
+      Notes: "Does not account for power drawn from the indoor fan. Includes compressor, outdoor fan, and any auxiliary power used by the unit’s controls, and any sump heater."

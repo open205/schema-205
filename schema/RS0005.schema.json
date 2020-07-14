@@ -40,7 +40,7 @@
         "model_number": {
           "description": "Model number",
           "$ref": "ASHRAE205.schema.json#/definitions/Pattern",
-          "note": "Pattern shall match all model numbers that can be represented by the *representation*"
+          "notes": "Pattern shall match all model numbers that can be represented by the *representation*."
         },
         "input_voltage": {
           "description": "Input voltage",
@@ -86,7 +86,7 @@
         "drive_representation": {
           "description": "The corresponding Standard 205 drive representation",
           "$ref": "ASHRAE205.schema.json#/definitions/ASHRAE205",
-          "RS": "RS0006"
+          "RS_ID": "RS0006"
         },
         "performance_map": {
           "description": "Data group describing motor performance when operating",

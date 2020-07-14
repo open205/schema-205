@@ -34,7 +34,7 @@ ProductInformation:
     model_number:
       Description: "Model number"
       Data Type: "Pattern"
-      Notes: "Pattern shall match all model numbers that can be represented by the *representation*"
+      Notes: "Pattern shall match all model numbers that can be represented by the *representation*."
       Required: True
 
     input_voltage:
@@ -80,7 +80,7 @@ Performance:
     performance_map:
       Description: "Data group describing motor performance when operating"
       Data Type: "{PerformanceMap}"
-      Notes: "If no performance map is defined the motor shall be assumed to transfer all electric power directly to the shaft. ***Informative note:*** This field may be omitted for motor-driven equipment where motor efficiencies are incorporated into their performance data."
+      Notes: "If no performance map is defined, the motor shall be assumed to transfer all electric power directly to the shaft. ***Informative note:*** This field may be omitted for motor-driven equipment where motor efficiencies are incorporated into their performance data."
 
 PerformanceMap:
   Object Type: "Performance Map"
