@@ -125,7 +125,7 @@ GridVariablesCooling:
       Required: True
     compressor_sequence_number:
       Description: "Index indicating the relative order of the compressor speed/stage"
-      Data Type: "[Integer][1..]"
+      Data Type: "[Numeric][1..]"
       Range: ">=0"
       Units: "-"
       Notes: "Expressed in order from initial stage/speed to final stage/speed."

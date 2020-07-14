@@ -37,11 +37,11 @@ def dump(content, output_file_path):
 def compare_dicts(original, modified, error_list):
     o = load(original)
     m = load(modified)
-    return dict_compare(o, m, error_list)
+    return dict_compare(o, m, error_list, level=0, lineage=None)
 
 
 # https://stackoverflow.com/questions/4527942/comparing-two-dictionaries-and-checking-how-many-key-value-pairs-are-equal
-def dict_compare(d1, d2, errors, level=0, lineage=None):
+def dict_compare(d1, d2, errors, level=0, lineage=None, hide_value_mismatches=False, hide_key_mismatches=False):
     if not lineage:
         lineage = list()
     if d1 == d2:
@@ -54,21 +54,22 @@ def dict_compare(d1, d2, errors, level=0, lineage=None):
                 added = [k for k in d2_keys if k not in d1_keys]
                 removed = [k for k in d1_keys if k not in d2_keys]
                 err = ''
-                if added:
+                if added and not hide_key_mismatches:
                     errors.append(f'Keys added to second dictionary at level {level}, lineage {lineage}: {added}')
-                if removed:
+                if removed and not hide_key_mismatches:
                     errors.append(f'Keys removed from first dictionary at level {level}, lineage {lineage}: {removed}.')
                 return False
             else:
             # Enter this part of the code if both dictionaries have all keys shared at this level
                 shared_keys = d1_keys
                 for k in shared_keys:
-                    dict_compare(d1[k], d2[k], errors, level+1, lineage+[k])
+                    dict_compare(d1[k], d2[k], errors, level+1, lineage+[k], hide_value_mismatches, hide_key_mismatches)
         elif d1 != d2:
             # Here, we could use the util.objects_near_equal to compare objects. Currently, d1 and
             # d2 may have any type, i.e. float 1.0 will be considered equal to int 1.
             err = f'Mismatch in values: "{d1}" vs. "{d2}" at lineage {lineage}.'
-            errors.append(err)
+            if not hide_value_mismatches:
+                errors.append(err)
             return False
 
 
