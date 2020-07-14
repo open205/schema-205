@@ -29,17 +29,17 @@ FanPosition:
 AHRI210240TestStandardYear:
   Object Type: "Enumeration"
   Enumerators:
-    "2008":
+    IP_2008:
       Display Text: "2008"
-    "2017":
+    IP_2017:
       Display Text: "2017"
 
 AHRI340360TestStandardYear:
   Object Type: "Enumeration"
   Enumerators:
-    "2007":
+    IP_2007:
       Display Text: "2007"
-    "2015":
+    IP_2015:
       Display Text: "2015"
     IP_2019:
       Display Text: "I-P/2019"

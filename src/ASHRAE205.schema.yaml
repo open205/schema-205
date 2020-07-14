@@ -129,7 +129,6 @@ RSID:
 
 CompressorType:
   Object Type: "Enumeration"
-  Description: "Type of compressor"
   Enumerators:
     RECIPROCATING:
       Description: "Reciprocating compressor"
@@ -149,7 +148,6 @@ CompressorType:
 
 CondenserType:
   Object Type: "Enumeration"
-  Description: "Type of condenser"
   Enumerators:
     AIR:
       Description: "Air-cooled condenser"
@@ -179,7 +177,6 @@ LiquidConstituent:
 
 ConcentrationType:
   Object Type: "Enumeration"
-  Description: "Defines whether concentration is defined on a volume or mass basis"
   Enumerators:
     BY_VOLUME:
       Description: "Concentration is defined as a fraction of total liquid mixture volume"
@@ -273,7 +270,6 @@ LiquidComponent:
 
 RefrigerantType:
   Object Type: Enumeration
-  Description: "Type of refrigerant"
   Enumerators:
     R11:
       Description: trichlorofluoromethane
