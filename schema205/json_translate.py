@@ -34,10 +34,10 @@ def dump(content, output_file_path):
         raise Exception(f"Unsupported output \"{ext}\".")
 
 
-def compare_dicts(yaml_file, json_file, error_list):
-    j = load(json_file)
-    y = load(yaml_file)
-    return dict_compare(j, y, error_list)
+def compare_dicts(original, modified, error_list):
+    o = load(original)
+    m = load(modified)
+    return dict_compare(o, m, error_list)
 
 
 # https://stackoverflow.com/questions/4527942/comparing-two-dictionaries-and-checking-how-many-key-value-pairs-are-equal
@@ -272,9 +272,11 @@ class JSON_translator:
                         sch = {**sch, **({base_level_tag : {"type":"string", "pattern":self._contents[base_level_tag]['JSON Schema Pattern']}})}
                 if obj_type == 'Enumeration':
                     sch = {**sch, **(self._process_enumeration(base_level_tag))}
-                if (obj_type == 'Data Group' or
-                    obj_type == 'Performance Map' or 
-                    obj_type == 'Map Variables'):
+                if obj_type in ['Data Group', 
+                                'Performance Map', 
+                                'Grid Variables', 
+                                'Lookup Variables', 
+                                'Rating Data Group']:
                     dg = DataGroup(base_level_tag, self._fundamental_data_types, self._references)
                     sch = {**sch, **(dg.add_data_group(base_level_tag, 
                                      self._contents[base_level_tag]['Data Elements']))}
@@ -288,7 +290,7 @@ class JSON_translator:
         if 'Version' in schema_section:
             self._schema['version'] = schema_section['Version']
         if 'Root Data Group' in schema_section:
-            pass
+            self._schema['$ref'] = self._input_rs + '.schema.json#/definitions/' + schema_section['Root Data Group']
         # Create a dictionary of available external objects for reference
         refs = list()
         if 'References' in schema_section:
@@ -302,7 +304,10 @@ class JSON_translator:
                     'Data Group',
                     'String Type',
                     'Map Variables', 
-                    'Performance Map'])]:
+                    'Rating Data Group',
+                    'Performance Map',
+                    'Grid Variables',
+                    'Lookup Variables'])]:
                 external_objects.append(base_item)
             self._references[ref_file] = external_objects
             for base_item in [name for name in ext_dict if ext_dict[name]['Object Type'] == 'Data Type']:
@@ -360,7 +365,7 @@ if __name__ == '__main__':
                                  os.path.join(dump_dir, file_name_root + '.schema.json'),
                                  err)
     if not same:
-        print(f'\nError matching {file_name_root}: Original(1) vs Generated(2)')
+        print(f'\nError(s) while matching {file_name_root}: Original(1) vs Generated(2)')
         for e in err:
             print(e)
 
