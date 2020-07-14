@@ -95,7 +95,7 @@ PerformanceMapCooling:
       Required: True
 
 GridVariablesCooling:
-  Object Type: "Map Variables"
+  Object Type: "Grid Variables"
   Data Elements:
     outdoor_coil_entering_dry_bulb_temperature:
       Description: "Dry bulb temperature of the air entering the outdoor coil"
@@ -138,7 +138,7 @@ GridVariablesCooling:
       Required: True
 
 LookupVariablesCooling:
-  Object Type: "Map Variables"
+  Object Type: "Lookup Variables"
   Data Elements:
     gross_total_cooling_capacity:
       Description: "Total heat removed by the indoor coil"
@@ -175,7 +175,7 @@ PerformanceMapStandby:
       Required: True
 
 GridVariablesStandby:
-  Object Type: "Map Variables"
+  Object Type: "Grid Variables"
   Data Elements:
     outdoor_coil_environment_dry_bulb_temperature:
       Description: "Dry bulb temperature of the air in the environment of the outdoor coil"
@@ -185,7 +185,7 @@ GridVariablesStandby:
       Required: True
 
 LookupVariablesStandby:
-  Object Type: "Map Variables"
+  Object Type: "Lookup Variables"
   Data Elements:
     gross_power:
       Description: "Gross power draw (of the outdoor unit)"

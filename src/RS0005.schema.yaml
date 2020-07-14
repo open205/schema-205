@@ -30,31 +30,31 @@ ProductInformation:
       Description: "Name of the manufacturer"
       Data Type: "String"
       Required: True
-        
+
     model_number:
       Description: "Model number"
       Data Type: "Pattern"
       Notes: "Pattern shall match all model numbers that can be represented by the *representation*"
       Required: True
-        
+
     input_voltage:
       Description: "Input voltage"
       Data Type: "Numeric"
       Units: "V"
       Range: ">=0"
       Required: True
-        
+
     input_frequency:
       Description: "Input frequency"
       Data Type: "Numeric"
       Units: "Hz"
       Range: ">=0"
       Required: True
-        
+
     number_of_poles:
       Description: "Number of poles"
       Data Type: "Integer"
-      
+
 Performance:
   Object Type: "Data Group"
   Data Elements:
@@ -72,16 +72,16 @@ Performance:
       Units: "W"
       Range: ">=0"
       Required: True
-        
+
     drive_representation:
       Description: "The corresponding Standard 205 drive representation"
       Data Type: "{ASHRAE205(RS_ID=RS0006)}"
-        
+
     performance_map:
       Description: "Data group describing motor performance when operating"
       Data Type: "{PerformanceMap}"
       Notes: "If no performance map is defined the motor shall be assumed to transfer all electric power directly to the shaft. ***Informative note:*** This field may be omitted for motor-driven equipment where motor efficiencies are incorporated into their performance data."
-          
+
 PerformanceMap:
   Object Type: "Performance Map"
   Data Elements:
@@ -89,37 +89,36 @@ PerformanceMap:
       Description: "Data group describing grid variables for motor performance"
       Data Type: "{GridVariables}"
       Required: True
-        
+
     lookup_variables:
       Description: "Data group describing lookup variables for motor performance"
       Data Type: "{LookupVariables}"
       Required: True
-      
+
 GridVariables:
-  Object Type: "Map Variables"
+  Object Type: "Grid Variables"
   Data Elements:
     shaft_power:
       Description: "Delivered rotational shaft power"
-      Data Type: "[Numeric]"
+      Data Type: "[Numeric][1..]"
       Range: ">=0"
       Units: "W"
       Required: True
-    
+
 LookupVariables:
-  Object Type: "Map Variables"
+  Object Type: "Lookup Variables"
   Data Elements:
     efficiency:
       Description: "Efficiency of motor"
-      Data Type: "[Numeric/Null]"
+      Data Type: "[Numeric/Null][1..]"
       Range: ">=0, <=1"
       Units: "-"
       Notes: "Defined as the ratio of mechanical shaft power to electrical input power of the motor."
       Required: True
-        
+
     power_factor:
       Description: "Power factor of the motor"
-      Data Type: "[Numeric/Null]"
+      Data Type: "[Numeric/Null][1..]"
       Range: ">=0, <=1"
       Units: "-"
       Required: True
-      

@@ -128,7 +128,7 @@ ProductInformation:
       Data Type: "Boolean"
 
 RatingAHRI550590:
-  Object Type: "Data Group"
+  Object Type: "Rating Data Group"
   Data Elements:
     certification_reference_number:
       Description: "Certification reference number"
@@ -246,7 +246,7 @@ RatingAHRI550590:
       Notes: "Mark this field as true if the rating values in this table can be reproduced using the performance data in the representation within the tolerance of the rating standard."
 
 PartLoadRatingPoint550590:
-  Object Type: "Data Group"
+  Object Type: "Rating Data Group"
   Data Elements:
     percent_full_load_capacity:
       Description: "The percent full load cooling capacity for this data point"
@@ -338,7 +338,7 @@ PartLoadRatingPoint550590:
       Notes: "Condenser fouling factor at which the part load data was measured."
 
 RatingAHRI551591:
-  Object Type: "Data Group"
+  Object Type: "Rating Data Group"
   Data Elements:
     certification_reference_number:
       Description: "Certification reference number"
@@ -457,7 +457,7 @@ RatingAHRI551591:
       Notes: "Mark this field as true if the rating values in this table can be reproduced using the performance data in the representation within the tolerance of the rating standard."
 
 PartLoadRatingPoint551591:
-  Object Type: "Data Group"
+  Object Type: "Rating Data Group"
   Data Elements:
     percent_full_load_capacity:
       Description: "The percent full load cooling capacity for this data point"
@@ -610,97 +610,97 @@ PerformanceMapCooling:
       Required: True
 
 GridVariablesCooling:
-  Object Type: "Map Variables"
+  Object Type: "Grid Variables"
   Data Elements:
     evaporator_liquid_volumetric_flow_rate:
       Description: "Chilled liquid (evaporator) flow"
-      Data Type: "[Numeric]"
+      Data Type: "[Numeric][1..]"
       Units: "m3/s"
       Range: ">0"
       Required: True
     evaporator_liquid_leaving_temperature:
       Description: "Leaving evaporator liquid temperature"
-      Data Type: "[Numeric]"
+      Data Type: "[Numeric][1..]"
       Units: "K"
       Range: ">0"
       Required: True
     condenser_liquid_volumetric_flow_rate:
       Description: "Condenser liquid flow"
-      Data Type: "[Numeric]"
+      Data Type: "[Numeric][1..]"
       Units: "m3/s"
       Range: ">0"
       Required: True
     condenser_liquid_entering_temperature:
       Description: "Entering condenser liquid temperature"
-      Data Type: "[Numeric]"
+      Data Type: "[Numeric][1..]"
       Units: "K"
       Range: ">0"
       Required: True
     net_evaporator_capacity_fraction:
       Description: "Fraction of maximum net capacity at the same operating conditions"
-      Data Type: "[Numeric]"
+      Data Type: "[Numeric][1..]"
       Range: ">=0, <=1"
       Required: True
       Notes: "Ratio of net_evaporator_capacity to the maximum evaporator capacity at the same operating conditions"
 
 LookupVariablesCooling:
-  Object Type: "Map Variables"
+  Object Type: "Lookup Variables"
   Data Elements:
     input_power:
       Description: "Total power input to the packaged chiller"
-      Data Type: "[Numeric]"
+      Data Type: "[Numeric/Null][1..]"
       Units: "W"
       Range: ">0"
       Required: True
       Notes: "All power consumed by the chiller, including controls, motors, variable speed drives, purge units, sump heaters, fans, etc."
     net_evaporator_capacity:
       Description: "Unit refrigeration capacity"
-      Data Type: "[Numeric]"
+      Data Type: "[Numeric/Null][1..]"
       Units: "W"
       Range: ">=0"
       Required: True
       Notes: "The available cooling capacity of the evaporator to the thermal load calculated using only the sensible heat transfer."
     net_condenser_capacity:
       Description: "Condenser heat rejection"
-      Data Type: "[Numeric]"
+      Data Type: "[Numeric/Null][1..]"
       Units: "W"
       Range: ">=0"
       Required: True
       Notes: "The capacity of the condenser transferred to the condenser cooling stream using only the sensible heat transfer."
     evaporator_liquid_entering_temperature:
       Description: "Entering evaporator liquid temperature"
-      Data Type: "[Numeric]"
+      Data Type: "[Numeric/Null][1..]"
       Units: "K"
       Range: ">0"
       Required: True
     condenser_liquid_leaving_temperature:
       Description: "Leaving condenser liquid temperature"
-      Data Type: "[Numeric]"
+      Data Type: "[Numeric/Null][1..]"
       Units: "K"
       Range: ">0"
       Required: True
     evaporator_liquid_differential_pressure:
       Description: "Pressure drop across the evaporator"
-      Data Type: "[Numeric]"
+      Data Type: "[Numeric/Null][1..]"
       Units: "Pa"
       Range: ">0"
       Required: True
     condenser_liquid_differential_pressure:
       Description: "Pressure drop across the condenser"
-      Data Type: "[Numeric]"
+      Data Type: "[Numeric/Null][1..]"
       Units: "Pa"
       Range: ">0"
       Required: True
     oil_cooler_heat:
       Description: "Heat rejected by the motor control center cooling (if separate stream crossing the control volume boundary)"
-      Data Type: "[Numeric]"
+      Data Type: "[Numeric/Null][1..]"
       Units: "W"
       Range: ">=0"
       Required: True
       Notes: "Heat transferred to another liquid crossing the control volume boundary from the chiller oil cooler. /nNULL if not present."
     motor_controller_heat:
       Description: "Heat rejected by the motor control center cooling (if separate stream crossing the control volume boundary)"
-      Data Type: "[Numeric]"
+      Data Type: "[Numeric/Null][1..]"
       Units: "W"
       Range: ">=0"
       Required: True
@@ -719,21 +719,21 @@ PerformanceMapStandby:
       Required: True
 
 GridVariablesStandby:
-  Object Type: "Map Variables"
+  Object Type: "Grid Variables"
   Data Elements:
     chiller_environment_dry_bulb_temperature:
       Description: "Dry bulb temperature of the air in the environment of the chiller"
-      Data Type: "[Numeric]"
+      Data Type: "[Numeric][1..]"
       Units: "K"
       Range: ">0"
       Required: True
 
 LookupVariablesStandby:
-  Object Type: "Map Variables"
+  Object Type: "Lookup Variables"
   Data Elements:
     input_power:
       Description: "Total power consumed by the chiller when not running. Value shall include all power sources and all auxiliary equipment provided with the chiller."
-      Data Type: "[Numeric]"
+      Data Type: "[Numeric/Null][1..]"
       Units: "W"
       Range: ">=0"
       Required: True

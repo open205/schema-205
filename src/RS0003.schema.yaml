@@ -230,35 +230,35 @@ PerformanceMapContinuous:
       Required: True
 
 GridVariablesContinuous:
-  Object Type: "Map Variables"
+  Object Type: "Grid Variables"
   Data Elements:
     volumetric_air_flow_rate:
       Description: "Volumetric air flow rate through fan assembly"
-      Data Type: "[Numeric]"
+      Data Type: "[Numeric][1..]"
       Range: ">=0"
       Units: "m3/s"
       Notes: "At *standard air conditions*."
       Required: True
     static_pressure_difference:
       Description: "Static pressure across fan assembly at dry coil conditions"
-      Data Type: "[Numeric]"
+      Data Type: "[Numeric][1..]"
       Range: ">=0"
       Units: "Pa"
       Notes: "Or external static."
       Required: True
 
 LookupVariablesContinuous:
-  Object Type: "Map Variables"
+  Object Type: "Lookup Variables"
   Data Elements:
     impeller_speed:
       Description: "Rotational speed of fan impeller"
-      Data Type: "[Numeric/Null]"
+      Data Type: "[Numeric/Null][1..]"
       Range: ">=0"
       Units: "rev/s"
       Required: True
     input_power:
       Description: "Power input to fan assembly"
-      Data Type: "[Numeric/Null]"
+      Data Type: "[Numeric/Null][1..]"
       Range: ">=0"
       Units: "W"
       Notes: "Mechanical shaft power or electric power depending on the data provided by the motor representation."
@@ -277,36 +277,36 @@ PerformanceMapDiscrete:
       Required: True
 
 GridVariablesDiscrete:
-  Object Type: "Map Variables"
+  Object Type: "Grid Variables"
   Data Elements:
     speed_number:
       Description: "Number indicating discrete speed of fan impeller"
-      Data Type: "[Integer]"
+      Data Type: "[Integer][1..]"
       Range: ">=0"
       Units: "-"
       Notes: "In rank order."
       Required: True
     static_pressure_difference:
       Description: "Static pressure across fan assembly at dry coil conditions"
-      Data Type: "[Numeric]"
+      Data Type: "[Numeric][1..]"
       Range: ">=0"
       Units: "Pa"
       Notes: "Or external static."
       Required: True
 
 LookupVariablesDiscrete:
-  Object Type: "Map Variables"
+  Object Type: "Lookup Variables"
   Data Elements:
     volumetric_air_flow_rate:
       Description: "Volumetric air flow rate through fan assembly"
-      Data Type: "[Numeric/Null]"
+      Data Type: "[Numeric/Null][1..]"
       Range: ">=0"
       Units: "m3/s"
       Notes: "At *standard air conditions*."
       Required: True
     input_power:
       Description: "Power input to fan assembly"
-      Data Type: "[Numeric/Null]"
+      Data Type: "[Numeric/Null][1..]"
       Range: ">=0"
       Units: "W"
       Notes: "Mechanical shaft power or electric power depending on the data provided by the motor representation."

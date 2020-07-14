@@ -72,7 +72,7 @@ ProductInformation:
 
 
 RatingAHRI210240:
-  Object Type: "Data Group"
+  Object Type: "Rating Data Group"
   Data Elements:
     certified_reference_number:
       Description: "AHRI Certified Reference Number"
@@ -119,7 +119,7 @@ RatingAHRI210240:
       Required: True
 
 RatingAHRI340360:
-  Object Type: "Data Group"
+  Object Type: "Rating Data Group"
   Data Elements:
     certified_reference_number:
       Description: "AHRI Certified Reference Number"

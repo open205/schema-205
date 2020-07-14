@@ -10,8 +10,10 @@
         "String Type",
         "Enumeration",
         "Data Group",
+        "Rating Data Group",
         "Performance Map",
-        "Map Variables"
+        "Grid Variables",
+        "Lookup Variables"
       ]
     },
     "Meta": {
@@ -142,6 +144,53 @@
       ],
       "additionalProperties": false
     },
+    "StandardUnits": {
+      "type": "string",
+      "enum": [
+        "-",
+        "m",
+        "K",
+        "W",
+        "kg",
+        "kg/s",
+        "m3/s",
+        "Pa",
+        "m2-K/W",
+        "Hz",
+        "V",
+        "rev/s"
+      ]
+    },
+    "RatingUnits": {
+      "type": "string",
+      "enum": [
+        "-",
+        "m",
+        "K",
+        "W",
+        "kg",
+        "kg/s",
+        "m3/s",
+        "Pa",
+        "m2-K/W",
+        "F",
+        "gpm",
+        "ft of water",
+        "Btu/h",
+        "Btu/W-h",
+        "W/(m3/s)",
+        "%",
+        "h-ft2-F/Btu",
+        "Hz",
+        "V",
+        "C",
+        "kW",
+        "m2-K/kW",
+        "kPa",
+        "l/s",
+        "rev/s"
+      ]
+    },
     "DataElementAttributes": {
       "type": "object",
       "properties": {
@@ -152,40 +201,92 @@
           "type": "string"
         },
         "Units": {
-          "type": "string",
-          "enum": [
-            "-",
-            "m",
-            "K",
-            "W",
-            "kg",
-            "kg/s",
-            "m3/s",
-            "Pa",
-            "m2-K/W",
-            "F",
-            "gpm",
-            "ft of water",
-            "Btu/h",
-            "Btu/W-h",
-            "W/(m3/s)",
-            "%",
-            "h-ft2-F/Btu",
-            "Hz",
-            "V",
-            "C",
-            "kW",
-            "m2-K/kW",
-            "kPa",
-            "l/s",
-            "rev/s"
-          ]
+          "$ref": "meta.schema.json#/definitions/StandardUnits"
         },
         "Range": {
           "type": "string"
         },
         "Required": {
           "type": "boolean"
+        },
+        "Notes": {
+          "type": "string"
+        }
+      }
+    },
+    "RatingDataElementAttributes": {
+      "type": "object",
+      "properties": {
+        "Description": {
+          "type": "string"
+        },
+        "Data Type": {
+          "type": "string"
+        },
+        "Units": {
+          "$ref": "meta.schema.json#/definitions/RatingUnits"
+        },
+        "Range": {
+          "type": "string"
+        },
+        "Required": {
+          "type": "boolean"
+        },
+        "Notes": {
+          "type": "string"
+        }
+      }
+    },
+    "GridVariableDataElementAttributes": {
+      "type": "object",
+      "properties": {
+        "Description": {
+          "type": "string"
+        },
+        "Data Type": {
+          "type": "string",
+          "enum": [
+            "[Numeric][1..]",
+            "[Integer][1..]"
+          ]
+        },
+        "Units": {
+          "$ref": "meta.schema.json#/definitions/StandardUnits"
+        },
+        "Range": {
+          "type": "string"
+        },
+        "Required": {
+          "type": "boolean",
+          "const": true
+        },
+        "Notes": {
+          "type": "string"
+        }
+      }
+    },
+    "LookupVariableDataElementAttributes": {
+      "type": "object",
+      "properties": {
+        "Description": {
+          "type": "string"
+        },
+        "Data Type": {
+          "type": "string",
+          "enum": [
+            "[Numeric/Null][1..]",
+            "[Integer/Null][1..]"
+          ]
+        },
+        "Units": {
+          "$ref": "meta.schema.json#/definitions/StandardUnits"
+        },
+        "Range": {
+          "type": "string"
+        },
+        "Required": {
+          "type": "boolean",
+          "const": true
         },
         "Notes": {
           "type": "string"
@@ -206,6 +307,52 @@
       },
       "additionalProperties": false
     },
+    "RatingDataElement": {
+      "type": "object",
+      "patternProperties": {
+        "(^([A-Z]*|[a-z]*)(_([a-z]*|[0-9]*)|([A-Z]*|[0-9]*))*$)": {
+          "$ref": "meta.schema.json#/definitions/RatingDataElementAttributes",
+          "required": [
+            "Description",
+            "Data Type"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    },
+    "GridVariableDataElement": {
+      "type": "object",
+      "patternProperties": {
+        "(^([A-Z]*|[a-z]*)(_([a-z]*|[0-9]*)|([A-Z]*|[0-9]*))*$)": {
+          "$ref": "meta.schema.json#/definitions/GridVariableDataElementAttributes",
+          "required": [
+            "Description",
+            "Data Type",
+            "Units",
+            "Required"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    },
+    "LookupVariableDataElement": {
+      "type": "object",
+      "patternProperties": {
+        "(^([A-Z]*|[a-z]*)(_([a-z]*|[0-9]*)|([A-Z]*|[0-9]*))*$)": {
+          "$ref": "meta.schema.json#/definitions/LookupVariableDataElementAttributes",
+          "required": [
+            "Description",
+            "Data Type",
+            "Units",
+            "Required"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    },
     "DataGroup": {
       "type": "object",
       "properties": {
@@ -214,6 +361,25 @@
         },
         "Data Elements": {
           "$ref": "meta.schema.json#/definitions/DataElement"
+        }
+      },
+      "required": [
+        "Object Type",
+        "Data Elements"
+      ],
+      "additionalProperties": false
+    },
+    "RatingDataGroup": {
+      "type": "object",
+      "properties": {
+        "Object Type": {
+          "$ref": "meta.schema.json#/definitions/ObjectType"
+        },
+        "Data Elements": {
+          "$ref": "meta.schema.json#/definitions/RatingDataElement",
+          "required": [
+            "rating_reproducible_from_performance_data"
+          ]
         }
       },
       "required": [
@@ -263,14 +429,30 @@
       ],
       "additionalProperties": false
     },
-    "MapVariables": {
+    "GridVariables": {
       "type": "object",
       "properties": {
         "Object Type": {
           "$ref": "meta.schema.json#/definitions/ObjectType"
         },
         "Data Elements": {
-          "$ref": "meta.schema.json#/definitions/DataElement"
+          "$ref": "meta.schema.json#/definitions/GridVariableDataElement"
+        }
+      },
+      "required": [
+        "Object Type",
+        "Data Elements"
+      ],
+      "additionalProperties": false
+    },
+    "LookupVariables": {
+      "type": "object",
+      "properties": {
+        "Object Type": {
+          "$ref": "meta.schema.json#/definitions/ObjectType"
+        },
+        "Data Elements": {
+          "$ref": "meta.schema.json#/definitions/LookupVariableDataElement"
         }
       },
       "required": [
@@ -348,6 +530,18 @@
           "if": {
             "properties": {
               "Object Type": {
+                "const": "Rating Data Group"
+              }
+            }
+          },
+          "then": {
+            "$ref": "meta.schema.json#/definitions/RatingDataGroup"
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "Object Type": {
                 "const": "Performance Map"
               }
             }
@@ -366,6 +560,30 @@
           },
           "then": {
             "$ref": "meta.schema.json#/definitions/MapVariables"
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "Object Type": {
+                "const": "Grid Variables"
+              }
+            }
+          },
+          "then": {
+            "$ref": "meta.schema.json#/definitions/GridVariables"
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "Object Type": {
+                "const": "Lookup Variables"
+              }
+            }
+          },
+          "then": {
+            "$ref": "meta.schema.json#/definitions/LookupVariables"
           }
         },
         {
