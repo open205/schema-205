@@ -11,6 +11,43 @@ arrays = f"\\[{single_type}\\]"
 final_regex = f"{single_type}|{alternatives}|{arrays}"
 
 # TODO add tests?
+'''
+Number
+
+Numeric
+
+String
+
+number
+
+Boolean
+
+Integer
+
+Null
+
+UUID
+
+Numeric/Null/String
+
+
+Numeric/Null/<String>
+
+Numeric/Null
+
+[Numeric]
+
+{Something}
+
+<CompressorType>
+
+[Numeric/Null/String]
+
+({Something}, {SomethingElse},Numeric,<EnumType>)
+
+{Something(RS_id=RS0001)}
+'''
+
 
 # Actual string
 print(final_regex)

@@ -37,7 +37,6 @@ if __name__ == '__main__':
   if len(sys.argv) == 2:
     meta_schema.validate(os.path.join(source_dir,f'{sys.argv[1]}.schema.yaml'))
   elif len(sys.argv) == 1:
-    print(os.listdir(source_dir))
     for file_name in sorted(os.listdir(source_dir)):
       if '.schema.yaml' in file_name:
         meta_schema.validate(os.path.join(source_dir,file_name))
