@@ -343,7 +343,11 @@ class JSON_translator:
 
 
 # -------------------------------------------------------------------------------------------------
-def print_result(file_name_root, same, err):
+def print_comparison(original_dir, generated_dir, file_name_root, err):
+    '''Compare generated dictionary to original; send results to stdout.'''
+    same = compare_dicts(os.path.join(original_dir, file_name_root + '.schema.json'),
+                         os.path.join(generated_dir, file_name_root + '.schema.json'),
+                         err)
     if not same:
         print(f'\nError(s) while matching {file_name_root}: Original(1) vs Generated(2)')
         for e in err:
@@ -371,10 +375,7 @@ if __name__ == '__main__':
         file_name_root = sys.argv[1]
         sch = j.load_metaschema(source_dir, file_name_root)
         dump(sch, os.path.join(dump_dir, file_name_root + '.schema.json'))
-        same = compare_dicts(os.path.join(schema_dir, file_name_root + '.schema.json'),
-                             os.path.join(dump_dir, file_name_root + '.schema.json'),
-                             err)
-        print_result(file_name_root, same, err)
+        #print_comparison(schema_dir, dump_dir, file_name_root, err)
     else:
         yml = glob.glob(os.path.join(source_dir, 'RS*.schema.yaml'))
         yml.extend(glob.glob(os.path.join(source_dir, 'ASHRAE205.schema.yaml')))
@@ -386,6 +387,6 @@ if __name__ == '__main__':
             same = compare_dicts(os.path.join(schema_dir, file_name_root + '.schema.json'),
                                  os.path.join(dump_dir, file_name_root + '.schema.json'),
                                  err)
-            print_result(file_name_root, same, err)
+            #print_comparison(schema_dir, dump_dir, file_name_root, err)
 
 
