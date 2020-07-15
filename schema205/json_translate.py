@@ -243,18 +243,21 @@ class Enumeration:
 # -------------------------------------------------------------------------------------------------
 class JSON_translator:
     def __init__(self):
-        self._schema = {'$schema': 'http://json-schema.org/draft-07/schema#',
-                        'title': None,
-                        'description': None,
-                        'definitions' : dict()}
         self._references = dict()
         self._fundamental_data_types = dict()
 
 
     def load_metaschema(self, source_dir, input_rs):
         ''' '''
+        self._schema = {'$schema': 'http://json-schema.org/draft-07/schema#',
+                        'title': None,
+                        'description': None,
+                        'definitions' : dict()}
         self._input_rs = input_rs
         self._source_dir = source_dir
+        self._references.clear()
+        self._fundamental_data_types.clear()
+
         input_file_path = os.path.join(source_dir, input_rs + '.schema.yaml')
         self._contents = load(input_file_path)
         sch = dict()
@@ -333,6 +336,15 @@ class JSON_translator:
 
 
 # -------------------------------------------------------------------------------------------------
+def print_result(file_name_root, same, err):
+    if not same:
+        print(f'\nError(s) while matching {file_name_root}: Original(1) vs Generated(2)')
+        for e in err:
+            print(e)
+    else:
+        print(f"Translation of {file_name_root} successful.")
+
+# -------------------------------------------------------------------------------------------------
 if __name__ == '__main__':
     import sys
     import glob
@@ -355,21 +367,18 @@ if __name__ == '__main__':
         same = compare_dicts(os.path.join(schema_dir, file_name_root + '.schema.json'),
                              os.path.join(dump_dir, file_name_root + '.schema.json'),
                              err)
+        print_result(file_name_root, same, err)
     else:
         yml = glob.glob(os.path.join(source_dir, 'RS*.schema.yaml'))
         yml.extend(glob.glob(os.path.join(source_dir, 'ASHRAE205.schema.yaml')))
         for file_name in yml:
+            err.clear()
             file_name_root = os.path.splitext(os.path.splitext(os.path.basename(file_name))[0])[0]
             dump(j.load_metaschema(source_dir, file_name_root), 
                  os.path.join(dump_dir, file_name_root + '.schema.json'))
             same = compare_dicts(os.path.join(schema_dir, file_name_root + '.schema.json'),
                                  os.path.join(dump_dir, file_name_root + '.schema.json'),
                                  err)
-    if not same:
-        print(f'\nError(s) while matching {file_name_root}: Original(1) vs Generated(2)')
-        for e in err:
-            print(e)
-    else:
-        print(f"Translation of {file_name_root} successful.")
+            print_result(file_name_root, same, err)
 
 
