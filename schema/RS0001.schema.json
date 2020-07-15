@@ -432,7 +432,7 @@
           "description": "Rated part load efficiency over an integrated load profile",
           "type": "number",
           "units": "-",
-          "notes": "Represents the  IPLV.SI or NPLV.SI."
+          "notes": "Represents the IPLV.SI or NPLV.SI."
         },
         "part_load_rating_points": {
           "description": "The four measured data points used to calculate the part load rating value",

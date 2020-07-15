@@ -140,7 +140,6 @@
       ]
     },
     "RefrigerantType": {
-      "description": "Type of refrigerant",
       "type": "string",
       "enum": [
         "R11",
@@ -472,7 +471,6 @@
       ]
     },
     "CompressorType": {
-      "description": "Type of compressor",
       "type": "string",
       "enum": [
         "RECIPROCATING",
@@ -490,7 +488,6 @@
       ]
     },
     "CondenserType": {
-      "description": "Type of condenser",
       "type": "string",
       "enum": [
         "AIR",
@@ -519,7 +516,6 @@
       ]
     },
     "ConcentrationType": {
-      "description": "Defines whether concentration is defined on a volume or mass basis",
       "type": "string",
       "enum": [
         "BY_VOLUME",

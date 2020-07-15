@@ -164,7 +164,7 @@ RatingAHRI550590:
       Data Type: "Numeric"
       Units: "-"
       Required: True
-      Notes: "Represents the IPLV.IP or NPLV.IP."
+      Notes: "Represents the IPLV.IP or NPLV.IP based on the COP."
     part_load_rating_points:
       Description: "The four measured data points used to calculate the part load rating value"
       Data Type: "[{PartLoadRatingPoint550590}][4]"
@@ -375,7 +375,7 @@ RatingAHRI551591:
       Data Type: "Numeric"
       Units: "-"
       Required: True
-      Notes: "Represents the IPLV.SI or NPLV.SI based on the COP."
+      Notes: "Represents the IPLV.SI or NPLV.SI."
     part_load_rating_points:
       Description: "The four measured data points used to calculate the part load rating value"
       Data Type: "[{PartLoadRatingPoint551591}][4]"
