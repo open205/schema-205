@@ -214,7 +214,7 @@
       "type": "object",
       "properties": {
         "standby_power": {
-          "description": "Continuous unit power draw regardless of whether the fan or DX system are operating.",
+          "description": "Continuous unit power draw regardless of whether the fan or DX system are operating",
           "type": "number",
           "units": "W",
           "minimum": 0.0,

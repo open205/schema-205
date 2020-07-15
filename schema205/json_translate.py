@@ -37,7 +37,7 @@ def dump(content, output_file_path):
 def compare_dicts(original, modified, error_list):
     o = load(original)
     m = load(modified)
-    return dict_compare(o, m, error_list, level=0, lineage=None)
+    return dict_compare(o, m, error_list, level=0, lineage=None, hide_value_mismatches=False)
 
 
 # https://stackoverflow.com/questions/4527942/comparing-two-dictionaries-and-checking-how-many-key-value-pairs-are-equal
@@ -369,5 +369,7 @@ if __name__ == '__main__':
         print(f'\nError(s) while matching {file_name_root}: Original(1) vs Generated(2)')
         for e in err:
             print(e)
+    else:
+        print(f"Translation of {file_name_root} successful.")
 
 

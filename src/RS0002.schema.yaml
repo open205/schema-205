@@ -173,6 +173,7 @@ Performance:
       Data Type: "Numeric"
       Units: "W"
       Range: ">=0"
+      Notes: "Includes on-board controls and other power not otherwise included in the fan or dx system representations."
       Required: True
     fan_representation:
       Description: "The corresponding Standard 205 enclosed fan assembly representation"
