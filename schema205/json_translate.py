@@ -106,6 +106,7 @@ class DataGroup:
 
 
     def _create_type_entry(self, parent_dict, target_dict):
+        '''Create type node and its nested nodes if necessary.'''
         try:
             # If the type is an array, extract the surrounding [] first (using non-greedy qualifier "?")
             m = re.findall(r'\[(.*?)\]', parent_dict['Data Type'])
@@ -114,7 +115,7 @@ class DataGroup:
                 target_dict['type'] = 'array'
                 # 2. 'm[in/ax]Items' entry
                 if len(m) > 1:
-                    # Parse ellipsis range-notation
+                    # Parse ellipsis range-notation e.g. '[1..]'
                     mnmx = re.match(r'([0-9]*)(\.*\.*)([0-9]*)', m[1])
                     target_dict['minItems'] = int(mnmx.group(1))
                     if (mnmx.group(2) and mnmx.group(3)):
@@ -160,15 +161,18 @@ class DataGroup:
         nested_type = None
         m = re.match(enum_or_def, type_str)
         if m:
+            # Find the internal type. It might be inside nested-type syntax, but more likely
+            # is a simple definition or enumeration.
             m_nested = re.match(r'.*?\((.*)\)', m.group(2))
             if m_nested:
-                # Rare case of a nested specification has an RS type in parenthesis
+                # Rare case of a nested specification e.g. 'ASHRAE205(RS_ID=RS0005)'
                 internal_type = m.group(2).split('(')[0]
                 nested_type = m_nested.group(1)
             else:
                 internal_type = m.group(2)
         else:
             internal_type = type_str
+        # Look through the references to assign a source to the type
         for key in self._refs:
             if internal_type in self._refs[key]:
                 internal_type = key + '.schema.json#/definitions/' + internal_type
@@ -191,6 +195,7 @@ class DataGroup:
 
 
     def _get_simple_minmax(self, range_str, target_dict):
+        '''Process Range into min and max fields.'''
         if range_str is not None:
             ranges = range_str.split(',')
             minimum=None
@@ -224,9 +229,13 @@ class Enumeration:
             self.entry[self._name]['description'] = description
 
     def add_enumerator(self, value, description=None, display_text=None, notes=None):
+        '''Store information grouped as a tuple per enumerant.'''
         self._enumerants.append((value, description, display_text, notes))
 
     def create_dictionary_entry(self):
+        '''Convert information currently grouped per enumerant, into json groups for 
+           the whole enumeration.
+        '''
         z = list(zip(*self._enumerants))
         enums = {'type': 'string', 
                  'enum' : z[0]}
@@ -248,7 +257,7 @@ class JSON_translator:
 
 
     def load_metaschema(self, source_dir, input_rs):
-        ''' '''
+        '''Load and process a yaml schema into its json schema equivalent.'''
         self._schema = {'$schema': 'http://json-schema.org/draft-07/schema#',
                         'title': None,
                         'description': None,
@@ -267,8 +276,6 @@ class JSON_translator:
                 obj_type = self._contents[base_level_tag]['Object Type']
                 if obj_type == 'Meta':
                     self._load_meta_info(self._contents[base_level_tag])
-                # if obj_type == 'Data Type':
-                #     self._load_data_type_info(self._contents[base_level_tag])
                 if obj_type == 'String Type':
                     if 'Is Regex' in self._contents[base_level_tag]:
                         sch = {**sch, **({base_level_tag : {"type":"string", "regex":True}})}
@@ -289,6 +296,7 @@ class JSON_translator:
 
 
     def _load_meta_info(self, schema_section):
+        '''Store the global/common types and the types defined by any named references.'''
         self._schema['title'] = schema_section['Title']
         self._schema['description'] = schema_section['Description']
         if 'Version' in schema_section:
@@ -326,8 +334,7 @@ class JSON_translator:
         for key in enums:
             try:
                 descr = enums[key]['Description']  if 'Description'  in enums[key] else None
-                displ = (enums[key]['Display Text'] if 'Display Text' in enums[key] else
-                        (descr if descr else None))
+                displ = enums[key]['Display Text'] if 'Display Text' in enums[key] else None
                 notes = enums[key]['Notes']        if 'Notes'        in enums[key] else None
                 definition.add_enumerator(key, descr, displ, notes)
             except TypeError: # key's value is None
