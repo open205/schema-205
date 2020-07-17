@@ -1,0 +1,59 @@
+Schema:
+  Object Type: "Meta"
+  References:
+    - "ASHRAE205"
+  Title: "Tank"
+  Description: ""
+
+RSD_TANK:
+  Object Type: "Data Group"
+  Data Elements:
+    description:
+      Description: "Data group describing product and rating information"
+      Data Type: "{Description}"
+    performance:
+      Description: "Data group containing performance information"
+      Data Type: "{Performance}"
+      Required: True
+
+Description:
+  Object Type: "Data Group"
+  Data Elements:
+    product_information:
+      Description: "Data group describing product information"
+      Data Type: "{ProductInformation}"
+
+ProductInformation:
+  Object Type: "Data Group"
+  Data Elements:
+    manufacturer:
+      Description: "Manufacturer name"
+      Data Type: "String"
+      Required: True
+    model_number:
+      Description: "Model number"
+      Data Type: "Pattern"
+      Notes: "Pattern shall match all model numbers that can be represented by the *representation*."
+      Required: True
+
+Performance:
+  Object Type: "Data Group"
+  Data Elements:
+    height:
+      Data Type: "Numeric"
+      Units: "m"
+    diameter:
+      Data Type: "Numeric"
+      Units: "m"
+    ua:
+      Data Type: "Numeric"
+      Units: "W/m2-K"
+    connections:
+      Data Type: "[{Connection}]"
+
+Connection:
+  Object Type: "Data Group"
+  Data Elements:
+    connection_height:
+      Data Type: "Numeric"
+      Units: "m"
