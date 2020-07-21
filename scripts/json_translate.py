@@ -153,8 +153,8 @@ class DataGroup:
     def _get_simple_type(self, type_str, target_dict_to_append):
         ''' Return the internal type described by type_str, along with its json-appropriate key.
 
-            First, attempt to capture enum, definition, or special string type as references; 
-            then default to fundamental types with simple key "type". 
+            First, attempt to capture enum, definition, or special string type as references;
+            then default to fundamental types with simple key "type".
         '''
         enum_or_def = r'(\{|\<)(.*)(\}|\>)'
         internal_type = None
@@ -237,7 +237,7 @@ class Enumeration:
            the whole enumeration.
         '''
         z = list(zip(*self._enumerants))
-        enums = {'type': 'string', 
+        enums = {'type': 'string',
                  'enum' : z[0]}
         if any(z[2]):
             enums['enum_text'] = z[2]
@@ -283,13 +283,13 @@ class JSON_translator:
                         sch = {**sch, **({base_level_tag : {"type":"string", "pattern":self._contents[base_level_tag]['JSON Schema Pattern']}})}
                 if obj_type == 'Enumeration':
                     sch = {**sch, **(self._process_enumeration(base_level_tag))}
-                if obj_type in ['Data Group', 
-                                'Performance Map', 
-                                'Grid Variables', 
-                                'Lookup Variables', 
+                if obj_type in ['Data Group',
+                                'Performance Map',
+                                'Grid Variables',
+                                'Lookup Variables',
                                 'Rating Data Group']:
                     dg = DataGroup(base_level_tag, self._fundamental_data_types, self._references)
-                    sch = {**sch, **(dg.add_data_group(base_level_tag, 
+                    sch = {**sch, **(dg.add_data_group(base_level_tag,
                                      self._contents[base_level_tag]['Data Elements']))}
         self._schema['definitions'] = sch
         return self._schema
@@ -312,10 +312,10 @@ class JSON_translator:
             ext_dict = load(os.path.join(self._source_dir, ref_file + '.schema.yaml'))
             external_objects = list()
             for base_item in [name for name in ext_dict if ext_dict[name]['Object Type'] in (
-                ['Enumeration', 
+                ['Enumeration',
                     'Data Group',
                     'String Type',
-                    'Map Variables', 
+                    'Map Variables',
                     'Rating Data Group',
                     'Performance Map',
                     'Grid Variables',
@@ -361,12 +361,12 @@ if __name__ == '__main__':
     import glob
 
     j = JSON_translator()
-    source_dir = os.path.join(os.path.dirname(__file__),'..','src')
+    source_dir = os.path.join(os.path.dirname(__file__),'..','schema-source')
     build_dir = os.path.join(os.path.dirname(__file__),'..','build')
     schema_dir = os.path.join(os.path.dirname(__file__),'..','schema')
     if not os.path.exists(build_dir):
         os.mkdir(build_dir)
-    dump_dir = os.path.join(build_dir,'json')
+    dump_dir = os.path.join(build_dir,'schema')
     if not os.path.exists(dump_dir):
         os.mkdir(dump_dir)
 
@@ -382,7 +382,7 @@ if __name__ == '__main__':
         for file_name in yml:
             err.clear()
             file_name_root = os.path.splitext(os.path.splitext(os.path.basename(file_name))[0])[0]
-            dump(j.load_metaschema(source_dir, file_name_root), 
+            dump(j.load_metaschema(source_dir, file_name_root),
                  os.path.join(dump_dir, file_name_root + '.schema.json'))
             same = compare_dicts(os.path.join(schema_dir, file_name_root + '.schema.json'),
                                  os.path.join(dump_dir, file_name_root + '.schema.json'),

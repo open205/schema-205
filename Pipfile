@@ -12,9 +12,9 @@ jsonschema = "*"
 pyyaml = "*"
 pytablewriter = "*"
 
-schema205 = {editable = true,path = "."}
+scripts = {editable = true,path = "."}
 
 [scripts]
-validate = "python schema205/validate.py"
-doc = "python schema205/markdown.py"
-translate = "python schema205/json_translate.py"
+validate = "python scripts/validate.py"
+doc = "python scripts/markdown.py"
+translate = "python scripts/json_translate.py"
