@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "06775e44a6de70b980d29b3bee8efe4af9bf7bfa2d941918331231e12aff206c"
+            "sha256": "ea359ebfa5ab8aa1daaa52377cbbc44893478357378848fa4d3b6a1f5ab9cdca"
         },
         "pipfile-spec": 6,
         "requires": {},
@@ -130,6 +130,10 @@
             "version": "==5.3.1"
         },
         "schema205": {
+            "editable": true,
+            "path": "."
+        },
+        "scripts": {
             "editable": true,
             "path": "."
         },

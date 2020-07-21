@@ -90,7 +90,7 @@ def write_tables(instance, output_path, append=True):
         output_file.writelines(format_table(writer))
 
 if __name__ == '__main__':
-  source_dir = os.path.join(os.path.dirname(__file__),'..','src')
+  source_dir = os.path.join(os.path.dirname(__file__),'..','schema-source')
   build_path = os.path.join(os.path.dirname(__file__),'..','build')
   if not os.path.exists(build_path):
     os.mkdir(build_path)

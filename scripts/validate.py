@@ -33,7 +33,7 @@ class A205MetaSchema:
 
 if __name__ == '__main__':
   meta_schema = A205MetaSchema(os.path.join(os.path.dirname(__file__),'..','meta-schema','meta.schema.json'))
-  source_dir = os.path.join(os.path.dirname(__file__),'..','src')
+  source_dir = os.path.join(os.path.dirname(__file__),'..','schema-source')
   if len(sys.argv) == 2:
     meta_schema.validate(os.path.join(source_dir,f'{sys.argv[1]}.schema.yaml'))
   elif len(sys.argv) == 1:
