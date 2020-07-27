@@ -375,7 +375,6 @@ if __name__ == '__main__':
         file_name_root = sys.argv[1]
         sch = j.load_metaschema(source_dir, file_name_root)
         dump(sch, os.path.join(dump_dir, file_name_root + '.schema.json'))
-        #print_comparison(schema_dir, dump_dir, file_name_root, err)
     else:
         yml = glob.glob(os.path.join(source_dir, 'RS*.schema.yaml'))
         yml.extend(glob.glob(os.path.join(source_dir, 'ASHRAE205.schema.yaml')))
@@ -384,9 +383,5 @@ if __name__ == '__main__':
             file_name_root = os.path.splitext(os.path.splitext(os.path.basename(file_name))[0])[0]
             dump(j.load_metaschema(source_dir, file_name_root),
                  os.path.join(dump_dir, file_name_root + '.schema.json'))
-            same = compare_dicts(os.path.join(schema_dir, file_name_root + '.schema.json'),
-                                 os.path.join(dump_dir, file_name_root + '.schema.json'),
-                                 err)
-            #print_comparison(schema_dir, dump_dir, file_name_root, err)
 
 
