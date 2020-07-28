@@ -6,15 +6,15 @@ verify_ssl = true
 [dev-packages]
 pytest = "*"
 pbr = "*"
+doit = "*"
 
 [packages]
 jsonschema = "*"
 pyyaml = "*"
 pytablewriter = "*"
-
 scripts = {editable = true,path = "."}
 
 [scripts]
-validate = "python scripts/validate.py"
-doc = "python scripts/markdown.py"
-translate = "python scripts/json_translate.py"
+validate = "doit validate"
+doc = "doit doc"
+translate = "doit translate"

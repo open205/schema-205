@@ -30,13 +30,19 @@ class A205MetaSchema:
       message_str = '\n  '.join(messages)
       raise Exception(f"Validation failed for {file_name} with {len(messages)} errors:\n  {message_str}")
 
+def validate_dir(dir_path):
+  meta_schema = A205MetaSchema(os.path.join(os.path.dirname(__file__),'..','meta-schema','meta.schema.json'))
+  for file_name in sorted(os.listdir(dir_path)):
+    if '.schema.yaml' in file_name:
+      meta_schema.validate(os.path.join(dir_path,file_name))
+
+def validate_file(file_path):
+  meta_schema = A205MetaSchema(os.path.join(os.path.dirname(__file__),'..','meta-schema','meta.schema.json'))
+  meta_schema.validate(file_path)
 
 if __name__ == '__main__':
-  meta_schema = A205MetaSchema(os.path.join(os.path.dirname(__file__),'..','meta-schema','meta.schema.json'))
   source_dir = os.path.join(os.path.dirname(__file__),'..','schema-source')
   if len(sys.argv) == 2:
-    meta_schema.validate(os.path.join(source_dir,f'{sys.argv[1]}.schema.yaml'))
+    validate_file(os.path.join(source_dir,f'{sys.argv[1]}.schema.yaml'))
   elif len(sys.argv) == 1:
-    for file_name in sorted(os.listdir(source_dir)):
-      if '.schema.yaml' in file_name:
-        meta_schema.validate(os.path.join(source_dir,file_name))
+    validate_dir(source_dir)
