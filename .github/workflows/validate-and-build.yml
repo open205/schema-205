@@ -15,19 +15,22 @@ jobs:
       - name: Setup python
         uses: actions/setup-python@v1
         with:
-          python-version: 3.7
+          python-version: 3.6
       - name: Upgrade pip
         run: python -m pip install --upgrade pip
       - name: Install pipenv
         run: python -m pip install pipenv
       - name: Install project
         run: pipenv install --dev
-      - name: Validate
-        run: pipenv run validate
-      - name: Build Markdown Documentation
-        run: pipenv run doc
+      - name: Validate and build
+        run: pipenv run doit
       - name: Upload Markdown Documentation
         uses: actions/upload-artifact@v2
         with:
           name: markdown-tables-${{ matrix.os }}
           path: build/docs
+      - name: Upload JSON Schema
+        uses: actions/upload-artifact@v2
+        with:
+          name: json-schema-${{ matrix.os }}
+          path: build/schema
