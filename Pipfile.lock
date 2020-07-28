@@ -213,12 +213,6 @@
             "markers": "python_version < '3.8'",
             "version": "==1.7.0"
         },
-        "macfsevents": {
-            "hashes": [
-                "sha256:1324b66b356051de662ba87d84f73ada062acd42b047ed1246e60a449f833e10"
-            ],
-            "version": "==0.8.1"
-        },
         "more-itertools": {
             "hashes": [
                 "sha256:68c70cc7167bdf5c7c9d8f6954a7837089c6a36bf565383919bb595efb8a17e5",
