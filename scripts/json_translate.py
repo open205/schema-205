@@ -3,7 +3,6 @@ import yaml
 import os
 from collections import OrderedDict
 import re
-import enum
 
 def get_extension(file):
     return os.path.splitext(file)[1]
@@ -233,7 +232,7 @@ class Enumeration:
         self._enumerants.append((value, description, display_text, notes))
 
     def create_dictionary_entry(self):
-        '''Convert information currently grouped per enumerant, into json groups for 
+        '''Convert information currently grouped per enumerant, into json groups for
            the whole enumeration.
         '''
         z = list(zip(*self._enumerants))
@@ -256,18 +255,16 @@ class JSON_translator:
         self._fundamental_data_types = dict()
 
 
-    def load_metaschema(self, source_dir, input_rs):
+    def load_common_schema(self, input_file_path):
         '''Load and process a yaml schema into its json schema equivalent.'''
         self._schema = {'$schema': 'http://json-schema.org/draft-07/schema#',
                         'title': None,
                         'description': None,
                         'definitions' : dict()}
-        self._input_rs = input_rs
-        self._source_dir = source_dir
         self._references.clear()
+        self._source_dir = os.path.dirname(os.path.abspath(input_file_path))
+        self._schema_name = os.path.splitext(os.path.splitext(os.path.basename(input_file_path))[0])[0]
         self._fundamental_data_types.clear()
-
-        input_file_path = os.path.join(source_dir, input_rs + '.schema.yaml')
         self._contents = load(input_file_path)
         sch = dict()
         # Iterate through the dictionary, looking for known types
@@ -302,12 +299,12 @@ class JSON_translator:
         if 'Version' in schema_section:
             self._schema['version'] = schema_section['Version']
         if 'Root Data Group' in schema_section:
-            self._schema['$ref'] = self._input_rs + '.schema.json#/definitions/' + schema_section['Root Data Group']
+            self._schema['$ref'] = self._schema_name + '.schema.json#/definitions/' + schema_section['Root Data Group']
         # Create a dictionary of available external objects for reference
         refs = list()
         if 'References' in schema_section:
             refs = schema_section['References']
-        refs.append(self._input_rs)
+        refs.append(self._schema_name)
         for ref_file in refs:
             ext_dict = load(os.path.join(self._source_dir, ref_file + '.schema.yaml'))
             external_objects = list()
@@ -356,37 +353,34 @@ def print_comparison(original_dir, generated_dir, file_name_root, err):
         print(f"Translation of {file_name_root} successful.")
 
 # -------------------------------------------------------------------------------------------------
+
+def translate_file(input_file_path, output_file_path):
+    j = JSON_translator()
+    schema_instance = j.load_common_schema(input_file_path)
+    dump(schema_instance, output_file_path)
+
+def translate_dir(input_dir_path, output_dir_path):
+    j = JSON_translator()
+    for file_name in sorted(os.listdir(input_dir_path)):
+        if '.schema.yaml' in file_name:
+            file_name_root = os.path.splitext(os.path.splitext(file_name)[0])[0]
+            schema_instance = j.load_common_schema(os.path.join(input_dir_path,file_name))
+            dump(schema_instance, os.path.join(output_dir_path, file_name_root + '.schema.json'))
+
+
 if __name__ == '__main__':
     import sys
-    import glob
 
-    j = JSON_translator()
-    source_dir = os.path.join(os.path.dirname(__file__),'..','schema-source')
-    build_dir = os.path.join(os.path.dirname(__file__),'..','build')
-    schema_dir = os.path.join(os.path.dirname(__file__),'..','schema')
-    if not os.path.exists(build_dir):
-        os.mkdir(build_dir)
-    dump_dir = os.path.join(build_dir,'schema')
-    if not os.path.exists(dump_dir):
-        os.mkdir(dump_dir)
+    source_dir_path = os.path.join(os.path.dirname(__file__),'..','schema-source')
+    build_dir_path = os.path.join(os.path.dirname(__file__),'..','build')
+    if not os.path.exists(build_dir_path):
+        os.mkdir(build_dir_path)
+    schema_dir_path = os.path.join(build_dir_path,'schema')
+    if not os.path.exists(schema_dir_path):
+        os.mkdir(schema_dir_path)
 
-    err = list()
     if len(sys.argv) == 2:
         file_name_root = sys.argv[1]
-        sch = j.load_metaschema(source_dir, file_name_root)
-        dump(sch, os.path.join(dump_dir, file_name_root + '.schema.json'))
-        #print_comparison(schema_dir, dump_dir, file_name_root, err)
+        translate_file(os.path.join(source_dir_path, f'{file_name_root}.schema.yaml'), os.path.join(schema_dir_path, file_name_root + '.schema.json'))
     else:
-        yml = glob.glob(os.path.join(source_dir, 'RS*.schema.yaml'))
-        yml.extend(glob.glob(os.path.join(source_dir, 'ASHRAE205.schema.yaml')))
-        for file_name in yml:
-            err.clear()
-            file_name_root = os.path.splitext(os.path.splitext(os.path.basename(file_name))[0])[0]
-            dump(j.load_metaschema(source_dir, file_name_root),
-                 os.path.join(dump_dir, file_name_root + '.schema.json'))
-            same = compare_dicts(os.path.join(schema_dir, file_name_root + '.schema.json'),
-                                 os.path.join(dump_dir, file_name_root + '.schema.json'),
-                                 err)
-            #print_comparison(schema_dir, dump_dir, file_name_root, err)
-
-
+        translate_dir(source_dir_path, schema_dir_path)

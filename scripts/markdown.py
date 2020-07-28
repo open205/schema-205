@@ -89,23 +89,30 @@ def write_tables(instance, output_path, append=True):
 
         output_file.writelines(format_table(writer))
 
+def write_file(input_path, output_path):
+  with open(input_path, 'r') as input_file:
+      instance = yaml.load(input_file, Loader=yaml.FullLoader)
+  write_tables(instance, output_path,append=False)
+  print(f'Markdown generation successful for {input_path}')
+
+def write_dir(input_dir_path, output_dir_path):
+  for file_name in sorted(os.listdir(input_dir_path)):
+    if '.schema.yaml' in file_name:
+      file_name_root = os.path.splitext(os.path.splitext(file_name)[0])[0]
+      with open(os.path.join(input_dir_path,file_name), 'r') as input_file:
+          instance = yaml.load(input_file, Loader=yaml.FullLoader)
+      write_tables(instance, os.path.join(output_dir_path,f'{file_name_root}.schema.md'), append=False)
+      print(f'Markdown generation successful for {file_name}')
+
 if __name__ == '__main__':
-  source_dir = os.path.join(os.path.dirname(__file__),'..','schema-source')
-  build_path = os.path.join(os.path.dirname(__file__),'..','build')
-  if not os.path.exists(build_path):
-    os.mkdir(build_path)
-  docs_path = os.path.join(build_path,'docs')
-  if not os.path.exists(docs_path):
-    os.mkdir(docs_path)
+  source_dir_path = os.path.join(os.path.dirname(__file__),'..','schema-source')
+  build_dir_path = os.path.join(os.path.dirname(__file__),'..','build')
+  if not os.path.exists(build_dir_path):
+    os.mkdir(build_dir_path)
+  docs_dir_path = os.path.join(build_dir_path,'docs')
+  if not os.path.exists(docs_dir_path):
+    os.mkdir(docs_dir_path)
   if len(sys.argv) == 2:
-    with open(os.path.join(source_dir,f'{sys.argv[1]}.schema.yaml'), 'r') as input_file:
-        instance = yaml.load(input_file, Loader=yaml.FullLoader)
-    write_tables(instance, os.path.join(docs_path,f'{sys.argv[1]}.schema.md'),append=False)
+    write_file(os.path.join(source_dir_path,f'{sys.argv[1]}.schema.yaml'), os.path.join(docs_dir_path,f'{sys.argv[1]}.schema.md'))
   elif len(sys.argv) == 1:
-    for file_name in sorted(os.listdir(source_dir)):
-      if '.schema.yaml' in file_name:
-        file_name_root = os.path.splitext(os.path.splitext(file_name)[0])[0]
-        with open(os.path.join(source_dir,file_name), 'r') as input_file:
-            instance = yaml.load(input_file, Loader=yaml.FullLoader)
-        write_tables(instance, os.path.join(docs_path,f'{file_name_root}.schema.md'),append=False)
-        print(f'Markdown generation successful for {file_name}')
+    write_dir(source_dir_path, docs_dir_path)
