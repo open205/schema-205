@@ -12,9 +12,6 @@ pipenv = "*"
 pylint = "*"
 
 [packages]
-jsonschema = "*"
-pyyaml = "*"
-pytablewriter = "*"
 scripts = {editable = true,path = "."}
 
 [scripts]
