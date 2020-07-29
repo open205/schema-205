@@ -25,7 +25,7 @@ def collect_target_files(target_dir, extension):
   return file_list
 
 def task_validate():
-  '''Validates common-scema against meta-schema'''
+  '''Validates common-schema against meta-schema'''
   return {
     'file_dep': collect_source_files(),
     'actions': [(scripts.validate.validate_dir,[SOURCE_PATH])]
@@ -55,4 +55,11 @@ def task_schema():
       (scripts.json_translate.translate_dir,[SOURCE_PATH, SCHEMA_PATH])
       ],
     'clean': True
+  }
+
+def task_test():
+  '''Performs unit tests and example file validation tests'''
+  return {
+    'task_dep': ['schema'],
+    'actions': ['pytest -v']
   }

@@ -15,6 +15,7 @@ pytablewriter = "*"
 scripts = {editable = true,path = "."}
 
 [scripts]
+build = "doit"
 validate = "doit validate"
 doc = "doit doc"
-translate = "doit translate"
+schema = "doit schema"
