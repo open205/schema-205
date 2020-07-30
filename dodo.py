@@ -61,5 +61,5 @@ def task_test():
   '''Performs unit tests and example file validation tests'''
   return {
     'task_dep': ['schema'],
-    'actions': ['pytest -v']
+    'actions': ['pytest -v test']
   }

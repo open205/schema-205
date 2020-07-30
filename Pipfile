@@ -8,7 +8,6 @@ pytest = "*"
 pbr = "*"
 doit = "*"
 atomicwrites = "*"
-pipenv = "*"
 pylint = "*"
 
 [packages]
