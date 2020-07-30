@@ -1,6 +1,6 @@
-import scripts.validate
-import scripts.markdown
-import scripts.json_translate
+import schema205.validate
+import schema205.markdown
+import schema205.json_translate
 import os
 from doit.tools import create_folder
 
@@ -28,7 +28,7 @@ def task_validate():
   '''Validates common-schema against meta-schema'''
   return {
     'file_dep': collect_source_files(),
-    'actions': [(scripts.validate.validate_dir,[SOURCE_PATH])]
+    'actions': [(schema205.validate.validate_dir,[SOURCE_PATH])]
   }
 
 def task_doc():
@@ -39,7 +39,7 @@ def task_doc():
     'task_dep': ['validate'],
     'actions': [
       (create_folder, [DOCS_PATH]),
-      (scripts.markdown.write_dir,[SOURCE_PATH, DOCS_PATH])
+      (schema205.markdown.write_dir,[SOURCE_PATH, DOCS_PATH])
       ],
     'clean': True
   }
@@ -52,7 +52,7 @@ def task_schema():
     'task_dep': ['validate'],
     'actions': [
       (create_folder, [SCHEMA_PATH]),
-      (scripts.json_translate.translate_dir,[SOURCE_PATH, SCHEMA_PATH])
+      (schema205.json_translate.translate_dir,[SOURCE_PATH, SCHEMA_PATH])
       ],
     'clean': True
   }

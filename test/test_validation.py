@@ -1,4 +1,4 @@
-import scripts
+import schema205
 import os
 import pytest
 
@@ -22,11 +22,11 @@ paths, names = collect_examples(EXAMPLES_DIR)
 
 @pytest.mark.parametrize("example",paths, ids=names)
 def test_validate(example):
-    scripts.schema.validate(example)
+    schema205.schema.validate(example)
 
 BAD_EXAMPLE_DIR = 'test/bad-examples'
 bad_examples = sorted(os.listdir(BAD_EXAMPLE_DIR))
 @pytest.mark.parametrize("example",bad_examples, ids=bad_examples)
 def test_invalidate(example):
     with pytest.raises(Exception):
-        scripts.schema.validate(os.path.join(BAD_EXAMPLE_DIR,example))
+        schema205.schema.validate(os.path.join(BAD_EXAMPLE_DIR,example))

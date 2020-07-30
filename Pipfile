@@ -11,7 +11,7 @@ atomicwrites = "*"
 pylint = "*"
 
 [packages]
-scripts = {editable = true,path = "."}
+schema205 = {editable = true,path = "."}
 
 [scripts]
 build = "doit"
