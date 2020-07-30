@@ -55,14 +55,3 @@ def unique_name_with_index(name, list_of_names):
             else:
                 searching = False
                 return f"{name}{i}"
-
-
-def iterdict(d, dict_as_list, level=0):
-    for key in d:
-        preamble = 'Level ' + str(level) + ' ' + '  '*level + ' ' + key
-        if isinstance(d[key], dict):
-            dict_as_list.append(preamble + ': [dict]')
-            iterdict(d[key], dict_as_list, level+1)
-        else:
-            dict_as_list.append(preamble + ': ' + str(d[key]))
-
