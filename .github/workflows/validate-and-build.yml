@@ -22,7 +22,7 @@ jobs:
         run: python -m pip install pipenv
       - name: Install project
         run: pipenv install --dev
-      - name: Validate and build
+      - name: Validate, build, and test
         run: pipenv run doit
       - name: Upload Markdown Documentation
         uses: actions/upload-artifact@v2

@@ -7,14 +7,14 @@ verify_ssl = true
 pytest = "*"
 pbr = "*"
 doit = "*"
+atomicwrites = "*"
+pylint = "*"
 
 [packages]
-jsonschema = "*"
-pyyaml = "*"
-pytablewriter = "*"
-scripts = {editable = true,path = "."}
+schema205 = {editable = true,path = "."}
 
 [scripts]
+build = "doit"
 validate = "doit validate"
 doc = "doit doc"
-translate = "doit translate"
+schema = "doit schema"

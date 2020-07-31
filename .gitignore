@@ -2,3 +2,6 @@ schema205/RefrigerantType.schema.yaml
 build/
 *.egg-info/
 .doit.*
+.pytest_cache/
+.vscode/
+__pycache__/
