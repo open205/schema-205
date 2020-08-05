@@ -51,7 +51,14 @@ class CPP_entry:
         self._value = None
 
         if parent:
+            self._lineage = parent._lineage + [name]
             self.parent.add_child_entry(self)
+        else:
+            self._lineage = [name]
+
+    def add_child_entry(self, child):
+        #child.parent = self
+        self._child_entries.append(child)
 
     @property
     def value(self):
@@ -73,10 +80,6 @@ class CPP_entry:
     def parent(self, p):
         self._parent_entry = p
 
-    def add_child_entry(self, child):
-        #child.parent = self
-        self._child_entries.append(child)
-
     def _get_level(self, level=0):
         if self.parent:
             return self.parent._get_level(level+1)
@@ -97,12 +100,30 @@ class CPP_entry:
     def rootname(self):
         return self._get_root()._name
 
+    @property
+    def lineage(self):
+        return self._lineage
+
+
+# -------------------------------------------------------------------------------------------------
+class Typedef(CPP_entry):
+
+    def __init__(self, name, parent, typedef):
+        super().__init__(name, parent)
+        self._type = 'typedef'
+        self._typedef = typedef
+
+    @property
+    def value(self):
+        return self.level*'\t' + self._type + ' ' + self._typedef + ' ' + self._name + ';'
+
+
 # -------------------------------------------------------------------------------------------------
 class Enumeration(CPP_entry):
 
     def __init__(self, name, parent, item_dict):
         super().__init__(name, parent)
-        self._type = 'enum'
+        self._type = 'enum class'
         self._enumerants = list() # list of tuple:[value, description, display_text, notes]
 
         enums = item_dict
@@ -134,6 +155,24 @@ class Struct(CPP_entry):
 
 
 # -------------------------------------------------------------------------------------------------
+class Union(CPP_entry):
+
+    def __init__(self, name, parent, selections):
+        super().__init__(name, parent)
+        self._type = 'union'
+        self._selections = selections
+
+    @property
+    def value(self):
+        entry = self.level*'\t' + self._type + ' ' + self._name + ' ' + self._opener + '\n'
+        for s in self._selections:
+            entry += (self.level + 1)*'\t'
+            entry += (s + ';\n')
+        entry += (self.level*'\t' + self._closure)
+        return entry
+
+
+# -------------------------------------------------------------------------------------------------
 class Data_element(CPP_entry):
 
     def __init__(self, name, parent, element, data_types, references):
@@ -141,10 +180,14 @@ class Data_element(CPP_entry):
         self._datatypes = data_types
         self._refs = references
         self._create_type_entry(element)
+        self._has_nested = False
 
     @property
     def value(self):
-        return self.level*'\t' + self._type + ' ' + self._name + ';'
+        if self._has_nested:
+            return super().value
+        else:
+            return self.level*'\t' + self._type + ' ' + self._name + ';'
 
     def _create_type_entry(self, parent_dict):
         '''Create type node.'''
@@ -159,13 +202,12 @@ class Data_element(CPP_entry):
                 # If the type is oneOf a set
                 m = re.findall(r'^\((.*)\)', parent_dict['Data Type'])
                 if m:
-                    pass
-                    # target_dict['oneOf'] = list()
-                    # choices = m[0].split(',')
-                    # for c in choices:
-                    #     c = c.strip()
-                    #     target_dict['oneOf'].append(dict())
-                    #     self._get_simple_type(c, target_dict['oneOf'][-1])
+                    choices = m[0].split(',')
+                    self._type = 'union'
+                    self._has_nested = True
+                    for c in choices:
+                        c = c.strip()
+                        d = Data_element(c.lower(), self, {'Data Type' : c}, self._datatypes, self._refs)
                 else:
                     # 1. 'type' entry
                     self._type = self._get_simple_type(parent_dict['Data Type'])
@@ -175,7 +217,7 @@ class Data_element(CPP_entry):
             pass
 
     def _get_simple_type(self, type_str):
-        ''' Return the internal type described by type_str, along with its json-appropriate key.
+        ''' Return the internal type described by type_str.
 
             First, attempt to capture enum, definition, or special string type as references;
             then default to fundamental types with simple key "type".
@@ -210,8 +252,7 @@ class Data_element(CPP_entry):
 
         try:
             if '/' in type_str:
-                # e.g. "Numeric/Null" becomes a list of 'type's
-                #return ('type', [self._datatypes[t] for t in type_str.split('/')])
+                # e.g. "Numeric/Null" 
                 simple_type = self._datatypes[type_str.split('/')[0]]
             else:
                 simple_type = self._datatypes[type_str]
@@ -272,6 +313,13 @@ class H_translator:
         self._add_include_guard(self._input_rs)
         self._add_included_headers(self._contents['Schema']['References'])
         self._class = CPP_entry(self._input_rs)
+        # First, assemble typedefs
+        for base_level_tag in [tag for tag in self._contents if self._contents[tag]['Object Type'] == 'String Type']:
+            t = Typedef(base_level_tag, self._class, 'std::string')
+        # Second, Enumerations
+        for base_level_tag in [tag for tag in self._contents if self._contents[tag]['Object Type'] == 'Enumeration']:
+            e = Enumeration(base_level_tag, self._class, self._contents[base_level_tag]['Enumerators'])
+        # Third, direct class member variables
         for data_element in self._contents[self._input_rs]['Data Elements']:
             de = Data_element(data_element, 
                                 self._class, 
@@ -283,13 +331,8 @@ class H_translator:
         for base_level_tag in self._contents:
             if 'Object Type' in self._contents[base_level_tag]:
                 obj_type = self._contents[base_level_tag]['Object Type']
-                # if obj_type == 'String Type':
-                #     if 'Is Regex' in self._contents[base_level_tag]:
-                #         sch = {**sch, **({base_level_tag : {"type":"string", "regex":True}})}
-                #     else:
-                #         sch = {**sch, **({base_level_tag : {"type":"string", "pattern":self._contents[base_level_tag]['JSON Schema Pattern']}})}
-                if obj_type == 'Enumeration':
-                    e = Enumeration(base_level_tag, self._class, self._contents[base_level_tag]['Enumerators'])
+                # if obj_type == 'Enumeration':
+                #     e = Enumeration(base_level_tag, self._class, self._contents[base_level_tag]['Enumerators'])
                 if obj_type in ['Data Group',
                                 'Performance Map',
                                 'Grid Variables',
@@ -305,7 +348,6 @@ class H_translator:
                                             self._fundamental_data_types,
                                             self._references
                                             )
-        return self._class.value
 
     def _add_include_guard(self, header_name):
         s1 = f'#ifndef {header_name.upper()}_H_'
@@ -347,6 +389,12 @@ class H_translator:
             for base_item in [name for name in ext_dict if ext_dict[name]['Object Type'] == 'Data Type']:
                 self._fundamental_data_types[base_item] = cpp_types.get(base_item)
 
+    def _print_nodes(self, node):
+        if not node.child_entries:
+            print(node.lineage)
+        for child in node.child_entries:
+            self._print_nodes(child)
+
 
 # -------------------------------------------------------------------------------------------------
 if __name__ == '__main__':
@@ -371,7 +419,7 @@ if __name__ == '__main__':
         yml.extend(glob.glob(os.path.join(source_dir, 'ASHRAE205.schema.yaml')))
         for file_name in yml:
             file_name_root = os.path.splitext(os.path.splitext(os.path.basename(file_name))[0])[0]
-            h.load_metaschema(source_dir, file_name_root)
+            h.load_schema(source_dir, file_name_root)
             dump(str(h), os.path.join(dump_dir, file_name_root + '.h'))
 
 
