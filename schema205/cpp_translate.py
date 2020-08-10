@@ -289,12 +289,18 @@ class H_translator:
         self._references = dict()
         self._fundamental_data_types = dict()
         self._preamble = list()
+        self._epilogue = list()
 
     def __str__(self):
         s = ''
         for p in self._preamble:
             s += p
-        return s + self._class.value
+        s += '\n'
+        s += self._class.value
+        s += '\n'
+        for e in self._epilogue:
+            s += e
+        return s
 
     def load_schema(self, source_dir, input_rs):
         '''X'''
@@ -303,6 +309,7 @@ class H_translator:
         self._references.clear()
         self._fundamental_data_types.clear()
         self._preamble.clear()
+        self._epilogue.clear()
 
         input_file_path = os.path.join(source_dir, input_rs + '.schema.yaml')
         self._contents = load(input_file_path)
@@ -311,7 +318,7 @@ class H_translator:
         # Find the class description first, as it's stored at the same level as other data groups
         # but needs to be pushed to the top of the hierarchy
         self._add_include_guard(self._input_rs)
-        self._add_included_headers(self._contents['Schema']['References'])
+        self._add_included_headers(self._contents['Schema'].get('References'))
         self._class = CPP_entry(self._input_rs)
         # First, assemble typedefs
         for base_level_tag in [tag for tag in self._contents if self._contents[tag]['Object Type'] == 'String Type']:
@@ -353,14 +360,16 @@ class H_translator:
         s1 = f'#ifndef {header_name.upper()}_H_'
         s2 = f'#define {header_name.upper()}_H_'
         s3 = f'#endif'
-        self._preamble.append(s1 + '\n' + s2 + '\n' + s3 + '\n')
+        self._preamble.append(s1 + '\n' + s2 + '\n')
+        self._epilogue.append(s3 + '\n')
 
     def _add_included_headers(self, ref_list):
-        includes = ''
-        for r in ref_list:
-            includes += f'#include "{r}.h"'
-            includes += '\n'
-        self._preamble.append(includes)
+        if ref_list:
+            includes = ''
+            for r in ref_list:
+                includes += f'#include "{r}.h"'
+                includes += '\n'
+            self._preamble.append(includes)
 
     def _load_meta_info(self, schema_section):
         '''Store the global/common types and the types defined by any named references.'''
@@ -415,8 +424,7 @@ if __name__ == '__main__':
         h.load_schema(source_dir, file_name_root)
         dump(str(h), os.path.join(dump_dir, file_name_root + '.h'))
     else:
-        yml = glob.glob(os.path.join(source_dir, 'RS*.schema.yaml'))
-        yml.extend(glob.glob(os.path.join(source_dir, 'ASHRAE205.schema.yaml')))
+        yml = glob.glob(os.path.join(source_dir, '*.schema.yaml'))
         for file_name in yml:
             file_name_root = os.path.splitext(os.path.splitext(os.path.basename(file_name))[0])[0]
             h.load_schema(source_dir, file_name_root)
