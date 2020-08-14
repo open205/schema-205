@@ -179,6 +179,7 @@
         "Btu/h",
         "Btu/W-h",
         "W/(m3/s)",
+        "W/cfm",
         "%",
         "h-ft2-F/Btu",
         "Hz",
