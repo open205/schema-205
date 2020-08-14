@@ -42,6 +42,7 @@ ProductInformation:
       Data Type: "Numeric"
       Units: "V"
       Range: ">=0"
+      Notes: "Example: '460'"
       Required: True
 
     input_frequency:
@@ -49,6 +50,7 @@ ProductInformation:
       Data Type: "Numeric"
       Units: "Hz"
       Range: ">=0"
+      Notes: "Example: '60', '50'"
       Required: True
 
     number_of_poles:
@@ -63,7 +65,7 @@ Performance:
       Data Type: "Numeric"
       Units: "W"
       Range: ">=0"
-      Notes: "This is the operational limit set to prevent overheating or overcurrent. This is not the rated name plate power."
+      Notes: "This is the operational limit set to prevent overheating or overcurrent. This is not the rated name plate power"
       Required: True
 
     standby_power:
@@ -113,7 +115,7 @@ LookupVariables:
       Data Type: "[Numeric/Null][1..]"
       Range: ">=0, <=1"
       Units: "-"
-      Notes: "Defined as the ratio of mechanical shaft power to electrical input power of the motor."
+      Notes: "Defined as the ratio of mechanical shaft power to electrical input power of the motor"
       Required: True
 
     power_factor:
