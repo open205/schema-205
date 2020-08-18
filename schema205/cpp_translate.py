@@ -38,6 +38,48 @@ def dump(content, output_file_path):
         raise Exception(f"Unsupported output \"{ext}\".")
 
 
+def bubble_sort(obj_list):
+    '''From https://stackabuse.com/sorting-algorithms-in-python/'''
+    # We set swapped to True so the loop runs at least once
+    swapped = True
+    while swapped:
+        swapped = False
+        for i in range(len(obj_list) - 1):
+            #print('Checking if', obj_list[i+1]._name, 'is less than', obj_list[i]._name)
+            if obj_list[i+1] < obj_list[i]:
+                # Swap the elements
+                #print('Swapping', obj_list[i]._name, obj_list[i+1]._name)
+                obj_list[i], obj_list[i + 1] = obj_list[i + 1], obj_list[i]
+                # Set the flag to True so we'll loop again
+                swapped = True
+
+
+def modified_insertion_sort(obj_list):
+    '''From https://stackabuse.com/sorting-algorithms-in-python/#insertionsort'''
+    print('Insertion sorting...')
+    swapped = False
+    # Start on the second element as we assume the first element is sorted
+    for i in range(1, len(obj_list)):
+        item_to_insert = obj_list[i]
+        # And keep a reference of the index of the previous element
+        j = i - 1
+        # Move all items of the sorted segment forward if they are larger than
+        # the item to insert
+        while j >= 0 and any(obj > item_to_insert for obj in obj_list[0:j+1]):
+            obj_list[j + 1] = obj_list[j]
+            swapped = True
+            j -= 1
+        # Insert the item
+        obj_list[j + 1] = item_to_insert
+    return swapped
+
+
+def iterative_insertion_sort(obj_list):
+    while modified_insertion_sort(obj_list):
+        pass
+
+
+
 # -------------------------------------------------------------------------------------------------
 class CPP_entry:
 
@@ -45,6 +87,7 @@ class CPP_entry:
         self._type = 'class'
         self._name = name
         self._opener = '{'
+        self._access_specifier = "public:"
         self._closure = '};'
         self._parent_entry = parent
         self._child_entries = list() # of CPP_entry(s)
@@ -56,13 +99,51 @@ class CPP_entry:
         else:
             self._lineage = [name]
 
+    # def __eq__(self, other):
+    #     return (self._name == other._name and
+    #             self._type == other._type and
+    #             self.lineage == other.lineage and
+    #             self.child_entries == other.child_entries)
+
+    # def __ne__(self, other):
+    #     return not (self == other)
+
+    def __lt__(self, other):
+        '''Rich-comparison method to allow sorting.
+
+           A CPP_entry must be "less than" any another CPP_entry that references it, i.e.
+           you must define a value before you reference it.
+        '''
+        lt = self._less_than(other)
+        print(self._name, 'lt', other._type + ' ' + other._name, '=', lt)
+        return lt
+
+    def _less_than(self, other):
+        lt = False
+        # if self._name in f'{other._type} {other._name}':
+        #     return True
+        for c in other.child_entries:
+            t = f'{c._type} {c._name}'
+            print('Comparing', self._name, '<', t)
+            if self._name in t:
+                print(self._name, 'less than', t)
+                # Shortcut around checking siblings; if one child matches, then self < other
+                return True
+            else:
+                # Check grandchildren
+                lt = self._less_than(c)
+        return lt
+
+    def __gt__(self, other):
+        return (other < self)
+
     def add_child_entry(self, child):
-        #child.parent = self
         self._child_entries.append(child)
 
     @property
     def value(self):
         entry = self.level*'\t' + self._type + ' ' + self._name + ' ' + self._opener + '\n'
+        entry += (self.level + 1)*'\t' + self._access_specifier + '\n'
         for c in self._child_entries:
             entry += (c.value + '\n')
         entry += (self.level*'\t' + self._closure)
@@ -111,6 +192,7 @@ class Typedef(CPP_entry):
     def __init__(self, name, parent, typedef):
         super().__init__(name, parent)
         self._type = 'typedef'
+        self._access_specifier = ''
         self._typedef = typedef
 
     @property
@@ -124,6 +206,7 @@ class Enumeration(CPP_entry):
     def __init__(self, name, parent, item_dict):
         super().__init__(name, parent)
         self._type = 'enum class'
+        self._access_specifier = ''
         self._enumerants = list() # list of tuple:[value, description, display_text, notes]
 
         enums = item_dict
@@ -152,6 +235,7 @@ class Struct(CPP_entry):
     def __init__(self, name, parent):
         super().__init__(name, parent)
         self._type = 'struct'
+        self._access_specifier = ''
 
 
 # -------------------------------------------------------------------------------------------------
@@ -160,6 +244,7 @@ class Union(CPP_entry):
     def __init__(self, name, parent, selections):
         super().__init__(name, parent)
         self._type = 'union'
+        self._access_specifier = ''
         self._selections = selections
 
     @property
@@ -177,10 +262,12 @@ class Data_element(CPP_entry):
 
     def __init__(self, name, parent, element, data_types, references):
         super().__init__(name, parent)
+        self._access_specifier = ''
         self._datatypes = data_types
         self._refs = references
-        self._create_type_entry(element)
         self._has_nested = False
+
+        self._create_type_entry(element)
 
     @property
     def value(self):
@@ -206,8 +293,11 @@ class Data_element(CPP_entry):
                     self._type = 'union'
                     self._has_nested = True
                     for c in choices:
-                        c = c.strip()
-                        d = Data_element(c.lower(), self, {'Data Type' : c}, self._datatypes, self._refs)
+                        # Strip curly or other braces, convert PascalCase into underscore_case for
+                        # element names
+                        el_name = '_'.join(re.findall('([A-Z]+[0-9]*[a-z]*)', c)).lower()
+                        # Create child elements of the union, in-situ
+                        d = Data_element(el_name, self, {'Data Type' : c.strip()}, self._datatypes, self._refs)
                 else:
                     # 1. 'type' entry
                     self._type = self._get_simple_type(parent_dict['Data Type'])
@@ -270,7 +360,7 @@ class Data_element(CPP_entry):
                 target_dict['type'] = None
             for r in ranges:
                 try:
-                    numerical_value = re.findall(r'\d+', r)[0]
+                    numerical_value = re.findall(r'[+-]?\d*\.?\d+|\d+', r)[0]
                     if '>' in r:
                         minimum = (float(numerical_value) if 'number' in target_dict['type'] else int(numerical_value))
                         mn = 'exclusiveMinimum' if '=' not in r else 'minimum'
@@ -322,39 +412,38 @@ class H_translator:
         self._class = CPP_entry(self._input_rs)
         # First, assemble typedefs
         for base_level_tag in [tag for tag in self._contents if self._contents[tag]['Object Type'] == 'String Type']:
-            t = Typedef(base_level_tag, self._class, 'std::string')
-        # Second, Enumerations
+            Typedef(base_level_tag, self._class, 'std::string')
+        # Second, enumerations
         for base_level_tag in [tag for tag in self._contents if self._contents[tag]['Object Type'] == 'Enumeration']:
-            e = Enumeration(base_level_tag, self._class, self._contents[base_level_tag]['Enumerators'])
+            Enumeration(base_level_tag, self._class, self._contents[base_level_tag]['Enumerators'])
         # Third, direct class member variables
         for data_element in self._contents[self._input_rs]['Data Elements']:
-            de = Data_element(data_element, 
-                                self._class, 
-                                self._contents[self._input_rs]['Data Elements'][data_element],
-                                self._fundamental_data_types,
-                                self._references
-                                )
+            Data_element(data_element, 
+                         self._class, 
+                         self._contents[self._input_rs]['Data Elements'][data_element],
+                         self._fundamental_data_types,
+                         self._references
+                         )
         # Iterate through the dictionary, looking for known types
         for base_level_tag in self._contents:
-            if 'Object Type' in self._contents[base_level_tag]:
-                obj_type = self._contents[base_level_tag]['Object Type']
-                # if obj_type == 'Enumeration':
-                #     e = Enumeration(base_level_tag, self._class, self._contents[base_level_tag]['Enumerators'])
-                if obj_type in ['Data Group',
-                                'Performance Map',
-                                'Grid Variables',
-                                'Lookup Variables',
-                                'Rating Data Group']:
-                    # Only collect data groups that aren't the class-level group
-                    if base_level_tag != self._input_rs:
-                        s = Struct(base_level_tag, self._class)
-                        for data_element in self._contents[base_level_tag]['Data Elements']:
-                            de = Data_element(data_element, 
-                                            s, 
-                                            self._contents[base_level_tag]['Data Elements'][data_element],
-                                            self._fundamental_data_types,
-                                            self._references
-                                            )
+            #if 'Object Type' in self._contents[base_level_tag]:
+            obj_type = self._contents[base_level_tag].get('Object Type')
+            if obj_type in ['Data Group',
+                            'Performance Map',
+                            'Grid Variables',
+                            'Lookup Variables',
+                            'Rating Data Group']:
+                # Only collect data groups that aren't the class-level group
+                if base_level_tag != self._input_rs:
+                    s = Struct(base_level_tag, self._class)
+                    for data_element in self._contents[base_level_tag]['Data Elements']:
+                        Data_element(data_element, 
+                                        s, 
+                                        self._contents[base_level_tag]['Data Elements'][data_element],
+                                        self._fundamental_data_types,
+                                        self._references
+                                        )
+        modified_insertion_sort(self._class.child_entries)
 
     def _add_include_guard(self, header_name):
         s1 = f'#ifndef {header_name.upper()}_H_'
@@ -370,6 +459,7 @@ class H_translator:
                 includes += f'#include "{r}.h"'
                 includes += '\n'
             self._preamble.append(includes)
+        self._preamble.append('#include <string>\n#include <vector>\n')
 
     def _load_meta_info(self, schema_section):
         '''Store the global/common types and the types defined by any named references.'''
