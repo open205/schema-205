@@ -56,21 +56,20 @@ def bubble_sort(obj_list):
 
 def modified_insertion_sort(obj_list):
     '''From https://stackabuse.com/sorting-algorithms-in-python/#insertionsort'''
-    print('Insertion sorting...')
     swapped = False
     # Start on the second element as we assume the first element is sorted
     for i in range(1, len(obj_list)):
         item_to_insert = obj_list[i]
         # And keep a reference of the index of the previous element
         j = i - 1
-        # Move all items of the sorted segment forward if they are larger than
-        # the item to insert
+        # Move all items of the sorted segment forward if they are larger than the item to insert
         while j >= 0 and any(obj > item_to_insert for obj in obj_list[0:j+1]):
             obj_list[j + 1] = obj_list[j]
             swapped = True
             j -= 1
         # Insert the item
         obj_list[j + 1] = item_to_insert
+
     return swapped
 
 
@@ -99,15 +98,6 @@ class CPP_entry:
         else:
             self._lineage = [name]
 
-    # def __eq__(self, other):
-    #     return (self._name == other._name and
-    #             self._type == other._type and
-    #             self.lineage == other.lineage and
-    #             self.child_entries == other.child_entries)
-
-    # def __ne__(self, other):
-    #     return not (self == other)
-
     def __lt__(self, other):
         '''Rich-comparison method to allow sorting.
 
@@ -115,18 +105,16 @@ class CPP_entry:
            you must define a value before you reference it.
         '''
         lt = self._less_than(other)
-        print(self._name, 'lt', other._type + ' ' + other._name, '=', lt)
         return lt
 
     def _less_than(self, other):
         lt = False
-        # if self._name in f'{other._type} {other._name}':
-        #     return True
+        t = f'{other._type} {other._name}'
+        if re.search(r'\b' + self._name + r'\b', t):
+            return True
         for c in other.child_entries:
             t = f'{c._type} {c._name}'
-            print('Comparing', self._name, '<', t)
-            if self._name in t:
-                print(self._name, 'less than', t)
+            if re.search(r'\b' + self._name + r'\b', t):
                 # Shortcut around checking siblings; if one child matches, then self < other
                 return True
             else:
