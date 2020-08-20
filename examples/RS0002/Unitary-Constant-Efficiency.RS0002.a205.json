@@ -42,7 +42,7 @@
           },
           "performance": {
             "compressor_control_method": "STAGED",
-            "cycling_degradation_coefficient": 0.25,
+            "cooling_cycling_degradation_coefficient": 0.25,
             "performance_map_cooling": {
               "grid_variables": {
                 "outdoor_coil_entering_dry_bulb_temperature": [

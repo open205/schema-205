@@ -66,17 +66,33 @@ Performance:
       Description: "Method used to control different speeds of the compressor"
       Data Type: "<CompressorControlMethod>"
       Required: True
-    cycling_degradation_coefficient:
-      Description: "Cycling degradation coefficient (CD) as described in AHRI 210/240"
+    cooling_cycling_degradation_coefficient:
+      Description: "Cooling cycling degradation coefficient (C_D_^c^) as described in AHRI 210/240"
       Data Type: "Numeric"
       Units: "-"
       Range: ">=0.0,<1.0"
       Required: True
       Notes: "Used for the lowest stage where the unit cycles to meet a setpoint. *Informative note:* 340/360 specifies a fixed cycling degradation coefficient of approximately 0.12."
+    heating_cycling_degradation_coefficient:
+      Description: "Heating cycling degradation coefficient (C_D_^h^) as described in AHRI 210/240"
+      Data Type: "Numeric"
+      Units: "-"
+      Range: ">=0.0,<1.0"
+      Notes: "Used for the lowest stage where the unit cycles to meet a setpoint. *Informative note:* 340/360 specifies a fixed cycling degradation coefficient of approximately 0.12."
+    integrated_electric_resistance_heating_capacity:
+      Description: "Pre-installed electric resistance heating capacity"
+      Data Type: "Numeric"
+      Units: "W"
+      Range: ">=0"
+      Notes: "Often used as auxilliary or backup heating source"
     performance_map_cooling:
       Description: "Data group describing cooling performance over a range of conditions"
       Data Type: "{PerformanceMapCooling}"
       Required: True
+    performance_map_heating:
+      Description: "Data group describing heating performance over a range of conditions"
+      Data Type: "{PerformanceMapHeating}"
+      Notes: "Required for heat pump capable systems"
     performance_map_standby:
       Description: "Data group describing standby performance"
       Data Type: "{PerformanceMapStandby}"
@@ -161,6 +177,92 @@ LookupVariablesCooling:
       Units: "W"
       Required: True
       Notes: "Does not include power drawn by the indoor fan. Includes compressor, outdoor fan, and any auxiliary power used by the unit's controls and any sump heater."
+
+PerformanceMapHeating:
+  Object Type: "Performance Map"
+  Data Elements:
+    grid_variables:
+      Description: "Data group defining the grid variables for heating performance"
+      Data Type: "{GridVariablesHeating}"
+      Required: True
+    lookup_variables:
+      Description: "Data group defining the lookup variables for heating performance"
+      Data Type: "{LookupVariablesHeating}"
+      Required: True
+
+GridVariablesHeating:
+  Object Type: "Grid Variables"
+  Data Elements:
+    outdoor_coil_entering_dry_bulb_temperature:
+      Description: "Dry bulb temperature of the air entering the outdoor coil"
+      Data Type: "[Numeric][1..]"
+      Range: ">=0"
+      Units: "K"
+      Required: True
+    outdoor_coil_entering_relative_humidity:
+      Description: "Relative humidity of the air entering the outdoor coil"
+      Data Type: "[Numeric][1..]"
+      Range: ">=0,<=1.0"
+      Units: "-"
+      Required: True
+    indoor_coil_entering_dry_bulb_temperature:
+      Description: "Dry bulb temperature of the air entering the indoor coil"
+      Data Type: "[Numeric][1..]"
+      Range: ">=0"
+      Units: "K"
+      Required: True
+      Notes: "As measured immediately before entering the coil (i.e., after the fan in a blow-through configuration)."
+    indoor_coil_air_mass_flow_rate:
+      Description: "Mass flow rate of air entering the indoor coil"
+      Data Type: "[Numeric][1..]"
+      Range: ">0"
+      Units: "kg/s"
+      Required: True
+    compressor_sequence_number:
+      Description: "Index indicating the relative order of the compressor speed/stage"
+      Data Type: "[Numeric][1..]"
+      Range: ">=0"
+      Units: "-"
+      Notes: "Expressed in order from initial stage/speed to final stage/speed."
+      Required: True
+
+LookupVariablesHeating:
+  Object Type: "Lookup Variables"
+  Data Elements:
+    gross_steady_state_heating_capacity:
+      Description: "Total heat added by the indoor coil under steady-state conditions (i.e., does not include the impact of defrost)"
+      Data Type: "[Numeric/Null][1..]"
+      Range: ">0"
+      Units: "W"
+      Required: True
+      Notes: "Does not account for heat added by the fan."
+    gross_integrated_heating_capacity:
+      Description: "Total heat added by the indoor coil integrated over a complete defrost cycle"
+      Data Type: "[Numeric/Null][1..]"
+      Range: ">0"
+      Units: "W"
+      Required: True
+      Notes: "Does not account for heat added by the fan."
+    gross_steady_state_heating_power:
+      Description: "Gross power draw of the outdoor unit under steady-state conditions (i.e., does not include defrost related power draws)"
+      Data Type: "[Numeric/Null][1..]"
+      Range: ">0"
+      Units: "W"
+      Required: True
+      Notes: "Does not include power drawn by the indoor fan. Includes compressor, outdoor fan, and any auxiliary power used by the unit's controls and any sump heater."
+    gross_integrated_heating_power:
+      Description: "Gross power draw of the outdoor unit integrated over a complete defrost cycle"
+      Data Type: "[Numeric/Null][1..]"
+      Range: ">0"
+      Units: "W"
+      Required: True
+      Notes: "Does not include power drawn by the indoor fan. Includes compressor, outdoor fan, and any auxiliary power used by the unit's defrost proces, controls, and any sump heater."
+    defrost_time_fraction:
+      Description: "Fraction of time throughout a defrost cycle that defrost process is engaged"
+      Data Type: "[Numeric/Null][1..]"
+      Range: ">=0,<=1.0"
+      Units: "-"
+      Required: True
 
 PerformanceMapStandby:
   Object Type: "Performance Map"
