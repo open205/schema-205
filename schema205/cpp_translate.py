@@ -83,11 +83,11 @@ def iterative_insertion_sort(obj_list):
 class CPP_entry:
 
     def __init__(self, name, parent=None):
-        self._type = 'class'
+        self._type = 'namespace'
         self._name = name
         self._opener = '{'
-        self._access_specifier = "public:"
-        self._closure = '};'
+        self._access_specifier = '' #'public:'
+        self._closure = '}'
         self._parent_entry = parent
         self._child_entries = list() # of CPP_entry(s)
         self._value = None
@@ -195,6 +195,7 @@ class Enumeration(CPP_entry):
         super().__init__(name, parent)
         self._type = 'enum class'
         self._access_specifier = ''
+        self._closure = '};'
         self._enumerants = list() # list of tuple:[value, description, display_text, notes]
 
         enums = item_dict
@@ -213,6 +214,7 @@ class Enumeration(CPP_entry):
         for e in enums:
             entry += (self.level + 1)*'\t'
             entry += (e + ',\n')
+        entry += ((self.level + 1)*'\t' + 'UNKNOWN\n')
         entry += (self.level*'\t' + self._closure)
         return entry
 
@@ -224,6 +226,7 @@ class Struct(CPP_entry):
         super().__init__(name, parent)
         self._type = 'struct'
         self._access_specifier = ''
+        self._closure = '};'
 
 
 # -------------------------------------------------------------------------------------------------
@@ -374,44 +377,45 @@ class H_translator:
         for p in self._preamble:
             s += p
         s += '\n'
-        s += self._class.value
+        s += self._namespace.value
         s += '\n'
         for e in self._epilogue:
             s += e
         return s
 
-    def load_schema(self, source_dir, input_rs):
+    def translate(self, input_file_path, project_namespace):
         '''X'''
-        self._input_rs = input_rs
-        self._source_dir = source_dir
+        #self._input_rs = input_rs
+        self._source_dir = os.path.dirname(os.path.abspath(input_file_path))
+        self._schema_name = os.path.splitext(os.path.splitext(os.path.basename(input_file_path))[0])[0]
         self._references.clear()
         self._fundamental_data_types.clear()
         self._preamble.clear()
         self._epilogue.clear()
 
-        input_file_path = os.path.join(source_dir, input_rs + '.schema.yaml')
+        #input_file_path = os.path.join(source_dir, input_rs + '.schema.yaml')
         self._contents = load(input_file_path)
         # Load meta info first (assuming that base level tag == Schema means object type == Meta)
         self._load_meta_info(self._contents['Schema'])
         # Find the class description first, as it's stored at the same level as other data groups
         # but needs to be pushed to the top of the hierarchy
-        self._add_include_guard(self._input_rs)
+        self._add_include_guard(self._schema_name)
         self._add_included_headers(self._contents['Schema'].get('References'))
-        self._class = CPP_entry(self._input_rs)
+        self._namespace = CPP_entry(project_namespace)
         # First, assemble typedefs
         for base_level_tag in [tag for tag in self._contents if self._contents[tag]['Object Type'] == 'String Type']:
-            Typedef(base_level_tag, self._class, 'std::string')
+            Typedef(base_level_tag, self._namespace, 'std::string')
         # Second, enumerations
         for base_level_tag in [tag for tag in self._contents if self._contents[tag]['Object Type'] == 'Enumeration']:
-            Enumeration(base_level_tag, self._class, self._contents[base_level_tag]['Enumerators'])
-        # Third, direct class member variables
-        for data_element in self._contents[self._input_rs]['Data Elements']:
-            Data_element(data_element, 
-                         self._class, 
-                         self._contents[self._input_rs]['Data Elements'][data_element],
-                         self._fundamental_data_types,
-                         self._references
-                         )
+            Enumeration(base_level_tag, self._namespace, self._contents[base_level_tag]['Enumerators'])
+        # # Third, direct class member variables
+        # for data_element in self._contents[self._input_rs]['Data Elements']:
+        #     Data_element(data_element, 
+        #                  self._namespace, 
+        #                  self._contents[self._input_rs]['Data Elements'][data_element],
+        #                  self._fundamental_data_types,
+        #                  self._references
+        #                  )
         # Iterate through the dictionary, looking for known types
         for base_level_tag in self._contents:
             #if 'Object Type' in self._contents[base_level_tag]:
@@ -421,17 +425,15 @@ class H_translator:
                             'Grid Variables',
                             'Lookup Variables',
                             'Rating Data Group']:
-                # Only collect data groups that aren't the class-level group
-                if base_level_tag != self._input_rs:
-                    s = Struct(base_level_tag, self._class)
-                    for data_element in self._contents[base_level_tag]['Data Elements']:
-                        Data_element(data_element, 
-                                        s, 
-                                        self._contents[base_level_tag]['Data Elements'][data_element],
-                                        self._fundamental_data_types,
-                                        self._references
-                                        )
-        modified_insertion_sort(self._class.child_entries)
+                s = Struct(base_level_tag, self._namespace)
+                for data_element in self._contents[base_level_tag]['Data Elements']:
+                    Data_element(data_element, 
+                                 s, 
+                                 self._contents[base_level_tag]['Data Elements'][data_element],
+                                 self._fundamental_data_types,
+                                 self._references
+                                 )
+        modified_insertion_sort(self._namespace.child_entries)
 
     def _add_include_guard(self, header_name):
         s1 = f'#ifndef {header_name.upper()}_H_'
@@ -454,7 +456,7 @@ class H_translator:
         refs = list()
         if 'References' in schema_section:
             refs = schema_section['References'].copy()
-        refs.append(self._input_rs)
+        refs.append(self._schema_name)
         for ref_file in refs:
             ext_dict = load(os.path.join(self._source_dir, ref_file + '.schema.yaml'))
             external_objects = list()
@@ -484,11 +486,26 @@ class H_translator:
 
 
 # -------------------------------------------------------------------------------------------------
+def translate_to_header(input_file_path, output_file_path):
+    h = H_translator()
+    h.translate(input_file_path, 'ASHRAE205_NS')
+    dump(str(h), output_file_path)
+
+# -------------------------------------------------------------------------------------------------
+def translate_all_to_headers(input_dir_path, output_dir_path):
+    h = H_translator()
+    for file_name in sorted(os.listdir(input_dir_path)):
+        if '.schema.yaml' in file_name:
+            file_name_root = os.path.splitext(os.path.splitext(file_name)[0])[0]
+            h.translate(os.path.join(input_dir_path, file_name), 'ASHRAE205_NS')
+            dump(str(h), os.path.join(output_dir_path, file_name_root + '.h'))
+
+
+# -------------------------------------------------------------------------------------------------
 if __name__ == '__main__':
     import sys
     import glob
 
-    h = H_translator()
     source_dir = os.path.join(os.path.dirname(__file__),'..','schema-source')
     build_dir = os.path.join(os.path.dirname(__file__),'..','build')
     if not os.path.exists(build_dir):
@@ -499,13 +516,7 @@ if __name__ == '__main__':
 
     if len(sys.argv) == 2:
         file_name_root = sys.argv[1]
-        h.load_schema(source_dir, file_name_root)
-        dump(str(h), os.path.join(dump_dir, file_name_root + '.h'))
+        translate_to_header(os.path.join(source_dir, f'{file_name_root}.schema.yaml'), 
+                       os.path.join(dump_dir, file_name_root + '.h'))
     else:
-        yml = glob.glob(os.path.join(source_dir, '*.schema.yaml'))
-        for file_name in yml:
-            file_name_root = os.path.splitext(os.path.splitext(os.path.basename(file_name))[0])[0]
-            h.load_schema(source_dir, file_name_root)
-            dump(str(h), os.path.join(dump_dir, file_name_root + '.h'))
-
-
+        translate_all_to_headers(source_dir, dump_dir)
