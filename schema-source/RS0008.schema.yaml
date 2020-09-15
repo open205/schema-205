@@ -1,0 +1,369 @@
+Schema:
+  Object Type: "Meta"
+  References:
+    - "ASHRAE205"
+  Title: "Forced-Circulation Air-Cooling and Air-Heating Coils"
+  Description: "Schema for ASHRAE 205 annex RS0008: Forced-Circulation Air-Cooling and Air-Heating Coils"
+
+RS0008:
+  Object Type: "Data Group"
+  Data Elements:
+    description:
+      Description: "Data group describing product and rating information"
+      Data Type: "{Description}"
+    performance:
+      Description: "Data group containing performance information"
+      Data Type: "{Performance}"
+      Required: True
+
+FluidType:
+  Object Type: "Enumeration"
+  Enumerators:
+    LIQUID:
+      Description: "Coil fluid is a liquid or liquid mixture"
+      Display Text: "Liquid"
+    STEAM:
+      Description: "Coil fluid is steam"
+      Display Text: "Steam"
+
+TubeArrangementType:
+  Object Type: "Enumeration"
+  Enumerators:
+    STAGGERED:
+      Description: "Staggered tube arrangement"
+      Display Text: "Staggered"
+    PARALLEL:
+      Description: "Parallel (in-line) tube arrangement"
+      Display Text: "Parallel"
+
+FinType:
+  Object Type: "Enumeration"
+  Enumerators:
+    CONTINUOUS_FLAT_PLATE:
+      Display Text: "Continuous Flat Plate"
+    CONTINUOUS_CONFIGURATED_PLATE:
+      Display Text: "Continuous Configurated Plate"
+    CRIMPED_SPIRAL:
+      Display Text: "Crimped Spiral"
+    SMOOTH_SPIRAL:
+      Display Text: "Smooth Spiral"
+    DISCRETE_FLAT_PLATE:
+      Display Text: "Discrete Flat Plate"
+    DISCRETE_CONFIGURATED_PLATE:
+      Display Text: "Discrete Configurated Plate"
+
+AHRI410TestStandardVersion:
+  Object Type: "Enumeration"
+  Enumerators:
+    IP_SI_2001:
+      Display Text: "2001" # Addendum 1, 2, 3?
+
+Description:
+  Object Type: "Data Group"
+  Data Elements:
+    product_information:
+      Description: "Data group describing product information"
+      Data Type: "{ProductInformation}"
+    rating_ahri_410:
+
+ProductInformation:
+  Object Type: "Data Group"
+  Data Elements:
+    manufacturer:
+      Description: "Manufacturer name"
+      Data Type: "String"
+    model_number:
+      Description: "Model number"
+      Data Type: "Pattern"
+      Notes: "Pattern shall match all model numbers that can be represented by the *representation*."
+    tube_arrangement_type:
+      Description: "Tube arrangment"
+      Data Type: "<TubeArrangmentType>"
+    fin_type:
+      Description: "Type of fin design"
+      Data Type: "<FinType>"
+    fin_density:
+      Description: "Number of fins per unit length"
+      Data Type: "Numeric"
+      Range: ">0"
+      Units: "1/m" # Check this unit
+    tube_size: # Inner/outer diameter?
+      Description: "Tube size"
+      Data Type: "Numeric"
+      Range: ">0"
+      Units: "m"
+    tube_spacing: # on center?
+      Description: "Tube spacing"
+      Data Type: "Numeric"
+      Range: ">0"
+      Units: "m"
+
+RatingAHRI410:
+  Object Type: "Rating Data Group"
+  Data Elements:
+    certified_reference_number:
+      Description: "AHRI Certified Reference Number"
+      Data Type: "String"
+      Required: True
+    test_standard_version:
+      Description: "Version of the AHRI test standard"
+      Data Type: "<AHRI410TestStandardVersion>"
+      Required: True
+    manufacturer_data_source_version:
+      Description: "Version of the software used to generate the AHRI rating and the performance maps"
+      Data Type: "String"
+      Required: True
+    sensible_heating_capacity:
+      Description: "Sensible heating capacity as defined by AHRI 410"
+      Data Type: "Numeric"
+      Units: "Btu/h"
+      Range: ">0.0"
+      Required: True
+    total_cooling_capacity:
+      Description: "Total cooling capacity as defined by AHRI 410"
+      Data Type: "Numeric"
+      Units: "Btu/h"
+      Range: ">0.0"
+      Required: True
+    sensible_cooling_capacity:
+      Description: "Sensible cooling capacity as defined by AHRI 410"
+      Data Type: "Numeric"
+      Units: "Btu/h"
+      Range: ">0.0"
+      Required: True
+    air_volumetric_flow_rate:
+      Description: "Standard air flow rate at dry-coil conditions"
+      Data Type: "Numeric"
+      Units: "in H2O"
+      Range: ">=0.0"
+      Required: True
+    dry_coil_air_pressure_drop:
+      Description: "Dry coil air pressure drop"
+      Data Type: "Numeric"
+      Units: "in H2O"
+      Range: ">=0.0"
+      Required: True
+    wet_coil_air_pressure_drop:
+      Description: "Wet coil air pressure drop"
+      Data Type: "Numeric"
+      Units: "in H2O"
+      Range: ">=0.0"
+      Required: True
+    entering_air_dry_bulb_temperature:
+      Description: "Entering air dry-bulb temperature"
+      Data Type: "Numeric"
+      Units: "F"
+      Range: ">=-459.67"
+      Required: True
+    entering_air_wet_bulb_temperature:
+      Description: "Entering air wet-bulb temperature"
+      Data Type: "Numeric"
+      Units: "F"
+      Range: ">=-459.67"
+      Required: True
+    leaving_air_dry_bulb_temperature:
+      Description: "Leaving air dry-bulb temperature"
+      Data Type: "Numeric"
+      Units: "F"
+      Range: ">=-459.67"
+      Required: True
+    leaving_air_wet_bulb_temperature:
+      Description: "Leaving air wet-bulb temperature"
+      Data Type: "Numeric"
+      Units: "F"
+      Range: ">=-459.67"
+      Required: True
+    fluid_volumetric_flow_rate:
+      Description: "Actual rated fluid flow rate"
+      Data Type: "Numeric"
+      Units: "gpm"
+      Range: ">=0.0"
+      Required: True
+    fluid_preasure_drop:
+      Description: "Fluid pressure drop through the coil at average fluid density"
+      Data Type: "Numeric"
+      Units: "ft of fluid"
+      Range: ">=0.0"
+      Required: True
+    entering_fluid_temperature:
+      Description: "Entering fluid temperature"
+      Data Type: "Numeric"
+      Units: "F"
+      Range: ">=-459.67"
+      Required: True
+    leaving_fluid_temperature:
+      Description: "Leaving fluid temperature"
+      Data Type: "Numeric"
+      Units: "F"
+      Range: ">=-459.67"
+      Required: True
+    rating_reproducible_from_performance_data:
+      Description: "Whether this rating can be reproduced using the performance data in the representation"
+      Data Type: "Boolean"
+      Notes: "Mark this field as true if the rating values in this table can be reproduced using the performance data in the representation within the tolerance of the rating standard."
+      Required: True
+
+Performance:
+  Object Type: "Data Group"
+  Data Elements:
+    fluid_type:
+      Description: "Type of working fluid"
+      Data Type: "<FluidType>"
+      Required: True
+    liquid_mixture:
+      Description: "Type of working fluid"
+      Data Type: "{LiquidMixture}"
+      Notes: "Required if `fluid_type` is `LIQUID_MIXTURE`"
+    performance_map_cooling:
+      Description: "Data group describing cooling performance"
+      Data Type: "{PerformanceMapCooling}"
+    performance_map_heating:
+      Description: "Data group describing heating performance"
+      Data Type: "{PerformanceMapHeating}"
+
+PerformanceMapCooling:
+  Object Type: "Performance Map"
+  Data Elements:
+    grid_variables:
+      Description: "Data group defining the grid variables for cooling performance"
+      Data Type: "{GridVariablesCooling}"
+      Required: True
+    lookup_variables:
+      Description: "Data group defining the lookup variables for cooling performance"
+      Data Type: "{LookupVariablesCooling}"
+      Required: True
+
+GridVariablesCooling:
+  Object Type: "Grid Variables"
+  Data Elements:
+    entering_air_dry_bulb_temperature:
+      Description: "Dry bulb temperature of the air entering the coil"
+      Data Type: "[Numeric][1..]"
+      Range: ">=0"
+      Units: "K"
+      Required: True
+    entering_air_relative_humidity:
+      Description: "Relative humidity of the air entering the coil"
+      Data Type: "[Numeric][1..]"
+      Range: ">=0,<=1.0"
+      Units: "-"
+      Notes: "As measured immediately before entering the coil (i.e., after the fan in a blow-through configuration)."
+      Required: True
+    entering_fluid_temperature:
+      Description: "Temperature of the fluid entering the coil"
+      Data Type: "[Numeric][1..]"
+      Range: ">=0"
+      Units: "K"
+      Required: True
+    air_mass_flow_rate:
+      Description: "Mass flow rate of air entering the coil"
+      Data Type: "[Numeric][1..]"
+      Range: ">0"
+      Units: "kg/s"
+      Required: True
+    fluid_mass_flow_rate:
+      Description: "Mass flow rate of fluid entering the coil"
+      Data Type: "[Numeric][1..]"
+      Range: ">0"
+      Units: "kg/s"
+      Required: True
+    ambient_absolute_air_pressure:
+      Description: "Ambient absolute air pressure"
+      Data Type: "[Numeric][1..]"
+      Range: ">=0"
+      Units: "Pa"
+      Required: True
+
+LookupVariablesCooling:
+  Object Type: "Lookup Variables"
+  Data Elements:
+    total_cooling_capacity:
+      Description: "Total heat removed from the air by the coil"
+      Data Type: "[Numeric/Null][1..]"
+      Range: ">0"
+      Units: "W"
+      Required: True
+      Notes: "Does not account for heat added by the fan."
+    sensible_cooling_capacity:
+      Description: "Sensible heat removed by the coil"
+      Data Type: "[Numeric/Null][1..]"
+      Range: ">0"
+      Units: "W"
+      Required: True
+      Notes: "Does not account for heat added by the fan."
+    wet_coil_air_pressure_drop:
+      Description: "Air pressure drop across the coil"
+      Data Type: "[Numeric/Null][1..]"
+      Units: "Pa"
+      Range: ">=0.0"
+      Required: True
+    fluid_preasure_drop:
+      Description: "Fluid pressure drop through the coil"
+      Data Type: "[Numeric/Null][1..]"
+      Units: "Pa"
+      Range: ">=0.0"
+      Required: True
+
+PerformanceMapHeating:
+  Object Type: "Performance Map"
+  Data Elements:
+    grid_variables:
+      Description: "Data group defining the grid variables for heating performance"
+      Data Type: "{GridVariablesHeating}"
+      Required: True
+    lookup_variables:
+      Description: "Data group defining the lookup variables for heating performance"
+      Data Type: "{LookupVariablesHeating}"
+      Required: True
+
+GridVariablesHeating:
+  Object Type: "Grid Variables"
+  Data Elements:
+    entering_air_dry_bulb_temperature:
+      Description: "Dry bulb temperature of the air entering the coil"
+      Data Type: "[Numeric][1..]"
+      Range: ">=0"
+      Units: "K"
+      Required: True
+    entering_fluid_temperature:
+      Description: "Temperature of the fluid entering the coil"
+      Data Type: "[Numeric][1..]"
+      Range: ">=0"
+      Units: "K"
+      Required: True
+    air_mass_flow_rate:
+      Description: "Mass flow rate of air entering the coil"
+      Data Type: "[Numeric][1..]"
+      Range: ">0"
+      Units: "kg/s"
+      Required: True
+    fluid_mass_flow_rate:
+      Description: "Mass flow rate of fluid entering the coil"
+      Data Type: "[Numeric][1..]"
+      Range: ">0"
+      Units: "kg/s"
+      Required: True
+
+LookupVariablesHeating:
+  Object Type: "Lookup Variables"
+  Data Elements:
+    heating_capacity:
+      Description: "Total heat added to the air by the coil"
+      Data Type: "[Numeric/Null][1..]"
+      Range: ">0"
+      Units: "W"
+      Required: True
+      Notes: "Does not account for heat added by the fan."
+    wet_coil_air_pressure_drop:
+      Description: "Air pressure drop across the coil"
+      Data Type: "[Numeric/Null][1..]"
+      Units: "Pa"
+      Range: ">=0.0"
+      Required: True
+    fluid_preasure_drop:
+      Description: "Fluid pressure drop through the coil"
+      Data Type: "[Numeric/Null][1..]"
+      Units: "Pa"
+      Range: ">=0.0"
+      Required: True
+

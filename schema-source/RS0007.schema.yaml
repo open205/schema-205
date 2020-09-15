@@ -1,0 +1,198 @@
+Schema:
+  Object Type: "Meta"
+  References:
+    - "ASHRAE205"
+  Title: "Room Fan-Coil"
+  Description: "Schema for ASHRAE 205 annex RS0007: Room Fan-Coil"
+
+RS0007:
+  Object Type: "Data Group"
+  Data Elements:
+    description:
+      Description: "Data group describing product and rating information"
+      Data Type: "{Description}"
+    performance:
+      Description: "Data group containing performance information"
+      Data Type: "{Performance}"
+      Required: True
+
+FluidFlowControlMethod:
+  Object Type: "Enumeration"
+  Enumerators:
+    FIXED:
+      Display Text: "Fixed"
+      Description: "Working fluid flow is controlled by cycling the valve between on and off positions"
+    DYNAMIC:
+      Display Text: "Dynamic"
+      Description: "Working fluid flow is controlled by continuously varying the position of modulating valve"
+
+AHRI440TestStandardVersion:
+  Object Type: "Enumeration"
+  Enumerators:
+    IP_2008:
+      Display Text: "2008"
+    IP_2019:
+      Display Text: "I-P/2019"
+
+Description:
+  Object Type: "Data Group"
+  Data Elements:
+    product_information:
+      Description: "Data group describing product information"
+      Data Type: "{ProductInformation}"
+    rating_ahri_440:
+      Description: "Data group containing information relevant to products rated under AHRI 440"
+      Data Type: "{RatingAHRI440}"
+
+ProductInformation:
+  Object Type: "Data Group"
+  Data Elements:
+    manufacturer:
+      Description: "Manufacturer name"
+      Data Type: "String"
+      Required: True
+    model_number:
+      Description: "Model number"
+      Data Type: "Pattern"
+      Notes: "Pattern shall match all model numbers that can be represented by the *representation*."
+      Required: True
+
+
+RatingAHRI440:
+  Object Type: "Rating Data Group"
+  Data Elements:
+    certified_reference_number:
+      Description: "AHRI Certified Reference Number"
+      Data Type: "String"
+      Required: True
+    test_standard_version:
+      Description: "Version of the AHRI test standard"
+      Data Type: "<AHRI440TestStandardVersion>"
+      Required: True
+    manufacturer_data_source_version:
+      Description: "Version of the software used to generate the AHRI rating and the performance maps"
+      Data Type: "String"
+      Required: True
+    total_capacity:
+      Description: "Total cooling capacity as defined by AHRI 440"
+      Data Type: "Numeric"
+      Units: "Btu/h"
+      Range: ">0.0"
+      Required: True
+    sensible_capacity:
+      Description: "Sensible cooling capacity as defined by AHRI 440"
+      Data Type: "Numeric"
+      Units: "Btu/h"
+      Range: ">0.0"
+      Required: True
+    air_volumetric_flow_rate:
+      Description: "Standard air flow rate at dry-coil conditions"
+      Data Type: "Numeric"
+      Units: "in H2O"
+      Range: ">=0.0"
+      Required: True
+    barometric_pressure:
+      Description: "Barometric pressure"
+      Data Type: "Numeric"
+      Units: "psia"
+      Range: ">=0.0"
+      Required: True
+    external_static_pressure:
+      Description: "External static pressure"
+      Data Type: "Numeric"
+      Units: "in H2O"
+      Range: ">=0.0"
+      Required: True
+    entering_air_dry_bulb_temperature:
+      Description: "Entering air dry-bulb temperature"
+      Data Type: "Numeric"
+      Units: "F"
+      Range: ">=-459.67"
+      Required: True
+    entering_air_wet_bulb_temperature:
+      Description: "Entering air wet-bulb temperature"
+      Data Type: "Numeric"
+      Units: "F"
+      Range: ">=-459.67"
+      Required: True
+    entering_fluid_temperature:
+      Description: "Entering fluid temperature"
+      Data Type: "Numeric"
+      Units: "F"
+      Range: ">=-459.67"
+      Required: True
+    leaving_fluid_temperature:
+      Description: "Leaving fluid temperature"
+      Data Type: "Numeric"
+      Units: "F"
+      Range: ">=-459.67"
+      Required: True
+    fluid_volumetric_flow_rate:
+      Description: "Actual rated fluid flow rate"
+      Data Type: "Numeric"
+      Units: "gpm"
+      Range: ">=0.0"
+      Required: True
+    fluid_head_loss:
+      Description: "Fluid head loss through the fan-coil unit at the mean liquid density"
+      Data Type: "Numeric"
+      Units: "ft H2O"
+      Range: ">=0.0"
+      Required: True
+    motor_speed_setting:
+      Description: "Rated motor speed setting"
+      Data Type: "Integer"
+      Range: ">=1"
+      Notes: "Used for discrete fans/motors"
+      Required: True
+    motor_speed:
+      Description: "Rated motor speed"
+      Data Type: "Integer"
+      Units: "rpm"
+      Range: ">=0.0"
+      Notes: "Used for continuous fans/motors"
+      Required: True
+    input_power:
+      Description: "Electric power input at the rated condtion"
+      Data Type: "Numeric"
+      Units: "W"
+      Range: ">=0.0"
+      Required: True
+    filter_type:
+      Description: "Type of filter"
+      Data Type: "String"
+      Required: True
+    filter_thickness:
+      Description: "Filter thickness"
+      Data Type: "Numeric"
+      Units: "in"
+      Range: ">=0.0"
+      Required: True
+    rating_reproducible_from_performance_data:
+      Description: "Whether this rating can be reproduced using the performance data in the representation"
+      Data Type: "Boolean"
+      Notes: "Mark this field as true if the rating values in this table can be reproduced using the performance data in the representation within the tolerance of the rating standard."
+      Required: True
+
+Performance:
+  Object Type: "Data Group"
+  Data Elements:
+    fan_position:
+      Description: "Method used to control working fluid flow through the coil(s)"
+      Data Type: "<FluidFlowControlMethod>"
+      Required: True
+    fan_representation:
+      Description: "The corresponding Standard 205 enclosed fan assembly representation"
+      Data Type: "{ASHRAE205(RS_ID=RS0003)}"
+      Notes: "This is only required if the fan is packaged with the unitary equipment."
+      Required: True
+    fan_position:
+      Description: "Position of the fan relative to the indoor coil"
+      Data Type: "<FanPosition>"
+      Required: True
+    cooling_coil_representation:
+      Description: "The corresponding Standard 205 forced circulation air-cooling coil representation"
+      Data Type: "{ASHRAE205(RS_ID=RS0008)}"
+    heating_coil_representation:
+      Description: "The corresponding Standard 205 forced circulation air-heating coil representation"
+      Data Type: "{ASHRAE205(RS_ID=RS0008)}"

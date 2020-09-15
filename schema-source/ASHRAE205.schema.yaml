@@ -185,6 +185,17 @@ ConcentrationType:
       Description: "Concentration is defined as a fraction of total liquid mixture mass"
       Display Text: "By Mass"
 
+FanPosition:
+  Object Type: "Enumeration"
+  Enumerators:
+    BLOW_THROUGH:
+      Description: "Fan is placed downstream of any heating/cooling coils"
+      Display Text: "Blow Through"
+    DRAW_THROUGH:
+      Description: "Fan is placed upstream of any heating/cooling coils"
+      Display Text: "Draw Through"
+
+
 #Common Data Groups
 ASHRAE205:
   Object Type: "Data Group"

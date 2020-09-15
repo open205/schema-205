@@ -16,16 +16,6 @@ RS0002:
       Data Type: "{Performance}"
       Required: True
 
-FanPosition:
-  Object Type: "Enumeration"
-  Enumerators:
-    BLOW_THROUGH:
-      Description: "Fan is placed downstream of the indoor coil"
-      Display Text: "Blow Through"
-    DRAW_THROUGH:
-      Description: "Fan is placed upstream of the indoor coil"
-      Display Text: "Draw Through"
-
 AHRI210240TestStandardYear:
   Object Type: "Enumeration"
   Enumerators:
@@ -186,3 +176,4 @@ Performance:
     DX_system_representation:
       Description: "The corresponding Standard 205 direct expansion coil system representation"
       Data Type: "{ASHRAE205(RS_ID=RS0004)}"
+      Required: True
