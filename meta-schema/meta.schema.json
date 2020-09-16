@@ -152,6 +152,7 @@
         "K",
         "W",
         "kg",
+        "1/m",
         "kg/s",
         "m3/s",
         "Pa",
@@ -166,6 +167,7 @@
       "enum": [
         "-",
         "m",
+        "in",
         "K",
         "W",
         "kg",
@@ -176,6 +178,10 @@
         "F",
         "gpm",
         "ft of water",
+        "ft of fluid",
+        "in H2O",
+        "ft H2O",
+        "psia",
         "Btu/h",
         "Btu/W-h",
         "W/(m3/s)",
@@ -188,7 +194,8 @@
         "m2-K/kW",
         "kPa",
         "l/s",
-        "rev/s"
+        "rev/s",
+        "rpm"
       ]
     },
     "DataTypePattern": {

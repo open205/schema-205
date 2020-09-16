@@ -65,6 +65,8 @@ Description:
       Description: "Data group describing product information"
       Data Type: "{ProductInformation}"
     rating_ahri_410:
+      Description: "Data group containing information relevant to products rated under AHRI 410"
+      Data Type: "{RatingAHRI410}"
 
 ProductInformation:
   Object Type: "Data Group"
