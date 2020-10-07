@@ -159,8 +159,7 @@
         "Hz",
         "V",
         "rev/s",
-        "kVa",
-        "kW"
+        "Va"
       ]
     },
     "RatingUnits": {

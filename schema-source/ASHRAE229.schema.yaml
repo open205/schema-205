@@ -95,14 +95,14 @@ Transformer:
     capacity:
       Description: "Rated Capacity of the Transformer"
       Data Type: "Numeric"
-      Units: "kVa"
+      Units: "Va"
       Range: ">=0"
       Required: True
       Notes: ""
     peak_load:
       Description: "Annual Peak electric load on the transformer"
       Data Type: "Numeric"
-      Units: "kW"
+      Units: "W"
       Range: ">=0"
       Required: True
       Notes: ""
