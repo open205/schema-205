@@ -1,0 +1,148 @@
+# ASHRAE229.schema.yaml
+# The purpose of this "open229 schema" is to provide a single source generator format from which
+# all open229 standard materials, both normative and informative, will be created.
+
+# YAML single-source files will be created in accordance with the open229 schema.
+
+# Meta
+
+Schema:
+  Object Type: "Meta"
+  Title: "ASHRAE 229"
+  Description: "Base schema for ASHRAE 229 representations"
+  Version: "0.0.1"
+  Root Data Group: "ASHRAE229"
+
+# Data Types
+
+Integer:
+  Object Type: "Data Type"
+  Description: "A positive or negative whole number (i.e., a number that can be written without a fractional part)."
+  JSON Schema Type: integer
+  Examples:
+    - "3"
+    - "19"
+    - "-4"
+
+Numeric:
+  Object Type: "Data Type"
+  Description: "A number that may include a fractional part with optional leading sign and optional exponent (engineering notation)."
+  JSON Schema Type: number
+  Examples:
+    - "3.43"
+    - "0"
+    - "-4"
+    - "1.03e4"
+
+Boolean:
+  Object Type: "Data Type"
+  Description: "True or false."
+  JSON Schema Type: boolean
+  Examples:
+    - "true"
+    - "false"
+
+String:
+  Object Type: "Data Type"
+  Description: "A sequence of characters of any length using any (specified) character set."
+  JSON Schema Type: string
+  Examples:
+    - "Indirect evaporative cooler"
+
+"Null":
+  Object Type: "Data Type"
+  Description: "Indicator that no value is provided. Only used in combination with other data types, e.g., 'Number/Null'."
+  JSON Schema Type: "null"
+  Examples:
+    - "null"
+
+# Common Enumerations
+
+
+# Common Data Groups
+ASHRAE229:
+  Object Type: "Data Group"
+  Data Elements:
+    transformers:
+      Description: "Electrical transformers at the building site"
+      Data Type: "[{Transformer}]"
+      Notes: "Contains a list of transformers that convert electricity from a higher voltage to one used by the building, exterior lighting, and other services at the site."
+
+Transformer:
+  Object Type: "Data Group"
+  Data Elements:
+    name:
+      Description: "Transformer Name"
+      Data Type: "String"
+      Required: True
+      Notes: ""
+    type:
+      Description: "The type of transformer"
+      Data Type: "<TransformerType>"
+      Required: True
+      Notes: ""
+    phase:
+      Description: "The number of electrical phases"
+      Data Type: "<TransformerPhase>"
+      Required: True
+      Notes: ""
+    efficiency:
+      Description: "Transformer efficiency"
+      Data Type: "Numeric"
+      Range: ">=0"
+      Required: True
+      Notes: ""
+    capacity:
+      Description: "Rated Capacity of the Transformer"
+      Data Type: "Numeric"
+      Units: "kVa"
+      Range: ">=0"
+      Required: True
+      Notes: ""
+    peak_load:
+      Description: "Annual Peak electric load on the transformer"
+      Data Type: "Numeric"
+      Units: "kW"
+      Range: ">=0"
+      Required: True
+      Notes: ""
+    capacity_ratio:
+      Description: "Annual Peak electric load of the transformer divided by the capacity"
+      Data Type: "Numeric"
+      Range: ">=0"
+      Required: True
+      Notes: ""
+    
+TransformerType:
+  Object Type: "Enumeration"
+  Enumerators:
+    DRY_TYPE:
+      Description: "Dry Type"
+      Notes: ""
+      Display Text: "Dry Type"
+    FLUID_FILLED:
+      Description: "Fluid Filled"
+      Notes: ""
+      Display Text: "Fluid Filled"
+    OTHER:
+      Description: "Other"
+      Notes: ""
+      Display Text: "Other"
+
+TransformerPhase:
+  Object Type: "Enumeration"
+  Enumerators:
+    SINGLE_PHASE:
+      Description: "Single Phase"
+      Notes: ""
+      Display Text: "Single Phase"
+    THREE_PHASE:
+      Description: "Three Phase"
+      Notes: ""
+      Display Text: "Three Phase"
+
+
+    
+
+
+

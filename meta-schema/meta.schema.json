@@ -158,7 +158,9 @@
         "m2-K/W",
         "Hz",
         "V",
-        "rev/s"
+        "rev/s",
+        "kVa",
+        "kW"
       ]
     },
     "RatingUnits": {
