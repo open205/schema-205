@@ -144,6 +144,27 @@ class Enumeration(Header_entry):
 
 
 # -------------------------------------------------------------------------------------------------
+class Enum_serialization(Header_entry):
+
+    def __init__(self, name, parent, item_dict):
+        super().__init__(name, parent)
+        self._type = "NLOHMANN_JSON_SERIALIZE_ENUM"
+        self._opener = '(' + name + ', {'
+        self._closure = '})'
+        self._enumerants = ['UNKNOWN'] + (list(item_dict.keys()))
+
+    @property
+    def value(self):
+        entry = self.level*'\t' + self._type + ' ' + self._opener + '\n'
+        for e in self._enumerants:
+            entry += (self.level + 1)*'\t'
+            mapping = '{' + self._name + '::' + e + ', "' + e + '"}'
+            entry += (mapping + ',\n')
+        entry += (self.level*'\t' + self._closure)
+        return entry
+
+
+# -------------------------------------------------------------------------------------------------
 class Struct(Header_entry):
 
     def __init__(self, name, parent, superclass=''):
@@ -333,6 +354,7 @@ class H_translator:
         self._epilogue.clear()
 
         self._contents = load(input_file_path)
+        enum_count = 0
         # If base_class_name is empty, I must be the base. Alternately, if base_class_name is my name
         self._is_base_class = not base_class_name or (base_class_name == self._schema_name)#('Root Data Group' in self._contents['Schema'])
         # Load meta info first (assuming that base level tag == Schema means object type == Meta)
@@ -350,6 +372,8 @@ class H_translator:
         # Second, enumerations
         for base_level_tag in [tag for tag in self._contents if self._contents[tag]['Object Type'] == 'Enumeration']:
             Enumeration(base_level_tag, self._namespace, self._contents[base_level_tag]['Enumerators'])
+            Enum_serialization(base_level_tag, self._namespace, self._contents[base_level_tag]['Enumerators'])
+            enum_count += 1
         # Iterate through the dictionary, looking for known types
         for base_level_tag in self._contents:
             #if 'Object Type' in self._contents[base_level_tag]:
@@ -376,9 +400,7 @@ class H_translator:
                                      self._references
                                      )
                     self._add_member_headers(d)
-        unordered = H_translator.modified_insertion_sort(self._namespace.child_entries)
-        # while unordered:
-        #     unordered = H_translator.modified_insertion_sort(self._namespace.child_entries)
+        unordered = H_translator.modified_insertion_sort(self._namespace.child_entries[enum_count:])
 
     def _add_include_guard(self, header_name):
         s1 = f'#ifndef {header_name.upper()}_H_'
