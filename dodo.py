@@ -1,6 +1,7 @@
 import schema205.validate
 import schema205.markdown
 import schema205.json_translate
+import schema205.cpp_translate
 import os
 from doit.tools import create_folder
 
@@ -8,6 +9,7 @@ BUILD_PATH = "build"
 SOURCE_PATH = 'schema-source'
 DOCS_PATH = os.path.join(BUILD_PATH,"docs")
 SCHEMA_PATH = os.path.join(BUILD_PATH,"schema")
+CPP_PATH = os.path.join(BUILD_PATH, "cpp")
 
 def collect_source_files():
   file_list = []
@@ -53,6 +55,19 @@ def task_schema():
     'actions': [
       (create_folder, [SCHEMA_PATH]),
       (schema205.json_translate.translate_dir,[SOURCE_PATH, SCHEMA_PATH])
+      ],
+    'clean': True
+  }
+
+def task_cpp():
+  '''Generates CPP header files from common-scema'''
+  return {
+    'file_dep': collect_source_files(),
+    'targets': collect_target_files(CPP_PATH,'h'),
+    'task_dep': ['validate'],
+    'actions': [
+      (create_folder, [CPP_PATH]),
+      (schema205.cpp_translate.translate_all_to_headers,[SOURCE_PATH, CPP_PATH, "ASHRAE205"])
       ],
     'clean': True
   }
