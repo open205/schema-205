@@ -1,4 +1,3 @@
-#include "RS0001.h"
 #include "RS_instance_factory.h"
 
 class RS0001_factory : public RS_instance_factory

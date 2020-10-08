@@ -3,7 +3,7 @@
 
 namespace
 {
-    using RS_factory_map = std::map<std::string, const RS_instance_factory* >;
+    using RS_factory_map = std::map<std::string, std::shared_ptr<RS_instance_factory> >;
 
     RS_factory_map& Get_RS_factory_map()
     {
@@ -16,7 +16,7 @@ namespace
 bool RS_instance_factory::Register_factory(std::string const& RS_ID,
                                            std::shared_ptr<RS_instance_factory> factory)
 {
-   Get_RS_factory_map()[RS_ID] = factory.get();
+   Get_RS_factory_map()[RS_ID] = factory;
    return true;
 }
 

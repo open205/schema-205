@@ -1,6 +1,6 @@
 #include "RS0001_factory.h"
+#include "RS0001.h"
 #include <memory>
-//#include <iostream>
 
 // A little trickery here: https://www.learncpp.com/cpp-tutorial/811-static-member-variables/
 // "static members exist even if no objects of the class have been instantiated"
