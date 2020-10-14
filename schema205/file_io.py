@@ -34,6 +34,10 @@ def dump(content, output_file_path):
         with open(output_file_path, 'w') as header:
             header.write(content)
             header.write('\n')
+    elif ext == '.cpp':
+        with open(output_file_path, 'w') as impl:
+            impl.write(content)
+            impl.write('\n')
 
     else:
         raise Exception(f"Unsupported output \"{ext}\".")

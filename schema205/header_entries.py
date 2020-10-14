@@ -10,7 +10,7 @@ class Header_entry:
         self._name = name
         self._initlist = ''
         self._opener = '{'
-        self._access_specifier = '' #'public:'
+        self._access_specifier = ''
         self._closure = '}'
         self._parent_entry = parent
         self._child_entries = list() # of Header_entry(s)
@@ -18,10 +18,11 @@ class Header_entry:
 
         if parent:
             self._lineage = parent._lineage + [name]
-            self.parent.add_child_entry(self)
+            self._parent_entry._add_child_entry(self)
         else:
             self._lineage = [name]
 
+    # .............................................................................................
     def __lt__(self, other):
         '''Rich-comparison method to allow sorting.
 
@@ -30,7 +31,9 @@ class Header_entry:
         '''
         return self._less_than(other)
 
+    # .............................................................................................
     def _less_than(self, other):
+        ''' '''
         lt = False
         t = f'{other._type} {other._name}'
         # \b is a "boundary" character, or specifier for a whole word
@@ -46,53 +49,47 @@ class Header_entry:
                 lt = self._less_than(c)
         return lt
 
+    # .............................................................................................
     def __gt__(self, other):
         return (other < self)
 
-    def add_child_entry(self, child):
+    # .............................................................................................
+    def _add_child_entry(self, child):
         self._child_entries.append(child)
 
+    # .............................................................................................
     @property
     def value(self):
         entry = self.level*'\t' + self._type + ' ' + self._name + ' ' + self._initlist + ' ' + self._opener + '\n'
-        entry += (self.level + 1)*'\t' + self._access_specifier + '\n'
+        entry += (self.level)*'\t' + self._access_specifier + '\n'
         for c in self._child_entries:
             entry += (c.value + '\n')
         entry += (self.level*'\t' + self._closure)
         return entry
 
-    @property
-    def child_entries(self):
-        return self._child_entries
-
+    # .............................................................................................
     @property
     def parent(self):
         return self._parent_entry
 
-    @parent.setter
-    def parent(self, p):
-        self._parent_entry = p
+    # .............................................................................................
+    @property
+    def child_entries(self):
+        return self._child_entries
 
+    # .............................................................................................
     def _get_level(self, level=0):
-        if self.parent:
-            return self.parent._get_level(level+1)
+        if self._parent_entry:
+            return self._parent_entry._get_level(level+1)
         else:
             return level
 
+    # .............................................................................................
     @property
     def level(self):
         return self._get_level()
 
-    def _get_root(self):
-        if self.parent:
-            return self.parent._get_root()
-        else:
-            return self
-
-    @property
-    def rootname(self):
-        return self._get_root()._name
-
+    # .............................................................................................
     @property
     def lineage(self):
         return self._lineage
@@ -107,6 +104,7 @@ class Typedef(Header_entry):
         self._access_specifier = ''
         self._typedef = typedef
 
+    # .............................................................................................
     @property
     def value(self):
         return self.level*'\t' + self._type + ' ' + self._typedef + ' ' + self._name + ';'
@@ -130,6 +128,7 @@ class Enumeration(Header_entry):
             # Currently, CPP only cares about the key (enum name)
             self._enumerants.append((key, descr, displ, notes))
 
+    # .............................................................................................
     @property
     def value(self):
         z = list(zip(*self._enumerants))
@@ -153,6 +152,7 @@ class Enum_serialization(Header_entry):
         self._closure = '})'
         self._enumerants = ['UNKNOWN'] + (list(item_dict.keys()))
 
+    # .............................................................................................
     @property
     def value(self):
         entry = self.level*'\t' + self._type + ' ' + self._opener + '\n'
@@ -185,6 +185,7 @@ class Union(Header_entry):
         self._access_specifier = ''
         self._selections = selections
 
+    # .............................................................................................
     @property
     def value(self):
         entry = self.level*'\t' + self._type + ' ' + self._name + ' ' + self._opener + '\n'
@@ -193,6 +194,18 @@ class Union(Header_entry):
             entry += (s + ';\n')
         entry += (self.level*'\t' + self._closure)
         return entry
+
+
+# -------------------------------------------------------------------------------------------------
+class Object_serialization(Header_entry):
+
+    def __init__(self, name, parent):
+        super().__init__(name, parent)
+
+    # .............................................................................................
+    @property
+    def value(self):
+        return self.level*'\t' + f"void from_json(const nlohmann::json& j, {self._name}& x);" 
 
 
 # -------------------------------------------------------------------------------------------------
@@ -207,6 +220,7 @@ class Data_element(Header_entry):
 
         self._create_type_entry(element)
 
+    # .............................................................................................
     @property
     def value(self):
         if self._has_nested:
@@ -214,6 +228,7 @@ class Data_element(Header_entry):
         else:
             return self.level*'\t' + self._type + ' ' + self._name + ';'
 
+    # .............................................................................................
     def _create_type_entry(self, parent_dict):
         '''Create type node.'''
         try:
@@ -236,6 +251,7 @@ class Data_element(Header_entry):
             #print('KeyError; no key exists called', ke)
             pass
 
+    # .............................................................................................
     def _get_simple_type(self, type_str):
         ''' Return the internal type described by type_str.
 
@@ -267,7 +283,7 @@ class Data_element(Header_entry):
                 # else:
                 #     simple_type = internal_type #key + '::' + internal_type
                 if nested_type:
-                    # 'ASHRAE205' from the composite 'ASHRAE205(RS_ID=RSXXXX)'
+                    # e.g. 'ASHRAE205' from the composite 'ASHRAE205(RS_ID=RSXXXX)'
                     simple_type = f'std::shared_ptr<{internal_type}>'
                 return simple_type
 
@@ -281,6 +297,7 @@ class Data_element(Header_entry):
             print('Type not processed:', type_str)
         return simple_type
 
+    # .............................................................................................
     def _get_simple_minmax(self, range_str, target_dict):
         '''Process Range into min and max fields.'''
         if range_str is not None:
@@ -303,21 +320,39 @@ class Data_element(Header_entry):
                 except ValueError:
                     pass
 
+# -------------------------------------------------------------------------------------------------
+class Member_function_override(Header_entry):
+
+    def __init__(self, name, parent):
+        super().__init__(name, parent)
+
+    # .............................................................................................
+    @property
+    def value(self):
+        return self.level*'\t' + self._name + ' override;'
 
 # -------------------------------------------------------------------------------------------------
 class H_translator:
+
     def __init__(self):
         self._references = dict()
         self._fundamental_data_types = dict()
         self._preamble = list()
         self._epilogue = list()
+        self._data_group_types = ['Data Group',
+                                  'Performance Map',
+                                  'Grid Variables',
+                                  'Lookup Variables',
+                                  'Rating Data Group']
 
+
+    # .............................................................................................
     def __str__(self):
         s = ''
         for p in self._preamble:
             s += p
         s += '\n'
-        if self._is_base_class:
+        if self._is_top_container:
             s += self._namespace.value
         else:
             s += self._top_namespace.value
@@ -326,6 +361,14 @@ class H_translator:
             s += e
         return s
 
+    @property
+    def root(self):
+        if self._is_top_container:
+            return self._namespace
+        else:
+            return self._top_namespace
+
+    # .............................................................................................
     @staticmethod
     def modified_insertion_sort(obj_list):
         '''From https://stackabuse.com/sorting-algorithms-in-python/#insertionsort'''
@@ -344,7 +387,8 @@ class H_translator:
             obj_list[j + 1] = item_to_insert
         return swapped
 
-    def translate(self, input_file_path, base_class_name):
+    # .............................................................................................
+    def translate(self, input_file_path, schema_base_class_name, container_class_name):
         '''X'''
         self._source_dir = os.path.dirname(os.path.abspath(input_file_path))
         self._schema_name = os.path.splitext(os.path.splitext(os.path.basename(input_file_path))[0])[0]
@@ -354,54 +398,62 @@ class H_translator:
         self._epilogue.clear()
 
         self._contents = load(input_file_path)
-        enum_count = 0
-        # If base_class_name is empty, I must be the base. Alternately, if base_class_name is my name
-        self._is_base_class = not base_class_name or (base_class_name == self._schema_name)#('Root Data Group' in self._contents['Schema'])
+
+        # If container_class_name is empty, I must be the top container. Also true if container_class_name is my name.
+        self._is_top_container = not container_class_name or (container_class_name == self._schema_name)
+
         # Load meta info first (assuming that base level tag == Schema means object type == Meta)
         self._load_meta_info(self._contents['Schema'])
         self._add_include_guard(self._schema_name)
         self._add_included_headers(self._contents['Schema'].get('References'))
-        if self._is_base_class:
+
+        # Create "root" node(s)
+        if self._is_top_container:
             self._namespace = Header_entry(f'{self._schema_name}_NS')
         else:
-            self._top_namespace = Header_entry(f'{base_class_name}_NS')
+            self._top_namespace = Header_entry(f'{container_class_name}_NS')
             self._namespace = Header_entry(f'{self._schema_name}_NS', parent=self._top_namespace)
+
         # First, assemble typedefs
-        for base_level_tag in [tag for tag in self._contents if self._contents[tag]['Object Type'] == 'String Type']:
+        for base_level_tag in (
+            [tag for tag in self._contents if self._contents[tag]['Object Type'] == 'String Type']):
             Typedef(base_level_tag, self._namespace, 'std::string')
         # Second, enumerations
-        for base_level_tag in [tag for tag in self._contents if self._contents[tag]['Object Type'] == 'Enumeration']:
+        for base_level_tag in (
+            [tag for tag in self._contents if self._contents[tag].get('Object Type') == 'Enumeration']):
             Enumeration(base_level_tag, self._namespace, self._contents[base_level_tag]['Enumerators'])
-            Enum_serialization(base_level_tag, self._namespace, self._contents[base_level_tag]['Enumerators'])
-            enum_count += 1
-        # Iterate through the dictionary, looking for known types
-        for base_level_tag in self._contents:
-            #if 'Object Type' in self._contents[base_level_tag]:
-            obj_type = self._contents[base_level_tag].get('Object Type')
-            if obj_type in ['Data Group',
-                            'Performance Map',
-                            'Grid Variables',
-                            'Lookup Variables',
-                            'Rating Data Group']:
-                if base_level_tag == self._schema_name and not self._is_base_class:
-                    #subclass = base_level_tag + ' : public Some_base_class'
-                    s = Struct(base_level_tag, self._namespace, superclass='Some_base_class')
-                elif obj_type == 'Performance Map':
-                    #subclass = base_level_tag + ' : public performance_map_base'
-                    s = Struct(base_level_tag, self._namespace, superclass='performance_map_base')
-                    self._add_member_headers(s)
-                else:
-                    s = Struct(base_level_tag, self._namespace)
-                for data_element in self._contents[base_level_tag]['Data Elements']:
-                    d = Data_element(data_element, 
-                                     s, 
-                                     self._contents[base_level_tag]['Data Elements'][data_element],
-                                     self._fundamental_data_types,
-                                     self._references
-                                     )
-                    self._add_member_headers(d)
-        unordered = H_translator.modified_insertion_sort(self._namespace.child_entries[enum_count:])
+        # Collect member objects and their children
+        for base_level_tag in (
+            [tag for tag in self._contents if self._contents[tag].get('Object Type') in self._data_group_types]):
+            if base_level_tag == self._schema_name and not self._is_top_container:
+                s = Struct(base_level_tag, self._namespace, superclass=schema_base_class_name)
+                self._add_function_overrides(s, schema_base_class_name)
+            elif self._contents[base_level_tag].get('Object Type') == 'Performance Map':
+                s = Struct(base_level_tag, self._namespace, superclass='performance_map_base')
+                self._add_member_headers(s)
+            else:
+                s = Struct(base_level_tag, self._namespace)
+            for data_element in self._contents[base_level_tag]['Data Elements']:
+                d = Data_element(data_element, 
+                                    s, 
+                                    self._contents[base_level_tag]['Data Elements'][data_element],
+                                    self._fundamental_data_types,
+                                    self._references
+                                    )
+                self._add_member_headers(d)
+        H_translator.modified_insertion_sort(self._namespace.child_entries)
 
+        # Final pass through dictionary in order to add elements related to serialization
+        for base_level_tag in (
+            [tag for tag in self._contents if self._contents[tag].get('Object Type') == 'Enumeration']):
+            Enum_serialization(base_level_tag, 
+                               self._namespace, 
+                               self._contents[base_level_tag]['Enumerators'])
+        for base_level_tag in (
+            [tag for tag in self._contents if self._contents[tag].get('Object Type') in self._data_group_types]):
+            Object_serialization(base_level_tag, self._namespace)
+
+    # .............................................................................................
     def _add_include_guard(self, header_name):
         s1 = f'#ifndef {header_name.upper()}_H_'
         s2 = f'#define {header_name.upper()}_H_'
@@ -409,8 +461,9 @@ class H_translator:
         self._preamble.append(s1 + '\n' + s2 + '\n')
         self._epilogue.append(s3 + '\n')
 
+    # .............................................................................................
     def _add_included_headers(self, ref_list):
-        if ref_list and not self._is_base_class:
+        if ref_list and not self._is_top_container:
             includes = ''
             for r in ref_list:
                 includes += f'#include "{r}.h"'
@@ -418,6 +471,7 @@ class H_translator:
             self._preamble.append(includes)
         self._preamble.append('#include <string>\n#include <vector>\n')
 
+    # .............................................................................................
     def _add_member_headers(self, data_element):
         if 'shared_ptr' in data_element._type:
             m = re.search(r'\<(.*)\>', data_element._type)
@@ -432,6 +486,7 @@ class H_translator:
                 if include not in self._preamble:
                     self._preamble.append(f'#include "{l[-1]}.h"\n')
 
+    # .............................................................................................
     def _load_meta_info(self, schema_section):
         '''Store the global/common types and the types defined by any named references.'''
         refs = list()
@@ -443,13 +498,13 @@ class H_translator:
             external_objects = list()
             for base_item in [name for name in ext_dict if ext_dict[name]['Object Type'] in (
                 ['Enumeration',
-                    'Data Group',
-                    'String Type',
-                    'Map Variables',
-                    'Rating Data Group',
-                    'Performance Map',
-                    'Grid Variables',
-                    'Lookup Variables'])]:
+                'Data Group',
+                'String Type',
+                'Map Variables',
+                'Rating Data Group',
+                'Performance Map',
+                'Grid Variables',
+                'Lookup Variables'])]:
                 external_objects.append(base_item)
             self._references[ref_file] = external_objects
             cpp_types = {'Integer' : 'int', 
@@ -459,8 +514,20 @@ class H_translator:
             for base_item in [name for name in ext_dict if ext_dict[name]['Object Type'] == 'Data Type']:
                 self._fundamental_data_types[base_item] = cpp_types.get(base_item)
 
+    # .............................................................................................
     def _print_nodes(self, node):
         if not node.child_entries:
             print(node.lineage)
         for child in node.child_entries:
             self._print_nodes(child)
+
+    # .............................................................................................
+    def _add_function_overrides(self, parent_node, base_class_name):
+        '''Get base class virtual functions to be overridden.'''
+        base_class = os.path.join('.', 'src', f'{base_class_name}.h')
+        with open(base_class) as b:
+            for line in b:
+                if base_class_name not in line:
+                    m = re.match(r'\s*virtual\s(.*)\)', line)
+                    if m:
+                        Member_function_override(m.group(1) + ")", parent_node)
