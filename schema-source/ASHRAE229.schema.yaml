@@ -67,6 +67,626 @@ ASHRAE229:
       Description: "Electrical transformers at the building site"
       Data Type: "[{Transformer}]"
       Notes: "Contains a list of transformers that convert electricity from a higher voltage to one used by the building, exterior lighting, and other services at the site."
+    buildings:
+      Description: "Buildings on the site"
+      Data Type: "[{Building}]"
+      Notes: "Contains a list of buildings on the site (often just one)."
+    spaces:
+      Description: "Spaces in the building"
+      Data Type: "[{Space}]"
+      Notes: "Contains a list of spaces in the building."
+
+Building:
+  Object Type: "Data Group"
+  Data Elements:
+    id:
+      Description: "Unique Identification Number"
+      Data Type: "Numeric"
+      Required: True
+      Notes: ""
+    name:
+      Description: "Name of the Building"
+      Data Type: "String"
+      Required: True
+      Notes: ""
+    number_of_floors:
+      Description: "Number of floors"
+      Data Type: "Numeric"
+      Range: ">=0"
+      Required: True
+      Notes: ""
+
+
+    
+Space:
+  Object Type: "Data Group"
+  Data Elements:
+    id:
+      Description: "Unique Identification Number"
+      Data Type: "Numeric"
+      Required: True
+      Notes: ""
+    name:
+      Description: "Name fo the Space"
+      Data Type: "String"
+      Required: True
+      Notes: ""
+    floor_area:
+      Description: "The floor area of a space within the building, including basements, mezzanine and intermediate-floored tiers, and penthouses with a headroom height of 7.5 ft or greater. It is measured from the exterior faces of walls or from the center-line of walls separating buildings, but excluding covered walkways, open roofed-over areas, porches and similar spaces, pipe trenches, exterior terraces or steps, chimneys, roof overhangs, and similar features."
+      Data Type: "Numeric"
+      Range: ">=0"
+      Required: True
+      Notes: ""
+    conditioning_type:
+      Description: "Space conditioning category"
+      Data Type: "<ConditioningType>"
+      Required: True
+      Notes: ""
+    use_class:
+      Description: "Whether space use types are building area types from Table 9.5.1 or space use types from Table 9.6.1"
+      Data Type: "<UseClassType>"
+      Required: True
+      Notes: ""
+
+ConditioningType:
+  Object Type: "Enumeration"
+  Enumerators:
+    HEATED_AND_COOLED:
+      Description: "Heated and cooled"
+      Notes: ""
+      Display Text: "Heated and cooled"
+    HEATED_ONLY:
+      Description: "Heated only"
+      Notes: ""
+      Display Text: "Heated only"
+    SEMIHEATED:
+      Description: "Semiheated"
+      Notes: ""
+      Display Text: "Semiheated"
+    UNCONDITIONED:
+      Description: "Unconditioned"
+      Notes: ""
+      Display Text: "Unconditioned"
+    PLENUM:
+      Description: "Plenum"
+      Notes: ""
+      Display Text: "Plenum"
+
+UseClassType:
+  Object Type: "Enumeration"
+  Enumerators:
+# Table 9.5.1 Building Area Types  
+    AUTOMOTIVE_FACILITY:
+      Description: "Automotive facility"
+      Notes: ""
+      Display Text: "Automotive facility"
+    CONVENTION_CENTER:
+      Description: "Convention center"
+      Notes: ""
+      Display Text: "Convention center"
+    COURTHOUSE:
+      Description: "Courthouse"
+      Notes: ""
+      Display Text: "Courthouse"
+    DINING_BAR_LOUNGE_LEISURE:
+      Description: "Dining: Bar lounge/leisure"
+      Notes: ""
+      Display Text: "Dining: Bar lounge/leisure"
+    DINING_CAFETERIA_FAST_FOOD:
+      Description: "Dining: Cafeteria/fast food"
+      Notes: ""
+      Display Text: "Dining: Cafeteria/fast food"
+    DINING_FAMILY:
+      Description: "Dining: Family"
+      Notes: ""
+      Display Text: "Dining: Family"
+    DORMITORY:
+      Description: "Dormitory"
+      Notes: ""
+      Display Text: "Dormitory"
+    EXERCISE_CENTER:
+      Description: "Exercise center"
+      Notes: ""
+      Display Text: "Exercise center"
+    FIRE_STATION:
+      Description: "Fire station"
+      Notes: ""
+      Display Text: "Fire station"
+    GYMNASIUM:
+      Description: "Gymnasium"
+      Notes: ""
+      Display Text: "Gymnasium"
+    HEALTH_CARE_CLINIC:
+      Description: "Health-care clinic"
+      Notes: ""
+      Display Text: "Health-care clinic"
+    HOSPITAL:
+      Description: "Hospital"
+      Notes: ""
+      Display Text: "Hospital"
+    HOTEL_MOTEL:
+      Description: "Hotel/motel"
+      Notes: ""
+      Display Text: "Hotel/motel"
+    LIBRARY:
+      Description: "Library"
+      Notes: ""
+      Display Text: "Library"
+    MANUFACTURING_FACILITY:
+      Description: "Manufacturing facility"
+      Notes: ""
+      Display Text: "Manufacturing facility"
+    MOTION_PICTURE_THEATER:
+      Description: "Motion picture theater"
+      Notes: ""
+      Display Text: "Motion picture theater"
+    MULTIFAMILY:
+      Description: "Multifamily"
+      Notes: ""
+      Display Text: "Multifamily"
+    MUSEUM:
+      Description: "Museum"
+      Notes: ""
+      Display Text: "Museum"
+    OFFICE:
+      Description: "Office"
+      Notes: ""
+      Display Text: "Office"
+    PARKING_GARAGE:
+      Description: "Parking garage"
+      Notes: ""
+      Display Text: "Parking garage"
+    PENITENTIARY:
+      Description: "Penitentiary"
+      Notes: ""
+      Display Text: "Penitentiary"
+    PERFORMING_ARTS_THEATER:
+      Description: "Performing arts theater"
+      Notes: ""
+      Display Text: "Performing arts theater"
+    POLICE_STATION:
+      Description: "Police station"
+      Notes: ""
+      Display Text: "Police station"
+    POST_OFFICE:
+      Description: "Post office"
+      Notes: ""
+      Display Text: "Post office"
+    RELIGIOUS_FACILITY:
+      Description: "Religious facility"
+      Notes: ""
+      Display Text: "Religious facility"
+    RETAIL:
+      Description: "Retail"
+      Notes: ""
+      Display Text: "Retail"
+    SCHOOL_UNIVERSITY:
+      Description: "School/university"
+      Notes: ""
+      Display Text: "School/university"
+    SPORTS_ARENA:
+      Description: "Sports arena"
+      Notes: ""
+      Display Text: "Sports arena"
+    TOWN_HALL:
+      Description: "Town hall"
+      Notes: ""
+      Display Text: "Town hall"
+    TRANSPORTATION:
+      Description: "Transportation"
+      Notes: ""
+      Display Text: "Transportation"
+    WAREHOUSE:
+      Description: "Warehouse"
+      Notes: ""
+      Display Text: "Warehouse"
+    WORKSHOP:
+      Description: "Workshop"
+      Notes: ""
+      Display Text: "Workshop"
+# Table 9.5.1 Building Area Types  
+
+    ATRIUM_LOW:
+      Description: "Atrium - Low"
+      Notes: ""
+      Display Text: "Atrium - Low"
+    ATRIUM_MEDIUM:
+      Description: "Atrium - Medium"
+      Notes: ""
+      Display Text: "Atrium - Medium"
+    ATRIUM_HIGH:
+      Description: "Atrium - High"
+      Notes: ""
+      Display Text: "Atrium - High"
+    AUDIENCE_SEATING_AREA_AUDITORIUM:
+      Description: "Audience Seating Area - Auditorium"
+      Notes: ""
+      Display Text: "Audience Seating Area - Auditorium"
+    AUDIENCE_SEATING_AREA_GYMNASIUM:
+      Description: "Audience Seating Area - Gymnasium"
+      Notes: ""
+      Display Text: "Audience Seating Area - Gymnasium"
+    AUDIENCE_SEATING_AREA_MOTION_PICTURE_THEATER:
+      Description: "Audience Seating Area - Motion picture theater"
+      Notes: ""
+      Display Text: "Audience Seating Area - Motion picture theater"
+    AUDIENCE_SEATING_AREA_PENITENTIARY:
+      Description: "Audience Seating Area - Penitentiary"
+      Notes: ""
+      Display Text: "Audience Seating Area - Penitentiary"
+    AUDIENCE_SEATING_AREA_PERFORMING_ARTS_THEATER:
+      Description: "Audience Seating Area - Performing arts theater"
+      Notes: ""
+      Display Text: "Audience Seating Area - Performing arts theater"
+    AUDIENCE_SEATING_AREA_RELIGIOUS_FACILITY:
+      Description: "Audience Seating Area - Religious facility"
+      Notes: ""
+      Display Text: "Audience Seating Area - Religious facility"
+    AUDIENCE_SEATING_AREA_SPORTS_ARENA:
+      Description: "Audience Seating Area - Sports arena"
+      Notes: ""
+      Display Text: "Audience Seating Area - Sports arena"
+    AUDIENCE_SEATING_AREA_ALL_OTHER:
+      Description: "Audience Seating Area - All other"
+      Notes: ""
+      Display Text: "Audience Seating Area - All other"
+    BANKING_ACTIVITY_AREA:
+      Description: "Banking Activity Area"
+      Notes: ""
+      Display Text: "Banking Activity Area"
+    CLASSROOM_LECTURE_HALL_TRAINING_ROOM_PENITENTIARY:
+      Description: "Classroom/Lecture Hall/Training Room - Penitentiary"
+      Notes: ""
+      Display Text: "Classroom/Lecture Hall/Training Room - Penitentiary"
+    CLASSROOM_LECTURE_HALL_TRAINING_ROOM_ALL_OTHER:
+      Description: "Classroom/Lecture Hall/Training Room - All other"
+      Notes: ""
+      Display Text: "Classroom/Lecture Hall/Training Room - All other"
+    CONFERENCE_MEETING_MULTIPURPOSE_ROOM:
+      Description: "Conference/Meeting/Multipurpose Room"
+      Notes: ""
+      Display Text: "Conference/Meeting/Multipurpose Room"
+    CONFINEMENT_CELLS:
+      Description: "Confinement Cells"
+      Notes: ""
+      Display Text: "Confinement Cells"
+    COPY_PRINT_ROOM:
+      Description: "Copy/Print Room"
+      Notes: ""
+      Display Text: "Copy/Print Room"
+    CORRIDOR_FACILITY_FOR_THE_VISUALLY_IMPAIRED:
+      Description: "Corridor - Facility for the visually impaired (and not used primarily by the staff)"
+      Notes: ""
+      Display Text: "Corridor - Facility for the visually impaired (and not used primarily by the staff)"
+    CORRIDOR_HOSPITAL:
+      Description: "Corridor - Hospital"
+      Notes: ""
+      Display Text: "Corridor - Hospital"
+    CORRIDOR_ALL_OTHERS:
+      Description: "Corridor - All others"
+      Notes: ""
+      Display Text: "Corridor - All others"
+    COURT_ROOM:
+      Description: "Court room"
+      Notes: ""
+      Display Text: "Court room"
+    COMPUTER_ROOM:
+      Description: "Computer Room"
+      Notes: ""
+      Display Text: "Computer Room"
+    DINING_AREA_PENITENTIARY:
+      Description: "Dining Area - Penitentiary"
+      Notes: ""
+      Display Text: "Dining Area - Penitentiary"
+    DINING_AREA_FACILITY_FOR_THE_VISUALLY_IMPAIRED:
+      Description: "Dining Area - Facility for the visually impaired (and not used primarily by the staff)"
+      Notes: ""
+      Display Text: "Dining Area - Facility for the visually impaired (and not used primarily by the staff)"
+    DINING_AREA_BAR_LOUNGE_OR_LEISURE_DINING:
+      Description: "Dining Area - Bar/lounge or leisure dining"
+      Notes: ""
+      Display Text: "Dining Area - Bar/lounge or leisure dining"
+    DINING_AREA_CAFETERIA_OR_FAST_FOOD_DINING:
+      Description: "Dining Area - Cafeteria or fast food dining"
+      Notes: ""
+      Display Text: "Dining Area - Cafeteria or fast food dining"
+    DINING_AREA_FAMILY_DINING:
+      Description: "Dining Area - Family dining"
+      Notes: ""
+      Display Text: "Dining Area - Family dining"
+    DINING_AREA_ALL_OTHERS:
+      Description: "Dining Area - All others"
+      Notes: ""
+      Display Text: "Dining Area - All others"
+    ELECTRICAL_MECHANICAL_ROOM:
+      Description: "Electrical/Mechanical Room"
+      Notes: ""
+      Display Text: "Electrical/Mechanical Room"
+    EMERGENCY_VEHICLE_GARAGE:
+      Description: "Emergency Vehicle Garage"
+      Notes: ""
+      Display Text: "Emergency Vehicle Garage"
+    FOOD_PREPARATION_AREA:
+      Description: "Food Preparation Area"
+      Notes: ""
+      Display Text: "Food Preparation Area"
+    GUEST_ROOM:
+      Description: "Guest Room"
+      Notes: ""
+      Display Text: "Guest Room"
+    LABORATORY_IN_OR_AS_A_CLASSROOM:
+      Description: "Laboratory - In or as a classroom"
+      Notes: ""
+      Display Text: "Laboratory - In or as a classroom"
+    LABORATORY_ALL_OTHERS:
+      Description: "Laboratory - All others"
+      Notes: ""
+      Display Text: "Laboratory - All others"
+    LAUNDRY_WASHING_AREA:
+      Description: "Laundry/Washing Area"
+      Notes: ""
+      Display Text: "Laundry/Washing AreaX"
+    LOADING_DOCK_INTERIOR:
+      Description: "Loading Dock, Interior"
+      Notes: ""
+      Display Text: "Loading Dock, Interior"
+    LOBBY_FACILITY_FOR_THE_VISUALLY_IMPAIRED:
+      Description: "Lobby - Facility for the visually impaired (and not used primarily by the staff)"
+      Notes: ""
+      Display Text: "Lobby - Facility for the visually impaired (and not used primarily by the staff)"
+    LOBBY_ELEVATOR:
+      Description: "Lobby - Elevator"
+      Notes: ""
+      Display Text: "Lobby - Elevator"
+    LOBBY_HOTEL:
+      Description: "Lobby - Hotel"
+      Notes: ""
+      Display Text: "Lobby - Hotel"
+    LOBBY_MOTION_PICTURE_THEATER:
+      Description: "Lobby - Motion picture theater"
+      Notes: ""
+      Display Text: "Lobby - Motion picture theater"
+    LOBBY_PERFORMING_ARTS_THEATER:
+      Description: "Lobby - Performing arts theater"
+      Notes: ""
+      Display Text: "Lobby - Performing arts theater"
+    LOBBY_ALL_OTHERS:
+      Description: "Lobby - All others"
+      Notes: ""
+      Display Text: "Lobby - All others"
+    LOCKER_ROOM:
+      Description: "Locker Room"
+      Notes: ""
+      Display Text: "Locker Room"
+    LOUNGE_BREAKROOM_HEALTH_CARE_FACILITY:
+      Description: "Lounge/Breakroom - Health care facility"
+      Notes: ""
+      Display Text: "Lounge/Breakroom - Health care facility"
+    LOUNGE_BREAKROOM_ALL_OTHERS:
+      Description: "Lounge/Breakroom - All others"
+      Notes: ""
+      Display Text: "Lounge/Breakroom - All others"
+    OFFICE_ENCLOSED_AND_SMALL:
+      Description: "Office - Enclosed and small"
+      Notes: ""
+      Display Text: "Office - Enclosed and small"
+    OFFICE_ENCLOSED_AND_LARGE:
+      Description: "Office - Enclosed and large"
+      Notes: ""
+      Display Text: "Office - Enclosed and large"
+    OFFICE_OPEN_PLAN:
+      Description: "Office - Open plan"
+      Notes: ""
+      Display Text: "Office - Open plan"
+    PARKING_AREA_INTERIOR:
+      Description: "Parking Area, Interior"
+      Notes: ""
+      Display Text: "Parking Area, Interior"
+    PHARMACY_AREA:
+      Description: "Pharmacy Area"
+      Notes: ""
+      Display Text: "Pharmacy Area"
+    RESTROOM_FACILITY_FOR_THE_VISUALLY_IMPAIRED:
+      Description: "Restroom - Facility for the visually impaired (and not used primarily by the staff)"
+      Notes: ""
+      Display Text: "Restroom - Facility for the visually impaired (and not used primarily by the staff)"
+    RESTROOM_ALL_OTHERS:
+      Description: "Restroom - All others"
+      Notes: ""
+      Display Text: "Restroom - All others"
+    SALES_AREA:
+      Description: "Sales Area"
+      Notes: ""
+      Display Text: "Sales Area"
+    SEATING_AREA_GENERAL:
+      Description: "Seating Area, General"
+      Notes: ""
+      Display Text: "Seating Area, General"
+    STAIRWAY:
+      Description: "Stairway"
+      Notes: ""
+      Display Text: "Stairway"
+    STAIRWELL:
+      Description: "Stairwell"
+      Notes: ""
+      Display Text: "Stairwell"
+    STORAGE_ROOM_SMALL:
+      Description: "Storage Room - Small"
+      Notes: ""
+      Display Text: "Storage Room - Small"
+    STORAGE_ROOM_LARGE:
+      Description: "Storage Room - Large"
+      Notes: ""
+      Display Text: "Storage Room - Large"
+    VEHICULAR_MAINTENANCE_AREA:
+      Description: "Vehicular Maintenance Area"
+      Notes: ""
+      Display Text: "Vehicular Maintenance Area"
+    WORKSHOP:
+      Description: "Workshop"
+      Notes: ""
+      Display Text: "Workshop"
+    FACILITY_FOR_THE_VISUALLY_IMPAIRED_CHAPEL:
+      Description: "Facility for the Visually Impaired - Chapel (used primarily by residents)"
+      Notes: ""
+      Display Text: "Facility for the Visually Impaired - Chapel (used primarily by residents)"
+    FACILITY_FOR_THE_VISUALLY_IMPAIRED_RECREATION_ROOM_COMMON_LIVING_ROOM:
+      Description: "Facility for the Visually Impaired - Recreatio nroom/common living room (and not used primarily by staff)"
+      Notes: ""
+      Display Text: "Facility for the Visually Impaired - Recreatio nroom/common living room (and not used primarily by staff)"
+    CONVENTION_CENTER_EXHIBIT_SPACE:
+      Description: "Convention Center — Exhibit Space"
+      Notes: ""
+      Display Text: "Convention Center — Exhibit Space"
+    DORMITORY_LIVING_QUARTERS:
+      Description: "Dormitory — Living Quarters"
+      Notes: ""
+      Display Text: "Dormitory — Living Quarters"
+    FIRE_STATION_SLEEPING_QUARTERS:
+      Description: "Fire Station — Sleeping Quarters"
+      Notes: ""
+      Display Text: "Fire Station — Sleeping Quarters"
+    GYMNASIUM_FITNESS_CENTER_EXERCISE_AREA:
+      Description: "Gymnasium/Fitness Center - Exercise area"
+      Notes: ""
+      Display Text: "Gymnasium/Fitness Center - Exercise area"
+    GYMNASIUM_FITNESS_CENTER_PLAYING_AREA:
+      Description: "Gymnasium/Fitness Center - Playing area"
+      Notes: ""
+      Display Text: "Gymnasium/Fitness Center - Playing area"
+    HEALTHCARE_FACILITY_EXAM_TREATMENT_ROOM:
+      Description: "Healthcare Facility - Exam/treatment room"
+      Notes: ""
+      Display Text: "Healthcare Facility - Exam/treatment room"
+    HEALTHCARE_FACILITY_IMAGING_ROOM:
+      Description: "Healthcare Facility - Imaging room"
+      Notes: ""
+      Display Text: "Healthcare Facility - Imaging room"
+    HEALTHCARE_FACILITY_MEDICAL_SUPPLY_ROOM:
+      Description: "Healthcare Facility - Medical supply room"
+      Notes: ""
+      Display Text: "Healthcare Facility - Medical supply room"
+    HEALTHCARE_FACILITY_NURSERY:
+      Description: "Healthcare Facility - Nursery"
+      Notes: ""
+      Display Text: "Healthcare Facility - Nursery"
+    HEALTHCARE_FACILITY_NURSES_STATION:
+      Description: "Healthcare Facility - Nurse’s station"
+      Notes: ""
+      Display Text: "Healthcare Facility - Nurse’s station"
+    HEALTHCARE_FACILITY_OPERATING_ROOM:
+      Description: "Healthcare Facility - Operating room"
+      Notes: ""
+      Display Text: "Healthcare Facility - Operating room"
+    HEALTHCARE_FACILITY_PATIENT_ROOM:
+      Description: "Healthcare Facility - Patient room"
+      Notes: ""
+      Display Text: "Healthcare Facility - Patient room"
+    HEALTHCARE_FACILITY_PHYSICAL_THERAPY_ROOM:
+      Description: "Healthcare Facility - Physical therapy room"
+      Notes: ""
+      Display Text: "Healthcare Facility - Physical therapy room"
+    HEALTHCARE_FACILITY_RECOVERY_ROOM:
+      Description: "Healthcare Facility - Recovery room"
+      Notes: ""
+      Display Text: "Healthcare Facility - Recovery room"
+    LIBRARY_READING_AREA:
+      Description: "Library - Reading area"
+      Notes: ""
+      Display Text: "Library - Reading area"
+    LIBRARY_STACKS:
+      Description: "Library - Stacks"
+      Notes: ""
+      Display Text: "Library - Stacks"
+    MANUFACTURING_FACILITY_DETAILED_MANUFACTURING_AREA:
+      Description: "Manufacturing Facility - Detailed manufacturing area"
+      Notes: ""
+      Display Text: "Manufacturing Facility - Detailed manufacturing area"
+    MANUFACTURING_FACILITY_EQUIPMENTROOM:
+      Description: "Manufacturing Facility - Equipment room"
+      Notes: ""
+      Display Text: "Manufacturing Facility - Equipment room"
+    MANUFACTURING_FACILITY_EXTRA_HIGH_BAY_AREA:
+      Description: "Manufacturing Facility - Extra high bay area"
+      Notes: ""
+      Display Text: "Manufacturing Facility - Extra high bay area"
+    MANUFACTURING_FACILITY_HIGH_BAY_AREA:
+      Description: "Manufacturing Facility - High bay area"
+      Notes: ""
+      Display Text: "Manufacturing Facility - High bay area"
+    MANUFACTURING_FACILITY_LOW_BAY_AREA:
+      Description: "Manufacturing Facility - Low bay area"
+      Notes: ""
+      Display Text: "Manufacturing Facility - Low bay area"
+    MUSEUM_GENERAL_EXHIBITION_AREA:
+      Description: "Museum - General exhibition area"
+      Notes: ""
+      Display Text: "Museum - General exhibition area"
+    MUSEUM_RESTORATION_ROOM:
+      Description: "Museum - Restoration room"
+      Notes: ""
+      Display Text: "Museum - Restoration room"
+    PERFORMING_ARTS_THEATER_DRESSING_ROOM:
+      Description: "Performing Arts Theater — Dressing Room"
+      Notes: ""
+      Display Text: "Performing Arts Theater — Dressing Room"
+    POST_OFFICE_SORTING_AREA:
+      Description: "Post Office — Sorting Area"
+      Notes: ""
+      Display Text: "Post Office — Sorting Area"
+    RELIGIOUS_FACILITY_FELLOWSHIP_HALL:
+      Description: "Religious Facility - Fellowship hall"
+      Notes: ""
+      Display Text: "Religious Facility - Fellowship hall"
+    RELIGIOUS_FACILITY_WORSHIP_PULPIT_CHOIR_AREA:
+      Description: "Religious Facility - Worship/pulpit/choir area"
+      Notes: ""
+      Display Text: "Religious Facility - Worship/pulpit/choir area"
+    RETAIL_FACILITIES_DRESSING_FITTING_ROOM:
+      Description: "Retail Facilities - Dressing/fitting room"
+      Notes: ""
+      Display Text: "Retail Facilities - Dressing/fitting room"
+    RETAIL_FACILITIES_MALL_CONCOURSE:
+      Description: "Retail Facilities - Mall concourse"
+      Notes: ""
+      Display Text: "Retail Facilities - Mall concourse"
+    SPORTS_ARENA_PLAYING_AREA_CLASS_I_FACILITY:
+      Description: "Sports Arena — Playing Area - Class I facility"
+      Notes: ""
+      Display Text: "Sports Arena — Playing Area - Class I facility"
+    SPORTS_ARENA_PLAYING_AREA_CLASS_II_FACILITY:
+      Description: "Sports Arena — Playing Area - Class II facility"
+      Notes: ""
+      Display Text: "Sports Arena — Playing Area - Class II facility"
+    SPORTS_ARENA_PLAYING_AREA_CLASS_III_FACILITY:
+      Description: "Sports Arena — Playing Area - Class III facility"
+      Notes: ""
+      Display Text: "Sports Arena — Playing Area - Class III facility"
+    SPORTS_ARENA_PLAYING_AREA_CLASS_IV_FACILITY:
+      Description: "Sports Arena — Playing Area - Class IV facility"
+      Notes: ""
+      Display Text: "Sports Arena — Playing Area - Class IV facility"
+    TRANSPORTATION_FACILITY_BAGGAGE_CAROUSEL_AREA:
+      Description: "Transportation Facility - Baggage/carousel area"
+      Notes: ""
+      Display Text: "Transportation Facility - Baggage/carousel area"
+    TRANSPORTATION_FACILITY_AIRPORT_CONCOURSE:
+      Description: "Transportation Facility - Airport concourse"
+      Notes: ""
+      Display Text: "Transportation Facility - Airport concourse"
+    TRANSPORTATION_FACILITY_TICKET_COUNTER:
+      Description: "Transportation Facility - Ticket counter"
+      Notes: ""
+      Display Text: "Transportation Facility - Ticket counter"
+    WAREHOUSE_STORAGE_AREA_MEDIUM_TO_BULKY_PALLETIZED_ITEMS:
+      Description: "Warehouse — Storage Area - Medium to bulky, palletized items"
+      Notes: ""
+      Display Text: "Warehouse — Storage Area - Medium to bulky, palletized items"
+    WAREHOUSE_STORAGE_AREA_SMALLER_HAND_CARRIED_ITEMS:
+      Description: "Warehouse — Storage Area - Smaller, hand-carried items"
+      Notes: ""
+      Display Text: "Warehouse — Storage Area - Smaller, hand-carried items"
+
 
 Transformer:
   Object Type: "Data Group"
