@@ -75,6 +75,10 @@ ASHRAE229:
       Description: "Spaces in the building"
       Data Type: "[{Space}]"
       Notes: "Contains a list of spaces in the building."
+    schedules:
+      Description: "Schedules for internal loads, thermostats, equipment operation and control, and any other need."
+      Data Type: "[{Schedule}]"
+      Notes: "Contains a list of schedules used in model."
 
 Building:
   Object Type: "Data Group"
@@ -96,8 +100,6 @@ Building:
       Required: True
       Notes: ""
 
-
-    
 Space:
   Object Type: "Data Group"
   Data Elements:
@@ -761,8 +763,123 @@ TransformerPhase:
       Notes: ""
       Display Text: "Three Phase"
 
-
+Schedule:
+  Object Type: "Data Group"
+  Data Elements:
+    id:
+      Description: "Unique Identification Number"
+      Data Type: "Numeric"
+      Required: True
+      Notes: ""
+    name:
+      Description: "Name of the Schedule"
+      Data Type: "String"
+      Required: True
+      Notes: ""
+    type:
+      Description: "The type of schedule"
+      Data Type: "String"
+      Required: True
+      Notes: "Not an enumerations because we only care that the type assigned by BEM tool matches across RMR"
+    week_specifications:
+      Description: "Specification of weeks in annual schedule"
+      Data Type: "[{WeekSpecifications}]"
+      Notes: "Contains a list of week specficiations"
     
+WeekSpecifications:
+  Object Type: "Data Group"
+  Data Elements:
+    name:
+      Description: "Name of the Week Schedule"
+      Data Type: "{WeekSchedule}"
+      Required: True
+      Notes: ""
+    start_month:
+      Description: "start month of assigned weeks"
+      Data Type: "Numeric" 
+      Range: ">=1, <=12"
+      Required: True
+      Notes: ""
+    start_day:
+      Description: "start day of month of assigned weeks"
+      Data Type: "Numeric" 
+      Range: ">=1, <=31"
+      Required: True
+      Notes: ""
+    end_month:
+      Description: "end month of assigned weeks"
+      Data Type: "Numeric" 
+      Range: ">=1, <=12"
+      Required: True
+      Notes: ""
+    end_day:
+      Description: "end day of month of assigned weeks"
+      Data Type: "Numeric" 
+      Range: ">=1, <=31"
+      Required: True
+      Notes: ""
 
-
+WeekSchedule:
+  Object Type: "Data Group"
+  Data Elements:
+    id:
+      Description: "Unique Identification Number"
+      Data Type: "Numeric"
+      Required: True
+      Notes: ""
+    name:
+      Description: "Week Schedule Name"
+      Data Type: "{WeekSchedule}"
+      Required: True
+      Notes: ""
+    monday_day_schedule:
+      Description: "Monday Schedule Name"
+      Data Type: "{DaySchedule}"
+      Required: True
+      Notes: ""
+    tuesday_day_schedule:
+      Description: "Tuesday Schedule Name"
+      Data Type: "{DaySchedule}"
+      Required: True
+      Notes: ""
+    wednesday_day_schedule:
+      Description: "Wednesday Schedule Name"
+      Data Type: "{DaySchedule}"
+      Required: True
+      Notes: ""
+    thursday_day_schedule:
+      Description: "Thursday Schedule Name"
+      Data Type: "{DaySchedule}"
+      Required: True
+      Notes: ""
+    friday_day_schedule:
+      Description: "Friday Schedule Name"
+      Data Type: "{DaySchedule}"
+      Required: True
+      Notes: ""
+    saturday_day_schedule:
+      Description: "Saturday Schedule Name"
+      Data Type: "{DaySchedule}"
+      Required: True
+      Notes: ""
+    sunday_day_schedule:
+      Description: "Sunday Schedule Name"
+      Data Type: "{DaySchedule}"
+      Required: True
+      Notes: ""
+    holiday_day_schedule:
+      Description: "Holiday Schedule Name"
+      Data Type: "{DaySchedule}"
+      Required: True
+      Notes: ""
+    cooling_design_day_day_schedule:
+      Description: "Cooling design day Schedule Name"
+      Data Type: "{DaySchedule}"
+      Required: True
+      Notes: ""
+    heating_design_day_day_schedule:
+      Description: "Heating design day Schedule Name"
+      Data Type: "{DaySchedule}"
+      Required: True
+      Notes: ""
 
