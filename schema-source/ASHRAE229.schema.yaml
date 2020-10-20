@@ -79,6 +79,10 @@ ASHRAE229:
       Description: "Schedules for internal loads, thermostats, equipment operation and control, and any other need."
       Data Type: "[{Schedule}]"
       Notes: "Contains a list of schedules used in model."
+    schedules_alternative_01:
+      Description: "Alternative way of expressing schedules with only a few key values including a fingerprint-hash value"
+      Data Type: "[{ScheduleAlternative01}]"
+      Notes: "Contains a list of schedules used in model."
 
 Building:
   Object Type: "Data Group"
@@ -892,3 +896,78 @@ DaySchedule:
       Data Type: "[Numeric][1..24]"
       Required: True
       Notes: ""
+
+ScheduleAlternative01:
+  Object Type: "Data Group"
+  Data Elements:
+    id:
+      Description: "Unique Identification Number"
+      Data Type: "Numeric"
+      Required: True
+      Notes: ""
+    name:
+      Description: "Name of the Schedule"
+      Data Type: "String"
+      Required: True
+      Notes: ""
+    type:
+      Description: "The type of schedule"
+      Data Type: "String"
+      Required: True
+      Notes: "Not an enumerations because we only care that the type assigned by BEM tool matches across RMR"
+    hash_fingerprint:
+      Description: "A digital fingerprint or hash of all schedule values"
+      Data Type: "Integer"
+      Required: True
+      Notes: "The hash algorithm would need to result in significant different hash values when only minor changes are made to the schedule and is primarily to check for sameness"
+    equivalent_full_load_hours:    
+      Description: "Equivalent full load hours"
+      Data Type: "Numeric"
+      Required: True
+      Notes: "The sum of the schedule values for entire year"
+    average_value:
+      Description: "The average value of the schedule"
+      Data Type: "Numeric"
+      Required: True
+      Notes: "the average value of schedule for all hours in the schedule"
+    average_occupied_value:
+      Description: "The average value of the schedule during occupied hours"
+      Data Type: "Numeric"
+      Required: True
+      Notes: "The occupied and unoccupied time periods are defined elsewhere."
+    average_unoccupied_value:
+      Description: "The average value of the schedule during unoccupied hours"
+      Data Type: "Numeric"
+      Required: True
+      Notes: "The occupied and unoccupied time periods are defined elsewhere."
+    fraction_of_occupied_hours_nonzero:
+      Description: "Fraction of the occupied hours that are nonzero or 'on'"
+      Data Type: "Numeric"
+      Required: True
+      Notes: "The occupied and unoccupied time periods are defined elsewhere."
+    fraction_of_unoccupied_hours_nonzero:
+      Description: "Fraction of the unoccupied hours that are nonzero or 'on'"
+      Data Type: "Numeric"
+      Required: True
+      Notes: "The occupied and unoccupied time periods are defined elsewhere."
+    most_common_occupied_hour_value:
+      Description: "Most common value of schedule during occupied hours"
+      Data Type: "Numeric"
+      Required: True
+      Notes: "The occupied and unoccupied time periods are defined elsewhere."
+    most_common_unoccupied_hour_value:
+      Description: "Most common value of schedule during unoccupied hours"
+      Data Type: "Numeric"
+      Required: True
+      Notes: "The occupied and unoccupied time periods are defined elsewhere."
+    fraction_of_occupied_hours_at_most_common_value:
+      Description: "Fraction of the occupied hours that are at the most common value during occupied hours"
+      Data Type: "Numeric"
+      Required: True
+      Notes: "The occupied and unoccupied time periods are defined elsewhere."
+    fraction_of_unoccupied_hours_at_most_common_value:
+      Description: "Fraction of the unoccupied hours that are at the most common value during unoccupied hours"
+      Data Type: "Numeric"
+      Required: True
+      Notes: "The occupied and unoccupied time periods are defined elsewhere."
+    
