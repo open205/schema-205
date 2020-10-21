@@ -71,10 +71,6 @@ ASHRAE229:
       Description: "Buildings on the site"
       Data Type: "[{Building}]"
       Notes: "Contains a list of buildings on the site (often just one)."
-    spaces:
-      Description: "Spaces in the building"
-      Data Type: "[{Space}]"
-      Notes: "Contains a list of spaces in the building."
     schedules:
       Description: "Schedules for internal loads, thermostats, equipment operation and control, and any other need."
       Data Type: "[{Schedule}]"
@@ -103,6 +99,10 @@ Building:
       Range: ">=0"
       Required: True
       Notes: ""
+    spaces:
+      Description: "Spaces in the building"
+      Data Type: "[{Space}]"
+      Notes: "Contains a list of spaces in the building."
 
 Space:
   Object Type: "Data Group"

@@ -169,16 +169,16 @@
 |--------------------------|-------------------------------------------------------------------------------------------------------|---------------------------|-------|-------|-----|----------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | transformers             | Electrical transformers at the building site                                                          | [{Transformer}]           |       |       |     | Contains a list of transformers that convert electricity from a higher voltage to one used by the building, exterior lighting, and other services at the site. |
 | buildings                | Buildings on the site                                                                                 | [{Building}]              |       |       |     | Contains a list of buildings on the site (often just one).                                                                                                     |
-| spaces                   | Spaces in the building                                                                                | [{Space}]                 |       |       |     | Contains a list of spaces in the building.                                                                                                                     |
 | schedules                | Schedules for internal loads, thermostats, equipment operation and control, and any other need.       | [{Schedule}]              |       |       |     | Contains a list of schedules used in model.                                                                                                                    |
 | schedules_alternative_01 | Alternative way of expressing schedules with only a few key values including a fingerprint-hash value | [{ScheduleAlternative01}] |       |       |     | Contains a list of schedules used in model.                                                                                                                    |
 
 # Building
-| Data Element Name |         Description          | Data Type | Units | Range | Req | Notes |
-|-------------------|------------------------------|-----------|-------|-------|-----|-------|
-| id                | Unique Identification Number | Numeric   |       |       | ✓   |       |
-| name              | Name of the Building         | String    |       |       | ✓   |       |
-| number_of_floors  | Number of floors             | Numeric   |       | >=0   | ✓   |       |
+| Data Element Name |         Description          | Data Type | Units | Range | Req |                   Notes                    |
+|-------------------|------------------------------|-----------|-------|-------|-----|--------------------------------------------|
+| id                | Unique Identification Number | Numeric   |       |       | ✓   |                                            |
+| name              | Name of the Building         | String    |       |       | ✓   |                                            |
+| number_of_floors  | Number of floors             | Numeric   |       | >=0   | ✓   |                                            |
+| spaces            | Spaces in the building       | [{Space}] |       |       |     | Contains a list of spaces in the building. |
 
 # Space
 | Data Element Name |                                                                                                                                                                                                                           Description                                                                                                                                                                                                                           |     Data Type      | Units | Range | Req | Notes |
