@@ -100,6 +100,24 @@ class Element_serialization(Implementation_entry):
 
 
 # -------------------------------------------------------------------------------------------------
+class Top_element_serialization(Implementation_entry):
+
+    def __init__(self, name, parent=None):
+        super().__init__(name, parent)
+        self._func = [
+            f'try {{ j.at("{name}").get_to({name}); }}'+'\n',
+            'catch (nlohmann::json::out_of_range & ex) { A205_json_catch(ex); }\n']
+
+    # .............................................................................................
+    @property
+    def value(self):
+        entry = ''
+        for f in self._func:
+            entry += self.level*'\t' + f
+        return entry
+
+
+# -------------------------------------------------------------------------------------------------
 class CPP_translator:
 
     def __init__(self):
@@ -145,15 +163,18 @@ class CPP_translator:
                 s = Struct_serialization(entry._name, self._namespace)
                 for e in [c for c in entry.child_entries if isinstance(c, Data_element)]:
                     Element_serialization(e._name, s)
+            # Note:
+            # This is a pretty specific pairing - one can't guarantee that member function overrides 
+            # will always contain "top-element serializations":
             elif isinstance(entry, Member_function_override):
                 m = Member_function_serialization(entry.parent._name, self._namespace)
                 for e in [c for c in entry.parent.child_entries if isinstance(c, Data_element)]:
-                    Element_serialization(e._name, m)
+                    Top_element_serialization(e._name, m)
             else:
                 self._get_items_to_serialize(entry)
 
     # .............................................................................................
     def _add_included_headers(self, main_header):
         self._preamble.clear()
-        self._preamble.append(f'#include "{main_header}.h"\n')
+        self._preamble.append(f'#include <{main_header}.h>\n')
         #self._preamble.append('#include <string>\n#include <vector>\n')

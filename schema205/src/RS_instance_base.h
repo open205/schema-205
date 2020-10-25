@@ -18,7 +18,7 @@ public:
     RS_instance_base(RS_instance_base&&) = delete;
     RS_instance_base& operator=(RS_instance_base&&) = delete;
 
-    virtual void Initialize(const nlohmann::json& j) { }
+    virtual void Initialize(const nlohmann::json& j) =0;
 };
 
 #endif

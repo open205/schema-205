@@ -284,7 +284,8 @@ class Data_element(Header_entry):
                 #     simple_type = internal_type #key + '::' + internal_type
                 if nested_type:
                     # e.g. 'ASHRAE205' from the composite 'ASHRAE205(RS_ID=RSXXXX)'
-                    simple_type = f'std::shared_ptr<{internal_type}>'
+                    #simple_type = f'std::shared_ptr<{internal_type}>'
+                    simple_type = f'{internal_type}'
                 return simple_type
 
         try:
@@ -431,6 +432,13 @@ class H_translator:
             elif self._contents[base_level_tag].get('Object Type') == 'Performance Map':
                 s = Struct(base_level_tag, self._namespace, superclass='performance_map_base')
                 self._add_member_headers(s)
+                self._add_function_overrides(s, 'performance_map_base')
+            elif self._contents[base_level_tag].get('Object Type') == 'Grid Variables':
+                s = Struct(base_level_tag, self._namespace, superclass='grid_variables_base')
+                self._add_function_overrides(s, 'grid_variables_base')
+            elif self._contents[base_level_tag].get('Object Type') == 'Lookup Variables':
+                s = Struct(base_level_tag, self._namespace, superclass='lookup_variables_base')
+                self._add_function_overrides(s, 'lookup_variables_base')
             else:
                 s = Struct(base_level_tag, self._namespace)
             for data_element in self._contents[base_level_tag]['Data Elements']:
@@ -449,9 +457,10 @@ class H_translator:
             Enum_serialization(base_level_tag, 
                                self._namespace, 
                                self._contents[base_level_tag]['Enumerators'])
-        for base_level_tag in (
-            [tag for tag in self._contents if self._contents[tag].get('Object Type') in self._data_group_types]):
-            Object_serialization(base_level_tag, self._namespace)
+        if self._is_top_container:
+            for base_level_tag in ([tag for tag in self._contents 
+                if self._contents[tag].get('Object Type') in self._data_group_types]):
+                    Object_serialization(base_level_tag, self._namespace)
 
     # .............................................................................................
     def _add_include_guard(self, header_name):
@@ -466,25 +475,25 @@ class H_translator:
         if ref_list and not self._is_top_container:
             includes = ''
             for r in ref_list:
-                includes += f'#include "{r}.h"'
+                includes += f'#include <{r}.h>'
                 includes += '\n'
             self._preamble.append(includes)
-        self._preamble.append('#include <string>\n#include <vector>\n')
+        self._preamble.append('#include <string>\n#include <vector>\n#include <nlohmann/json.hpp>\n')
 
     # .............................................................................................
     def _add_member_headers(self, data_element):
         if 'shared_ptr' in data_element._type:
             m = re.search(r'\<(.*)\>', data_element._type)
             if m:
-                include = f'#include "{m.group(1)}.h"\n'
+                include = f'#include <{m.group(1)}.h>\n'
                 if include not in self._preamble:
-                    self._preamble.append(f'#include "{m.group(1)}.h"\n')
+                    self._preamble.append(f'#include <{m.group(1)}.h>\n')
         if data_element._initlist:
             l = data_element._initlist.split()
             if l:
-                include = f'#include "{l[-1]}.h"\n'
+                include = f'#include <{l[-1]}.h>\n'
                 if include not in self._preamble:
-                    self._preamble.append(f'#include "{l[-1]}.h"\n')
+                    self._preamble.append(f'#include <{l[-1]}.h>\n')
 
     # .............................................................................................
     def _load_meta_info(self, schema_section):
@@ -524,7 +533,7 @@ class H_translator:
     # .............................................................................................
     def _add_function_overrides(self, parent_node, base_class_name):
         '''Get base class virtual functions to be overridden.'''
-        base_class = os.path.join('.', 'src', f'{base_class_name}.h')
+        base_class = os.path.join(os.path.dirname(__file__), 'src', f'{base_class_name}.h')
         with open(base_class) as b:
             for line in b:
                 if base_class_name not in line:
