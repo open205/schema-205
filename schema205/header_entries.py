@@ -15,6 +15,7 @@ class Header_entry:
         self._parent_entry = parent
         self._child_entries = list() # of Header_entry(s)
         self._value = None
+        self._superclass = None
 
         if parent:
             self._lineage = parent._lineage + [name]
@@ -173,6 +174,7 @@ class Struct(Header_entry):
         self._access_specifier = 'public:'
         self._closure = '};'
         if superclass:
+            self._superclass = superclass
             self._initlist = f' : public {superclass}'
 
 
@@ -197,18 +199,6 @@ class Union(Header_entry):
 
 
 # -------------------------------------------------------------------------------------------------
-class Object_serialization(Header_entry):
-
-    def __init__(self, name, parent):
-        super().__init__(name, parent)
-
-    # .............................................................................................
-    @property
-    def value(self):
-        return self.level*'\t' + f"void from_json(const nlohmann::json& j, {self._name}& x);" 
-
-
-# -------------------------------------------------------------------------------------------------
 class Data_element(Header_entry):
 
     def __init__(self, name, parent, element, data_types, references):
@@ -217,6 +207,7 @@ class Data_element(Header_entry):
         self._datatypes = data_types
         self._refs = references
         self._has_nested = False
+        self._selector = dict()
 
         self._create_type_entry(element)
 
@@ -240,8 +231,17 @@ class Data_element(Header_entry):
                 #     self._get_simple_minmax(parent_dict['Range'])
             else:
                 # If the type is oneOf a set
-                m = re.findall(r'^\((.*)\)', parent_dict['Data Type'])
+                m = re.match(r'\((.*)\)', parent_dict['Data Type'])
                 if m:
+                    # Choices can only be mapped to enums, so store the mapping for future use
+                    oneof_selection_key = parent_dict['Selector'].split('(')[0]
+                    types = [self._get_simple_type(t.strip()) for t in m.group(1).split(',')]
+                    m_opt = re.match(r'.*\((.*)\)', parent_dict['Selector'])
+                    if not m_opt:
+                        raise TypeError
+                    selectors = [s.strip() for s in m_opt.group(1).split(',')]
+
+                    self._selector[oneof_selection_key] = dict(zip(selectors, types))
                     self._type = f'std::shared_ptr<{self._name}_base>'
                 else:
                     # 1. 'type' entry
@@ -322,15 +322,42 @@ class Data_element(Header_entry):
                     pass
 
 # -------------------------------------------------------------------------------------------------
-class Member_function_override(Header_entry):
+class Functional_header_entry(Header_entry):
 
-    def __init__(self, name, parent):
+    def __init__(self, f_ret, f_name, f_args, name, parent):
         super().__init__(name, parent)
+        self._fname = f_name
+        self._ret_type = f_ret
+        self._args = f_args
+        self._lend = ';'
 
     # .............................................................................................
     @property
     def value(self):
-        return self.level*'\t' + self._name + ' override;'
+        return self.level*'\t' + ' '.join([self._ret_type, self._fname, self._args]) + self._lend
+
+# -------------------------------------------------------------------------------------------------
+class Member_function_override(Functional_header_entry):
+
+    def __init__(self, f_ret, f_name, f_args, name, parent):
+        super().__init__(f_ret, f_name, f_args, name, parent)
+        self._lend = ' override;'
+
+# -------------------------------------------------------------------------------------------------
+class Object_serialization(Functional_header_entry):
+
+    def __init__(self, name, parent):
+        super().__init__('void', 
+                         'from_json', 
+                         f'(const nlohmann::json& j, {name}& x)', 
+                         name, 
+                         parent)
+
+# -------------------------------------------------------------------------------------------------
+class Initialize_function(Functional_header_entry):
+
+    def __init__(self, name, parent):
+        super().__init__('void', 'Initialize', '(const nlohmann::json& j)', name, parent)
 
 # -------------------------------------------------------------------------------------------------
 class H_translator:
@@ -426,21 +453,30 @@ class H_translator:
         # Collect member objects and their children
         for base_level_tag in (
             [tag for tag in self._contents if self._contents[tag].get('Object Type') in self._data_group_types]):
-            if base_level_tag == self._schema_name and not self._is_top_container:
-                s = Struct(base_level_tag, self._namespace, superclass=schema_base_class_name)
-                self._add_function_overrides(s, schema_base_class_name)
+            if base_level_tag == self._schema_name:
+                if not self._is_top_container:
+                    s = Struct(base_level_tag, self._namespace, superclass=schema_base_class_name)
+                    self._add_function_overrides(s, schema_base_class_name)
+                else: 
+                    s = Struct(base_level_tag, self._namespace)
+                    # Manual insertion of Initialize function into top_container, since it 
+                    # doesn't have a virtual parent
+                    Initialize_function(base_level_tag, s)
             elif self._contents[base_level_tag].get('Object Type') == 'Performance Map':
                 s = Struct(base_level_tag, self._namespace, superclass='performance_map_base')
                 self._add_member_headers(s)
                 self._add_function_overrides(s, 'performance_map_base')
             elif self._contents[base_level_tag].get('Object Type') == 'Grid Variables':
                 s = Struct(base_level_tag, self._namespace, superclass='grid_variables_base')
+                self._add_member_headers(s)
                 self._add_function_overrides(s, 'grid_variables_base')
             elif self._contents[base_level_tag].get('Object Type') == 'Lookup Variables':
                 s = Struct(base_level_tag, self._namespace, superclass='lookup_variables_base')
+                self._add_member_headers(s)
                 self._add_function_overrides(s, 'lookup_variables_base')
             else:
                 s = Struct(base_level_tag, self._namespace)
+            
             for data_element in self._contents[base_level_tag]['Data Elements']:
                 d = Data_element(data_element, 
                                     s, 
@@ -460,6 +496,8 @@ class H_translator:
         if self._is_top_container:
             for base_level_tag in ([tag for tag in self._contents 
                 if self._contents[tag].get('Object Type') in self._data_group_types]):
+                    # from_json declarations are necessary in top container, as the header-declared
+                    # objects might be included and used from elsewhere.
                     Object_serialization(base_level_tag, self._namespace)
 
     # .............................................................................................
@@ -537,6 +575,9 @@ class H_translator:
         with open(base_class) as b:
             for line in b:
                 if base_class_name not in line:
-                    m = re.match(r'\s*virtual\s(.*)\)', line)
+                    m = re.match(r'\s*virtual\s(.*)\s(.*)\((.*)\)', line)
                     if m:
-                        Member_function_override(m.group(1) + ")", parent_node)
+                        f_ret_type = m.group(1)
+                        f_name = m.group(2)
+                        f_args = f'({m.group(3)})'
+                        Member_function_override(f_ret_type, f_name, f_args, '', parent_node)

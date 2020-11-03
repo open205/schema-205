@@ -2,6 +2,9 @@ from schema205.header_entries import Header_entry
 from schema205.header_entries import Data_element
 from schema205.header_entries import Struct
 from schema205.header_entries import Member_function_override
+from schema205.header_entries import Initialize_function
+from schema205.header_entries import Object_serialization
+from collections import defaultdict
 
 # -------------------------------------------------------------------------------------------------
 class Implementation_entry:
@@ -50,11 +53,27 @@ class Implementation_entry:
         return entry
 
 # -------------------------------------------------------------------------------------------------
-class Member_function_serialization(Implementation_entry):
+class Free_function_definition(Implementation_entry):
 
-    def __init__(self, name, parent=None):
-        super().__init__(name, parent)
-        self._func = f'void {name}::Initialize(const nlohmann::json& j)'
+    def __init__(self, header_entry, parent=None):
+        super().__init__(None, parent)
+        self._func = f'void {header_entry._fname}{header_entry._args}'
+
+    # .............................................................................................
+    @property
+    def value(self):
+        entry = self.level*'\t' + self._func + ' ' + self._opener + '\n'
+        for c in self._child_entries:
+            entry += (c.value )
+        entry += (self.level*'\t' + self._closure)
+        return entry
+                  
+# -------------------------------------------------------------------------------------------------
+class Member_function_definition(Implementation_entry):
+
+    def __init__(self, header_entry, parent=None):
+        super().__init__(None, parent)
+        self._func = f'void {header_entry.parent._name}::{header_entry._fname}{header_entry._args}'
 
     # .............................................................................................
     @property
@@ -84,11 +103,91 @@ class Struct_serialization(Implementation_entry):
 # -------------------------------------------------------------------------------------------------
 class Element_serialization(Implementation_entry):
 
-    def __init__(self, name, parent=None):
+    def __init__(self, name, parent):
         super().__init__(name, parent)
         self._func = [
-            f'try {{ j.at("{name}").get_to(x.{name}); }}'+'\n',
-            'catch (nlohmann::json::out_of_range & ex) { A205_json_catch(ex); }\n']
+            f'try {{ j.at("{name}").get_to({name}); }}',
+            'catch (nlohmann::json::out_of_range & ex) { A205_json_catch(ex); }']
+
+    # .............................................................................................
+    @property
+    def value(self):
+        entry = ''
+        for f in self._func:
+            entry += self.level*'\t' + f + '\n'
+        return entry
+
+# -------------------------------------------------------------------------------------------------
+class Owned_element_serialization(Element_serialization):
+
+    def __init__(self, name, parent):
+        super().__init__(name, parent)
+        self._func[0] = f'try {{ j.at("{name}").get_to(x.{name}); }}'
+
+# -------------------------------------------------------------------------------------------------
+class Owned_element_creation(Element_serialization):
+
+    def __init__(self, name, parent, selector_dict):
+        super().__init__(name, parent)
+        self._func = []
+        type_sel = list(selector_dict.keys())[0]
+        for enum in selector_dict[type_sel]:
+            self._func += [f'if (x.{type_sel} == {enum}) {{',
+                           f'\tx.{name} = std::make_shared<{selector_dict[type_sel][enum]}>();',
+                           f'\tif (x.{name}) {{',
+                           f'\t\tx.{name}->Initialize(j.at("{name}"));',
+                           '\t}',
+                           '}']
+
+# -------------------------------------------------------------------------------------------------
+class Class_factory_creation(Element_serialization):
+
+    def __init__(self, name, parent, selector_dict):
+        super().__init__(name, parent)
+        self._func = []
+        type_sel = list(selector_dict.keys())[0]
+        for enum in selector_dict[type_sel]:
+            self._func += [f'if ({type_sel} == {enum}) {{',
+                           f'\t{name} = {name}_factory::Create("{selector_dict[type_sel][enum]}");',
+                           f'\tif ({name}) {{',
+                           f'\t\t{name}->Initialize(j.at("{name}"));',
+                           '\t}',
+                           '}']
+
+# -------------------------------------------------------------------------------------------------
+class Serialize_from_init_func(Element_serialization):
+
+    def __init__(self, name, parent):
+        super().__init__(name, parent)
+        self._func = 'x.Initialize(j);\n'
+
+    # .............................................................................................
+    @property
+    def value(self):
+        return self.level*'\t' + self._func
+
+# -------------------------------------------------------------------------------------------------
+class Performance_map_impl(Element_serialization):
+
+    def __init__(self, name, parent, populates_self=False):
+        super().__init__(name, parent)
+        if populates_self:
+            self._func = f'{name}.Populate_performance_map(this);\n'
+        else:
+            self._func = f'x.{name}.Populate_performance_map(&x);\n'
+
+    # .............................................................................................
+    @property
+    def value(self):
+        return self.level*'\t' + self._func
+
+# -------------------------------------------------------------------------------------------------
+class Grid_axis_impl(Implementation_entry):
+
+    def __init__(self, name, parent):
+        super().__init__(name, parent)
+        self._func = [
+            f'Add_grid_axis(performance_map, {name});\n']
 
     # .............................................................................................
     @property
@@ -100,13 +199,12 @@ class Element_serialization(Implementation_entry):
 
 
 # -------------------------------------------------------------------------------------------------
-class Top_element_serialization(Implementation_entry):
+class Data_table_impl(Implementation_entry):
 
-    def __init__(self, name, parent=None):
+    def __init__(self, name, parent):
         super().__init__(name, parent)
         self._func = [
-            f'try {{ j.at("{name}").get_to({name}); }}'+'\n',
-            'catch (nlohmann::json::out_of_range & ex) { A205_json_catch(ex); }\n']
+            f'Add_data_table(performance_map, {name});\n']
 
     # .............................................................................................
     @property
@@ -122,6 +220,11 @@ class CPP_translator:
 
     def __init__(self):
         self._preamble = list()
+        # defaultdict takes care of the factory base class
+        self._implementations = defaultdict(lambda: Element_serialization)
+        self._implementations['grid_variables_base'] = Grid_axis_impl
+        self._implementations['lookup_variables_base'] = Data_table_impl
+        self._implementations['performance_map_base'] = Element_serialization
 
     # .............................................................................................
     def __str__(self):
@@ -159,17 +262,40 @@ class CPP_translator:
     # .............................................................................................
     def _get_items_to_serialize(self, header_tree):
         for entry in header_tree.child_entries:
-            if isinstance(entry, Struct) and not any(isinstance(obj, Member_function_override) for obj in entry.child_entries):
+            # Shortcut to avoid creating "from_json" entries for the main class, but create them
+            # for all other classes. The main class relies on an "Initialize" function instead,
+            # dealt-with in the next block with function overrides.
+            if isinstance(entry, Struct) and entry._name not in self._namespace._name:
+                # Create the "from_json" function definition (header)
                 s = Struct_serialization(entry._name, self._namespace)
                 for e in [c for c in entry.child_entries if isinstance(c, Data_element)]:
-                    Element_serialization(e._name, s)
-            # Note:
-            # This is a pretty specific pairing - one can't guarantee that member function overrides 
-            # will always contain "top-element serializations":
-            elif isinstance(entry, Member_function_override):
-                m = Member_function_serialization(entry.parent._name, self._namespace)
+                    # In function body, create each "get_to" for individual data elements
+                    if 'shared_ptr' in e._type:
+                        Owned_element_creation(e._name, s, e._selector)
+                    else:
+                        Owned_element_serialization(e._name, s)
+                    # In the special case of a performance_map subclass, add calls to its 
+                    # members' Populate_performance_map functions
+                    if entry._superclass == 'performance_map_base':
+                        Performance_map_impl(e._name, s)
+            # Initialize and Populate overrides
+            if isinstance(entry, Member_function_override) or isinstance(entry, Initialize_function):
+                # Create the override function definition (header) using the declaration's signature
+                m = Member_function_definition(entry, self._namespace)
+                # In function body, choose element-wise ops based on the superclass
                 for e in [c for c in entry.parent.child_entries if isinstance(c, Data_element)]:
-                    Top_element_serialization(e._name, m)
+                    if 'shared_ptr' in e._type:
+                        Class_factory_creation(e._name, m, e._selector)
+                        self._preamble.append(f'#include <{e._name}_factory.h>')
+                    else:
+                        self._implementations[entry.parent._superclass](e._name, m)
+                    if entry.parent._superclass == 'performance_map_base':
+                        Performance_map_impl(e._name, m, populates_self=True)
+            # Lastly, handle the special case of objects that need both serialization 
+            # and initialization (currently a bit of a hack specific to this project)
+            if isinstance(entry, Object_serialization) and entry._name in self._namespace._name:
+                s = Free_function_definition(entry, self._namespace)
+                Serialize_from_init_func('', s)
             else:
                 self._get_items_to_serialize(entry)
 
@@ -177,4 +303,3 @@ class CPP_translator:
     def _add_included_headers(self, main_header):
         self._preamble.clear()
         self._preamble.append(f'#include <{main_header}.h>\n')
-        #self._preamble.append('#include <string>\n#include <vector>\n')

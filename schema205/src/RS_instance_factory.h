@@ -15,7 +15,7 @@ public: // Interface
    static bool Register_factory(std::string const &RS_ID,
                                 std::shared_ptr<RS_instance_factory> factory);
 
-   static std::unique_ptr<RS_instance_base> Create_RS(std::string const &RS_ID);
+   static std::unique_ptr<RS_instance_base> Create(std::string const &RS_ID);
 
    virtual std::unique_ptr<RS_instance_base> Create() const = 0;
 

@@ -18,7 +18,7 @@ public:
     lookup_variables_base(const lookup_variables_base& other) = default;
     lookup_variables_base& operator=(const lookup_variables_base& other) = default;
 
-    virtual void Populate_performance_map(const performance_map_base* performance_map);
+    virtual void Populate_performance_map(const performance_map_base* performance_map) = 0;
 
     inline void Add_data_table(const performance_map_base* performance_map, std::vector<double>& table)
     {
