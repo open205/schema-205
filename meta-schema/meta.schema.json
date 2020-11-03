@@ -215,6 +215,9 @@
         },
         "Notes": {
           "type": "string"
+        },
+        "Selector": {
+          "type": "string"
         }
       }
     },

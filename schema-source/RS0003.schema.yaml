@@ -199,6 +199,7 @@ Performance:
       Description: "Data group describing fan performance when operating"
       Data Type: "({PerformanceMapContinuous}, {PerformanceMapDiscrete})"
       Notes: "The performance map data group should reflect the type and operation of the fan.\n\nPerformanceMapContinuous describes fan performance in terms of air flow, static pressure, impeller speed, and fan electrical or shaft power.\n\nPerformanceMapDiscrete describes fan performance in terms of speed setting, static pressure, air flow, and power."
+      Selector: "performance_map_type(PerformanceMapType::CONTINUOUS, PerformanceMapType::DISCRETE)"
       Required: True
 
 SystemCurve:
