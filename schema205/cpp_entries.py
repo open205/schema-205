@@ -1,9 +1,9 @@
-from schema205.header_entries import Header_entry
-from schema205.header_entries import Data_element
-from schema205.header_entries import Struct
-from schema205.header_entries import Member_function_override
-from schema205.header_entries import Initialize_function
-from schema205.header_entries import Object_serialization
+from schema205.header_entries import (Header_entry, 
+                                      Struct, 
+                                      Data_element, 
+                                      Member_function_override, 
+                                      Initialize_function, 
+                                      Object_serialization)
 from collections import defaultdict
 
 # -------------------------------------------------------------------------------------------------
@@ -286,7 +286,7 @@ class CPP_translator:
                 for e in [c for c in entry.parent.child_entries if isinstance(c, Data_element)]:
                     if 'shared_ptr' in e._type:
                         Class_factory_creation(e._name, m, e._selector)
-                        self._preamble.append(f'#include <{e._name}_factory.h>')
+                        self._preamble.append(f'#include <{e._name}_factory.h>\n')
                     else:
                         self._implementations[entry.parent._superclass](e._name, m)
                     if entry.parent._superclass == 'performance_map_base':
