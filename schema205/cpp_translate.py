@@ -9,6 +9,10 @@ def translate_to_header(input_file_path, output_file_root, base_class='foo_base'
     h.translate(input_file_path, base_class, container)
     dump(str(h), output_file_root + '.h')
 
+# -------------------------------------------------------------------------------------------------
+def translate_to_source(input_file_path, output_file_root, base_class='foo_base', container=''):
+    h = H_translator()
+    h.translate(input_file_path, base_class, container)
     c = CPP_translator()
     c.translate(container, h)
     dump(str(c), output_file_root + '.cpp')
@@ -22,10 +26,16 @@ def translate_all_to_headers(input_dir_path, output_dir_path, base_class='foo_ba
             h.translate(os.path.join(input_dir_path, file_name), base_class, container)
             dump(str(h), os.path.join(output_dir_path, file_name_root + '.h'))
 
+# -------------------------------------------------------------------------------------------------
+def translate_all_to_source(input_dir_path, output_dir_path, base_class='foo_base', container=''):
+    h = H_translator()
+    for file_name in sorted(os.listdir(input_dir_path)):
+        if '.schema.yaml' in file_name:
+            file_name_root = os.path.splitext(os.path.splitext(file_name)[0])[0]
+            h.translate(os.path.join(input_dir_path, file_name), base_class, container)
             c = CPP_translator()
             c.translate(container, h)
             dump(str(c), os.path.join(output_dir_path, file_name_root + '.cpp'))
-
 
 # -------------------------------------------------------------------------------------------------
 if __name__ == '__main__':

@@ -9,7 +9,8 @@ BUILD_PATH = "build"
 SOURCE_PATH = 'schema-source'
 DOCS_PATH = os.path.join(BUILD_PATH,"docs")
 SCHEMA_PATH = os.path.join(BUILD_PATH,"schema")
-CPP_PATH = os.path.join(BUILD_PATH, "cpp")
+HEADER_PATH = os.path.join("..", "libtk205", "src", BUILD_PATH, "cpp")
+CPP_PATH = os.path.join("..", "libtk205", "src", BUILD_PATH, "cpp")
 
 def collect_source_files():
   file_list = []
@@ -34,7 +35,7 @@ def task_validate():
   }
 
 def task_doc():
-  '''Generates Markdown tables from common-scema'''
+  '''Generates Markdown tables from common-schema'''
   return {
     'file_dep': collect_source_files(),
     'targets': collect_target_files(DOCS_PATH,'md'),
@@ -47,7 +48,7 @@ def task_doc():
   }
 
 def task_schema():
-  '''Generates JSON schema from common-scema'''
+  '''Generates JSON schema from common-schema'''
   return {
     'file_dep': collect_source_files(),
     'targets': collect_target_files(SCHEMA_PATH,'json'),
@@ -59,15 +60,28 @@ def task_schema():
     'clean': True
   }
 
-def task_cpp():
-  '''Generates CPP header files from common-scema'''
+def task_headers():
+  '''Generates CPP header files from common-schema'''
   return {
     'file_dep': collect_source_files(),
-    'targets': collect_target_files(CPP_PATH,'h'),
+    'targets': collect_target_files(HEADER_PATH,'h'),
+    'task_dep': ['validate'],
+    'actions': [
+      (create_folder, [HEADER_PATH]),
+      (schema205.cpp_translate.translate_all_to_headers,[SOURCE_PATH, HEADER_PATH, "RS_instance_base", "ASHRAE205"])
+      ],
+    'clean': True
+  }
+
+def task_cpp():
+  '''Generates CPP source files from common-schema'''
+  return {
+    'file_dep': collect_source_files(),
+    'targets': collect_target_files(CPP_PATH,'cpp'),
     'task_dep': ['validate'],
     'actions': [
       (create_folder, [CPP_PATH]),
-      (schema205.cpp_translate.translate_all_to_headers,[SOURCE_PATH, CPP_PATH, "RS_instance_base", "ASHRAE205"])
+      (schema205.cpp_translate.translate_all_to_source,[SOURCE_PATH, CPP_PATH, "RS_instance_base", "ASHRAE205"])
       ],
     'clean': True
   }
