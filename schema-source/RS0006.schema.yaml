@@ -12,15 +12,15 @@ CoolingMethod:
     PASSIVE_COOLED:
       Description: "Drive is cooled using natural air convection within the surrounding environment"
       Display Text: "Passive Cooled"
-      Notes: "All drive efficiency losses are assumed to be added as heat to the surrounding environment."
+      Notes: "All drive efficiency losses are assumed to be added as heat to the surrounding environment"
     ACTIVE_AIR_COOLED:
       Description: "Drive is cooled using forced air convection within the surrounding environment"
       Display Text: "Active Air Cooled"
-      Notes: "Electrical power required for the active cooling system shall be included in the efficiency of the drive. All drive efficiency losses are assumed to be added as heat to the surrounding environment."
+      Notes: "Electrical power required for the active cooling system shall be included in the efficiency of the drive. All drive efficiency losses are assumed to be added as heat to the surrounding environment"
     ACTIVE_LIQUID_COOLED:
       Description: "Drive is cooled using forced liquid convection, transferring heat to the liquid"
       Display Text: "Active Liquid Cooled"
-      Notes: "Any liquid pumping power shall be modeled external to the drive by the application software. All drive efficiency losses are assumed to be added as heat to the liquid stream."
+      Notes: "Any liquid pumping power shall be modeled external to the drive by the *application software*. All drive efficiency losses are assumed to be added as heat to the liquid stream"
 
 # Data Groups
 RS0006:
@@ -45,14 +45,12 @@ ProductInformation:
   Object Type: "Data Group"
   Data Elements:
       manufacturer:
-        Description: "Name of the manufacturer"
+        Description: "Manufacturer name"
         Data Type: "String"
-        Required: True
       model_number:
         Description: "Model number"
         Data Type: "Pattern"
         Notes: "Pattern shall match all model numbers that can be represented by the *representation*"
-        Required: True
 
 Performance:
   Object Type: "Data Group"
@@ -71,7 +69,7 @@ Performance:
       Required: True
     cooling_method:
       Description: "Method used to cool the drive"
-      Data Type: "{CoolingMethod}"
+      Data Type: "<CoolingMethod>"
       Required: True
     performance_map:
       Description: "Data group describing drive performance when operating"
