@@ -8,7 +8,7 @@ def get_representation_node_and_rs_selections(representation, lineage):
     node = representation
     for name in lineage:
         if name == 'RS_instance':
-            rs = node['RS_ID']
+            rs = node['rs_id']
             selections.append(get_rs_index(rs))
         else:
             selections.append(None)

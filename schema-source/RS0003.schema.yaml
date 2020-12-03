@@ -185,7 +185,7 @@ Performance:
     motor_representation:
       Description: "The corresponding Standard 205 motor representation"
       Notes: "If the fan is packaged with a motor, a motor representation shall be provided"
-      Data Type: "{ASHRAE205(RS_ID=RS0005)}"
+      Data Type: "{ASHRAE205(rs_id=RS0005)}"
     performance_map:
       Description: "Data group describing fan performance when operating"
       Data Type: "({PerformanceMapContinuous}, {PerformanceMapDiscrete})"

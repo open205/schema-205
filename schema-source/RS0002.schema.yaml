@@ -179,7 +179,7 @@ Performance:
       Required: True
     fan_representation:
       Description: "The corresponding Standard 205 fan assembly representation"
-      Data Type: "{ASHRAE205(RS_ID=RS0003)}"
+      Data Type: "{ASHRAE205(rs_id=RS0003)}"
       Notes: "Required if the fan is packaged with the unitary equipment"
     fan_position:
       Description: "Position of the fan relative to the indoor coil"
@@ -187,4 +187,4 @@ Performance:
       Required: True
     dx_system_representation:
       Description: "The corresponding Standard 205 direct expansion coil system representation"
-      Data Type: "{ASHRAE205(RS_ID=RS0004)}"
+      Data Type: "{ASHRAE205(rs_id=RS0004)}"

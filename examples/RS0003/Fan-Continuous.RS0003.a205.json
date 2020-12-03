@@ -1,7 +1,7 @@
 {
     "standard_version": "PPR2",
     "schema_version": "0.1.0",
-    "RS_ID": "RS0003",
+    "rs_id": "RS0003",
     "description": "Continuous Fan",
     "ID": "123e4567-e89b-12d3-a456-426614174000",
     "data_timestamp": "2020-05-11T00:00Z",

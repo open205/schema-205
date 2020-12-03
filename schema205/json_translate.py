@@ -164,7 +164,7 @@ class DataGroup:
             # is a simple definition or enumeration.
             m_nested = re.match(r'.*?\((.*)\)', m.group(2))
             if m_nested:
-                # Rare case of a nested specification e.g. 'ASHRAE205(RS_ID=RS0005)'
+                # Rare case of a nested specification e.g. 'ASHRAE205(rs_id=RS0005)'
                 internal_type = m.group(2).split('(')[0]
                 nested_type = m_nested.group(1)
             else:
@@ -177,8 +177,8 @@ class DataGroup:
                 internal_type = key + '.schema.json#/definitions/' + internal_type
                 target_dict_to_append['$ref'] = internal_type
                 if nested_type:
-                    # Always in the form 'RS_ID=RSXXXX'
-                    target_dict_to_append['RS_ID'] = nested_type.split('=')[1]
+                    # Always in the form 'rs_id=RSXXXX'
+                    target_dict_to_append['rs_id'] = nested_type.split('=')[1]
                 return
 
         try:

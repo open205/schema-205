@@ -66,7 +66,7 @@ Performance:
       Required: True
     drive_representation:
       Description: "The corresponding Standard 205 drive representation"
-      Data Type: "{ASHRAE205(RS_ID=RS0006)}"
+      Data Type: "{ASHRAE205(rs_id=RS0006)}"
     performance_map:
       Description: "Data group describing motor performance when operating"
       Data Type: "{PerformanceMap}"
