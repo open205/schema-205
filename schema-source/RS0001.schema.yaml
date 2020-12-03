@@ -11,42 +11,33 @@ Schema:
   Description: "Schema for ASHRAE 205 annex RS0001: Liquid-Cooled Chiller"
 
 # Local Enumerations
-SpeedControlType:
+AHRI550950TestStandardYear:
   Object Type: "Enumeration"
   Enumerators:
-    CONSTANT_SPEED:
-      Description: "Compressor without speed control."
-      Display Text: "Constant Speed"
-    VARIABLE_SPEED:
-      Description: "Compressor with speed control."
-      Display Text: "Variable Speed"
-
-StandardRatingVersion:
-  Object Type: "Enumeration"
-  Enumerators:
-    AHRI_550_590_2015:
-      Description: "Ratings and design points defined using IP unit version of the standard, 2015 edition."
-      Notes: "Published 2015, effective 2016-Apr-01."
+    IP_2015:
+      Description: "Ratings and design points defined using IP unit version of the standard, 2015 edition"
       Display Text: "AHRI 550/590 2015"
-    AHRI_551_591_2015:
-      Description: "Ratings and design points defined using SI unit version of the standard, 2015 edition."
-      Notes: "Published 2015, effective 2016-Apr-01."
-      Display Text: "AHRI 551/591 2015"
-    AHRI_550_590_2015_ADDENDUM_1:
-      Description: "Ratings and design points defined using IP unit version of the standard, 2015 edition with Addendum 1."
-      Notes: "Published September 2017."
+    IP_2015_ADDENDUM_1:
+      Description: "Ratings and design points defined using IP unit version of the standard, 2015 edition with Addendum 1"
       Display Text: "AHRI 550/590 2015 Addendum 1"
-    AHRI_551_591_2015_ADDENDUM_1:
-      Description: "Ratings and design points defined using SI unit version of the standard, 2015 edition with Addendum 1."
-      Notes: "Published September 2017."
-      Display Text: "AHRI 551/591 2015 Addendum 1"
-    AHRI_550_590_2018:
-      Description: "Ratings and design points defined using IP unit version of the standard, 2018 edition."
-      Notes: "Published 2018."
+    IP_2018:
+      Description: "Ratings and design points defined using IP unit version of the standard, 2018 edition"
       Display Text: "AHRI 550/590 2018"
-    AHRI_551_591_2018:
-      Description: "Ratings and design points defined using SI unit version of the standard, 2018 edition."
-      Notes: "Published 2018."
+    IP_2020:
+      Description: "Ratings and design points defined using IP unit version of the standard, 2020 edition"
+      Display Text: "AHRI 550/590 2020"
+
+AHRI551951TestStandardYear:
+  Object Type: "Enumeration"
+  Enumerators:
+    SI_2015:
+      Description: "Ratings and design points defined using SI unit version of the standard, 2015 edition"
+      Display Text: "AHRI 551/591 2015"
+    SI_2015_ADDENDUM_1:
+      Description: "Ratings and design points defined using SI unit version of the standard, 2015 edition with Addendum 1"
+      Display Text: "AHRI 551/591 2015 Addendum 1"
+    SI_2018:
+      Description: "Ratings and design points defined using SI unit version of the standard, 2018 edition"
       Display Text: "AHRI 551/591 2018"
 
 # Data Groups
@@ -78,31 +69,27 @@ ProductInformation:
   Object Type: "Data Group"
   Data Elements:
     manufacturer:
-      Description: "Name of the manufacturer"
+      Description: "Manufacturer name"
       Data Type: "String"
-      Required: True
     manufacturer_software_version:
       Description: "Version of the software used to generate the performance map"
       Data Type: "String"
-      Required: True
-      Notes: "Example: '15.03' /nIf the software version does not exist, use 'NA'"
     model_number:
-      Description: "Model number of the chiller"
+      Description: "Model number"
       Data Type: "Pattern"
-      Required: True
       Notes: "Pattern shall match all model numbers that can be represented by the *representation*"
     nominal_voltage:
       Description: "Unit nominal voltage"
       Data Type: "Numeric"
       Units: "V"
       Range: ">=0"
-      Notes: "Example: '460' /nIf the unit can operate at multiple voltages, the lower of the two shall be stated"
+      Notes: "If the unit can operate at multiple voltages, the lower of the two shall be stated"
     nominal_frequency:
       Description: "Unit nominal frequency"
       Data Type: "Numeric"
       Units: "Hz"
       Range: ">=0"
-      Notes: "Example: '60', '50' /nPower supply frequency for the intended region of installation"
+      Notes: "Power supply frequency for the intended region of installation"
     tolerance_standard:
       Description: "Name and version of the testing or certification standard under which the chiller is rated"
       Data Type: "String"
@@ -110,19 +97,17 @@ ProductInformation:
     compressor_type:
       Description: "Type of compressor"
       Data Type: "<CompressorType>"
-      Notes: "See Standard 205 Common Enumerations"
     speed_control_type:
-      Description: "Type of electrical motor drive"
-      Data Type: "<SpeedControlType>"
-      Notes: "See RS0001.3.1 Local Enumerations"
+      Description: "Type of compressor speed control"
+      Data Type: "<CompressorSpeedControlType>"
     liquid_data_source:
       Description: "Source of the liquid properties data"
       Data Type: "String"
       Notes: "Example: 'ASHRAE Handbook Fundamentals 2013 chapter 31'"
-    refrigerant_type:
+    refrigerant:
       Description: "Refrigerant used in the chiller"
-      Data Type: "<RefrigerantType>"
-      Notes: "See Standard 205 Common Enumerations"
+      Data Type: "String"
+      Notes: "The string shall start with ‘R-’ and then include the refrigerant number designation conforming to ANSI/ASHRAE Standard 34-2019 (ASHRAE 2019)"
     hotgas_bypass_installed:
       Description: "Indicates if a hot-gas bypass valve is installed on the chiller"
       Data Type: "Boolean"
@@ -130,14 +115,13 @@ ProductInformation:
 RatingAHRI550590:
   Object Type: "Rating Data Group"
   Data Elements:
-    certification_reference_number:
-      Description: "Certification reference number"
+    certified_reference_number:
+      Description: "AHRI certified reference number"
       Data Type: "String"
       Required: True
-      Notes: "The certification number as stated on the certificate."
-    standard_rating_version:
-      Description: "Version"
-      Data Type: "<StandardRatingVersion>"
+    test_standard_year:
+      Description: "Year of the AHRI test standard"
+      Data Type: "<AHRI550590TestStandardYear>"
       Required: True
     net_refrigerating_capacity:
       Description: "Unit rated refrigeration capacity"
@@ -152,7 +136,7 @@ RatingAHRI550590:
       Units: "kW"
       Range: ">=0"
       Required: True
-      Notes: "Total power input to the chiller package.  See testing standard for details."
+      Notes: "Total power input to the chiller package.  See testing standard for details"
     COP:
       Description: "Ratio of the net refrigerating capacity to the total input power at the rating conditions"
       Data Type: "Numeric"
@@ -176,13 +160,6 @@ RatingAHRI550590:
       Range: ">0"
       Required: True
       Notes: "Evaporator liquid volumetric flow rate at the full load rating conditions. Density calculations shall be made at the inlet temperature of the heat exchanger at full load rating conditions"
-    full_load_evaporator_liquid_leaving_temperature:
-      Description: "Leaving evaporator liquid temperature at the full load design rating conditions"
-      Data Type: "Numeric"
-      Units: "F"
-      Range: ">0"
-      Required: True
-      Notes: "Evaporator liquid temperature at the exit flange of the evaporator at full load rating conditions"
     full_load_evaporator_liquid_entering_temperature:
       Description: "Entering evaporator liquid temperature at the full load design rating conditions"
       Data Type: "Numeric"
@@ -190,6 +167,13 @@ RatingAHRI550590:
       Range: ">0"
       Required: True
       Notes: "Evaporator liquid temperature at the entry flange of the evaporator at full load rating conditions"
+    full_load_evaporator_liquid_leaving_temperature:
+      Description: "Leaving evaporator liquid temperature at the full load design rating conditions"
+      Data Type: "Numeric"
+      Units: "F"
+      Range: ">0"
+      Required: True
+      Notes: "Evaporator liquid temperature at the exit flange of the evaporator at full load rating conditions"
     full_load_evaporator_liquid_differential_pressure:
       Description: "Pressure drop across the evaporator at the full load design rating conditions"
       Data Type: "Numeric"
@@ -240,10 +224,10 @@ RatingAHRI550590:
       Required: True
       Notes: "Condenser fouling factor at which the full load rating condition was measured"
     rating_reproducible_from_performance_data:
-      Description: "Whether this rating can be reproduced using the performance data in the representation"
+      Description: "Whether this rating can be reproduced using the performance data in the *representation*"
       Data Type: "Boolean"
       Required: True
-      Notes: "True if the rating values in this table can be reproduced using the performance data in the representation within the tolerance of the rating standard"
+      Notes: "True if the rating values in this table can be reproduced using the performance data in the *representation* within the tolerance of the rating standard"
 
 PartLoadRatingPoint550590:
   Object Type: "Rating Data Group"
@@ -266,6 +250,13 @@ PartLoadRatingPoint550590:
       Units: "kW"
       Range: ">0"
       Required: True
+    evaporator_liquid_volumetric_flow_rate:
+      Description: "Chilled liquid flow for this rating point"
+      Data Type: "Numeric"
+      Units: "gpm"
+      Range: ">0"
+      Required: True
+      Notes: "Evaporator liquid volumetric flow rate for this rating point. Density calculations shall be made at the inlet temperature of the heat exchanger"
     evaporator_liquid_entering_temperature:
       Description: "Entering evaporator liquid temperature for this rating point"
       Data Type: "Numeric"
@@ -280,13 +271,6 @@ PartLoadRatingPoint550590:
       Range: ">0"
       Required: True
       Notes: "Evaporator liquid temperature at the exit flange of the evaporator for this rating point"
-    evaporator_liquid_volumetric_flow_rate:
-      Description: "Chilled liquid flow for this rating point"
-      Data Type: "Numeric"
-      Units: "gpm"
-      Range: ">0"
-      Required: True
-      Notes: "Evaporator liquid volumetric flow rate for this rating point. Density calculations shall be made at the inlet temperature of the heat exchanger"
     evaporator_liquid_differential_pressure:
       Description: "Pressure drop across the evaporator for this rating point"
       Data Type: "Numeric"
@@ -301,7 +285,14 @@ PartLoadRatingPoint550590:
       Range: ">=0"
       Required: True
       Notes: "Evaporator fouling factor at which this rating point was measured"
-    condenser_liquid_entering_temperature:
+    condenser_liquid_volumetric_flow_rate:
+      Description: "Condenser liquid flow for this rating point"
+      Data Type: "Numeric"
+      Units: "gpm"
+      Range: ">0"
+      Required: True
+      Notes: "Condenser liquid volumetric flow rate for this rating point. Density calculations shall be made at the inlet temperature of the heat exchanger"
+     condenser_liquid_entering_temperature:
       Description: "Entering condenser liquid temperature for this rating point"
       Data Type: "Numeric"
       Units: "F"
@@ -315,14 +306,7 @@ PartLoadRatingPoint550590:
       Range: ">0"
       Required: True
       Notes: "Condenser liquid temperature at the exit flange of the condenser for this rating point"
-    condenser_liquid_volumetric_flow_rate:
-      Description: "Condenser liquid flow for this rating point"
-      Data Type: "Numeric"
-      Units: "gpm"
-      Range: ">0"
-      Required: True
-      Notes: "Condenser liquid volumetric flow rate for this rating point. Density calculations shall be made at the inlet temperature of the heat exchanger"
-    condenser_liquid_dfferential_pressure:
+   condenser_liquid_dfferential_pressure:
       Description: "Pressure drop across the condenser for this rating point"
       Data Type: "Numeric"
       Units: "ft of water"
@@ -340,14 +324,13 @@ PartLoadRatingPoint550590:
 RatingAHRI551591:
   Object Type: "Rating Data Group"
   Data Elements:
-    certification_reference_number:
-      Description: "Certification reference number"
+    certified_reference_number:
+      Description: "AHRI certified reference number"
       Data Type: "String"
       Required: True
-      Notes: "The certification number as stated on the certificate"
-    standard_rating_version:
-      Description: "Version"
-      Data Type: "<StandardRatingVersion>"
+    test_standard_year:
+      Description: "Year of the AHRI test standard"
+      Data Type: "<AHRI551591TestStandardYear>"
       Required: True
     net_refrigerating_capacity:
       Description: "Unit rated refrigeration capacity"
@@ -386,13 +369,6 @@ RatingAHRI551591:
       Range: ">0"
       Required: True
       Notes: "Evaporator liquid volumetric flow rate at the full load rating conditions. Density calculations shall be made at the inlet temperature of the heat exchanger at full load rating conditions"
-    full_load_evaporator_liquid_leaving_temperature:
-      Description: "Leaving evaporator liquid temperature at the full load design rating conditions"
-      Data Type: "Numeric"
-      Units: "C"
-      Range: ">0"
-      Required: True
-      Notes: "Evaporator liquid temperature at the exit flange of the evaporator at full load design rating conditions"
     full_load_evaporator_liquid_entering_temperature:
       Description: "Entering evaporator liquid temperature at the full load design rating conditions"
       Data Type: "Numeric"
@@ -400,7 +376,14 @@ RatingAHRI551591:
       Range: ">0"
       Required: True
       Notes: "Evaporator liquid temperature at the entry flange of the evaporator at full load rating conditions"
-    full_load_evaporator_liquid_differential_pressure:
+     full_load_evaporator_liquid_leaving_temperature:
+      Description: "Leaving evaporator liquid temperature at the full load design rating conditions"
+      Data Type: "Numeric"
+      Units: "C"
+      Range: ">0"
+      Required: True
+      Notes: "Evaporator liquid temperature at the exit flange of the evaporator at full load design rating conditions"
+   full_load_evaporator_liquid_differential_pressure:
       Description: "Pressure drop across the evaporator at the full load design rating conditions"
       Data Type: "Numeric"
       Units: "kPa"
@@ -476,6 +459,13 @@ PartLoadRatingPoint551591:
       Units: "kW"
       Range: ">0"
       Required: True
+    evaporator_liquid_volumetric_flow_rate:
+      Description: "Chilled liquid flow for this rating point"
+      Data Type: "Numeric"
+      Units: "l/s"
+      Range: ">0"
+      Required: True
+      Notes: "Evaporator liquid volumetric flow rate for this rating point. Density calculations shall be made at the inlet temperature of the heat exchanger"
     evaporator_liquid_entering_temperature:
       Description: "Entering evaporator liquid temperature for this rating point"
       Data Type: "Numeric"
@@ -490,13 +480,6 @@ PartLoadRatingPoint551591:
       Range: ">0"
       Required: True
       Notes: "Evaporator liquid temperature at the exit flange of the evaporator for this rating point."
-    evaporator_liquid_volumetric_flow_rate:
-      Description: "Chilled liquid flow for this rating point"
-      Data Type: "Numeric"
-      Units: "l/s"
-      Range: ">0"
-      Required: True
-      Notes: "Evaporator liquid volumetric flow rate for this rating point. Density calculations shall be made at the inlet temperature of the heat exchanger"
     evaporator_liquid_differential_pressure:
       Description: "Pressure drop across the evaporator for this rating point"
       Data Type: "Numeric"
@@ -511,6 +494,13 @@ PartLoadRatingPoint551591:
       Range: ">=0"
       Required: True
       Notes: "Evaporator fouling factor at which this rating point was measured"
+    condenser_liquid_volumetric_flow_rate:
+      Description: "Condenser liquid flow for this rating point"
+      Data Type: "Numeric"
+      Units: "l/s"
+      Range: ">0"
+      Required: True
+      Notes: "Condenser liquid volumetric flow rate for this rating point. Density calculations shall be made at the inlet temperature of the heat exchanger"
     condenser_liquid_entering_temperature:
       Description: "Entering condenser liquid temperature for this rating point"
       Data Type: "Numeric"
@@ -525,13 +515,6 @@ PartLoadRatingPoint551591:
       Range: ">0"
       Required: True
       Notes: "Condenser liquid temperature at the exit flange of the condenser for this rating point"
-    condenser_liquid_volumetric_flow_rate:
-      Description: "Condenser liquid flow for this rating point"
-      Data Type: "Numeric"
-      Units: "l/s"
-      Range: ">0"
-      Required: True
-      Notes: "Condenser liquid volumetric flow rate for this rating point. Density calculations shall be made at the inlet temperature of the heat exchanger"
     condenser_liquid_dfferential_pressure:
       Description: "Pressure drop across the condenser for this rating point"
       Data Type: "Numeric"
@@ -554,12 +537,12 @@ Performance:
       Description: "Type of liquid in evaporator"
       Data Type: "{LiquidMixture}"
       Required: True
-      Notes: "LiquidMixture specifies liquid constituents and their concentrations. See Standard 205 Common Enumerations. Density shall be evaluated at the evaporator inlet liquid temperature"
+      Notes: "LiquidMixture specifies liquid constituents and their concentrations. Density shall be evaluated at the evaporator inlet liquid temperature"
     condenser_liquid_type:
       Description: "Type of liquid in condenser"
       Data Type: "{LiquidMixture}"
       Required: True
-      Notes: "LiquidMixture specifies liquid constituents and their concentrations. See Standard 205 Common Enumerations. Density shall be evaluated at the condenser inlet liquid temperature"
+      Notes: "LiquidMixture specifies liquid constituents and their concentrations. Density shall be evaluated at the condenser inlet liquid temperature"
     evaporator_fouling_factor:
       Description: "Factor of heat transfer inhibition due to heat exchanger fouling layer"
       Data Type: "Numeric"
@@ -581,7 +564,7 @@ Performance:
       Range: ">0"
       Notes: "Maximum input power at which the chiller operates reliably and continuously"
     cycling_degradation_coefficient:
-      Description: "Cycling degradation coefficient (CD) as described in AHRI 550/590 or AHRI 551/591"
+      Description: "Cycling degradation coefficient (C<sub>D</sub>) as described in AHRI 550/590 or AHRI 551/591"
       Data Type: "Numeric"
       Units: "-"
       Range: ">=0, <=1.0"
@@ -641,7 +624,7 @@ GridVariablesCooling:
       Units: "-"
       Range: ">=0, <=1"
       Required: True
-      Notes: "Ratio of net_evaporator_capacity to the maximum evaporator capacity at the same operating conditions"
+      Notes: "Ratio of `net_evaporator_capacity` to the maximum evaporator capacity at the same operating conditions"
 
 LookupVariablesCooling:
   Object Type: "Lookup Variables"
@@ -697,14 +680,14 @@ LookupVariablesCooling:
       Units: "W"
       Range: ">=0"
       Required: True
-      Notes: "Heat transferred to another liquid crossing the control volume boundary from the chiller oil cooler. /nNULL if not present or if heat rejection is met by condenser"
+      Notes: "Heat transferred to another liquid crossing the control volume boundary from the chiller oil cooler. /nSet as 0 if not present or if heat rejection is met by condenser"
     motor_controller_heat:
       Description: "Heat rejected by the motor control center cooling"
       Data Type: "[Numeric/Null][1..]"
       Units: "W"
       Range: ">=0"
       Required: True
-      Notes: "Heat transferred to another liquid crossing the control volume boundary from the chiller motor controller (inverter drive, starter, etc)./nNULL if not present or if heat rejection is met by condenser"
+      Notes: "Heat transferred to another liquid crossing the control volume boundary from the chiller motor controller (inverter drive, starter, etc)./nSet as 0 if not present or if heat rejection is met by condenser"
 
 PerformanceMapStandby:
   Object Type: "Performance Map"
