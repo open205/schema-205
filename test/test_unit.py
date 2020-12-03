@@ -49,7 +49,7 @@ def test_get_schema_node():
 
 def test_get_representation_node_and_rs_selections():
     rep = schema205.load_json('examples/RS0002/Unitary-Constant-Efficiency.RS0002.a205.json')
-    node, rs_selections = schema205.util.get_representation_node_and_rs_selections(rep, ['rs_instance','performance','DX_system_representation','rs_instance','performance','performance_map_cooling','grid_variables'])
+    node, rs_selections = schema205.util.get_representation_node_and_rs_selections(rep, ['rs_instance','performance','dx_system_representation','rs_instance','performance','performance_map_cooling','grid_variables'])
     assert(len(node) == 6)
     assert(rs_selections[0] == schema205.util.get_rs_index('RS0002'))
     assert(rs_selections[3] == schema205.util.get_rs_index('RS0004'))

@@ -3,7 +3,7 @@
   "schema_version": "0.1.0",
   "rs_id": "RS0002",
   "description": "Unitary System with Constant Efficiency",
-  "ID": "bcf8b859-67a3-42f4-8f8d-4e57af1ccf22",
+  "id": "bcf8b859-67a3-42f4-8f8d-4e57af1ccf22",
   "data_timestamp": "2019-09-13T00:00Z",
   "data_version": 1,
   "data_source": "Committee",
@@ -19,12 +19,12 @@
     "performance": {
       "standby_power": 10,
       "fan_position": "BLOW_THROUGH",
-      "DX_system_representation": {
+      "dx_system_representation": {
         "schema_version": "0.1.0",
         "standard_version": "PPR2",
         "rs_id": "RS0004",
         "description": "DX System with Constant Efficiency",
-        "ID": "123e4567-e89b-12d3-a456-426614174000",
+        "id": "123e4567-e89b-12d3-a456-426614174000",
         "data_timestamp": "2020-05-07T00:00Z",
         "data_version": 1,
         "disclaimer": "Example data not to be used for simulation",
@@ -41,7 +41,7 @@
             }
           },
           "performance": {
-            "compressor_control_method": "STAGED",
+            "compressor_speed_control_type": "DISCRETE",
             "cycling_degradation_coefficient": 0.25,
             "performance_map_cooling": {
               "grid_variables": {

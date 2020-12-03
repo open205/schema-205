@@ -3,7 +3,7 @@
     "schema_version": "0.1.0",
     "rs_id": "RS0003",
     "description": "Continuous Fan",
-    "ID": "123e4567-e89b-12d3-a456-426614174000",
+    "id": "123e4567-e89b-12d3-a456-426614174000",
     "data_timestamp": "2020-05-11T00:00Z",
     "data_version": 1,
     "disclaimer": "Example data not to be used for simulation",
@@ -220,7 +220,7 @@
                         27.35,
                         27.85
                     ],
-                    "input_power": [
+                    "shaft_power": [
                         4690.453,
                         5480.895,
                         6293.708,
