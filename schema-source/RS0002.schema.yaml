@@ -5,17 +5,7 @@ Schema:
   Title: "Unitary Cooling Air-Conditioning Equipment"
   Description: "Schema for ASHRAE 205 annex RS0002: Unitary Cooling Air-Conditioning Equipment"
 
-RS0002:
-  Object Type: "Data Group"
-  Data Elements:
-    description:
-      Description: "Data group describing product and rating information"
-      Data Type: "{Description}"
-    performance:
-      Description: "Data group containing performance information"
-      Data Type: "{Performance}"
-      Required: True
-
+# Local Enumerations
 FanPosition:
   Object Type: "Enumeration"
   Enumerators:
@@ -30,19 +20,36 @@ AHRI210240TestStandardYear:
   Object Type: "Enumeration"
   Enumerators:
     IP_2008:
+      Description: "Rating is based on 2008 AHRI standard"
       Display Text: "2008"
     IP_2017:
+      Description: "Rating is based on 2017 AHRI standard"
       Display Text: "2017"
 
 AHRI340360TestStandardYear:
   Object Type: "Enumeration"
   Enumerators:
     IP_2007:
+      Description: "Rating is based on 2007 AHRI standard"
       Display Text: "2007"
     IP_2015:
+      Description: "Rating is based on 2015 AHRI standard"
       Display Text: "2015"
     IP_2019:
-      Display Text: "I-P/2019"
+      Description: "Rating is based on 2019 AHRI standard"
+      Display Text: "2019"
+
+# Data Groups
+RS0002:
+  Object Type: "Data Group"
+  Data Elements:
+    description:
+      Description: "Data group describing product and rating information"
+      Data Type: "{Description}"
+    performance:
+      Description: "Data group containing performance information"
+      Data Type: "{Performance}"
+      Required: True
 
 Description:
   Object Type: "Data Group"
@@ -61,23 +68,19 @@ ProductInformation:
   Object Type: "Data Group"
   Data Elements:
     manufacturer:
-      Description: "Manufacturer name"
+      Description: "Package manufacturer name"
       Data Type: "String"
-      Required: True
     model_number:
-      Description: "Model number"
+      Description: "Package model number"
       Data Type: "Pattern"
       Notes: "Pattern shall match all model numbers that can be represented by the *representation*"
-      Required: True
-
 
 RatingAHRI210240:
   Object Type: "Rating Data Group"
   Data Elements:
-    certification_reference_number:
-      Description: "Certification reference number"
+    certified_reference_number:
+      Description: "AHRI certified reference number"
       Data Type: "String"
-      Notes: "The certification number as stated on the certificate"
       Required: True
     test_standard_year:
       Description: "Year of the AHRI test standard"
@@ -86,8 +89,6 @@ RatingAHRI210240:
     manufacturer_data_source_version:
       Description: "Version of the software used to generate the rating and performance maps"
       Data Type: "String"
-      Required: True
-      Notes: "Example: '15.03' /nIf the software version does not exist, use 'NA'"
     SEER:
       Description: "Seasonal Energy Efficiency Ratio as defined by AHRI 210/240"
       Data Type: "Numeric"
@@ -134,8 +135,6 @@ RatingAHRI340360:
     manufacturer_data_source_version:
       Description: "Version of the software used to generate the AHRI rating and the performance maps"
       Data Type: "String"
-      Required: True
-      Notes: "Example: '15.03' /nIf the software version does not exist, use 'NA'"
     IEER:
       Description: "Integrated Energy Efficiency Ratio as defined by AHRI 340/360"
       Data Type: "Numeric"
@@ -186,6 +185,6 @@ Performance:
       Description: "Position of the fan relative to the indoor coil"
       Data Type: "<FanPosition>"
       Required: True
-    DX_system_representation:
+    dx_system_representation:
       Description: "The corresponding Standard 205 direct expansion coil system representation"
       Data Type: "{ASHRAE205(RS_ID=RS0004)}"
