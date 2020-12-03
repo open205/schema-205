@@ -9,7 +9,7 @@
     "data_source": "Committee",
     "disclaimer": "Example data not to be used for simulation",
     "notes": "An example representation that applies a constant efficiency of 0.985",
-    "RS_instance": {
+    "rs_instance": {
         "description": {
             "product_information": {
                 "manufacturer": "DrivesRUs",

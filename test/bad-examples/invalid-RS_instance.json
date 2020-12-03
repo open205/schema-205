@@ -6,7 +6,7 @@
   "data_timestamp": "2019-09-10T00:00Z",
   "data_version": 1,
   "description": "After burner!",
-  "RS_instance": {
+  "rs_instance": {
     "performance": {
       "after_bruner_power": 42
     }

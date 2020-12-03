@@ -8,7 +8,7 @@
     "data_version": 1,
     "disclaimer": "Example data not to be used for simulation",
     "notes": "An example representation that applies a constant COP of 3.1",
-    "RS_instance": {
+    "rs_instance": {
         "description": {
             "product_information": {
                 "outdoor_unit_manufacturer": "ABC HVAC",

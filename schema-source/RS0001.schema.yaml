@@ -292,7 +292,7 @@ PartLoadRatingPoint550590:
       Range: ">0"
       Required: True
       Notes: "Condenser liquid volumetric flow rate for this rating point. Density calculations shall be made at the inlet temperature of the heat exchanger"
-     condenser_liquid_entering_temperature:
+    condenser_liquid_entering_temperature:
       Description: "Entering condenser liquid temperature for this rating point"
       Data Type: "Numeric"
       Units: "F"
@@ -306,7 +306,7 @@ PartLoadRatingPoint550590:
       Range: ">0"
       Required: True
       Notes: "Condenser liquid temperature at the exit flange of the condenser for this rating point"
-   condenser_liquid_dfferential_pressure:
+    condenser_liquid_dfferential_pressure:
       Description: "Pressure drop across the condenser for this rating point"
       Data Type: "Numeric"
       Units: "ft of water"
@@ -376,14 +376,14 @@ RatingAHRI551591:
       Range: ">0"
       Required: True
       Notes: "Evaporator liquid temperature at the entry flange of the evaporator at full load rating conditions"
-     full_load_evaporator_liquid_leaving_temperature:
+    full_load_evaporator_liquid_leaving_temperature:
       Description: "Leaving evaporator liquid temperature at the full load design rating conditions"
       Data Type: "Numeric"
       Units: "C"
       Range: ">0"
       Required: True
       Notes: "Evaporator liquid temperature at the exit flange of the evaporator at full load design rating conditions"
-   full_load_evaporator_liquid_differential_pressure:
+    full_load_evaporator_liquid_differential_pressure:
       Description: "Pressure drop across the evaporator at the full load design rating conditions"
       Data Type: "Numeric"
       Units: "kPa"
