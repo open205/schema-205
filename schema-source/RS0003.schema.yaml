@@ -5,22 +5,12 @@ Schema:
   Title: "Fan Assembly"
   Description: "Schema for ASHRAE 205 annex RS0003: Fan Assembly"
 
-RS0003:
-  Object Type: "Data Group"
-  Data Elements:
-    description:
-      Description: "Data group describing product and rating information"
-      Data Type: "{Description}"
-    performance:
-      Description: "Data group containing performance information"
-      Data Type: "{Performance}"
-      Required: True
-
+# Local Enumerations
 PerformanceMapType:
   Object Type: "Enumeration"
   Enumerators:
     DISCRETE:
-      Description: "Fan assemblies that operate at one or more defined speeds"
+      Description: "Fan assemblies that operate at one or more defined speeds dictated by a tap or dip switch"
       Display Text: "Discrete"
       Notes: "Performance map data is provided at individual impeller speeds"
     CONTINUOUS:
@@ -34,7 +24,6 @@ SpeedControlType:
     FIXED:
       Display Text: "Fixed"
       Description: "Fan speed does not change after installation"
-
     VARIABLE:
       Display Text: "Variable"
       Description: "Fan speed can change depending on operation after installation"
@@ -64,15 +53,12 @@ ComponentType:
     COIL:
       Display Text: "Coil"
       Description: "Finned coil in cross-flow arrangement"
-      Notes: ""
     FURNACE:
       Display Text: "Furnace"
       Description: "Fuel-fired heating section"
-      Notes: ""
     FILTER:
       Display Text: "Filter"
       Description: "Air filters"
-      Notes: ""
     HEAT_EXCHANGER:
       Display Text: "Heat Exchanger"
       Description: "Heat exchanger"
@@ -80,11 +66,21 @@ ComponentType:
     ELECTRIC_RESISTANCE_ELEMENT:
       Display Text: "Electric Resistance Element"
       Description: "Electric resistance heater elements"
-      Notes: ""
     OTHER:
       Display Text: "Other"
       Description: "Additional components in air stream"
-      Notes: ""
+
+# Data Groups
+RS0003:
+  Object Type: "Data Group"
+  Data Elements:
+    description:
+      Description: "Data group describing product and rating information"
+      Data Type: "{Description}"
+    performance:
+      Description: "Data group containing performance information"
+      Data Type: "{Performance}"
+      Required: True
 
 Description:
   Object Type: "Data Group"
@@ -100,19 +96,16 @@ ProductInformation:
   Object Type: "Data Group"
   Data Elements:
     manufacturer:
-      Description: "Name of the assembly/unit manufacturer"
+      Description: "Assembly/unit manufacturer name"
       Data Type: "String"
-      Required: True
     model_number:
-      Description: "Model number of the assembly/unit"
+      Description: "Assembly/unit model number"
       Data Type: "Pattern"
-      Notes: "Pattern shall match all model numbers that can be represented by the representation"
-      Required: True
+      Notes: "Pattern shall match all model numbers that can be represented by the *representation*"
     is_enclosed:
       Description: "Fan assembly is enclosed"
       Data Type: "Boolean"
       Notes: "True if the performance data reflects the static pressure difference across the enclosure"
-      Required: True
     impeller_type:
       Description: "Type of impeller in fan assembly"
       Data Type: "<ImpellerType>"
@@ -128,12 +121,12 @@ AssemblyComponent:
   Data Elements:
     component_type:
       Description: "Type of component"
-      Data Type: "{ComponentType}"
+      Data Type: "<ComponentType>"
       Required: True
     component_description:
       Description: "Informative description of the component"
       Data Type: "String"
-    component_ID:
+    component_id:
       Description: "Identifier of the corresponding Standard 205 representation"
       Data Type: "UUID"
       Notes: "Optionally provided if the component has a Standard 205 representation"
@@ -149,11 +142,11 @@ Performance:
       Notes: "Nominal or rated air flow rate at *standard air conditions* used for calculating wet coil pressure drop"
       Required: True
     wet_coil_pressure_drop:
-      Description: "Additional static pressure drop if cooling coil component is collecting condensate"
+      Description: "Additional static pressure drop for each cooling coil component collecting condensate"
       Data Type: "Numeric"
       Range: ">=0"
       Units: "Pa"
-      Notes: "Corresponds to pressure drop at nominal_air_volumetric_flow_rate. If unknown, a value of 75 Pa shall be used"
+      Notes: "Corresponds to additional pressure drop at `nominal_air_volumetric_flow_rate`. If unknown, a value of 75 Pa shall be used"
       Required: True
     heat_loss_fraction:
       Description: "Fraction of efficiency losses transferred into the air stream"
@@ -176,24 +169,26 @@ Performance:
       Notes: "If no mimumum, use zero"
       Required: True
     stability_curve:
-      Description: "The curve defining the stability area for system selection"
+      Description: "The system curve defining the stability area for system selection"
       Data Type: "{SystemCurve}"
+      Notes: "***Informative note:*** *Application software* may use this curve to indicate to *application software users* when a selected fan is operating in an unstable region where surging or stalling is likely to occur"
     performance_map_type:
       Description: "Type of performance map"
       Data Type: "{PerformanceMapType}"
       Required: True
+      Notes: "Determines which performance map data group is used for `performance_map`"
     speed_control_type:
       Description: "Type of fan impeller speed control"
       Data Type: "{SpeedControlType}"
       Required: True
+      Notes: "If `performance_map` is `DISCRETE` and `speed_control_type` is `FIXED`, impeller speed shall be restricted to a single discrete speed.\n\nIf `performance_map` is `DISCRETE` and `speed_control_type` is `VARIABLE`, impeller speed shall be restricted to a set of two or more discrete speed\n\nIf `performance_map` is `CONTINUOUS` and `speed_control_type` is `FIXED`, impeller speed shall be restricted to a single speed (which may be interpolated from `impeller_speed` values provided in the performance map\n\nIf `performance_map` is `CONTINUOUS` and `speed_control_type` is `VARIABLE`, impeller speed shall be unrestricted within operational limits"
     motor_representation:
       Description: "The corresponding Standard 205 motor representation"
-      Notes: "If this is not provided, the fan input power shall represent mechanical shaft power. If this is provided, the input power shall represent either mechanical shaft power or electrical power depending on the data provided by the motor representation."
+      Notes: "If the fan is packaged with a motor, a motor representation shall be provided"
       Data Type: "{ASHRAE205(RS_ID=RS0005)}"
     performance_map:
       Description: "Data group describing fan performance when operating"
       Data Type: "({PerformanceMapContinuous}, {PerformanceMapDiscrete})"
-      Notes: "The performance map data group should reflect the type and operation of the fan.\n\nPerformanceMapContinuous describes fan performance in terms of air flow, static pressure, impeller speed, and fan electrical or shaft power.\n\nPerformanceMapDiscrete describes fan performance in terms of speed setting, static pressure, air flow, and power."
       Required: True
 
 SystemCurve:
@@ -251,12 +246,12 @@ LookupVariablesContinuous:
       Range: ">=0"
       Units: "rev/s"
       Required: True
-    input_power:
-      Description: "Power input to fan assembly"
+    shaft_power:
+      Description: "Mechanical shaft power input to fan assembly"
       Data Type: "[Numeric/Null][1..]"
       Range: ">=0"
       Units: "W"
-      Notes: "Mechanical shaft power or electric power depending on the data provided by the motor representation."
+      Notes: "The mechanical efficiency of any belt drive used to modify rotational speed between the motor and impeller shall be implicit in this value"
       Required: True
 
 PerformanceMapDiscrete:
@@ -279,7 +274,7 @@ GridVariablesDiscrete:
       Data Type: "[Integer][1..]"
       Range: ">=0"
       Units: "-"
-      Notes: "In rank order."
+      Notes: "In rank order (with 1 being the lowest speed)"
       Required: True
     static_pressure_difference:
       Description: "Static pressure across fan assembly at dry coil conditions"
@@ -299,10 +294,10 @@ LookupVariablesDiscrete:
       Units: "m3/s"
       Notes: "At *standard air conditions*"
       Required: True
-    input_power:
-      Description: "Power input to fan assembly"
+    shaft_power:
+      Description: "Mechanical shaft power input to fan assembly"
       Data Type: "[Numeric/Null][1..]"
       Range: ">=0"
       Units: "W"
-      Notes: "Mechanical shaft power or electric power depending on the data provided by the motor representation."
+      Notes: "The mechanical efficiency of any belt drive used to modify rotational speed between the motor and impeller shall be implicit in this value"
       Required: True
