@@ -233,7 +233,7 @@ ASHRAE205:
       Description: "Unique equipment identifier"
       Data Type: "UUID"
       Required: True
-      Notes: "Assigned by *data publisher* to identify a *representation* for a specific set of equipment. `id shall` remain unchanged for revised *representations* for the same equipment."
+      Notes: "Assigned by *data publisher* to identify a *representation* for a specific set of equipment. `id` shall remain unchanged for revised *representations* for the same equipment."
     data_timestamp:
       Description: "Date of publication"
       Data Type: "Timestamp"

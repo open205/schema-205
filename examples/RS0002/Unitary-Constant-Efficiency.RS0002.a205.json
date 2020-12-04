@@ -36,7 +36,7 @@
               "outdoor_unit_model_number": "DX AB12",
               "indoor_unit_manufacturer": "ABC HVAC",
               "indoor_unit_model_number": "DX AB12",
-              "refrigerant_type": "R410A",
+              "refrigerant": "R-410A",
               "compressor_type": "SCROLL"
             }
           },

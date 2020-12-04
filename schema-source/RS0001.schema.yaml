@@ -107,7 +107,7 @@ ProductInformation:
     refrigerant:
       Description: "Refrigerant used in the chiller"
       Data Type: "String"
-      Notes: "The string shall start with ‘R-’ and then include the refrigerant number designation conforming to ANSI/ASHRAE Standard 34-2019 (ASHRAE 2019)"
+      Notes: "The string shall start with 'R-' and then include the refrigerant number designation conforming to ANSI/ASHRAE Standard 34-2019 (ASHRAE 2019)"
     hotgas_bypass_installed:
       Description: "Indicates if a hot-gas bypass valve is installed on the chiller"
       Data Type: "Boolean"
@@ -433,10 +433,10 @@ RatingAHRI551591:
       Required: True
       Notes: "Condenser fouling factor at which the full rating was measured"
     rating_reproducible_from_performance_data:
-      Description: "Whether this rating can be reproduced using the performance data in the representation"
+      Description: "Whether this rating can be reproduced using the performance data in the *representation*"
       Data Type: "Boolean"
       Required: True
-      Notes: "True if the rating values in this table can be reproduced using the performance data in the representation within the tolerance of the rating standard"
+      Notes: "True if the rating values in this table can be reproduced using the performance data in the *representation* within the tolerance of the rating standard"
 
 PartLoadRatingPoint551591:
   Object Type: "Rating Data Group"
@@ -680,14 +680,14 @@ LookupVariablesCooling:
       Units: "W"
       Range: ">=0"
       Required: True
-      Notes: "Heat transferred to another liquid crossing the control volume boundary from the chiller oil cooler. /nSet as 0 if not present or if heat rejection is met by condenser"
+      Notes: "Heat transferred to another liquid crossing the control volume boundary from the chiller oil cooler. \n\nSet as 0 if not present or if heat rejection is met by condenser"
     motor_controller_heat:
       Description: "Heat rejected by the motor control center cooling"
       Data Type: "[Numeric/Null][1..]"
       Units: "W"
       Range: ">=0"
       Required: True
-      Notes: "Heat transferred to another liquid crossing the control volume boundary from the chiller motor controller (inverter drive, starter, etc)./nSet as 0 if not present or if heat rejection is met by condenser"
+      Notes: "Heat transferred to another liquid crossing the control volume boundary from the chiller motor controller (inverter drive, starter, etc).\n\nSet as 0 if not present or if heat rejection is met by condenser"
 
 PerformanceMapStandby:
   Object Type: "Performance Map"

@@ -116,9 +116,9 @@ RatingAHRI210240:
       Range: ">0.0"
       Notes: "Used for verification of the rated SEER value"
     rating_reproducible_from_performance_data:
-      Description: "Whether this rating can be reproduced using the performance data in the representation"
+      Description: "Whether this rating can be reproduced using the performance data in the *representation*"
       Data Type: "Boolean"
-      Notes: "True if the rating values in this table can be reproduced using the performance data in the representation within the tolerance of the rating standard"
+      Notes: "True if the rating values in this table can be reproduced using the performance data in the *representation* within the tolerance of the rating standard"
       Required: True
 
 RatingAHRI340360:
@@ -162,9 +162,9 @@ RatingAHRI340360:
       Range: ">0.0"
       Notes: "Used for verification of the rated IEER value"
     rating_reproducible_from_performance_data:
-      Description: "Whether this rating can be reproduced using the performance data in the representation"
+      Description: "Whether this rating can be reproduced using the performance data in the *representation*"
       Data Type: "Boolean"
-      Notes: "True if the rating values in this table can be reproduced using the performance data in the representation within the tolerance of the rating standard"
+      Notes: "True if the rating values in this table can be reproduced using the performance data in the *representation* within the tolerance of the rating standard"
       Required: True
 
 Performance:
@@ -175,10 +175,10 @@ Performance:
       Data Type: "Numeric"
       Units: "W"
       Range: ">=0"
-      Notes: "Includes on-board controls and other power not included in the fan or dx system representations"
+      Notes: "Includes on-board controls and other power not included in the fan or dx system *representations*"
       Required: True
     fan_representation:
-      Description: "The corresponding Standard 205 fan assembly representation"
+      Description: "The corresponding Standard 205 fan assembly *representation*"
       Data Type: "{ASHRAE205(rs_id=RS0003)}"
       Notes: "Required if the fan is packaged with the unitary equipment"
     fan_position:
@@ -186,5 +186,5 @@ Performance:
       Data Type: "<FanPosition>"
       Required: True
     dx_system_representation:
-      Description: "The corresponding Standard 205 direct expansion coil system representation"
+      Description: "The corresponding Standard 205 direct expansion coil system *representation*"
       Data Type: "{ASHRAE205(rs_id=RS0004)}"

@@ -42,10 +42,10 @@ ProductInformation:
       Description: "Indoor unit model number"
       Data Type: "Pattern"
       Notes: "Pattern shall match all model numbers that can be represented by the *representation*"
-    refrigerant_type:
+    refrigerant:
       Description: "Refrigerant used"
       Data Type: "String"
-      Notes: "The string shall start with ‘R-’ and then include the refrigerant number designation conforming to ANSI/ASHRAE Standard 34-2019 (ASHRAE 2019)"
+      Notes: "The string shall start with 'R-' and then include the refrigerant number designation conforming to ANSI/ASHRAE Standard 34-2019 (ASHRAE 2019)"
     compressor_type:
       Description: "Type of compressor"
       Data Type: "<CompressorType>"
@@ -58,7 +58,7 @@ Performance:
       Data Type: "<CompressorSpeedControlType>"
       Required: True
     cycling_degradation_coefficient:
-      Description: "Cycling degradation coefficient (CD) as described in AHRI 210/240"
+      Description: "Cycling degradation coefficient (C<sub>D</sub>) as described in AHRI 210/240"
       Data Type: "Numeric"
       Units: "-"
       Range: ">=0.0,<1.0"
@@ -184,4 +184,4 @@ LookupVariablesStandby:
       Range: ">0"
       Units: "W"
       Required: True
-      Notes: "Includes any auxiliary power used by the unit’s controls and any sump heater"
+      Notes: "Includes any auxiliary power used by the unit's controls and any sump heater"

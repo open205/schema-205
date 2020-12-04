@@ -127,9 +127,9 @@ AssemblyComponent:
       Description: "Informative description of the component"
       Data Type: "String"
     component_id:
-      Description: "Identifier of the corresponding Standard 205 representation"
+      Description: "Identifier of the corresponding Standard 205 *representation*"
       Data Type: "UUID"
-      Notes: "Optionally provided if the component has a Standard 205 representation"
+      Notes: "Optionally provided if the component has a Standard 205 *representation*"
 
 Performance:
   Object Type: "Data Group"
@@ -183,8 +183,8 @@ Performance:
       Required: True
       Notes: "If `performance_map` is `DISCRETE` and `speed_control_type` is `FIXED`, impeller speed shall be restricted to a single discrete speed.\n\nIf `performance_map` is `DISCRETE` and `speed_control_type` is `VARIABLE`, impeller speed shall be restricted to a set of two or more discrete speed\n\nIf `performance_map` is `CONTINUOUS` and `speed_control_type` is `FIXED`, impeller speed shall be restricted to a single speed (which may be interpolated from `impeller_speed` values provided in the performance map\n\nIf `performance_map` is `CONTINUOUS` and `speed_control_type` is `VARIABLE`, impeller speed shall be unrestricted within operational limits"
     motor_representation:
-      Description: "The corresponding Standard 205 motor representation"
-      Notes: "If the fan is packaged with a motor, a motor representation shall be provided"
+      Description: "The corresponding Standard 205 motor *representation*"
+      Notes: "If the fan is packaged with a motor, a motor *representation* shall be provided"
       Data Type: "{ASHRAE205(rs_id=RS0005)}"
     performance_map:
       Description: "Data group describing fan performance when operating"
