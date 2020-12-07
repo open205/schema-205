@@ -199,6 +199,23 @@ class Grid_axis_impl(Implementation_entry):
 
 
 # -------------------------------------------------------------------------------------------------
+class Grid_axis_finalize(Implementation_entry):
+
+    def __init__(self, name, parent):
+        super().__init__(name, parent)
+        self._func = [
+            f'performance_map->Finalize_grid();\n']
+
+    # .............................................................................................
+    @property
+    def value(self):
+        entry = ''
+        for f in self._func:
+            entry += self.level*'\t' + f
+        return entry
+
+
+# -------------------------------------------------------------------------------------------------
 class Data_table_impl(Implementation_entry):
 
     def __init__(self, name, parent):
@@ -291,6 +308,10 @@ class CPP_translator:
                         self._implementations[entry.parent._superclass](e._name, m)
                     if entry.parent._superclass == 'performance_map_base':
                         Performance_map_impl(e._name, m, populates_self=True)
+                # Special case of grid_axis_base needs a finalize function after all grid axes 
+                # are added
+                if entry.parent._superclass == 'grid_variables_base':
+                    Grid_axis_finalize('', m)
             # Lastly, handle the special case of objects that need both serialization 
             # and initialization (currently a bit of a hack specific to this project)
             if isinstance(entry, Object_serialization) and entry._name in self._namespace._name:
