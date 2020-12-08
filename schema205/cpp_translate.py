@@ -2,6 +2,7 @@ import os
 from schema205.header_entries import H_translator
 from schema205.file_io import dump
 from schema205.cpp_entries import CPP_translator
+from schema205.generate_factory_templates import generate_factory_headers, generate_factory_source
 
 # -------------------------------------------------------------------------------------------------
 def translate_to_header(input_file_path, output_file_root, base_class='foo_base', container=''):
@@ -25,6 +26,9 @@ def translate_all_to_headers(input_dir_path, output_dir_path, base_class='foo_ba
             file_name_root = os.path.splitext(os.path.splitext(file_name)[0])[0]
             h.translate(os.path.join(input_dir_path, file_name), base_class, container)
             dump(str(h), os.path.join(output_dir_path, file_name_root + '.h'))
+            if file_name_root != container:
+                factory_header = generate_factory_headers(file_name_root)
+                dump(factory_header, os.path.join(output_dir_path, file_name_root + '_factory.h'))
 
 # -------------------------------------------------------------------------------------------------
 def translate_all_to_source(input_dir_path, output_dir_path, base_class='foo_base', container=''):
@@ -36,6 +40,9 @@ def translate_all_to_source(input_dir_path, output_dir_path, base_class='foo_bas
             c = CPP_translator()
             c.translate(container, h)
             dump(str(c), os.path.join(output_dir_path, file_name_root + '.cpp'))
+            if file_name_root != container:
+                factory_src = generate_factory_source(file_name_root)
+                dump(factory_src, os.path.join(output_dir_path, file_name_root + '_factory.cpp'))
 
 # -------------------------------------------------------------------------------------------------
 if __name__ == '__main__':

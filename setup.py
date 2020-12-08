@@ -10,7 +10,8 @@ setup(
     install_requires=[
         'jsonschema',
         'pyyaml',
-        'pytablewriter'
+        'pytablewriter',
+        'jinja2'
     ],
     pbr=True
 )

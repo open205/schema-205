@@ -9,7 +9,7 @@ BUILD_PATH = "build"
 SOURCE_PATH = 'schema-source'
 DOCS_PATH = os.path.join(BUILD_PATH,"docs")
 SCHEMA_PATH = os.path.join(BUILD_PATH,"schema")
-HEADER_PATH = os.path.join("..", "libtk205", "src", BUILD_PATH, "cpp")
+HEADER_PATH = os.path.join("..", "libtk205", "src", BUILD_PATH, "include")
 CPP_PATH = os.path.join("..", "libtk205", "src", BUILD_PATH, "cpp")
 
 def collect_source_files():

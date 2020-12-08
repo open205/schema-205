@@ -9,6 +9,7 @@ pbr = "*"
 doit = "*"
 atomicwrites = "*"
 pylint = "*"
+jinja2 = "*"
 
 [packages]
 schema205 = {editable = true,path = "."}

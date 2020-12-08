@@ -1,0 +1,15 @@
+#ifndef {{include_guard}}_H_
+#define {{include_guard}}_H_
+
+#include "RS_instance_factory.h"
+
+namespace ASHRAE205_NS {
+
+   class {{factory_subclass}} : public RS_instance_factory
+   {
+      public:
+         std::unique_ptr<RS_instance_base> Create_instance() const override;
+   };
+}
+
+#endif

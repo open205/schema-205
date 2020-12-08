@@ -1,0 +1,10 @@
+#include "{{ factory_subclass }}.h"
+#include "{{ RS_subclass }}.h"
+#include <memory>
+
+using namespace ASHRAE205_NS;
+
+std::unique_ptr<RS_instance_base> {{ factory_subclass }}::Create_instance() const
+{
+    return std::make_unique<ASHRAE205_NS::{{ RS_subclass }}_NS::{{ RS_subclass }}>();
+}
