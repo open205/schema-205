@@ -571,7 +571,7 @@ class H_translator:
     # .............................................................................................
     def _add_function_overrides(self, parent_node, base_class_name):
         '''Get base class virtual functions to be overridden.'''
-        base_class = os.path.join(os.path.dirname(__file__), '..', '..', 'libtk205', 'include', f'{base_class_name}.h')
+        base_class = os.path.join(os.path.dirname(__file__), 'src', f'{base_class_name}.h')
         with open(base_class) as b:
             for line in b:
                 if base_class_name not in line:
