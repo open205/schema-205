@@ -50,7 +50,7 @@
                     ]
                 },
                 "lookup_variables": {
-                    "gross_total_cooling_capacity": [
+                    "gross_total_capacity": [
                         42191.636,
                         42191.636,
                         56877.119999999995,
@@ -116,7 +116,7 @@
                         66637.795,
                         66637.795
                     ],
-                    "gross_sensible_cooling_capacity": [
+                    "gross_sensible_capacity": [
                         25314.9816,
                         25314.9816,
                         34126.272,
@@ -182,7 +182,7 @@
                         39982.676999999996,
                         39982.676999999996
                     ],
-                    "gross_cooling_power": [
+                    "gross_power": [
                         13610.205161290321,
                         13610.205161290321,
                         18347.458064516126,

@@ -455,7 +455,7 @@
             },
             "performance_map_standby": {
                 "grid_variables": {
-                    "chiller_environment_dry_bulb_temperature": [
+                    "environment_dry_bulb_temperature": [
                         273.15,
                         311.15
                     ]
