@@ -131,21 +131,21 @@ GridVariablesCooling:
 LookupVariablesCooling:
   Object Type: "Lookup Variables"
   Data Elements:
-    gross_total_cooling_capacity:
+    gross_total_capacity:
       Description: "Total heat removed by the indoor coil"
       Data Type: "[Numeric/Null][1..]"
       Range: ">0"
       Units: "W"
       Required: True
       Notes: "Shall not include fan heat"
-    gross_sensible_cooling_capacity:
+    gross_sensible_capacity:
       Description: "Sensible heat removed by the indoor coil"
       Data Type: "[Numeric/Null][1..]"
       Range: ">0"
       Units: "W"
       Required: True
       Notes: "Shall not include fan heat"
-    gross_cooling_power:
+    gross_power:
       Description: "Gross power draw (of the outdoor unit)"
       Data Type: "[Numeric/Null][1..]"
       Range: ">0"

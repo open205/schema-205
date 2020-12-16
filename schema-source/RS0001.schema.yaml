@@ -704,7 +704,7 @@ PerformanceMapStandby:
 GridVariablesStandby:
   Object Type: "Grid Variables"
   Data Elements:
-    chiller_environment_dry_bulb_temperature:
+    environment_dry_bulb_temperature:
       Description: "Dry bulb temperature of the air in the environment of the chiller"
       Data Type: "[Numeric][1..]"
       Units: "K"
