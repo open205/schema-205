@@ -284,7 +284,7 @@ LiquidComponent:
     concentration:
       Description: "Concentration of this component of the mixture"
       Data Type: "Numeric"
-      Range: ">=0, <=1.0"
+      Range: ">=0.0, <=1.0"
       Notes: "If omitted, assume equal distribution with any other component with no defined concentration (e.g., can be left blank for the primary component)"
 
 

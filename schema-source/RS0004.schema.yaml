@@ -97,7 +97,7 @@ GridVariablesCooling:
     indoor_coil_entering_relative_humidity:
       Description: "Relative humidity of the air entering the indoor coil"
       Data Type: "[Numeric][1..]"
-      Range: ">=0,<=1.0"
+      Range: ">=0.0,<=1.0"
       Units: "-"
       Notes: "As measured immediately before entering the coil (i.e., after the fan in a blow-through configuration)"
       Required: True

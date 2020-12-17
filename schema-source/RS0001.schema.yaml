@@ -127,7 +127,7 @@ RatingAHRI550590:
       Description: "Unit rated refrigeration capacity"
       Data Type: "Numeric"
       Units: "Btu/h"
-      Range: ">0"
+      Range: ">=0"
       Required: True
       Notes: "The capacity of the evaporator available for cooling of the thermal load external to the chiller; calculated using only the sensible heat transfer"
     input_power:
@@ -164,14 +164,14 @@ RatingAHRI550590:
       Description: "Entering evaporator liquid temperature at the full load design rating conditions"
       Data Type: "Numeric"
       Units: "F"
-      Range: ">0"
+      Range: ">−459.67"
       Required: True
       Notes: "Evaporator liquid temperature at the entry flange of the evaporator at full load rating conditions"
     full_load_evaporator_liquid_leaving_temperature:
       Description: "Leaving evaporator liquid temperature at the full load design rating conditions"
       Data Type: "Numeric"
       Units: "F"
-      Range: ">0"
+      Range: ">−459.67"
       Required: True
       Notes: "Evaporator liquid temperature at the exit flange of the evaporator at full load rating conditions"
     full_load_evaporator_liquid_differential_pressure:
@@ -199,14 +199,14 @@ RatingAHRI550590:
       Description: "Entering condenser liquid temperature at the full load design rating conditions"
       Data Type: "Numeric"
       Units: "F"
-      Range: ">0"
+      Range: ">−459.67"
       Required: True
       Notes: "Condenser liquid temperature at the entry flange of the condenser at full load rating conditions"
     full_load_condenser_liquid_leaving_temperature:
       Description: "Leaving condenser liquid temperature at the full load design rating conditions"
       Data Type: "Numeric"
       Units: "F"
-      Range: ">0"
+      Range: ">−459.67"
       Required: True
       Notes: "Condenser liquid temperature at the exit flange of the condenser at full load rating conditions"
     full_load_condenser_liquid_dfferential_pressure:
@@ -242,13 +242,13 @@ PartLoadRatingPoint550590:
       Description: "The actual cooling capacity for this rating point"
       Data Type: "Numeric"
       Units: "Btu/h"
-      Range: ">0"
+      Range: ">=0"
       Required: True
     unit_power:
       Description: "The total unit power consumption for this rating point"
       Data Type: "Numeric"
       Units: "kW"
-      Range: ">0"
+      Range: ">=0"
       Required: True
     evaporator_liquid_volumetric_flow_rate:
       Description: "Chilled liquid flow for this rating point"
@@ -261,14 +261,14 @@ PartLoadRatingPoint550590:
       Description: "Entering evaporator liquid temperature for this rating point"
       Data Type: "Numeric"
       Units: "F"
-      Range: ">0"
+      Range: ">−459.67"
       Required: True
       Notes: "Evaporator liquid temperature at the entry flange of the evaporator for this rating point"
     evaporator_liquid_leaving_temperature:
       Description: "Leaving evaporator liquid temperature for this rating point"
       Data Type: "Numeric"
       Units: "F"
-      Range: ">0"
+      Range: ">−459.67"
       Required: True
       Notes: "Evaporator liquid temperature at the exit flange of the evaporator for this rating point"
     evaporator_liquid_differential_pressure:
@@ -296,14 +296,14 @@ PartLoadRatingPoint550590:
       Description: "Entering condenser liquid temperature for this rating point"
       Data Type: "Numeric"
       Units: "F"
-      Range: ">0"
+      Range: ">−459.67"
       Required: True
       Notes: "Condenser liquid temperature at the entry flange of the condenser for this rating point"
     condenser_liquid_leaving_temperature:
       Description: "Leaving condenser liquid temperature for this rating point"
       Data Type: "Numeric"
       Units: "F"
-      Range: ">0"
+      Range: ">−459.67"
       Required: True
       Notes: "Condenser liquid temperature at the exit flange of the condenser for this rating point"
     condenser_liquid_dfferential_pressure:
@@ -336,7 +336,7 @@ RatingAHRI551591:
       Description: "Unit rated refrigeration capacity"
       Data Type: "Numeric"
       Units: "kW"
-      Range: ">0"
+      Range: ">=0"
       Required: True
       Notes: "The capacity of the evaporator available for cooling of the thermal load external to the chiller; calculated using only the sensible heat transfer"
     input_power:
@@ -373,14 +373,14 @@ RatingAHRI551591:
       Description: "Entering evaporator liquid temperature at the full load design rating conditions"
       Data Type: "Numeric"
       Units: "C"
-      Range: ">0"
+      Range: ">−273.15"
       Required: True
       Notes: "Evaporator liquid temperature at the entry flange of the evaporator at full load rating conditions"
     full_load_evaporator_liquid_leaving_temperature:
       Description: "Leaving evaporator liquid temperature at the full load design rating conditions"
       Data Type: "Numeric"
       Units: "C"
-      Range: ">0"
+      Range: ">−273.15"
       Required: True
       Notes: "Evaporator liquid temperature at the exit flange of the evaporator at full load design rating conditions"
     full_load_evaporator_liquid_differential_pressure:
@@ -408,14 +408,14 @@ RatingAHRI551591:
       Description: "Entering condenser liquid temperature at the full load design rating conditions"
       Data Type: "Numeric"
       Units: "C"
-      Range: ">0"
+      Range: ">−273.15"
       Required: True
       Notes: "Condenser liquid temperature at the entry flange of the condenser at full load rating conditions"
     full_load_condenser_liquid_leaving_temperature:
       Description: "Leaving condenser liquid temperature at the full load design rating conditions"
       Data Type: "Numeric"
       Units: "C"
-      Range: ">0"
+      Range: ">−273.15"
       Required: True
       Notes: "Condenser liquid temperature at the exit flange of the condenser at full load rating conditions"
     full_load_condenser_liquid_dfferential_pressure:
@@ -451,13 +451,13 @@ PartLoadRatingPoint551591:
       Description: "The actual cooling capacity for this rating point"
       Data Type: "Numeric"
       Units: "kW"
-      Range: ">0"
+      Range: ">=0"
       Required: True
     unit_power:
       Description: "The total unit power consumption for this rating point"
       Data Type: "Numeric"
       Units: "kW"
-      Range: ">0"
+      Range: ">=0"
       Required: True
     evaporator_liquid_volumetric_flow_rate:
       Description: "Chilled liquid flow for this rating point"
@@ -470,14 +470,14 @@ PartLoadRatingPoint551591:
       Description: "Entering evaporator liquid temperature for this rating point"
       Data Type: "Numeric"
       Units: "C"
-      Range: ">0"
+      Range: ">−273.15"
       Required: True
       Notes: "Evaporator liquid temperature at the entry flange of the evaporator for this rating point"
     evaporator_liquid_leaving_temperature:
       Description: "Leaving evaporator liquid temperature for this rating point"
       Data Type: "Numeric"
       Units: "C"
-      Range: ">0"
+      Range: ">−273.15"
       Required: True
       Notes: "Evaporator liquid temperature at the exit flange of the evaporator for this rating point."
     evaporator_liquid_differential_pressure:
@@ -505,14 +505,14 @@ PartLoadRatingPoint551591:
       Description: "Entering condenser liquid temperature for this rating point"
       Data Type: "Numeric"
       Units: "C"
-      Range: ">0"
+      Range: ">−273.15"
       Required: True
       Notes: "Condenser liquid temperature at the entry flange of the condenser for this rating point"
     condenser_liquid_leaving_temperature:
       Description: "Leaving condenser liquid temperature for this rating point"
       Data Type: "Numeric"
       Units: "C"
-      Range: ">0"
+      Range: ">−273.15"
       Required: True
       Notes: "Condenser liquid temperature at the exit flange of the condenser for this rating point"
     condenser_liquid_dfferential_pressure:
@@ -561,13 +561,13 @@ Performance:
       Description: "Maximum unit power input"
       Data Type: "Numeric"
       Units: "W"
-      Range: ">0"
+      Range: ">=0"
       Notes: "Maximum input power at which the chiller operates reliably and continuously"
     cycling_degradation_coefficient:
       Description: "Cycling degradation coefficient (C<sub>D</sub>) as described in AHRI 550/590 or AHRI 551/591"
       Data Type: "Numeric"
       Units: "-"
-      Range: ">=0, <=1.0"
+      Range: ">=0.0, <=1.0"
       Required: True
       Notes: "Used when the unit cycles to meet a setpoint"
     performance_map_cooling:
@@ -622,7 +622,7 @@ GridVariablesCooling:
       Description: "Fraction of maximum net capacity at the same operating conditions"
       Data Type: "[Numeric][1..]"
       Units: "-"
-      Range: ">=0, <=1"
+      Range: ">=0.0, <=1.0"
       Required: True
       Notes: "Ratio of `net_evaporator_capacity` to the maximum evaporator capacity at the same operating conditions"
 
@@ -633,7 +633,7 @@ LookupVariablesCooling:
       Description: "Total power input"
       Data Type: "[Numeric/Null][1..]"
       Units: "W"
-      Range: ">0"
+      Range: ">=0"
       Required: True
       Notes: "All power consumed by the chiller, including controls, motors, variable speed drives, purge units, sump heaters, fans, etc."
     net_evaporator_capacity:
