@@ -151,7 +151,7 @@ Performance:
     heat_loss_fraction:
       Description: "Fraction of efficiency losses transferred into the air stream"
       Data Type: "Numeric"
-      Range: ">=0, <=1"
+      Range: ">=0.0, <=1.0"
       Units: "-"
       Notes: "Used to determine amount of heat from the motor added to the air stream"
       Required: True
