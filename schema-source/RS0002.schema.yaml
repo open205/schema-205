@@ -106,7 +106,7 @@ RatingAHRI210240:
       Description: "Total cooling capacity (A) as defined by AHRI 210/240"
       Data Type: "Numeric"
       Units: "Btu/h"
-      Range: ">0.0"
+      Range: ">=0.0"
       Notes: "The net capacity (accounting for fan motor heat) at the AHRI 'A' operating conditions"
       Required: True
     rating_fan_power_per_flow:
@@ -152,7 +152,7 @@ RatingAHRI340360:
       Description: "Total cooling capacity as defined by AHRI 340/360"
       Data Type: "Numeric"
       Units: "Btu/h"
-      Range: ">0.0"
+      Range: ">=0.0"
       Notes: "Net capacity accounts for fan motor heat"
       Required: True
     rating_fan_power_per_flow:
@@ -174,7 +174,7 @@ Performance:
       Description: "Continuous unit power draw regardless of fan or DX system operation"
       Data Type: "Numeric"
       Units: "W"
-      Range: ">=0"
+      Range: ">=0.0"
       Notes: "Includes on-board controls and other power not included in the fan or dx system *representations*"
       Required: True
     fan_representation:

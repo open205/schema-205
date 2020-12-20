@@ -137,14 +137,14 @@ Performance:
     nominal_air_volumetric_flow_rate:
       Description: "Nominal air flow rate for fan assembly"
       Data Type: "Numeric"
-      Range: ">=0"
+      Range: ">=0.0"
       Units: "m3/s"
       Notes: "Nominal or rated air flow rate at *standard air conditions* used for calculating wet coil pressure drop"
       Required: True
     wet_coil_pressure_drop:
       Description: "Additional static pressure drop for each cooling coil component collecting condensate"
       Data Type: "Numeric"
-      Range: ">=0"
+      Range: ">=0.0"
       Units: "Pa"
       Notes: "Corresponds to additional pressure drop at `nominal_air_volumetric_flow_rate`. If unknown, a value of 75 Pa shall be used"
       Required: True
@@ -158,13 +158,13 @@ Performance:
     maximum_impeller_speed:
       Description: "Maximum impeller rotational speed"
       Data Type: "Numeric"
-      Range: ">=0"
+      Range: ">=0.0"
       Units: "rev/s"
       Required: True
     minimum_impeller_speed:
       Description: "Minimum impeller rotational speed"
       Data Type: "Numeric"
-      Range: ">=0"
+      Range: ">=0.0"
       Units: "rev/s"
       Notes: "If no mimumum, use zero"
       Required: True
@@ -197,13 +197,13 @@ SystemCurve:
     air_volumetric_flow_rate:
       Description: "Volumetric air flow rate through an air distribution system"
       Data Type: "[Numeric][2..]"
-      Range: ">=0"
+      Range: ">=0.0"
       Units: "m3/s"
       Required: True
     static_pressure_difference:
       Description: "Static pressure drop of an air distribution system"
       Data Type: "[Numeric][2..]"
-      Range: ">=0"
+      Range: ">=0.0"
       Units: "Pa"
       Required: True
 
@@ -225,14 +225,14 @@ GridVariablesContinuous:
     air_volumetric_flow_rate:
       Description: "Volumetric air flow rate through fan assembly"
       Data Type: "[Numeric][1..]"
-      Range: ">=0"
+      Range: ">=0.0"
       Units: "m3/s"
       Notes: "At *standard air conditions*"
       Required: True
     static_pressure_difference:
       Description: "Static pressure across fan assembly at dry coil conditions"
       Data Type: "[Numeric][1..]"
-      Range: ">=0"
+      Range: ">=0.0"
       Units: "Pa"
       Notes: "Or external static at dry coil conditions\n\nAny static pressure deduction (or addition) for wet coil is specified by `wet_coil_pressure_drop` in 'Performance' data group"
       Required: True
@@ -243,13 +243,13 @@ LookupVariablesContinuous:
     impeller_speed:
       Description: "Rotational speed of fan impeller"
       Data Type: "[Numeric/Null][1..]"
-      Range: ">=0"
+      Range: ">=0.0"
       Units: "rev/s"
       Required: True
     shaft_power:
       Description: "Mechanical shaft power input to fan assembly"
       Data Type: "[Numeric/Null][1..]"
-      Range: ">=0"
+      Range: ">=0.0"
       Units: "W"
       Notes: "The mechanical efficiency of any belt drive used to modify rotational speed between the motor and impeller shall be implicit in this value"
       Required: True
@@ -279,7 +279,7 @@ GridVariablesDiscrete:
     static_pressure_difference:
       Description: "Static pressure across fan assembly at dry coil conditions"
       Data Type: "[Numeric][1..]"
-      Range: ">=0"
+      Range: ">=0.0"
       Units: "Pa"
       Notes: "Or external static at dry coil conditions\n\nAny static pressure deduction (or addition) for wet coil is specified by `wet_coil_pressure_drop` in 'Performance' data group"
       Required: True
@@ -290,14 +290,14 @@ LookupVariablesDiscrete:
     air_volumetric_flow_rate:
       Description: "Volumetric air flow rate through fan assembly"
       Data Type: "[Numeric/Null][1..]"
-      Range: ">=0"
+      Range: ">=0.0"
       Units: "m3/s"
       Notes: "At *standard air conditions*"
       Required: True
     shaft_power:
       Description: "Mechanical shaft power input to fan assembly"
       Data Type: "[Numeric/Null][1..]"
-      Range: ">=0"
+      Range: ">=0.0"
       Units: "W"
       Notes: "The mechanical efficiency of any belt drive used to modify rotational speed between the motor and impeller shall be implicit in this value"
       Required: True

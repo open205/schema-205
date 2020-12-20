@@ -38,12 +38,12 @@ ProductInformation:
       Description: "Nominal voltage"
       Data Type: "Numeric"
       Units: "V"
-      Range: ">=0"
+      Range: ">=0.0"
     nominal_frequency:
       Description: "Nominal frequency"
       Data Type: "Numeric"
       Units: "Hz"
-      Range: ">=0"
+      Range: ">=0.0"
     number_of_poles:
       Description: "Number of poles"
       Data Type: "Integer"
@@ -55,14 +55,14 @@ Performance:
       Description: "Maximum operational input power to the motor"
       Data Type: "Numeric"
       Units: "W"
-      Range: ">=0"
+      Range: ">=0.0"
       Notes: "This is the operational limit set to prevent overheating or overcurrent. This is not the rated name plate power"
       Required: True
     standby_power:
       Description: "Power draw when motor is not operating"
       Data Type: "Numeric"
       Units: "W"
-      Range: ">=0"
+      Range: ">=0.0"
       Required: True
     drive_representation:
       Description: "The corresponding Standard 205 drive *representation*"
@@ -90,7 +90,7 @@ GridVariables:
     shaft_power:
       Description: "Delivered rotational shaft power"
       Data Type: "[Numeric][1..]"
-      Range: ">=0"
+      Range: ">=0.0"
       Units: "W"
       Required: True
 

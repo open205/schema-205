@@ -59,13 +59,13 @@ Performance:
       Description: "Maximum power draw of the drive"
       Data Type: "Numeric"
       Units: "W"
-      Range: ">=0"
+      Range: ">=0.0"
       Required: True
     standby_power:
       Description: "Power draw when the motor is not operating"
       Data Type: "Numeric"
       Units: "W"
-      Range: ">=0"
+      Range: ">=0.0"
       Required: True
     cooling_method:
       Description: "Method used to cool the drive"
@@ -94,7 +94,7 @@ GridVariables:
     output_power:
       Description: "Power delivered to the motor"
       Data Type: "[Numeric][1..]"
-      Range: ">=0"
+      Range: ">=0.0"
       Units: "W"
       Required: True
 

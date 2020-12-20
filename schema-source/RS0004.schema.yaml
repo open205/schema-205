@@ -91,7 +91,7 @@ GridVariablesCooling:
     outdoor_coil_entering_dry_bulb_temperature:
       Description: "Dry bulb temperature of the air entering the outdoor coil"
       Data Type: "[Numeric][1..]"
-      Range: ">=0"
+      Range: ">=0.0"
       Units: "K"
       Required: True
     indoor_coil_entering_relative_humidity:
@@ -104,14 +104,14 @@ GridVariablesCooling:
     indoor_coil_entering_dry_bulb_temperature:
       Description: "Dry bulb temperature of the air entering the indoor coil"
       Data Type: "[Numeric][1..]"
-      Range: ">=0"
+      Range: ">=0.0"
       Units: "K"
       Required: True
       Notes: "As measured immediately before entering the coil (i.e., after the fan in a blow-through configuration)"
     indoor_coil_air_mass_flow_rate:
       Description: "Mass flow rate of air entering the indoor coil"
       Data Type: "[Numeric][1..]"
-      Range: ">0"
+      Range: ">0.0"
       Units: "kg/s"
       Required: True
     compressor_sequence_number:
@@ -124,7 +124,7 @@ GridVariablesCooling:
     ambient_absolute_air_pressure:
       Description: "Ambient absolute air pressure"
       Data Type: "[Numeric][1..]"
-      Range: ">=0"
+      Range: ">=0.0"
       Units: "Pa"
       Required: True
 
@@ -134,21 +134,21 @@ LookupVariablesCooling:
     gross_total_capacity:
       Description: "Total heat removed by the indoor coil"
       Data Type: "[Numeric/Null][1..]"
-      Range: ">0"
+      Range: ">=0.0"
       Units: "W"
       Required: True
       Notes: "Shall not include fan heat"
     gross_sensible_capacity:
       Description: "Sensible heat removed by the indoor coil"
       Data Type: "[Numeric/Null][1..]"
-      Range: ">0"
+      Range: ">=0.0"
       Units: "W"
       Required: True
       Notes: "Shall not include fan heat"
     gross_power:
       Description: "Gross power draw (of the outdoor unit)"
       Data Type: "[Numeric/Null][1..]"
-      Range: ">0"
+      Range: ">0.0"
       Units: "W"
       Required: True
       Notes: "Includes compressor, outdoor fan, and any auxiliary power used by the unit's controls and any sump heater.\n\nShall not include power drawn by the indoor fan"
@@ -171,7 +171,7 @@ GridVariablesStandby:
     outdoor_coil_environment_dry_bulb_temperature:
       Description: "Dry bulb temperature of the air in the environment of the outdoor coil"
       Data Type: "[Numeric][1..]"
-      Range: ">=0"
+      Range: ">=0.0"
       Units: "K"
       Required: True
 
@@ -181,7 +181,7 @@ LookupVariablesStandby:
     gross_power:
       Description: "Gross power draw (of the outdoor unit)"
       Data Type: "[Numeric/Null][1..]"
-      Range: ">0"
+      Range: ">0.0"
       Units: "W"
       Required: True
       Notes: "Includes any auxiliary power used by the unit's controls and any sump heater"
