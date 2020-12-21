@@ -50,8 +50,8 @@ class A205Schema:
         if len(errors) == 0:
             print(f"Validation successful for {instance['description']}")
         else:
-            if 'RS_ID' in instance:
-                rs_id = instance['RS_ID']
+            if 'rs_id' in instance:
+                rs_id = instance['rs_id']
                 rs_index = get_rs_index(rs_id)
             else:
                 rs_id = "RS????"

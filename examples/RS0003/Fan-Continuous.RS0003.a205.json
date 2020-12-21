@@ -1,13 +1,13 @@
 {
     "standard_version": "PPR2",
     "schema_version": "0.1.0",
-    "RS_ID": "RS0003",
+    "rs_id": "RS0003",
     "description": "Continuous Fan",
-    "ID": "123e4567-e89b-12d3-a456-426614174000",
+    "id": "123e4567-e89b-12d3-a456-426614174000",
     "data_timestamp": "2020-05-11T00:00Z",
     "data_version": 1,
     "disclaimer": "Example data not to be used for simulation",
-    "RS_instance": {
+    "rs_instance": {
         "description": {
             "product_information": {
                 "manufacturer": "ABC Fans",
@@ -17,13 +17,13 @@
             }
         },
         "performance": {
-            "nominal_volumetric_air_flow_rate": 9.5,
+            "nominal_air_volumetric_flow_rate": 9.5,
             "wet_coil_pressure_drop": 0,
             "heat_loss_fraction": 1,
             "maximum_impeller_speed": 28,
             "minimum_impeller_speed": 15,
             "stability_curve": {
-                "volumetric_air_flow_rate": [
+                "air_volumetric_flow_rate": [
                     0,
                     0.000943895,
                     0.002831685,
@@ -48,7 +48,7 @@
             "speed_control_type": "FIXED",
             "performance_map": {
                 "grid_variables": {
-                    "volumetric_air_flow_rate": [
+                    "air_volumetric_flow_rate": [
                         5.6633694,
                         6.13531685,
                         6.6072643,
@@ -220,7 +220,7 @@
                         27.35,
                         27.85
                     ],
-                    "input_power": [
+                    "shaft_power": [
                         4690.453,
                         5480.895,
                         6293.708,

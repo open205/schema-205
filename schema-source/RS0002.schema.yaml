@@ -5,17 +5,7 @@ Schema:
   Title: "Unitary Cooling Air-Conditioning Equipment"
   Description: "Schema for ASHRAE 205 annex RS0002: Unitary Cooling Air-Conditioning Equipment"
 
-RS0002:
-  Object Type: "Data Group"
-  Data Elements:
-    description:
-      Description: "Data group describing product and rating information"
-      Data Type: "{Description}"
-    performance:
-      Description: "Data group containing performance information"
-      Data Type: "{Performance}"
-      Required: True
-
+# Local Enumerations
 FanPosition:
   Object Type: "Enumeration"
   Enumerators:
@@ -30,19 +20,36 @@ AHRI210240TestStandardYear:
   Object Type: "Enumeration"
   Enumerators:
     IP_2008:
+      Description: "Rating is based on 2008 AHRI standard"
       Display Text: "2008"
     IP_2017:
+      Description: "Rating is based on 2017 AHRI standard"
       Display Text: "2017"
 
 AHRI340360TestStandardYear:
   Object Type: "Enumeration"
   Enumerators:
     IP_2007:
+      Description: "Rating is based on 2007 AHRI standard"
       Display Text: "2007"
     IP_2015:
+      Description: "Rating is based on 2015 AHRI standard"
       Display Text: "2015"
     IP_2019:
-      Display Text: "I-P/2019"
+      Description: "Rating is based on 2019 AHRI standard"
+      Display Text: "2019"
+
+# Data Groups
+RS0002:
+  Object Type: "Data Group"
+  Data Elements:
+    description:
+      Description: "Data group describing product and rating information"
+      Data Type: "{Description}"
+    performance:
+      Description: "Data group containing performance information"
+      Data Type: "{Performance}"
+      Required: True
 
 Description:
   Object Type: "Data Group"
@@ -61,31 +68,27 @@ ProductInformation:
   Object Type: "Data Group"
   Data Elements:
     manufacturer:
-      Description: "Manufacturer name"
+      Description: "Package manufacturer name"
       Data Type: "String"
-      Required: True
     model_number:
-      Description: "Model number"
+      Description: "Package model number"
       Data Type: "Pattern"
-      Notes: "Pattern shall match all model numbers that can be represented by the *representation*."
-      Required: True
-
+      Notes: "Pattern shall match all model numbers that can be represented by the *representation*"
 
 RatingAHRI210240:
   Object Type: "Rating Data Group"
   Data Elements:
     certified_reference_number:
-      Description: "AHRI Certified Reference Number"
+      Description: "AHRI certified reference number"
       Data Type: "String"
       Required: True
     test_standard_year:
-      Description: "Name and version of the AHRI test standard"
+      Description: "Year of the AHRI test standard"
       Data Type: "<AHRI210240TestStandardYear>"
       Required: True
     manufacturer_data_source_version:
-      Description: "Version of the software used to generate the AHRI rating and the performance maps"
+      Description: "Version of the software used to generate the rating and performance maps"
       Data Type: "String"
-      Required: True
     SEER:
       Description: "Seasonal Energy Efficiency Ratio as defined by AHRI 210/240"
       Data Type: "Numeric"
@@ -97,25 +100,25 @@ RatingAHRI210240:
       Data Type: "Numeric"
       Units: "Btu/W-h"
       Range: ">0.0"
-      Notes: "The net efficiency (accounting for fan motor heat/power) at the AHRI 'A' operating conditions."
+      Notes: "The net efficiency (accounting for fan motor heat/power) at the AHRI 'A' operating conditions"
       Required: True
-    capacity:
+    cooling_capacity:
       Description: "Total cooling capacity (A) as defined by AHRI 210/240"
       Data Type: "Numeric"
       Units: "Btu/h"
-      Range: ">0.0"
-      Notes: "The net capacity (accounting for fan motor heat) at the AHRI 'A' operating conditions."
+      Range: ">=0.0"
+      Notes: "The net capacity (accounting for fan motor heat) at the AHRI 'A' operating conditions"
       Required: True
     rating_fan_power_per_flow:
-      Description: "Power per air flow rate of the fan used in the AHRI 210/240 calculation of SEER and EER"
+      Description: "Power per air flow rate of the indoor fan used in the AHRI 210/240 calculation of SEER and EER"
       Data Type: "Numeric"
-      Units: "W/(m3/s)"  # TODO: Should be IP units?
+      Units: "W/cfm"
       Range: ">0.0"
-      Notes: "Used for verification of the rated SEER value (see SEER calculation procedures in AHRI 210/240)."
+      Notes: "Used for verification of the rated SEER value"
     rating_reproducible_from_performance_data:
-      Description: "Whether this rating can be reproduced using the performance data in the representation"
+      Description: "Whether this rating can be reproduced using the performance data in the *representation*"
       Data Type: "Boolean"
-      Notes: "Mark this field as true if the rating values in this table can be reproduced using the performance data in the representation within the tolerance of the rating standard."
+      Notes: "True if the rating values in this table can be reproduced using the performance data in the *representation* within the tolerance of the rating standard"
       Required: True
 
 RatingAHRI340360:
@@ -132,7 +135,6 @@ RatingAHRI340360:
     manufacturer_data_source_version:
       Description: "Version of the software used to generate the AHRI rating and the performance maps"
       Data Type: "String"
-      Required: True
     IEER:
       Description: "Integrated Energy Efficiency Ratio as defined by AHRI 340/360"
       Data Type: "Numeric"
@@ -144,45 +146,45 @@ RatingAHRI340360:
       Data Type: "Numeric"
       Units: "Btu/W-h"
       Range: ">0.0"
-      Notes: "Net efficiency accounts for fan motor heat/power."
+      Notes: "Efficiency accounts for fan motor heat/power"
       Required: True
-    capacity:
+    cooling_capacity:
       Description: "Total cooling capacity as defined by AHRI 340/360"
       Data Type: "Numeric"
       Units: "Btu/h"
-      Range: ">0.0"
-      Notes: "Net capacity accounts for fan motor heat."
+      Range: ">=0.0"
+      Notes: "Net capacity accounts for fan motor heat"
       Required: True
     rating_fan_power_per_flow:
       Description: "Power per air flow rate of the indoor fan used in the AHRI 340/360 calculation of IEER and EER"
       Data Type: "Numeric"
-      Units: "W/(m3/s)"  # TODO: Should be IP units?
+      Units: "W/cfm"
       Range: ">0.0"
-      Notes: "Used for verification of the rated IEER value (see IEER calculation procedures in AHRI 340/360)."
+      Notes: "Used for verification of the rated IEER value"
     rating_reproducible_from_performance_data:
-      Description: "Whether this rating can be reproduced using the performance data in the representation"
+      Description: "Whether this rating can be reproduced using the performance data in the *representation*"
       Data Type: "Boolean"
-      Notes: "Mark this field as true if the rating values in this table can be reproduced using the performance data in the representation within the tolerance of the rating standard."
+      Notes: "True if the rating values in this table can be reproduced using the performance data in the *representation* within the tolerance of the rating standard"
       Required: True
 
 Performance:
   Object Type: "Data Group"
   Data Elements:
     standby_power:
-      Description: "Continuous unit power draw regardless of whether the fan or DX system are operating"
+      Description: "Continuous unit power draw regardless of fan or DX system operation"
       Data Type: "Numeric"
       Units: "W"
-      Range: ">=0"
-      Notes: "Includes on-board controls and other power not otherwise included in the fan or dx system representations."
+      Range: ">=0.0"
+      Notes: "Includes on-board controls and other power not included in the fan or dx system *representations*"
       Required: True
     fan_representation:
-      Description: "The corresponding Standard 205 enclosed fan assembly representation"
-      Data Type: "{ASHRAE205(RS_ID=RS0003)}"
-      Notes: "This is only required if the fan is packaged with the unitary equipment."
+      Description: "The corresponding Standard 205 fan assembly *representation*"
+      Data Type: "{ASHRAE205(rs_id=RS0003)}"
+      Notes: "Required if the fan is packaged with the unitary equipment"
     fan_position:
       Description: "Position of the fan relative to the indoor coil"
       Data Type: "<FanPosition>"
       Required: True
-    DX_system_representation:
-      Description: "The corresponding Standard 205 direct expansion coil system representation"
-      Data Type: "{ASHRAE205(RS_ID=RS0004)}"
+    dx_system_representation:
+      Description: "The corresponding Standard 205 direct expansion coil system *representation*"
+      Data Type: "{ASHRAE205(rs_id=RS0004)}"

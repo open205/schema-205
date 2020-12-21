@@ -58,7 +58,7 @@ String:
 
 "Null":
   Object Type: "Data Type"
-  Description: "Indicator that no value is provided. Only used in combination with other data types, e.g., 'Number/Null'."
+  Description: "Used to represent a missing value. Shall only be used in combination with other data types, e.g., 'Number/Null'."
   JSON Schema Type: "null"
   Examples:
     - "null"
@@ -107,7 +107,11 @@ ASHRAE205Version:
     PPR2:
       Description: "ASHRAE205 - 2020 Publication Public Review 2"
       Display Text: "ASHRAE205 - 2020 Publication Public Review 2"
-      Notes: "Unpublished."
+      Notes: "Unpublished"
+    PPR3:
+      Description: "ASHRAE205 - 2020 Publication Public Review 3"
+      Display Text: "ASHRAE205 - 2020 Publication Public Review 3"
+      Notes: "Unpublished"
 
 RSID:
   Object Type: "Enumeration"
@@ -124,8 +128,6 @@ RSID:
       Description: "Motor"
     RS0006:
       Description: "Electronic Motor Drive"
-
-# RefrigerantType (see end of file)
 
 CompressorType:
   Object Type: "Enumeration"
@@ -146,15 +148,25 @@ CompressorType:
       Description: "Scroll compressor"
       Display Text: "Scroll"
 
+CompressorSpeedControlType:
+  Object Type: "Enumeration"
+  Enumerators:
+    DISCRETE:
+      Description: "Compressor loading is controlled by cycling between one or more discrete stages"
+      Display Text: "Discrete"
+    CONTINUOUS:
+      Description: "Compressor loading is controlled by continuously varying the speed of the compressor"
+      Display Text: "Continuous"
+
 CondenserType:
   Object Type: "Enumeration"
   Enumerators:
     AIR:
       Description: "Air-cooled condenser"
       Display Text: "Air"
-    WATER:
-      Description: "Water-cooled condenser"
-      Display Text: "Water"
+    LIQUID:
+      Description: "Liquid-cooled condenser"
+      Display Text: "Liquid"
     EVAPORATIVE:
       Description: "Evaporative condenser"
       Display Text: "Evaporative"
@@ -171,9 +183,18 @@ LiquidConstituent:
     ETHYLENE_GLYCOL:
       Description: "Ethylene glycol"
       Display Text: "Ethylene Glycol"
-    SEA_WATER:
-      Description: "Salt water from a sea"
-      Display Text: "Sea Water"
+    SODIUM_CHLORIDE:
+      Description: "Sodium chloride"
+      Display Text: "Sodium Chloride"
+    CALCIUM_CHLORIDE:
+      Description: "Calcium chloride"
+      Display Text: "Calcium Chloride"
+    ETHANOL:
+      Description: "Ethanol"
+      Display Text: "Ethanol"
+    METHANOL:
+      Description: "Methanol"
+      Display Text: "Methanol"
 
 ConcentrationType:
   Object Type: "Enumeration"
@@ -193,13 +214,13 @@ ASHRAE205:
       Description: "*ASHRAE 205 standard* version"
       Data Type: "<ASHRAE205Version>"
       Required: True
-      Notes: "Identifies the version of the *ASHRAE 205 Standard* this representation complies with."
+      Notes: "Identifies the version of the *ASHRAE 205 Standard* this *representation* complies with."
     schema_version:
       Description: "*ASHRAE 205 schema* version"
       Data Type: "Version"
       Required: True
-      Notes: "Identifies the version of the ASHRAE 205 JSON schema this representation complies with."
-    RS_ID:
+      Notes: "Identifies the version of the *ASHRAE 205 JSON schema* this *representation* complies with."
+    rs_id:
       Description: "*Representation specification* identifier"
       Data Type: "<RSID>"
       Required: True
@@ -208,11 +229,11 @@ ASHRAE205:
       Description: "Free-form description of equipment (suitable for display)"
       Data Type: "String"
       Required: True
-    ID:
+    id:
       Description: "Unique equipment identifier"
       Data Type: "UUID"
       Required: True
-      Notes: "Assigned by *data publisher* to identify specific equipment. ID shall remain unchanged for revised *representations* for the same equipment."
+      Notes: "Assigned by *data publisher* to identify a *representation* for a specific set of equipment. `id` shall remain unchanged for revised *representations* for the same equipment."
     data_timestamp:
       Description: "Date of publication"
       Data Type: "Timestamp"
@@ -221,8 +242,9 @@ ASHRAE205:
     data_version:
       Description: "Integer version identifier for the data in the *representation*"
       Data Type: "Integer"
+      Range: ">=1"
       Required: True
-      Notes: "Used by *data publisher* to track revisions of the data for a specific *representation*. The value shall be incremented for each data revision."
+      Notes: "Used by *data publisher* to track revisions of the data for a specific *representation*. `data_version` shall be incremented for each data revision."
     data_source:
       Description: "Free-form identification of the source of this data"
       Data Type: "String"
@@ -232,10 +254,10 @@ ASHRAE205:
     notes:
       Description: "Additional Information"
       Data Type: "String"
-    RS_instance:
+    rs_instance:
       Description: "*Representation Specification* Data Group"
       Data Type: "({RS0001}, {RS0002}, {RS0003}, {RS0004}, {RS0005}, {RS0006})"
-      Notes: "Data Group defined by specific *representation specification*. E.g., 'RS0001'."
+      Notes: "Data Group defined by specific *representation specification* (e.g., 'RS0001')"
       Required: True
 
 # Reusable Data Groups
@@ -262,776 +284,7 @@ LiquidComponent:
     concentration:
       Description: "Concentration of this component of the mixture"
       Data Type: "Numeric"
-      Range: ">=0, <=1.0"
-      Notes: "If omitted, it is assumed to share equal portions with any other component with no defined concentration. e.g., can be left blank for the primary component."
+      Range: ">=0.0, <=1.0"
+      Notes: "If omitted, assume equal distribution with any other component with no defined concentration (e.g., can be left blank for the primary component)"
 
-# Automatically generated using generate-refrigerant-enums.py, which parses refrigerants.csv based on
-# https://www.ashrae.org/technical-resources/standards-and-guidelines/ashrae-refrigerant-designations
 
-RefrigerantType:
-  Object Type: Enumeration
-  Enumerators:
-    R11:
-      Description: trichlorofluoromethane
-      Notes: Methane Series CCl_3F
-      Display Text: R-11
-    R12:
-      Description: dichlorodifluoromethane
-      Notes: Methane Series CCl_2F_2
-      Display Text: R-12
-    R12B1:
-      Description: bromochlorodifluoromethane
-      Notes: Methane Series CBrClF_2
-      Display Text: R-12B1
-    R13:
-      Description: chlorotrifluoromethane
-      Notes: Methane Series CClF_3
-      Display Text: R-13
-    R13B1:
-      Description: bromotrifluoromethane
-      Notes: Methane Series CBrF_3
-      Display Text: R-13B1
-    R14E:
-      Description: tetrafluoromethane (carbon tetrafluoride)
-      Notes: Methane Series CF_4
-      Display Text: R-14e
-    R21:
-      Description: dichlorofluoromethane
-      Notes: Methane Series CHCl_2F
-      Display Text: R-21
-    R22:
-      Description: chlorodifluoromethane
-      Notes: Methane Series CHClF_2
-      Display Text: R-22
-    R23:
-      Description: trifluoromethane
-      Notes: Methane Series CHF_3
-      Display Text: R-23
-    R30:
-      Description: dichloromethane (methylene chloride)
-      Notes: Methane Series CH_2Cl_2
-      Display Text: R-30
-    R31:
-      Description: chlorofluoromethane
-      Notes: Methane Series CH_2ClF
-      Display Text: R-31
-    R32:
-      Description: difluoromethane (methylene fluoride)
-      Notes: Methane Series CH_2F_2
-      Display Text: R-32
-    R40:
-      Description: chloromethane (methyl chloride)
-      Notes: Methane Series CH_3Cl
-      Display Text: R-40
-    R41:
-      Description: fluoromethane (methyl fluoride)
-      Notes: Methane Series CH_3F
-      Display Text: R-41
-    R50:
-      Description: methane
-      Notes: Methane Series CH_4
-      Display Text: R-50
-    R113:
-      Description: 1,1,2-trichloro-1,2,2-trifluoroethane
-      Notes: Ethane Series CCl_2FCClF_2
-      Display Text: R-113
-    R114:
-      Description: 1,2-dichloro-1,1,2,2-tetrafluoromethane
-      Notes: Ethane Series CClF_2CClF_2
-      Display Text: R-114
-    R115:
-      Description: chloropentafluoroethane
-      Notes: Ethane Series CClF_2CF_3
-      Display Text: R-115
-    R116:
-      Description: hexafluoroethane
-      Notes: Ethane Series CF_3CF_3
-      Display Text: R-116
-    R123:
-      Description: 2,2-dichloro-1,1,1-trifluoroethane
-      Notes: Ethane Series CHCl_2CF_3
-      Display Text: R-123
-    R124:
-      Description: 2-chloro-1,1,1,2-tetrafluoroethane
-      Notes: Ethane Series CHClFCF_3
-      Display Text: R-124
-    R125:
-      Description: pentafluoroethane
-      Notes: Ethane Series CHF_2CF_3
-      Display Text: R-125
-    R134A:
-      Description: 1,1,1,2-tetrafluoroethane
-      Notes: Ethane Series CH_2FCF_3
-      Display Text: R-134a
-    R141B:
-      Description: 1,1-dichloro-1-fluoroethane
-      Notes: Ethane Series CH_3CCl_2F
-      Display Text: R-141b
-    R142B:
-      Description: 1-chloro-1,1-difluoroethane
-      Notes: Ethane Series CH_3CClF_2
-      Display Text: R-142b
-    R143A:
-      Description: 1,1,1-trifluoroethane
-      Notes: Ethane Series CH_3CF_3
-      Display Text: R-143a
-    R152A:
-      Description: 1,1-difluoroethane
-      Notes: Ethane Series CH_3CHF_2
-      Display Text: R-152a
-    R170:
-      Description: ethane
-      Notes: Ethane Series CH_3CH_3
-      Display Text: R-170
-    RE170:
-      Description: Dimethyl Ether
-      Notes: Ethers CH3OCH3
-      Display Text: R-E170
-    R218:
-      Description: octafluoropropane
-      Notes: Propane CF_3CF_2CF_3
-      Display Text: R-218
-    R227EA:
-      Description: 1,1,1,2,3,3,3-heptafluoropropane
-      Notes: Propane CF_3CHFCF_3
-      Display Text: R-227ea
-    R236FA:
-      Description: 1,1,1,3,3,3-hexafluoropropane
-      Notes: Propane CF_3CH_2CF_3
-      Display Text: R-236fa
-    R245FA:
-      Description: 1,1,1,3,3-pentafluoropropane
-      Notes: Propane CHF_2CH_2CF_3
-      Display Text: R-245fa
-    R290:
-      Description: propane
-      Notes: Propane CH_3CH_2CH_3
-      Display Text: R-290
-    RC318:
-      Description: octafluorocyclobutane
-      Notes: Cyclic Organic Compounds -(CF_2)_4-
-      Display Text: R-C318
-    R600:
-      Description: butane
-      Notes: hydrocarbons CH_3CH_2CH_2CH_3_A3
-      Display Text: R-600
-    R600A:
-      Description: isobutane
-      Notes: hydrocarbons CH(CH_3)_2CH_3_A3
-      Display Text: R-600a
-    R601:
-      Description: Pentane
-      Notes: hydrocarbons CH_3CH_2CH_2_CH_2CH_3
-      Display Text: R-601
-    R601A:
-      Description: Isopentane
-      Notes: hydrocarbons CH(CH_3)_2_CH_2CH_3
-      Display Text: R-601a
-    R610:
-      Description: ethyl ether
-      Notes: oxygen compounds CH_3CH_2_OCH_2CH_3
-      Display Text: R-610
-    R611:
-      Description: methyl formate
-      Notes: oxygen compounds HCOOCH_3
-      Display Text: R-611
-    R620:
-      Description: (Reserved for future assignment)
-      Notes: sulfur compounds
-      Display Text: R-620
-    R630:
-      Description: methyl amine
-      Notes: Nitrogen Compounds CH_3NH_2
-      Display Text: R-630
-    R631:
-      Description: ethyl amine
-      Notes: Nitrogen Compounds CH_3CH_2(NH_2)
-      Display Text: R-631
-    R702:
-      Description: hydrogen
-      Notes: Inorganic Compounds H_2
-      Display Text: R-702
-    R704:
-      Description: helium
-      Notes: Inorganic Compounds He
-      Display Text: R-704
-    R717:
-      Description: ammonia
-      Notes: Inorganic Compounds NH_3
-      Display Text: R-717
-    R718:
-      Description: water
-      Notes: Inorganic Compounds H_2O
-      Display Text: R-718
-    R720:
-      Description: neon
-      Notes: Inorganic Compounds Ne
-      Display Text: R-720
-    R728:
-      Description: nitrogen
-      Notes: Inorganic Compounds N_2
-      Display Text: R-728
-    R732:
-      Description: oxygen
-      Notes: Inorganic Compounds O_2
-      Display Text: R-732
-    R740:
-      Description: argon
-      Notes: Inorganic Compounds Ar
-      Display Text: R-740
-    R744:
-      Description: carbon dioxide
-      Notes: Inorganic Compounds CO_2
-      Display Text: R-744
-    R744A:
-      Description: nitrous oxide
-      Notes: Inorganic Compounds N_2O
-      Display Text: R-744A
-    R764:
-      Description: sulfur dioxide
-      Notes: Inorganic Compounds SO_2
-      Display Text: R-764
-    R1130E:
-      Description: trans-1,2-dichloroethene
-      Notes: Unsaturated Organic Compounds CHCl=CHCl
-      Display Text: R-1130(E)
-    R1132A:
-      Description: 1,1-difluoroethylene
-      Notes: Unsaturated Organic Compounds CF2=CH2
-      Display Text: R-1132a
-    R1150:
-      Description: ethene (ethylene)
-      Notes: Unsaturated Organic Compounds CH2=CH2
-      Display Text: R-1150
-    R1233ZDE:
-      Description: trans-1-chloro-3,3,3-trifluoro-1-propene
-      Notes: Unsaturated Organic Compounds CF3CH=CHCl
-      Display Text: R-1233zd(E)
-    R1224YDZ:
-      Description: (Z)-1-chloro-2,3,3,3-tetrafluoropropene
-      Notes: Unsaturated Organic Compounds CF3CF=CHCl
-      Display Text: R-1224yd(Z)
-    R1234YF:
-      Description: 2,3,3,3-tetrafluoro-1-propene
-      Notes: Unsaturated Organic Compounds CF3CF=CH2
-      Display Text: R-1234yf
-    R1234ZEE:
-      Description: trans-1,3,3,3-tetrafluoro-1-propene
-      Notes: Unsaturated Organic Compounds CF3CH=CHF
-      Display Text: R-1234ze(E)
-    R1270:
-      Description: propene (propylene)
-      Notes: Unsaturated Organic Compounds CH3CH=CH_2
-      Display Text: R-1270
-    R1336MZZE:
-      Description: trans-1,1,1,4,4,4-hexafluoro-2-butene
-      Notes: Unsaturated Organic Compounds CF3CH=CHCF3
-      Display Text: R-1336mzz(E)
-    R1336MZZZ:
-      Description: cis-1,1,1,4,4,4-hexaflouro-2-butene
-      Notes: Unsaturated Organic Compounds CF3CHCHCF3
-      Display Text: R-1336mzz(Z)
-    R400:
-      Description: R-12/114 (must be specified) (50.0/50.0) (60.0/40.0)
-      Notes: Refrigerant Blends (Zeotropes)
-      Display Text: R-400
-    R401A:
-      Description: R-22/152a/124 (53.0/13.0/34.0)
-      Notes: Refrigerant Blends (Zeotropes)
-      Display Text: R-401A
-    R401B:
-      Description: R-22/152a/124 (61.0/11.0/28.0
-      Notes: Refrigerant Blends (Zeotropes)
-      Display Text: R-401B
-    R401C:
-      Description: R-22/152a/124 (33.0/15.0/52.0)
-      Notes: Refrigerant Blends (Zeotropes)
-      Display Text: R-401C
-    R402A:
-      Description: R-125/290/22 (60.0/2.0/38.0)
-      Notes: Refrigerant Blends (Zeotropes)
-      Display Text: R-402A
-    R402B:
-      Description: R-125/290/22 (38.0/2.0/60.0)
-      Notes: Refrigerant Blends (Zeotropes)
-      Display Text: R-402B
-    R403A:
-      Description: R-290/22/218 (5.0/75.0/20.0)
-      Notes: Refrigerant Blends (Zeotropes)
-      Display Text: R-403A
-    R403B:
-      Description: R-290/22/218 (5.0/56.0/39.0)
-      Notes: Refrigerant Blends (Zeotropes)
-      Display Text: R-403B
-    R404A:
-      Description: R-125/143a/134a (44.0/52.0/4.0)
-      Notes: Refrigerant Blends (Zeotropes)
-      Display Text: R-404A
-    R405A:
-      Description: R-22/152a/142b/C318 (45.0/7.0/5.5/42.5)
-      Notes: Refrigerant Blends (Zeotropes)
-      Display Text: R-405A
-    R406A:
-      Description: R-22/600a/142b (55.0/4.0/41.0)
-      Notes: Refrigerant Blends (Zeotropes)
-      Display Text: R-406A
-    R407A:
-      Description: R-32/125/134a (20.0/40.0/40.0)
-      Notes: Refrigerant Blends (Zeotropes)
-      Display Text: R-407A
-    R407B:
-      Description: R-32/125/134a (10.0/70.0/20.0)
-      Notes: Refrigerant Blends (Zeotropes)
-      Display Text: R-407B
-    R407C:
-      Description: R-32/125/134a (23.0/25.0/52.0)
-      Notes: Refrigerant Blends (Zeotropes)
-      Display Text: R-407C
-    R407D:
-      Description: R-32/125/134a (15.0/15.0/70.0)
-      Notes: Refrigerant Blends (Zeotropes)
-      Display Text: R-407D
-    R407E:
-      Description: R-32/125/134a (25.0/15.0/60.0)
-      Notes: Refrigerant Blends (Zeotropes)
-      Display Text: R-407E
-    R407F:
-      Description: R-32/125/134a (30.0/30.0/40.0)
-      Notes: Refrigerant Blends (Zeotropes)
-      Display Text: R-407F
-    R407G:
-      Description: R-32/125/134a (2.5/2.5/95.0)
-      Notes: Refrigerant Blends (Zeotropes)
-      Display Text: R-407G
-    R407H:
-      Description: R-32/125/134a (32.5/15.0/52.5)
-      Notes: Refrigerant Blends (Zeotropes)
-      Display Text: R-407H
-    R407I:
-      Description: R-32/125/134a (19.5/8.5/72.0)
-      Notes: Refrigerant Blends (Zeotropes)
-      Display Text: R-407I
-    R408A:
-      Description: R-125/143a/22 (7.0/46.0/47.0)
-      Notes: Refrigerant Blends (Zeotropes)
-      Display Text: R-408A
-    R409A:
-      Description: R-22/124/142b (60.0/25.0/15.0)
-      Notes: Refrigerant Blends (Zeotropes)
-      Display Text: R-409A
-    R409B:
-      Description: R-22/124/142b (65.0/25.0/10.0)
-      Notes: Refrigerant Blends (Zeotropes)
-      Display Text: R-409B
-    R410A:
-      Description: R-32/125 (50.0/50.0)
-      Notes: Refrigerant Blends (Zeotropes)
-      Display Text: R-410A
-    R410B:
-      Description: R-32/125 (45.0/55.0)
-      Notes: Refrigerant Blends (Zeotropes)
-      Display Text: R-410B
-    R411A:
-      Description: R-1270/22/152a) (1.5/87.5/11.0)
-      Notes: Refrigerant Blends (Zeotropes)
-      Display Text: R-411A
-    R411B:
-      Description: R-1270/22/152a (3.0/94.0/3.0)
-      Notes: Refrigerant Blends (Zeotropes)
-      Display Text: R-411B
-    R412A:
-      Description: R-22/218/143b (70.0/5.0/25.0_k
-      Notes: Refrigerant Blends (Zeotropes)
-      Display Text: R-412A
-    R413A:
-      Description: R-218/134a/600a (9.0/88.0/3.0)
-      Notes: Refrigerant Blends (Zeotropes)
-      Display Text: R-413A
-    R414A:
-      Description: R-22/124/600a/142b (51.0/28.5/4.0/16.5)
-      Notes: Refrigerant Blends (Zeotropes)
-      Display Text: R-414A
-    R414B:
-      Description: R-22/124/600a/142b (50.0/39.0/1.5/9.5)
-      Notes: Refrigerant Blends (Zeotropes)
-      Display Text: R-414B
-    R415A:
-      Description: R-22/152a (82.0/18.0)
-      Notes: Refrigerant Blends (Zeotropes)
-      Display Text: R-415A
-    R415B:
-      Description: R-22/152a (25.0/75.0)
-      Notes: Refrigerant Blends (Zeotropes)
-      Display Text: R-415B
-    R416A:
-      Description: R-134a/124/600 (59.0/39.5/1.5)
-      Notes: Refrigerant Blends (Zeotropes)
-      Display Text: R-416A
-    R417A:
-      Description: R-125/134a/600 (46.6/50.0/3.4)
-      Notes: Refrigerant Blends (Zeotropes)
-      Display Text: R-417A
-    R417B:
-      Description: R-125/134a/600 (79.0/18.3/2.7)
-      Notes: Refrigerant Blends (Zeotropes)
-      Display Text: R-417B
-    R417C:
-      Description: R-125/134a/600 (19.5/78.8/1.7)
-      Notes: Refrigerant Blends (Zeotropes)
-      Display Text: R-417C
-    R418A:
-      Description: R-290/22/152a (1.5/96.0/2.5)
-      Notes: Refrigerant Blends (Zeotropes)
-      Display Text: R-418A
-    R419A:
-      Description: R-125/134a/E170 (77.0/19.0/4.0)
-      Notes: Refrigerant Blends (Zeotropes)
-      Display Text: R-419A
-    R419B:
-      Description: R-125/134a/E170 (48.5/48.0/3.5)
-      Notes: Refrigerant Blends (Zeotropes)
-      Display Text: R-419B
-    R420A:
-      Description: R-134a/142b (88.0/12.0)
-      Notes: Refrigerant Blends (Zeotropes)
-      Display Text: R-420A
-    R421A:
-      Description: R-125/134a (58.0/42.0)
-      Notes: Refrigerant Blends (Zeotropes)
-      Display Text: R-421A
-    R421B:
-      Description: R-125/134a (85.0/15.0)
-      Notes: Refrigerant Blends (Zeotropes)
-      Display Text: R-421B
-    R422A:
-      Description: R-125/134a/600a (85.1/11.5/3.4)
-      Notes: Refrigerant Blends (Zeotropes)
-      Display Text: R-422A
-    R422B:
-      Description: R-125/134a/600a (55.0/42.0/3.0)
-      Notes: Refrigerant Blends (Zeotropes)
-      Display Text: R-422B
-    R422C:
-      Description: R-125/134a/600a (82.0/15.0/3.0)
-      Notes: Refrigerant Blends (Zeotropes)
-      Display Text: R-422C
-    R422D:
-      Description: R-125/134a/600a (65.1/31.5/3.4)
-      Notes: Refrigerant Blends (Zeotropes)
-      Display Text: R-422D
-    R422E:
-      Description: R-125/134a/600a (58.0/39.3/2.7)
-      Notes: Refrigerant Blends (Zeotropes)
-      Display Text: R-422E
-    R423A:
-      Description: 134a/227ea (52.5/47.5)
-      Notes: Refrigerant Blends (Zeotropes)
-      Display Text: R-423A
-    R424A:
-      Description: R-125/134a/600a/600/601a (50.5/47.0/0.9/1.0/0.6)
-      Notes: Refrigerant Blends (Zeotropes)
-      Display Text: R-424A
-    R425A:
-      Description: R-32/134a/227ea (18.5/69.5/12)
-      Notes: Refrigerant Blends (Zeotropes)
-      Display Text: R-425A
-    R426A:
-      Description: R-125/134a/600/601a (5.1/93.0/1.3/0.6)
-      Notes: Refrigerant Blends (Zeotropes)
-      Display Text: R-426A
-    R427A:
-      Description: R-32/125/143a/134a (15.0/25.0/10.0/50.0)
-      Notes: Refrigerant Blends (Zeotropes)
-      Display Text: R-427A
-    R428A:
-      Description: R-125/143a/290/600a (77.5/20.0/0.6/1.9)
-      Notes: Refrigerant Blends (Zeotropes)
-      Display Text: R-428A
-    R429A:
-      Description: R-E170/152a/600a (60.0/10.0/30.0)
-      Notes: Refrigerant Blends (Zeotropes)
-      Display Text: R-429A
-    R430A:
-      Description: R-152a/600a (76.0/24.0)
-      Notes: Refrigerant Blends (Zeotropes)
-      Display Text: R-430A
-    R431A:
-      Description: R-290/152a (71.0/29.0)
-      Notes: Refrigerant Blends (Zeotropes)
-      Display Text: R-431A
-    R432A:
-      Description: R-1270/E170 (80.0/20.0)
-      Notes: Refrigerant Blends (Zeotropes)
-      Display Text: R-432A
-    R433A:
-      Description: R-1270/290 (30.0/70.0)
-      Notes: Refrigerant Blends (Zeotropes)
-      Display Text: R-433A
-    R433B:
-      Description: R-1270/290 (5.0/95.0)
-      Notes: Refrigerant Blends (Zeotropes)
-      Display Text: R-433B
-    R433C:
-      Description: R-1270/290 (25.0/75.0)
-      Notes: Refrigerant Blends (Zeotropes)
-      Display Text: R-433C
-    R434A:
-      Description: R-125/143a/134a/600a (63.2/18.0/16.0/2.8)
-      Notes: Refrigerant Blends (Zeotropes)
-      Display Text: R-434A
-    R435A:
-      Description: R-E170/152a (80.0/20.0)
-      Notes: Refrigerant Blends (Zeotropes)
-      Display Text: R-435A
-    R436A:
-      Description: R-290/600a (56.0/44.0)
-      Notes: Refrigerant Blends (Zeotropes)
-      Display Text: R-436A
-    R436B:
-      Description: R-290/600a (52.0/48.0)
-      Notes: Refrigerant Blends (Zeotropes)
-      Display Text: R-436B
-    R436C:
-      Description: R-290/600a (95.0/5.0)__
-      Notes: Refrigerant Blends (Zeotropes)
-      Display Text: R-436C
-    R437A:
-      Description: R-125/134a/600/601 (19.5/78.5/1.4/0.6)
-      Notes: Refrigerant Blends (Zeotropes)
-      Display Text: R-437A
-    R438A:
-      Description: R-32/125/134a/600/601a (8.5/45.0/44.2/1.7/0.6)
-      Notes: Refrigerant Blends (Zeotropes)
-      Display Text: R-438A
-    R439A:
-      Description: R-32/125/600a (50.0/47.0/3.0)
-      Notes: Refrigerant Blends (Zeotropes)
-      Display Text: R-439A
-    R440A:
-      Description: R-290/134a/152a (0.6/1.6/97.8)
-      Notes: Refrigerant Blends (Zeotropes)
-      Display Text: R-440A
-    R441A:
-      Description: R-170/290/600a/600 (3.1/54.8/6.0/36.1)
-      Notes: Refrigerant Blends (Zeotropes)
-      Display Text: R-441A
-    R442A:
-      Description: R-32/125/134a/152a/227ea (31.0/31.0/30.0/3.0/5.0)
-      Notes: Refrigerant Blends (Zeotropes)
-      Display Text: R-442A
-    R443A:
-      Description: R-1270/290/600a (55.0/40.0/5.0)
-      Notes: Refrigerant Blends (Zeotropes)
-      Display Text: R-443A
-    R444A:
-      Description: R-32/152a/1234ze(E) (12.0/5.0/83.0)
-      Notes: Refrigerant Blends (Zeotropes)
-      Display Text: R-444A
-    R444B:
-      Description: R-32/152a/1234ze(E)_ (41.5/10.0/48.5)
-      Notes: Refrigerant Blends (Zeotropes)
-      Display Text: R-444B
-    R445A:
-      Description: R-744/134a/1234ze(E) (6.0/9.0/85.0)
-      Notes: Refrigerant Blends (Zeotropes)
-      Display Text: R-445A
-    R446A:
-      Description: R-32/1234ze(E)/600 (68.0/29.0/3.0)
-      Notes: Refrigerant Blends (Zeotropes)
-      Display Text: R-446A
-    R446B:
-      Description: R-32/125/1234ze(E) (68.0/3.5/28.5)
-      Notes: Refrigerant Blends (Zeotropes)
-      Display Text: R-446B
-    R447B:
-      Description: R-32/125/1234ze (E) (68.0/8.0/24.0)
-      Notes: Refrigerant Blends (Zeotropes)
-      Display Text: R-447B
-    R448A:
-      Description: R-32/125/1234yf/134a/1234ze(E) (26.0/26.0/20.0/21.0/7.0)
-      Notes: Refrigerant Blends (Zeotropes)
-      Display Text: R-448A
-    R449A:
-      Description: R-32 /125 /1234yf /134a (24.3/24.7/25.3/25.7)
-      Notes: Refrigerant Blends (Zeotropes)
-      Display Text: R-449A
-    R449B:
-      Description: R-32/125/1234yf/134a (25.2/24.3/23.2/27.3)
-      Notes: Refrigerant Blends (Zeotropes)
-      Display Text: R-449B
-    R449C:
-      Description: R-32/125/1234yf/134a (20.0/20.0/31.0/29.0)
-      Notes: Refrigerant Blends (Zeotropes)
-      Display Text: R-449C
-    R450A:
-      Description: R-134a/1234ze(E) (42.0/58.0)
-      Notes: Refrigerant Blends (Zeotropes)
-      Display Text: R-450A
-    R451A:
-      Description: R-1234yf/134a (89.8/10.2)
-      Notes: Refrigerant Blends (Zeotropes)
-      Display Text: R-451A
-    R451B:
-      Description: R-1234yf/134a (88.8/11.2)
-      Notes: Refrigerant Blends (Zeotropes)
-      Display Text: R-451B
-    R452A:
-      Description: R-32/125/1234yf (11.0/59.0/30.0)
-      Notes: Refrigerant Blends (Zeotropes)
-      Display Text: R-452A
-    R452B:
-      Description: R-32/125/1234yf (67.0/7.0/26.0)
-      Notes: Refrigerant Blends (Zeotropes)
-      Display Text: R-452B
-    R452C:
-      Description: R-32/125/1234yf (12.5/61.0/26.5)
-      Notes: Refrigerant Blends (Zeotropes)
-      Display Text: R-452C
-    R453A:
-      Description: R-32/125/134a/227ea/600/601a (20.0/20.0/53.8/5.0/0.6/0.6)
-      Notes: Refrigerant Blends (Zeotropes)
-      Display Text: R-453A
-    R454A:
-      Description: R-32/1234yf (35.0/65.0)
-      Notes: Refrigerant Blends (Zeotropes)
-      Display Text: R-454A
-    R454B:
-      Description: R-32/1234yf (68.9/31.1)
-      Notes: Refrigerant Blends (Zeotropes)
-      Display Text: R-454B
-    R454C:
-      Description: R-32/1234yf (21.5/78.5)
-      Notes: Refrigerant Blends (Zeotropes)
-      Display Text: R-454C
-    R455A:
-      Description: R-744/32/1234yf (3.0/21.5/75.5)
-      Notes: Refrigerant Blends (Zeotropes)
-      Display Text: R-455A
-    R456A:
-      Description: R-32/134a/1234ze(E) (6.0/45.0/49.0)
-      Notes: Refrigerant Blends (Zeotropes)
-      Display Text: R-456A
-    R457A:
-      Description: R-32/1234yf/152a (18.0/70.0/12.0)
-      Notes: Refrigerant Blends (Zeotropes)
-      Display Text: R-457A
-    R458A:
-      Description: R-32/125/134a/227ea/236fa (20.5/4.0/61.4/13.5/0.6)
-      Notes: Refrigerant Blends (Zeotropes)
-      Display Text: R-458A
-    R459A:
-      Description: R-32/1234yf/1234ze(E) (68.0/26.0/6.0)
-      Notes: Refrigerant Blends (Zeotropes)
-      Display Text: R-459A
-    R459B:
-      Description: 'LTR 11: R-32/1234yf/1234ze(E) (21.0/69.0/10.0)'
-      Notes: Refrigerant Blends (Zeotropes)
-      Display Text: R-459B
-    R460A:
-      Description: 'LTR 10: R-32/125/134a/1234ze(E) (12.0/52.0/14.0/22.0)'
-      Notes: Refrigerant Blends (Zeotropes)
-      Display Text: R-460A
-    R460B:
-      Description: 'LTR4X10: R-32/125/134a/1234ze(E) (28.0/25.0/20.0/27.0)'
-      Notes: Refrigerant Blends (Zeotropes)
-      Display Text: R-460B
-    R460C:
-      Description: R-32/125/134a/1234ze(E) (2.5/2.5/46.0/49.0)
-      Notes: Refrigerant Blends (Zeotropes)
-      Display Text: R-460C
-    R461A:
-      Description: R-125/143a/134a/227ea/600a (55.0/5.0/32.0/5.0/3.0)
-      Notes: Refrigerant Blends (Zeotropes)
-      Display Text: R-461A
-    R462A:
-      Description: R-32/125/143a/134a/600 (9.0/42.0/2.0/44.0/3.0)
-      Notes: Refrigerant Blends (Zeotropes)
-      Display Text: R-462A
-    R463A:
-      Description: R-744/32/125/1234yf/134a (6.0/36.0/30.0/14.0/14.0)
-      Notes: Refrigerant Blends (Zeotropes)
-      Display Text: R-463A
-    R464A:
-      Description: R-32/125/1234ze(E)/227ea (27.0/27.0/40.0/6.0)
-      Notes: Refrigerant Blends (Zeotropes)
-      Display Text: R-464A
-    R465A:
-      Description: R-32/290/1234yf (21.0/7.9/71.1)
-      Notes: Refrigerant Blends (Zeotropes)
-      Display Text: R-465A
-    R500:
-      Description: R-12/152a (73.8/26.2)
-      Notes: Refrigerant Blends (Azeotropes)
-      Display Text: R-500
-    R501:
-      Description: R-22/12 (75.0/25.0)
-      Notes: Refrigerant Blends (Azeotropes)
-      Display Text: R-501
-    R502:
-      Description: R-22/115 (48.8/51.2)
-      Notes: Refrigerant Blends (Azeotropes)
-      Display Text: R-502
-    R503:
-      Description: R-23/13 (40.1/59.9)
-      Notes: Refrigerant Blends (Azeotropes)
-      Display Text: R-503
-    R504:
-      Description: R-32/115 (48.2/51.8)
-      Notes: Refrigerant Blends (Azeotropes)
-      Display Text: R-504
-    R505:
-      Description: R-12/31 (78.0/22.0)
-      Notes: Refrigerant Blends (Azeotropes)
-      Display Text: R-505
-    R506:
-      Description: R-31/114 (55.1/44.9)
-      Notes: Refrigerant Blends (Azeotropes)
-      Display Text: R-506
-    R507A:
-      Description: R-125/143a (50.0/50.0)
-      Notes: Refrigerant Blends (Azeotropes)
-      Display Text: R-507A
-    R508A:
-      Description: R-23/116 (39.0/61.0)
-      Notes: Refrigerant Blends (Azeotropes)
-      Display Text: R-508A
-    R508B:
-      Description: R-23/116 (46.0/54.0)
-      Notes: Refrigerant Blends (Azeotropes)
-      Display Text: R-508B
-    R509A:
-      Description: R-22/218 (44.0/56.0)
-      Notes: Refrigerant Blends (Azeotropes)
-      Display Text: R-509A
-    R510A:
-      Description: R-E170/600a (88.0/12.0)
-      Notes: Refrigerant Blends (Azeotropes)
-      Display Text: R-510A
-    R511A:
-      Description: R-290/E170 (95.0/5.0)
-      Notes: Refrigerant Blends (Azeotropes)
-      Display Text: R-511A
-    R512A:
-      Description: R-134a/152a (5.0/95.0)
-      Notes: Refrigerant Blends (Azeotropes)
-      Display Text: R-512A
-    R513A:
-      Description: R-1234yf/134a (56.0/44.0)
-      Notes: Refrigerant Blends (Azeotropes)
-      Display Text: R-513A
-    R513B:
-      Description: R-1234yf/134a (58.5/41.5)
-      Notes: Refrigerant Blends (Azeotropes)
-      Display Text: R-513B
-    R514A:
-      Description: R-1336mzz(Z)/1130(E) (74.7/25.3)
-      Notes: Refrigerant Blends (Azeotropes)
-      Display Text: R-514A
-    R515A:
-      Description: R-1234ze (E)/227ea (88.0/12.0)
-      Notes: Refrigerant Blends (Azeotropes)
-      Display Text: R-515A
-    R516A:
-      Description: R-1234yf/134a/152a (77.5/8.5/14.0)
-      Notes: Refrigerant Blends (Azeotropes)
-      Display Text: R-516A

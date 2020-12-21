@@ -1,14 +1,14 @@
 {
     "schema_version": "0.1.0",
     "standard_version": "PPR2",
-    "RS_ID": "RS0001",
+    "rs_id": "RS0001",
     "description": "Water-Cooled Chiller with Constant Efficiency",
-    "ID": "123e4567-e89b-12d3-a456-426614174000",
+    "id": "123e4567-e89b-12d3-a456-426614174000",
     "data_timestamp": "2020-05-07T00:00Z",
     "data_version": 1,
     "disclaimer": "Example data not to be used for simulation",
     "notes": "An example representation that applies a constant COP of 5.9",
-    "RS_instance": {
+    "rs_instance": {
         "description": {
             "product_information": {
                 "manufacturer": "ABC Chillers",
@@ -17,9 +17,9 @@
                 "nominal_voltage": 460,
                 "nominal_frequency": 60,
                 "compressor_type": "CENTRIFUGAL",
-                "speed_control_type": "CONSTANT_SPEED",
+                "speed_control_type": "DISCRETE",
                 "liquid_data_source": "AHRI_550_590_2015",
-                "refrigerant_type": "R134A",
+                "refrigerant": "R-134A",
                 "hotgas_bypass_installed": false
             }
         },
@@ -455,7 +455,7 @@
             },
             "performance_map_standby": {
                 "grid_variables": {
-                    "chiller_environment_dry_bulb_temperature": [
+                    "environment_dry_bulb_temperature": [
                         273.15,
                         311.15
                     ]

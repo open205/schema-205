@@ -5,6 +5,7 @@ Schema:
   Title: "Motor"
   Description: "Schema for ASHRAE 205 annex RS0005: Motor"
 
+# Data Groups
 RS0005:
   Object Type: "Data Group"
   Data Elements:
@@ -27,30 +28,22 @@ ProductInformation:
   Object Type: "Data Group"
   Data Elements:
     manufacturer:
-      Description: "Name of the manufacturer"
+      Description: "Manufacturer name"
       Data Type: "String"
-      Required: True
-
     model_number:
       Description: "Model number"
       Data Type: "Pattern"
-      Notes: "Pattern shall match all model numbers that can be represented by the *representation*."
-      Required: True
-
-    input_voltage:
-      Description: "Input voltage"
+      Notes: "Pattern shall match all model numbers that can be represented by the *representation*"
+    nominal_voltage:
+      Description: "Nominal voltage"
       Data Type: "Numeric"
       Units: "V"
-      Range: ">=0"
-      Required: True
-
-    input_frequency:
-      Description: "Input frequency"
+      Range: ">=0.0"
+    nominal_frequency:
+      Description: "Nominal frequency"
       Data Type: "Numeric"
       Units: "Hz"
-      Range: ">=0"
-      Required: True
-
+      Range: ">=0.0"
     number_of_poles:
       Description: "Number of poles"
       Data Type: "Integer"
@@ -62,25 +55,22 @@ Performance:
       Description: "Maximum operational input power to the motor"
       Data Type: "Numeric"
       Units: "W"
-      Range: ">=0"
-      Notes: "This is the operational limit set to prevent overheating or overcurrent. This is not the rated name plate power."
+      Range: ">=0.0"
+      Notes: "This is the operational limit set to prevent overheating or overcurrent. This is not the rated name plate power"
       Required: True
-
     standby_power:
       Description: "Power draw when motor is not operating"
       Data Type: "Numeric"
       Units: "W"
-      Range: ">=0"
+      Range: ">=0.0"
       Required: True
-
     drive_representation:
-      Description: "The corresponding Standard 205 drive representation"
-      Data Type: "{ASHRAE205(RS_ID=RS0006)}"
-
+      Description: "The corresponding Standard 205 drive *representation*"
+      Data Type: "{ASHRAE205(rs_id=RS0006)}"
     performance_map:
       Description: "Data group describing motor performance when operating"
       Data Type: "{PerformanceMap}"
-      Notes: "If no performance map is defined, the motor shall be assumed to transfer all electric power directly to the shaft. ***Informative note:*** This field may be omitted for motor-driven equipment where motor efficiencies are incorporated into their performance data."
+      Notes: "If no performance map is defined, the motor shall be assumed to transfer all electric power directly to mechanical shaft power. ***Informative note:*** This field may be omitted for motor-driven equipment where motor efficiencies are incorporated into their performance data"
 
 PerformanceMap:
   Object Type: "Performance Map"
@@ -89,7 +79,6 @@ PerformanceMap:
       Description: "Data group describing grid variables for motor performance"
       Data Type: "{GridVariables}"
       Required: True
-
     lookup_variables:
       Description: "Data group describing lookup variables for motor performance"
       Data Type: "{LookupVariables}"
@@ -101,7 +90,7 @@ GridVariables:
     shaft_power:
       Description: "Delivered rotational shaft power"
       Data Type: "[Numeric][1..]"
-      Range: ">=0"
+      Range: ">=0.0"
       Units: "W"
       Required: True
 
@@ -111,14 +100,13 @@ LookupVariables:
     efficiency:
       Description: "Efficiency of motor"
       Data Type: "[Numeric/Null][1..]"
-      Range: ">=0, <=1"
+      Range: ">=0.0, <=1.0"
       Units: "-"
-      Notes: "Defined as the ratio of mechanical shaft power to electrical input power of the motor."
+      Notes: "Defined as the ratio of mechanical shaft power to electrical input power of the motor"
       Required: True
-
     power_factor:
       Description: "Power factor of the motor"
       Data Type: "[Numeric/Null][1..]"
-      Range: ">=0, <=1"
+      Range: ">=0.0, <=1.0"
       Units: "-"
       Required: True
