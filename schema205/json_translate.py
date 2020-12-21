@@ -203,7 +203,7 @@ class DataGroup:
                 target_dict['type'] = None
             for r in ranges:
                 try:
-                    numerical_value = re.findall(r'\d+', r)[0]
+                    numerical_value = re.findall(r'[+-]?\d*\.?\d+|\d+', r)[0]
                     if '>' in r:
                         minimum = (float(numerical_value) if 'number' in target_dict['type'] else int(numerical_value))
                         mn = 'exclusiveMinimum' if '=' not in r else 'minimum'
