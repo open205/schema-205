@@ -9,9 +9,6 @@ pbr = "*"
 doit = "*"
 atomicwrites = "*"
 pylint = "*"
-jinja2 = "*"
-pyyaml = "*"
-
 
 [packages]
 schema205 = {editable = true,path = "."}
