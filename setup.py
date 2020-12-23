@@ -8,8 +8,8 @@ os.environ['PBR_VERSION'] = '0.1.0' # Stop-gap until https://bugs.launchpad.net/
 setup(
     setup_requires=['pbr'],
     install_requires=[
-        'jsonschema',
         'pyyaml',
+        'jsonschema',
         'pytablewriter',
         'jinja2'
     ],

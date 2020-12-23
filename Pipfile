@@ -11,6 +11,10 @@ atomicwrites = "*"
 pylint = "*"
 
 [packages]
+pyyaml = "*"
+jsonschema = "*"
+pytablewriter = "*"
+jinja2 = "*"
 schema205 = {editable = true,path = "."}
 
 [scripts]
