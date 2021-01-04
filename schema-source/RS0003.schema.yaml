@@ -66,6 +66,9 @@ ComponentType:
     ELECTRIC_RESISTANCE_ELEMENT:
       Display Text: "Electric Resistance Element"
       Description: "Electric resistance heater elements"
+    DIRECT_EVAPORATIVE:
+      Display Text: "Direct Evaporative"
+      Description: "Wetted media cooling"
     OTHER:
       Display Text: "Other"
       Description: "Additional components in air stream"
