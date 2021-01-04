@@ -229,7 +229,7 @@ RatingAHRI550590:
       Required: True
       Notes: "True if the rating values in this table can be reproduced using the performance data in the *representation* within the tolerance of the rating standard"
 
-PartLoadRatingPoint550590:
+RatingPartLoadPoint550590:
   Object Type: "Rating Data Group"
   Data Elements:
     percent_full_load_capacity:
@@ -438,7 +438,7 @@ RatingAHRI551591:
       Required: True
       Notes: "True if the rating values in this table can be reproduced using the performance data in the *representation* within the tolerance of the rating standard"
 
-PartLoadRatingPoint551591:
+RatingPartLoadPoint551591:
   Object Type: "Rating Data Group"
   Data Elements:
     percent_full_load_capacity:
