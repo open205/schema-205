@@ -44,8 +44,8 @@
                     1913.131688
                 ]
             },
-            "performance_map_type": "CONTINUOUS",
-            "speed_control_type": "FIXED",
+            "operation_speed_control_type": "CONTINUOUS",
+            "installation_speed_control_type": "FIXED",
             "performance_map": {
                 "grid_variables": {
                     "air_volumetric_flow_rate": [

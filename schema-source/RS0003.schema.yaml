@@ -6,7 +6,7 @@ Schema:
   Description: "Schema for ASHRAE 205 annex RS0003: Fan Assembly"
 
 # Local Enumerations
-PerformanceMapType:
+OperationSpeedControlType:
   Object Type: "Enumeration"
   Enumerators:
     DISCRETE:
@@ -18,12 +18,13 @@ PerformanceMapType:
       Display Text: "Continuous"
       Notes: "Performance map data is provided over a range of impeller speeds"
 
-SpeedControlType:
+InstallationSpeedControlType:
   Object Type: "Enumeration"
   Enumerators:
     FIXED:
       Display Text: "Fixed"
       Description: "Fan speed does not change after installation"
+      Notes: "***Informative note:*** Examples include dip-switch/tap selection and pulley adjustments"
     VARIABLE:
       Display Text: "Variable"
       Description: "Fan speed can change depending on operation after installation"
@@ -172,16 +173,16 @@ Performance:
       Description: "The system curve defining the stability area for system selection"
       Data Type: "{SystemCurve}"
       Notes: "***Informative note:*** *Application software* may use this curve to indicate to *application software users* when a selected fan is operating in an unstable region where surging or stalling is likely to occur"
-    performance_map_type:
+    operation_speed_control_type:
       Description: "Type of performance map"
-      Data Type: "{PerformanceMapType}"
+      Data Type: "{OperationSpeedControlType}"
       Required: True
       Notes: "Determines which performance map data group is used for `performance_map`"
-    speed_control_type:
+    installation_speed_control_type:
       Description: "Type of fan impeller speed control"
-      Data Type: "{SpeedControlType}"
+      Data Type: "{InstallationSpeedControlType}"
       Required: True
-      Notes: "If `performance_map` is `DISCRETE` and `speed_control_type` is `FIXED`, impeller speed shall be restricted to a single discrete speed.\n\nIf `performance_map` is `DISCRETE` and `speed_control_type` is `VARIABLE`, impeller speed shall be restricted to a set of two or more discrete speed\n\nIf `performance_map` is `CONTINUOUS` and `speed_control_type` is `FIXED`, impeller speed shall be restricted to a single speed (which may be interpolated from `impeller_speed` values provided in the performance map\n\nIf `performance_map` is `CONTINUOUS` and `speed_control_type` is `VARIABLE`, impeller speed shall be unrestricted within operational limits"
+      Notes: "If `operation_speed_control_type` is `DISCRETE` and `installation_speed_control_type` is `FIXED`, impeller speed shall be restricted to a single discrete speed.\n\nIf `operation_speed_control_type` is `DISCRETE` and `installation_speed_control_type` is `VARIABLE`, impeller speed shall be restricted to a set of two or more discrete speed\n\nIf `operation_speed_control_type` is `CONTINUOUS` and `installation_speed_control_type` is `FIXED`, impeller speed shall be restricted to a single speed (which may be interpolated from `impeller_speed` values provided in the performance map\n\nIf `operation_speed_control_type` is `CONTINUOUS` and `installation_speed_control_type` is `VARIABLE`, impeller speed shall be unrestricted within operational limits"
     motor_representation:
       Description: "The corresponding Standard 205 motor *representation*"
       Notes: "If the fan is packaged with a motor, a motor *representation* shall be provided"
