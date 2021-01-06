@@ -687,7 +687,7 @@ LookupVariablesCooling:
       Units: "W"
       Range: ">=0.0"
       Required: True
-      Notes: "Heat transferred to another liquid crossing the control volume boundary from the chiller auxiliaries (motor controller, inverter drive, starter, etc).\n\nSet as 0 if not present or if heat rejection is met by condenser"
+      Notes: "Heat transferred to another liquid crossing the control volume boundary from the chiller auxiliaries (motor, motor controller, inverter drive, starter, etc).\n\nSet as 0 if not present or if heat rejection is met by condenser"
 
 PerformanceMapStandby:
   Object Type: "Performance Map"
