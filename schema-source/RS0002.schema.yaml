@@ -269,8 +269,8 @@ RatingAHRI340360CoolingPartLoadPoint:
       Units: "Btu/h"
       Range: ">=0.0"
       Required: True
-    gross_power:
-      Description: "Gross cooling power (excluding the indoor fan motor)"
+    net_power:
+      Description: "Net cooling power (including the indoor fan motor, controls, and other auxiliary loads)"
       Data Type: "Numeric"
       Units: "W"
       Range: ">=0.0"

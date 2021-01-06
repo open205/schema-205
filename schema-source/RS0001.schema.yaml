@@ -131,7 +131,7 @@ RatingAHRI550590:
       Required: True
       Notes: "The capacity of the evaporator available for cooling of the thermal load external to the chiller; calculated using only the sensible heat transfer"
     input_power:
-      Description: "Combined power input of all components of the unit, including Auxiliary Power and excluding integral pumps"
+      Description: "Combined power input of all components of the unit, including auxiliary power and excluding integral pumps"
       Data Type: "Numeric"
       Units: "kW"
       Range: ">=0.0"
@@ -244,7 +244,7 @@ RatingAHRI550590PartLoadPoint:
       Range: ">=0.0"
       Required: True
     input_power:
-      Description: "Combined power input of all components of the unit, including Auxiliary Power and excluding integral pumps"
+      Description: "Combined power input of all components of the unit, including auxiliary power and excluding integral pumps"
       Data Type: "Numeric"
       Units: "kW"
       Range: ">=0.0"
@@ -331,7 +331,7 @@ RatingAHRI551591:
       Required: True
       Notes: "The capacity of the evaporator available for cooling of the thermal load external to the chiller; calculated using only the sensible heat transfer"
     input_power:
-      Description: "Combined power input of all components of the unit, including Auxiliary Power and excluding integral pumps"
+      Description: "Combined power input of all components of the unit, including auxiliary power and excluding integral pumps"
       Data Type: "Numeric"
       Units: "kW"
       Range: ">=0.0"
@@ -444,7 +444,7 @@ RatingAHRI551591PartLoadPoint:
       Range: ">=0.0"
       Required: True
     input_power:
-      Description: "Combined power input of all components of the unit, including Auxiliary Power and excluding integral pumps"
+      Description: "Combined power input of all components of the unit, including auxiliary power and excluding integral pumps"
       Data Type: "Numeric"
       Units: "kW"
       Range: ">=0.0"
