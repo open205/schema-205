@@ -34,7 +34,7 @@ def task_validate():
 def task_doc():
   '''Generates Markdown tables from common-scema'''
   return {
-    'file_dep': collect_source_files(),
+    'file_dep': collect_source_files() + [os.path.join('schema205','markdown.py')],
     'targets': collect_target_files(DOCS_PATH,'md'),
     'task_dep': ['validate'],
     'actions': [
