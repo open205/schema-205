@@ -366,6 +366,7 @@ class H_translator:
         self._references = dict()
         self._fundamental_data_types = dict()
         self._preamble = list()
+        self._doxynotes = '/// @note  This class has been auto-generated. Local changes will not be saved!\n'
         self._epilogue = list()
         self._data_group_types = ['Data Group',
                                   'Performance Map',
@@ -379,6 +380,8 @@ class H_translator:
         s = ''
         for p in self._preamble:
             s += p
+        s += '\n'
+        s += self._doxynotes
         s += '\n'
         if self._is_top_container:
             s += self._namespace.value

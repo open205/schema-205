@@ -9,6 +9,8 @@
 
 // ------------------------------------------------------------------------------------------------
 /// @class performance_map_base performance_map_base.h
+/// @note  If you are seeing this class in your build directory, it has been copied there from
+///        a source location. Changes will not be saved!
 
 class performance_map_base {
 

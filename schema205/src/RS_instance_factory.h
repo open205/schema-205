@@ -7,6 +7,8 @@
 
 /// @class RS_instance_factory RS_instance_factory.h
 /// @brief This class is an abstract interface to support RS factory sub-classes
+/// @note  If you are seeing this class in your build directory, it has been copied there from
+///        a source location. Changes will not be saved!
 
 namespace ASHRAE205_NS  {
    class RS_instance_factory

@@ -9,6 +9,8 @@
 
 // ------------------------------------------------------------------------------------------------
 /// @class grid_variables_base grid_variables_base.h
+/// @note  If you are seeing this class in your build directory, it has been copied there from
+///        a source location. Changes will not be saved!
 
 class grid_variables_base {
 
