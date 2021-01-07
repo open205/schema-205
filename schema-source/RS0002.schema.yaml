@@ -182,7 +182,7 @@ Performance:
       Data Type: "{ASHRAE205(rs_id=RS0003)}"
       Notes: "Required if the fan is packaged with the unitary equipment"
     fan_position:
-      Description: "Position of the fan relative to the indoor coil"
+      Description: "Position of the fan relative to the cooling coil"
       Data Type: "<FanPosition>"
       Required: True
     dx_system_representation:
