@@ -9,18 +9,15 @@
         "Data Type",
         "String Type",
         "Enumeration",
-        "Data Group",
-        "Rating Data Group",
-        "Performance Map",
-        "Grid Variables",
-        "Lookup Variables"
+        "Data Group"
       ]
     },
     "Meta": {
       "type": "object",
       "properties": {
         "Object Type": {
-          "$ref": "meta.schema.json#/definitions/ObjectType"
+          "type": "string",
+          "const": "Meta"
         },
         "Title": {
           "type": "string"
@@ -50,7 +47,8 @@
       "type": "object",
       "properties": {
         "Object Type": {
-          "$ref": "meta.schema.json#/definitions/ObjectType"
+          "type": "string",
+          "const": "Data Type"
         },
         "Description": {
           "type": "string"
@@ -81,7 +79,8 @@
       "type": "object",
       "properties": {
         "Object Type": {
-          "$ref": "meta.schema.json#/definitions/ObjectType"
+          "type": "string",
+          "const": "String Type"
         },
         "Description": {
           "type": "string"
@@ -106,7 +105,7 @@
     "Enumerator": {
       "type": "object",
       "patternProperties": {
-        "(^([A-Z]+([A-Z]|[0-9])*)(_([A-Z]*|[0-9]*))*$)": {
+        "(^([A-Z]([A-Z]|[0-9])*)(_([A-Z]|[0-9])+)*$)": {
           "type": [
             "object",
             "null"
@@ -132,7 +131,8 @@
       "type": "object",
       "properties": {
         "Object Type": {
-          "$ref": "meta.schema.json#/definitions/ObjectType"
+          "type": "string",
+          "const": "Enumeration"
         },
         "Enumerators": {
           "$ref": "meta.schema.json#/definitions/Enumerator"
@@ -174,6 +174,7 @@
         "Pa",
         "m2-K/W",
         "F",
+        "cfm",
         "gpm",
         "ft of water",
         "Btu/h",
@@ -362,7 +363,8 @@
       "type": "object",
       "properties": {
         "Object Type": {
-          "$ref": "meta.schema.json#/definitions/ObjectType"
+          "type": "string",
+          "const": "Data Group"
         },
         "Data Elements": {
           "$ref": "meta.schema.json#/definitions/DataElement"
@@ -378,7 +380,8 @@
       "type": "object",
       "properties": {
         "Object Type": {
-          "$ref": "meta.schema.json#/definitions/ObjectType"
+          "type": "string",
+          "const": "Rating Data Group"
         },
         "Data Elements": {
           "$ref": "meta.schema.json#/definitions/RatingDataElement",
@@ -397,7 +400,8 @@
       "type": "object",
       "properties": {
         "Object Type": {
-          "$ref": "meta.schema.json#/definitions/ObjectType"
+          "type": "string",
+          "const": "Performance Map"
         },
         "Data Elements": {
           "type": "object",
@@ -438,7 +442,8 @@
       "type": "object",
       "properties": {
         "Object Type": {
-          "$ref": "meta.schema.json#/definitions/ObjectType"
+          "type": "string",
+          "const": "Grid Variables"
         },
         "Data Elements": {
           "$ref": "meta.schema.json#/definitions/GridVariableDataElement"
@@ -454,7 +459,8 @@
       "type": "object",
       "properties": {
         "Object Type": {
-          "$ref": "meta.schema.json#/definitions/ObjectType"
+          "type": "string",
+          "const": "Lookup Variables"
         },
         "Data Elements": {
           "$ref": "meta.schema.json#/definitions/LookupVariableDataElement"
@@ -469,7 +475,7 @@
   },
   "type": "object",
   "patternProperties": {
-    "(^[A-Z]([A-Z]|[a-z]|[0-9])*$)": {
+    "(^(?!(Rating|PerformanceMap|GridVariables|LookupVariables))[A-Z]([A-Z]|[a-z]|[0-9])*$)": {
       "allOf": [
         {
           "if": {
@@ -532,66 +538,6 @@
           }
         },
         {
-          "if": {
-            "properties": {
-              "Object Type": {
-                "const": "Rating Data Group"
-              }
-            }
-          },
-          "then": {
-            "$ref": "meta.schema.json#/definitions/RatingDataGroup"
-          }
-        },
-        {
-          "if": {
-            "properties": {
-              "Object Type": {
-                "const": "Performance Map"
-              }
-            }
-          },
-          "then": {
-            "$ref": "meta.schema.json#/definitions/PerformanceMap"
-          }
-        },
-        {
-          "if": {
-            "properties": {
-              "Object Type": {
-                "const": "Map Variables"
-              }
-            }
-          },
-          "then": {
-            "$ref": "meta.schema.json#/definitions/MapVariables"
-          }
-        },
-        {
-          "if": {
-            "properties": {
-              "Object Type": {
-                "const": "Grid Variables"
-              }
-            }
-          },
-          "then": {
-            "$ref": "meta.schema.json#/definitions/GridVariables"
-          }
-        },
-        {
-          "if": {
-            "properties": {
-              "Object Type": {
-                "const": "Lookup Variables"
-              }
-            }
-          },
-          "then": {
-            "$ref": "meta.schema.json#/definitions/LookupVariables"
-          }
-        },
-        {
           "type": "object",
           "properties": {
             "Object Type": {
@@ -603,6 +549,18 @@
           ]
         }
       ]
+    },
+    "(^Rating[A-Z]*([A-Z]|[a-z]|[0-9])*$)": {
+      "$ref": "meta.schema.json#/definitions/RatingDataGroup"
+    },
+    "(^PerformanceMap[A-Z]*([A-Z]|[a-z]|[0-9])*$)": {
+      "$ref": "meta.schema.json#/definitions/PerformanceMap"
+    },
+    "(^GridVariables[A-Z]*([A-Z]|[a-z]|[0-9])*$)": {
+      "$ref": "meta.schema.json#/definitions/GridVariables"
+    },
+    "(^LookupVariables[A-Z]*([A-Z]|[a-z]|[0-9])*$)": {
+      "$ref": "meta.schema.json#/definitions/LookupVariables"
     }
   },
   "additionalProperties": false
