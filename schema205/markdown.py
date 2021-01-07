@@ -16,12 +16,12 @@ def write_tables(instance, output_path, append=True):
     object_type = instance[obj]["Object Type"]
     if object_type == "Data Type":
       new_obj = instance[obj]
-      new_obj["Data Type"] = obj
+      new_obj["Data Type"] = f'`{obj}`'
       new_obj["Examples"] = ', '.join(new_obj["Examples"])
       data_types.append(new_obj)
     elif object_type == "String Type":
       new_obj = instance[obj]
-      new_obj["String Type"] = obj
+      new_obj["String Type"] = f'`{obj}`'
       new_obj["Examples"] = ', '.join(new_obj["Examples"])
       string_types.append(new_obj)
     elif object_type == "Enumeration":
@@ -66,24 +66,29 @@ def write_tables(instance, output_path, append=True):
         enumerators = []
         for enumerator in enumerations[enum]["Enumerators"]:
           new_obj = enumerations[enum]["Enumerators"][enumerator] if enumerations[enum]["Enumerators"][enumerator] else {}
-          new_obj["Enumerator"] = enumerator
+          new_obj["Enumerator"] = f"`{enumerator}`"
           enumerators.append(new_obj)
         writer.value_matrix = enumerators
 
         output_file.writelines(format_table(writer))
 
     # Data Groups
-    writer.headers = ["Data Element Name", "Description", "Data Type", "Units", "Range", "Req", "Notes"]
+    writer.headers = ["Name", "Description", "Data Type", "Units", "Range", "Req", "Notes"]
     if len(data_groups) > 0:
       for dg in data_groups:
         writer.table_name = dg
         data_elements = []
         for element in data_groups[dg]["Data Elements"]:
           new_obj = data_groups[dg]["Data Elements"][element]
-          new_obj["Data Element Name"] = element
+          new_obj["Name"] = f"`{element}`"
           if 'Required' in new_obj:
             new_obj["Req"] = u'\N{check mark}' if new_obj["Required"] else ''
             new_obj.pop('Required')
+          new_obj['Data Type'] = f"`{new_obj['Data Type']}`"
+          if 'Range' in new_obj:
+            gte = u'\N{GREATER-THAN OR EQUAL TO}'
+            lte = u'\N{LESS-THAN OR EQUAL TO}'
+            new_obj["Range"] = f"`{new_obj['Range'].replace('<=',lte).replace('>=',gte)}`"
           data_elements.append(new_obj)
         writer.value_matrix = data_elements
 
