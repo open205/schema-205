@@ -2,6 +2,7 @@ import os
 import yaml
 from pytablewriter import MarkdownTableWriter
 import sys
+from .schema_tables import data_types_table, write_header
 
 def format_table(writer):
   return writer.dumps() + "\n"
@@ -39,12 +40,8 @@ def write_tables(instance, output_path, append=True):
   with open(output_path, 'a' if append else 'w', encoding="utf-8") as output_file:
 
     # Data Types
-    if len(data_types) > 0:
-      writer.table_name = "Data Types"
-      writer.headers = ["Data Type", "Description", "JSON Schema Type", "Examples"]
-      writer.value_matrix = data_types
-
-      output_file.writelines(format_table(writer))
+    output_file.writelines(write_header("Data Types"))
+    output_file.writelines(data_types_table(data_types))
 
     # String Types
     if len(string_types) > 0:
