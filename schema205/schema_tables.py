@@ -46,6 +46,8 @@ def load_structure_from_object(instance):
             new_obj = instance[obj]
             new_obj["String Type"] = f'`{obj}`'
             new_obj["Examples"] = ', '.join(new_obj["Examples"])
+            if 'Is Regex' in new_obj and new_obj['Is Regex']:
+                new_obj['JSON Schema Pattern'] = '(Not applicable)'
             string_types.append(new_obj)
         elif object_type == "Enumeration":
             enumerations[obj] = instance[obj]
@@ -66,7 +68,7 @@ def load_structure_from_object(instance):
 def data_types_table(data_types):
     """
     - data_types: array of ..., the data types
-    RETURN: string
+    RETURN: string, the table in Pandoc markdown grid table format
     """
     if len(data_types) == 0:
         return ""
@@ -74,6 +76,20 @@ def data_types_table(data_types):
     data = {c:[] for c in columns}
     for col in columns:
         data[col] = [dt[col] for dt in data_types]
+    return tables.string_out_table(data, columns, None, None, None) + "\n\n"
+
+
+def string_types_table(string_types):
+    """
+    - string_types: array of ..., the string types
+    RETURN: string, the table in Pandoc markdown grid table format
+    """
+    if len(string_types) == 0:
+        return ""
+    columns = ["String Type", "Description", "JSON Schema Pattern", "Examples"]
+    data = {col:[] for col in columns}
+    for col in columns:
+        data[col] = [st[col] for st in string_types]
     return tables.string_out_table(data, columns, None, None, None) + "\n\n"
 
 

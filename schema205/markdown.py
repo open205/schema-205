@@ -2,7 +2,7 @@ import os
 import yaml
 from pytablewriter import MarkdownTableWriter
 import sys
-from .schema_tables import data_types_table, write_header
+from .schema_tables import data_types_table, string_types_table, write_header
 
 def format_table(writer):
   return writer.dumps() + "\n"
@@ -40,20 +40,18 @@ def write_tables(instance, output_path, append=True):
   with open(output_path, 'a' if append else 'w', encoding="utf-8") as output_file:
 
     # Data Types
-    output_file.writelines(write_header("Data Types"))
-    output_file.writelines(data_types_table(data_types))
+    if len(data_types) > 0:
+      output_file.writelines(write_header("Data Types"))
+      output_file.writelines(data_types_table(data_types))
 
     # String Types
     if len(string_types) > 0:
-      writer.table_name = "String Types"
+      output_file.writelines(write_header("String Types"))
       writer.headers = ["String Type", "Description", "JSON Schema Pattern", "Examples"]
       for st in string_types:
-        if 'Is Regex' in st:
-          st['JSON Schema Pattern'] = '(Not applicable)' if st['Is Regex'] else st['JSON Schema Pattern']
-
-      writer.value_matrix = string_types
-
-      output_file.writelines(format_table(writer))
+        if 'Is Regex' in st and st['Is Regex']:
+          st['JSON Schema Pattern'] = '(Not applicable)'
+      output_file.writelines(string_types_table(string_types))
 
     # Enumerations
     if len(enumerations) > 0:
