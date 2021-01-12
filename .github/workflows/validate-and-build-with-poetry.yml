@@ -40,13 +40,13 @@ jobs:
           poetry run build
       - name: Upload Markdown Documentation
         uses: actions/upload-artifact@v2
-        if: ${{ python.version }} == '3.6'
+        if: ${{ matrix.python-version }} == '3.6'
         with:
           name: markdown-tables-${{ matrix.os }}
           path: build/docs
       - name: Upload JSON Schema
         uses: actions/upload-artifact@v2
-        if: ${{ python.version }} == '3.6'
+        if: ${{ matrix.python-version }} == '3.6'
         with:
           name: json-schema-${{ matrix.os }}
           path: build/schema
