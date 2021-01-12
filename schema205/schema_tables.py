@@ -60,6 +60,23 @@ def data_elements_dict_from_data_groups(data_groups):
     return output
 
 
+def enumerators_dict_from_enumerations(enumerations):
+    """
+    - enumerations: dict, the enumeration objects
+    RETURN: list of dict, the enumeration objects as a list
+    """
+    output = {}
+    for enum in enumerations:
+        output[enum] = []
+        for enumerator in enumerations[enum]["Enumerators"]:
+            if enumerations[enum]["Enumerators"][enumerator]:
+                item = enumerations[enum]["Enumerators"][enumerator]
+            else:
+                item = {}
+            output[enum].append(item)
+    return output
+
+
 def load_structure_from_object(instance):
     """
     - instance: dictionary, the result of loading a *.schema.yaml file
@@ -89,12 +106,6 @@ def load_structure_from_object(instance):
             string_types.append(new_obj)
         elif object_type == "Enumeration":
             enumerations[obj] = instance[obj]
-            enumerators = []
-            source_enumerators = enumerations[obj]["Enumerators"]
-            for enumerator in source_enumerators:
-                if source_enumerators[enumerator]:
-                    enumerators.append(f'`{source_enumerators[enumerator]}`')
-            enumerations[obj]['EnumeratorsArray'] = enumerators
         elif "Data Elements" in instance[obj]:
             data_groups[obj] = instance[obj]
         elif object_type == "Meta":
@@ -104,7 +115,7 @@ def load_structure_from_object(instance):
     return {
         'data_types': data_types,
         'string_types': process_string_types(string_types),
-        'enumerations': enumerations,
+        'enumerations': enumerators_dict_from_enumerations(enumerations),
         'data_groups': data_elements_dict_from_data_groups(data_groups),
     }
 
