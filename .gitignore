@@ -1,6 +1,6 @@
 schema205/RefrigerantType.schema.yaml
 build/
-*.egg-info/
+*.egg*/
 .doit.*
 .pytest_cache/
 .vscode/
