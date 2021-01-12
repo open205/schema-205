@@ -4,7 +4,7 @@ from pytablewriter import MarkdownTableWriter
 import sys
 from .schema_tables import data_types_table, string_types_table
 from .schema_tables import enumerators_table, data_groups_table, write_header
-from .schema_tables import data_elements_from_data_groups
+from .schema_tables import data_elements_dict_from_data_groups
 
 def format_table(writer):
   return writer.dumps() + "\n"
@@ -67,7 +67,7 @@ def write_tables(instance, output_path, append=True):
 
     # Data Groups
     if len(data_groups) > 0:
-      dgs = data_elements_from_data_groups(data_groups)
+      dgs = data_elements_dict_from_data_groups(data_groups)
       for dg in dgs:
         output_file.writelines(write_header(dg))
         output_file.writelines(data_groups_table(dgs[dg]))

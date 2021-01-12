@@ -3,6 +3,7 @@ Calls all Jinja templates to render a result.
 """
 import os
 import os.path
+from copy import deepcopy
 
 import schema205.make_grid_table as tables
 
@@ -18,6 +19,45 @@ def write_header(heading, level=1):
     RETURN: string
     """
     return ("#"*level) + " " + heading + "\n\n"
+
+
+def process_string_types(string_types):
+    """
+    - string_types: array of dict, the string types
+    RETURN: list of dict, copy of string types list with regexes handled
+    properly
+    """
+    new_list = []
+    for st in string_types:
+        new_item = deepcopy(st)
+        if 'Is Regex' in new_item and new_item['Is Regex']:
+            new_item['JSON Schema Pattern'] = '(Not applicable)'
+        new_list.append(new_item)
+    return new_list
+
+
+def data_elements_dict_from_data_groups(data_groups):
+    """
+    - data_groups: Dict, the data groups dictionary
+    RETURN: Dict with data elements as an array
+    """
+    output = {}
+    for dg in data_groups:
+        data_elements = []
+        for element in data_groups[dg]["Data Elements"]:
+            new_obj = data_groups[dg]["Data Elements"][element]
+            new_obj["Name"] = f"`{element}`"
+            if 'Required' in new_obj:
+                new_obj["Req"] = u'\N{check mark}' if new_obj["Required"] else ''
+                new_obj.pop('Required')
+            new_obj['Data Type'] = f"`{new_obj['Data Type']}`"
+            if 'Range' in new_obj:
+                gte = u'\N{GREATER-THAN OR EQUAL TO}'
+                lte = u'\N{LESS-THAN OR EQUAL TO}'
+                new_obj["Range"] = f"`{new_obj['Range'].replace('<=',lte).replace('>=',gte)}`"
+            data_elements.append(new_obj)
+        output[dg] = data_elements
+    return output
 
 
 def load_structure_from_object(instance):
@@ -46,8 +86,6 @@ def load_structure_from_object(instance):
             new_obj = instance[obj]
             new_obj["String Type"] = f'`{obj}`'
             new_obj["Examples"] = ', '.join(new_obj["Examples"])
-            if 'Is Regex' in new_obj and new_obj['Is Regex']:
-                new_obj['JSON Schema Pattern'] = '(Not applicable)'
             string_types.append(new_obj)
         elif object_type == "Enumeration":
             enumerations[obj] = instance[obj]
@@ -65,9 +103,9 @@ def load_structure_from_object(instance):
             print(f"Unknown object type: {object_type}.")
     return {
         'data_types': data_types,
-        'string_types': string_types,
+        'string_types': process_string_types(string_types),
         'enumerations': enumerations,
-        'data_groups': data_groups,
+        'data_groups': data_elements_dict_from_data_groups(data_groups),
     }
 
 
@@ -128,30 +166,6 @@ def enumerators_table(enumerators):
             columns=["Enumerator", "Description", "Notes"],
             data_list=enumerators,
             defaults={"Notes": ""})
-
-
-def data_elements_from_data_groups(data_groups):
-    """
-    - data_groups: Dict, the data groups dictionary
-    RETURN: Dict with data elements as an array
-    """
-    output = {}
-    for dg in data_groups:
-        data_elements = []
-        for element in data_groups[dg]["Data Elements"]:
-            new_obj = data_groups[dg]["Data Elements"][element]
-            new_obj["Name"] = f"`{element}`"
-            if 'Required' in new_obj:
-                new_obj["Req"] = u'\N{check mark}' if new_obj["Required"] else ''
-                new_obj.pop('Required')
-            new_obj['Data Type'] = f"`{new_obj['Data Type']}`"
-            if 'Range' in new_obj:
-                gte = u'\N{GREATER-THAN OR EQUAL TO}'
-                lte = u'\N{LESS-THAN OR EQUAL TO}'
-                new_obj["Range"] = f"`{new_obj['Range'].replace('<=',lte).replace('>=',gte)}`"
-            data_elements.append(new_obj)
-        output[dg] = data_elements
-    return output
 
 
 def data_groups_table(data_elements):
