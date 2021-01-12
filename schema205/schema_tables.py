@@ -20,7 +20,6 @@ def write_header(heading, level=1):
     return ("#"*level) + " " + heading + "\n\n"
 
 
-
 def load_structure_from_object(instance):
     """
     - instance: dictionary, the result of loading a *.schema.yaml file
