@@ -58,7 +58,7 @@ When you are done with the environment, type:
 
 Once you've created the environment you desire, on subsequent use, you just need to start conda and activate the environment you want.
 
-Select the desired Python environment and activate it before proceeding to step 2.
+Select the desired Python environment and activate it before proceeding to the next step.
 
 3. Install dependencies.
 
@@ -77,6 +77,26 @@ To run the various scripts and commands of the project, you can use the [DoIt!](
 
 The first part of the command, `poetry run`, uses Poetry to place the remaining part of the command within a Python virtual environment with all dependencies setup.
 The second part of the command, `doit run`, runs all of the tasks available in the `dodo.py` file.
+
+5. Using an editor.
+
+Of course, you can use any editor you desire to edit or explore the Python code and schema documents in our repository.
+However, we recommend [Visual Studio Code](https://code.visualstudio.com/) because of its strong Python integration.
+To get Visual Studio Code to work with Poetry, first follow steps 1-3 above.
+Next, if you are on macOS and do not have command-line integration, [follow these instructions](https://code.visualstudio.com/docs/setup/mac#_launching-from-the-command-line), restart your shell, perform steps 1-3 and return here.
+If you are on Windows, the `code` command is already integrated into your shell.
+
+From within your running Python environment, type:
+
+    > poetry shell
+
+This activates the virtual environment for Poetry.
+
+    > code .
+
+This launches Visual Studio Code from within your Poetry environment.
+At the bottom left, choose the Python version you wish to use with the given environment.
+You're now ready to develop using Visual Studio Code!
 
 
 ### Developing with Toolkit 205
