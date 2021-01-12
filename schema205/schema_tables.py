@@ -71,18 +71,39 @@ def load_structure_from_object(instance):
     }
 
 
+def create_table_from_list(columns, data_list, defaults=None):
+    """
+    - columns: array of string, the column headers
+    - data_list: array of dict with keys corresponding to columns array
+    - defaults: None or dict from string to value, the defaults to use for a
+      column if data missing
+    RETURN: string, the table in Pandoc markdown grid table format
+    """
+    if len(data_list) == 0:
+        return ""
+    data = {col:[] for col in columns}
+    for col in columns:
+        data[col] = []
+        for item in data_list:
+            if col in item:
+                data[col].append(item[col])
+            elif defaults is not None and col in defaults:
+                data[col].append(defaults[col])
+            else:
+                raise Exception(f"Expected item to have key `{col}`: `{item}`")
+    return tables.string_out_table(data, columns, None, None, None) + "\n\n"
+
+
 def data_types_table(data_types):
     """
     - data_types: array of ..., the data types
     RETURN: string, the table in Pandoc markdown grid table format
     """
-    if len(data_types) == 0:
-        return ""
-    columns = ["Data Type", "Description", "JSON Schema Type", "Examples"]
-    data = {c:[] for c in columns}
-    for col in columns:
-        data[col] = [dt[col] for dt in data_types]
-    return tables.string_out_table(data, columns, None, None, None) + "\n\n"
+    return create_table_from_list(
+            columns=[
+                "Data Type", "Description", "JSON Schema Type", "Examples"],
+            data_list=data_types,
+            defaults=None)
 
 
 def string_types_table(string_types):
@@ -90,13 +111,12 @@ def string_types_table(string_types):
     - string_types: array of ..., the string types
     RETURN: string, the table in Pandoc markdown grid table format
     """
-    if len(string_types) == 0:
-        return ""
-    columns = ["String Type", "Description", "JSON Schema Pattern", "Examples"]
-    data = {col:[] for col in columns}
-    for col in columns:
-        data[col] = [st[col] for st in string_types]
-    return tables.string_out_table(data, columns, None, None, None) + "\n\n"
+    return create_table_from_list(
+            columns=[
+                "String Type", "Description", "JSON Schema Pattern",
+                "Examples"],
+            data_list=string_types,
+            defaults=None)
 
 
 def enumerators_table(enumerators):
@@ -104,18 +124,10 @@ def enumerators_table(enumerators):
     - enumerators: array of ..., the enumerators array
     RETURN: string, the table in Pandoc markdown grid table format
     """
-    if len(enumerators) == 0:
-        return ""
-    columns = ["Enumerator", "Description", "Notes"]
-    data = {col:[] for col in columns}
-    for col in columns:
-        data[col] = []
-        for en in enumerators:
-            if col in en:
-                data[col].append(en[col])
-            else:
-                data[col].append("")
-    return tables.string_out_table(data, columns, None, None, None) + "\n\n"
+    return create_table_from_list(
+            columns=["Enumerator", "Description", "Notes"],
+            data_list=enumerators,
+            defaults={"Notes": ""})
 
 
 def data_elements_from_data_groups(data_groups):
@@ -147,18 +159,12 @@ def data_groups_table(data_elements):
     - data_elements: array of ..., the data elements
     RETURN: string, the table in Pandoc markdown grid table format
     """
-    if len(data_elements) == 0:
-        return ""
-    columns = ["Name", "Description", "Data Type", "Units", "Range", "Req", "Notes"]
-    data = {col:[] for col in columns}
-    for col in columns:
-        data[col] = []
-        for de in data_elements:
-            if col in de:
-                data[col].append(de[col])
-            else:
-                data[col].append("")
-    return tables.string_out_table(data, columns, None, None, None) + "\n\n"
+    return create_table_from_list(
+            columns=[
+                "Name", "Description", "Data Type", "Units", "Range",
+                "Req", "Notes"],
+            data_list=data_elements,
+            defaults={"Notes": "", "Req": "", "Units": "", "Range": ""})
 
 
 def get_base_stem(path):
