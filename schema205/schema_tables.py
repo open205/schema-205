@@ -52,7 +52,7 @@ def load_structure_from_object(instance):
         elif "Data Elements" in instance[obj]:
             data_groups[obj] = instance[obj]
         elif object_type == "Meta":
-            None
+            pass
         else:
             print(f"Unknown object type: {object_type}.")
     return {
@@ -71,10 +71,10 @@ def data_types_table(data_types):
     if len(data_types) == 0:
         return ""
     columns = ["Data Type", "Description", "JSON Schema Type", "Examples"]
-    d = {c:[] for c in columns}
-    for c in columns:
-        d[c] = [dt[c] for dt in data_types]
-    return tables.string_out_table(d, columns, None, None, None) + "\n\n"
+    data = {c:[] for c in columns}
+    for col in columns:
+        data[col] = [dt[col] for dt in data_types]
+    return tables.string_out_table(data, columns, None, None, None) + "\n\n"
 
 
 def get_base_stem(path):
@@ -182,10 +182,10 @@ def make_string_type_table_spec(yaml_src, caption):
     }
 
 
-def make_enumerator_table_spec(id, yaml_src, caption, columns, key=None):
+def make_enumerator_table_spec(ident, yaml_src, caption, columns, key=None):
     """
     Make an Enumerator TableSpec
-    - id: string, the id to select
+    - ident: string, the id to select
     - yaml_src: string, the path to the YAML file
     - caption: string, the caption
     - columns: array of column specs
@@ -201,7 +201,7 @@ def make_enumerator_table_spec(id, yaml_src, caption, columns, key=None):
         "caption": caption,
         "select_by": {
             "data_path": [],
-            "equals": id,
+            "equals": ident,
         },
         "derive_rows": make_rows,
         "columns": columns,
@@ -216,13 +216,20 @@ def name_to_yaml_path(name):
     return os.path.join(SCHEMA_DIR, f'{name}.schema.yaml')
 
 
-def add_table(schema_name, table_type, caption=None, preferred_column_widths=None, with_header=False):
+def add_table(
+        schema_name,
+        table_type,
+        caption=None,
+        preferred_column_widths=None,
+        with_header=False):
     """
     A 'user-facing' table API.
-    - schema_name: the base-name of the YAML spec file to reference. E.g., for "ASHRAE205.schema.yaml", schema_name is "ASHRAE205"
+    - schema_name: the base-name of the YAML spec file to reference. E.g., for
+      "ASHRAE205.schema.yaml", schema_name is "ASHRAE205"
     - table_type: one of "Data Type", "String Type", "RS_ID", "ASHRAE205", ...
     - caption: string or None, the table caption
-    - preferred_column_widths: None or array of integer, the (minimum) column widths to set per column
+    - preferred_column_widths: None or array of integer, the (minimum) column
+      widths to set per column
     - with_header: Bool, if True, creates a markdown header prior to the table
     RETURN: string, the grid table
     """
@@ -234,11 +241,11 @@ def add_table(schema_name, table_type, caption=None, preferred_column_widths=Non
         return tables.generate_table_to_string(
             make_data_type_table_spec(yaml_src, caption),
             preferred_size=preferred_column_widths)
-    elif table_type == "String Type":
+    if table_type == "String Type":
         return tables.generate_table_to_string(
             make_string_type_table_spec(yaml_src, caption),
             preferred_size=preferred_column_widths)
-    elif table_type == "RS_ID":
+    if table_type == "RS_ID":
         return tables.generate_table_to_string(
             make_enumerator_table_spec(
                 "RSID", yaml_src, caption, [
@@ -255,7 +262,7 @@ def add_table(schema_name, table_type, caption=None, preferred_column_widths=Non
             preferred_size=preferred_column_widths,
             header=table_type if with_header else None
         )
-    elif table_type == "ASHRAE205":
+    if table_type == "ASHRAE205":
         return tables.generate_table_to_string(
             make_enumerator_table_spec(
                 table_type, yaml_src, caption, [
@@ -291,24 +298,27 @@ def add_table(schema_name, table_type, caption=None, preferred_column_widths=Non
             preferred_size=preferred_column_widths,
             header=table_type if with_header else None
         )
-    else:
-        return tables.generate_table_to_string(
-            make_enumerator_table_spec(
-                table_type, yaml_src, caption, [
-                    {
-                        "data_path": [],
-                        "name_in_table": "Enumerator",
-                    },
-                    {
-                        "data_path": ["Description"],
-                        "name_in_table": "Definition",
-                    },
-                ]
-            ),
-            preferred_size=preferred_column_widths,
-            header=table_type if with_header else None)
+    return tables.generate_table_to_string(
+        make_enumerator_table_spec(
+            table_type, yaml_src, caption, [
+                {
+                    "data_path": [],
+                    "name_in_table": "Enumerator",
+                },
+                {
+                    "data_path": ["Description"],
+                    "name_in_table": "Definition",
+                },
+            ]
+        ),
+        preferred_size=preferred_column_widths,
+        header=table_type if with_header else None)
 
 
 def add_data_model(*args):
-    s = ", ".join([str(a) for a in args])
-    return "add_data_model(" + s + ")"
+    """
+    Placeholder for a feature to add the entire data model.
+    - args: list of any, the passed in arguments
+    RETURN: string
+    """
+    return "add_data_model(" + (", ".join([str(a) for a in args])) + ")"
