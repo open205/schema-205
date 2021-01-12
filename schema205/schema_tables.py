@@ -118,6 +118,49 @@ def enumerators_table(enumerators):
     return tables.string_out_table(data, columns, None, None, None) + "\n\n"
 
 
+def data_elements_from_data_groups(data_groups):
+    """
+    - data_groups: Dict, the data groups dictionary
+    RETURN: Dict with data elements as an array
+    """
+    output = {}
+    for dg in data_groups:
+        data_elements = []
+        for element in data_groups[dg]["Data Elements"]:
+            new_obj = data_groups[dg]["Data Elements"][element]
+            new_obj["Name"] = f"`{element}`"
+            if 'Required' in new_obj:
+                new_obj["Req"] = u'\N{check mark}' if new_obj["Required"] else ''
+                new_obj.pop('Required')
+            new_obj['Data Type'] = f"`{new_obj['Data Type']}`"
+            if 'Range' in new_obj:
+                gte = u'\N{GREATER-THAN OR EQUAL TO}'
+                lte = u'\N{LESS-THAN OR EQUAL TO}'
+                new_obj["Range"] = f"`{new_obj['Range'].replace('<=',lte).replace('>=',gte)}`"
+            data_elements.append(new_obj)
+        output[dg] = data_elements
+    return output
+
+
+def data_groups_table(data_elements):
+    """
+    - data_elements: array of ..., the data elements
+    RETURN: string, the table in Pandoc markdown grid table format
+    """
+    if len(data_elements) == 0:
+        return ""
+    columns = ["Name", "Description", "Data Type", "Units", "Range", "Req", "Notes"]
+    data = {col:[] for col in columns}
+    for col in columns:
+        data[col] = []
+        for de in data_elements:
+            if col in de:
+                data[col].append(de[col])
+            else:
+                data[col].append("")
+    return tables.string_out_table(data, columns, None, None, None) + "\n\n"
+
+
 def get_base_stem(path):
     """
     - path: string, the path

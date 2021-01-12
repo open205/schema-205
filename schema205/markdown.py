@@ -2,7 +2,9 @@ import os
 import yaml
 from pytablewriter import MarkdownTableWriter
 import sys
-from .schema_tables import data_types_table, string_types_table, enumerators_table, write_header
+from .schema_tables import data_types_table, string_types_table
+from .schema_tables import enumerators_table, data_groups_table, write_header
+from .schema_tables import data_elements_from_data_groups
 
 def format_table(writer):
   return writer.dumps() + "\n"
@@ -64,26 +66,11 @@ def write_tables(instance, output_path, append=True):
         output_file.writelines(enumerators_table(enumerators))
 
     # Data Groups
-    writer.headers = ["Name", "Description", "Data Type", "Units", "Range", "Req", "Notes"]
     if len(data_groups) > 0:
-      for dg in data_groups:
-        writer.table_name = dg
-        data_elements = []
-        for element in data_groups[dg]["Data Elements"]:
-          new_obj = data_groups[dg]["Data Elements"][element]
-          new_obj["Name"] = f"`{element}`"
-          if 'Required' in new_obj:
-            new_obj["Req"] = u'\N{check mark}' if new_obj["Required"] else ''
-            new_obj.pop('Required')
-          new_obj['Data Type'] = f"`{new_obj['Data Type']}`"
-          if 'Range' in new_obj:
-            gte = u'\N{GREATER-THAN OR EQUAL TO}'
-            lte = u'\N{LESS-THAN OR EQUAL TO}'
-            new_obj["Range"] = f"`{new_obj['Range'].replace('<=',lte).replace('>=',gte)}`"
-          data_elements.append(new_obj)
-        writer.value_matrix = data_elements
-
-        output_file.writelines(format_table(writer))
+      dgs = data_elements_from_data_groups(data_groups)
+      for dg in dgs:
+        output_file.writelines(write_header(dg))
+        output_file.writelines(data_groups_table(dgs[dg]))
 
 def write_file(input_path, output_path):
   with open(input_path, 'r') as input_file:
