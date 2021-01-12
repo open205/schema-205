@@ -70,9 +70,10 @@ def enumerators_dict_from_enumerations(enumerations):
         output[enum] = []
         for enumerator in enumerations[enum]["Enumerators"]:
             if enumerations[enum]["Enumerators"][enumerator]:
-                item = enumerations[enum]["Enumerators"][enumerator]
+                item = deepcopy(enumerations[enum]["Enumerators"][enumerator])
             else:
                 item = {}
+            item["Enumerator"] = f"`{enumerator}`"
             output[enum].append(item)
     return output
 

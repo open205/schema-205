@@ -5,72 +5,32 @@ import sys
 from .schema_tables import data_types_table, string_types_table
 from .schema_tables import enumerators_table, data_groups_table, write_header
 from .schema_tables import data_elements_dict_from_data_groups
+from .schema_tables import load_structure_from_object
 
 def format_table(writer):
   return writer.dumps() + "\n"
 
 def write_tables(instance, output_path, append=True):
-  data_types = []
-  string_types = []
-  enumerations = {}
-  data_groups = {}
-
-  for obj in instance:
-    object_type = instance[obj]["Object Type"]
-    if object_type == "Data Type":
-      new_obj = instance[obj]
-      new_obj["Data Type"] = f'`{obj}`'
-      new_obj["Examples"] = ', '.join(new_obj["Examples"])
-      data_types.append(new_obj)
-    elif object_type == "String Type":
-      new_obj = instance[obj]
-      new_obj["String Type"] = f'`{obj}`'
-      new_obj["Examples"] = ', '.join(new_obj["Examples"])
-      string_types.append(new_obj)
-    elif object_type == "Enumeration":
-      enumerations[obj] = instance[obj]
-    elif "Data Elements" in instance[obj]:
-      data_groups[obj] = instance[obj]
-    elif object_type == "Meta":
-      None
-    else:
-      print(f"Unknown object type: {object_type}.")
-
-  writer = MarkdownTableWriter()
-  writer.margin = 1
-
+  struct = load_structure_from_object(instance)
   with open(output_path, 'a' if append else 'w', encoding="utf-8") as output_file:
-
     # Data Types
-    if len(data_types) > 0:
+    if len(struct['data_types']) > 0:
       output_file.writelines(write_header("Data Types"))
-      output_file.writelines(data_types_table(data_types))
-
+      output_file.writelines(data_types_table(struct['data_types']))
     # String Types
-    if len(string_types) > 0:
+    if len(struct['string_types']) > 0:
       output_file.writelines(write_header("String Types"))
-      for st in string_types:
-        if 'Is Regex' in st and st['Is Regex']:
-          st['JSON Schema Pattern'] = '(Not applicable)'
-      output_file.writelines(string_types_table(string_types))
-
+      output_file.writelines(string_types_table(struct['string_types']))
     # Enumerations
-    if len(enumerations) > 0:
-      for enum in enumerations:
+    if len(struct['enumerations']) > 0:
+      for enum, enumerators in struct['enumerations'].items():
         output_file.writelines(write_header(enum))
-        enumerators = []
-        for enumerator in enumerations[enum]["Enumerators"]:
-          new_obj = enumerations[enum]["Enumerators"][enumerator] if enumerations[enum]["Enumerators"][enumerator] else {}
-          new_obj["Enumerator"] = f"`{enumerator}`"
-          enumerators.append(new_obj)
         output_file.writelines(enumerators_table(enumerators))
-
     # Data Groups
-    if len(data_groups) > 0:
-      dgs = data_elements_dict_from_data_groups(data_groups)
-      for dg in dgs:
+    if len(struct['data_groups']) > 0:
+      for dg, data_elements in struct['data_groups'].items():
         output_file.writelines(write_header(dg))
-        output_file.writelines(data_groups_table(dgs[dg]))
+        output_file.writelines(data_groups_table(data_elements))
 
 def write_file(input_path, output_path):
   with open(input_path, 'r') as input_file:
