@@ -2,7 +2,7 @@ import os
 import yaml
 from pytablewriter import MarkdownTableWriter
 import sys
-from .schema_tables import data_types_table, string_types_table, write_header
+from .schema_tables import data_types_table, string_types_table, enumerators_table, write_header
 
 def format_table(writer):
   return writer.dumps() + "\n"
@@ -47,7 +47,6 @@ def write_tables(instance, output_path, append=True):
     # String Types
     if len(string_types) > 0:
       output_file.writelines(write_header("String Types"))
-      writer.headers = ["String Type", "Description", "JSON Schema Pattern", "Examples"]
       for st in string_types:
         if 'Is Regex' in st and st['Is Regex']:
           st['JSON Schema Pattern'] = '(Not applicable)'
@@ -55,17 +54,14 @@ def write_tables(instance, output_path, append=True):
 
     # Enumerations
     if len(enumerations) > 0:
-      writer.headers = ["Enumerator", "Description", "Notes"]
       for enum in enumerations:
-        writer.table_name = enum
+        output_file.writelines(write_header(enum))
         enumerators = []
         for enumerator in enumerations[enum]["Enumerators"]:
           new_obj = enumerations[enum]["Enumerators"][enumerator] if enumerations[enum]["Enumerators"][enumerator] else {}
           new_obj["Enumerator"] = f"`{enumerator}`"
           enumerators.append(new_obj)
-        writer.value_matrix = enumerators
-
-        output_file.writelines(format_table(writer))
+        output_file.writelines(enumerators_table(enumerators))
 
     # Data Groups
     writer.headers = ["Name", "Description", "Data Type", "Units", "Range", "Req", "Notes"]

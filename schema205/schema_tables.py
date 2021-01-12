@@ -51,6 +51,12 @@ def load_structure_from_object(instance):
             string_types.append(new_obj)
         elif object_type == "Enumeration":
             enumerations[obj] = instance[obj]
+            enumerators = []
+            source_enumerators = enumerations[obj]["Enumerators"]
+            for enumerator in source_enumerators:
+                if source_enumerators[enumerator]:
+                    enumerators.append(f'`{source_enumerators[enumerator]}`')
+            enumerations[obj]['EnumeratorsArray'] = enumerators
         elif "Data Elements" in instance[obj]:
             data_groups[obj] = instance[obj]
         elif object_type == "Meta":
@@ -90,6 +96,25 @@ def string_types_table(string_types):
     data = {col:[] for col in columns}
     for col in columns:
         data[col] = [st[col] for st in string_types]
+    return tables.string_out_table(data, columns, None, None, None) + "\n\n"
+
+
+def enumerators_table(enumerators):
+    """
+    - enumerators: array of ..., the enumerators array
+    RETURN: string, the table in Pandoc markdown grid table format
+    """
+    if len(enumerators) == 0:
+        return ""
+    columns = ["Enumerator", "Description", "Notes"]
+    data = {col:[] for col in columns}
+    for col in columns:
+        data[col] = []
+        for en in enumerators:
+            if col in en:
+                data[col].append(en[col])
+            else:
+                data[col].append("")
     return tables.string_out_table(data, columns, None, None, None) + "\n\n"
 
 
