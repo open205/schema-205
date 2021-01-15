@@ -62,8 +62,9 @@ public:
   /// @brief	
   /// @param	table_index TBD
   // ----------------------------------------------------------------------------------------------
-    inline double Calculate_performance(std::size_t table_index) {
-        return _btwxt.get_value_at_target(table_index);
+    inline double Calculate_performance(const std::vector<double> &target,
+                                        std::size_t table_index) {
+        return _btwxt.get_value_at_target(target, table_index);
     }
 
   // ----------------------------------------------------------------------------------------------

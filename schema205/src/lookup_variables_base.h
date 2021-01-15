@@ -4,6 +4,8 @@
 #include <memory>
 #include <vector>
 #include <iostream>
+#include <sstream>
+#include "error_handling_tk205.h"
 
 class performance_map_base;
 
@@ -24,8 +26,10 @@ public:
 
     inline void Add_data_table(performance_map_base* performance_map, std::vector<double>& table)
     {
-        performance_map->Add_data_table(table);
-        std::cout << "Adding grid table with size " << table.size() << "\n";
+       performance_map->Add_data_table(table);
+       std::ostringstream oss;
+       oss << "Adding grid table with size " << table.size();
+       ASHRAE205_NS::Show_message(ASHRAE205_NS::msg_severity::INFO, oss.str());
     }
 };
 

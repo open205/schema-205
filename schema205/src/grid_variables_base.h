@@ -4,6 +4,7 @@
 #include <memory>
 #include <vector>
 #include <iostream>
+#include <sstream>
 
 #include <performance_map_base.h>
 
@@ -24,13 +25,17 @@ public:
 
     inline void Add_grid_axis(performance_map_base* performance_map, std::vector<double>& axis)
     {
-        performance_map->Add_grid_axis(axis);
-        std::cout << "Adding grid axis with size " << axis.size() << "\n";
+       performance_map->Add_grid_axis(axis);
+       std::ostringstream oss;
+       oss << "Adding grid axis with size " << axis.size();
+       ASHRAE205_NS::Show_message(ASHRAE205_NS::msg_severity::INFO, oss.str());
     }
     inline void Add_grid_axis(performance_map_base* performance_map, std::vector<int>& axis)
     {
-        performance_map->Add_grid_axis(axis);
-        std::cout << "Adding (int) grid axis with size " << axis.size() << "\n";
+       performance_map->Add_grid_axis(axis);
+       std::ostringstream oss;
+       oss << "Adding (int) grid axis with size " << axis.size();
+       ASHRAE205_NS::Show_message(ASHRAE205_NS::msg_severity::INFO, oss.str());
     }
 };
 
