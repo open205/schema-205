@@ -58,10 +58,10 @@ Description:
     product_information:
       Description: "Data group describing product information"
       Data Type: "{ProductInformation}"
-    rating_AHRI_550_590:
+    rating_ahri_550_590:
       Description: "Data group containing information relevant to products rated under AHRI 550/590"
       Data Type: "{RatingAHRI550590}"
-    rating_AHRI_551_591:
+    rating_ahri_551_591:
       Description: "Data group containing information relevant to products rated under AHRI 551/591"
       Data Type: "{RatingAHRI551591}"
 

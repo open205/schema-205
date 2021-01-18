@@ -302,7 +302,7 @@
     "DataElement": {
       "type": "object",
       "patternProperties": {
-        "(^([A-Z]*|[a-z]*)(_([a-z]*|[0-9]*)|([A-Z]*|[0-9]*))*$)": {
+        "(^([a-z]+)(_([a-z]|[0-9])+)*$)": {
           "$ref": "meta.schema.json#/definitions/DataElementAttributes",
           "required": [
             "Description",
