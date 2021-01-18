@@ -37,7 +37,7 @@ jobs:
       - name: Validate, build, and test
         run: |
           source $VENV
-          poetry run build
+          poetry run doit
       - name: Upload Markdown Documentation
         uses: actions/upload-artifact@v2
         if: ${{ matrix.python-version }} == '3.6'

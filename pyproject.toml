@@ -6,20 +6,14 @@ authors = ["Open205"]
 
 [tool.poetry.dependencies]
 python = "^3.6"
-doit = "*"
-pylint = "*"
 jsonschema = "*"
 pyyaml = "*"
 pytablewriter = "*"
 
 [tool.poetry.dev-dependencies]
 pytest = "^5.2"
-
-[tool.poetry.scripts]
-build = "schema205.task_runner:build"
-validate = "schema205.task_runner:validate"
-doc = "schema205.task_runner:doc"
-schema = "schema205.task_runner:schema"
+doit = "*"
+pylint = "*"
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]
