@@ -30,7 +30,7 @@ jobs:
         uses: actions/cache@v2
         with:
           path: .venv
-          key: venv-${{ runner.os }}-${{ hashFiles('**/poetry.lock') }}
+          key: venv-${{ matrix.os }}-py${{ matrix.python-version }}-${{ hashFiles('**/poetry.lock') }}
       - name: Install dependencies if cache does not exist
         run: poetry install
         if: steps.cached-poetry-dependencies.outputs.cache-hit != 'true'
@@ -40,13 +40,11 @@ jobs:
           poetry run doit
       - name: Upload Markdown Documentation
         uses: actions/upload-artifact@v2
-        if: ${{ matrix.python-version }} == '3.6'
         with:
-          name: markdown-tables-${{ matrix.os }}
+          name: markdown-tables-${{ matrix.os }}-py${{ matrix.python-version }}
           path: build/docs
       - name: Upload JSON Schema
         uses: actions/upload-artifact@v2
-        if: ${{ matrix.python-version }} == '3.6'
         with:
-          name: json-schema-${{ matrix.os }}
+          name: json-schema-${{ matrix.os }}-py${{ matrix.python-version }}
           path: build/schema
