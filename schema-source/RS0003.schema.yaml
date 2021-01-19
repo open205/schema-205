@@ -92,9 +92,6 @@ Description:
     product_information:
       Description: "Data group describing product information"
       Data Type: "{ProductInformation}"
-    assembly_components:
-      Description: "An array of components included in the fan assembly air stream"
-      Data Type: "[{AssemblyComponent}]"
 
 ProductInformation:
   Object Type: "Data Group"
@@ -106,10 +103,6 @@ ProductInformation:
       Description: "Assembly/unit model number"
       Data Type: "Pattern"
       Notes: "Pattern shall match all model numbers that can be represented by the *representation*"
-    is_enclosed:
-      Description: "Fan assembly is enclosed"
-      Data Type: "Boolean"
-      Notes: "True if the performance data reflects the static pressure difference across the enclosure"
     impeller_type:
       Description: "Type of impeller in fan assembly"
       Data Type: "<ImpellerType>"
@@ -120,21 +113,6 @@ ProductInformation:
       Description: "Number of impellers included in the fan assembly"
       Data Type: "Integer"
 
-AssemblyComponent:
-  Object Type: "Data Group"
-  Data Elements:
-    component_type:
-      Description: "Type of component"
-      Data Type: "<ComponentType>"
-      Required: True
-    component_description:
-      Description: "Informative description of the component"
-      Data Type: "String"
-    component_id:
-      Description: "Identifier of the corresponding Standard 205 *representation*"
-      Data Type: "UUID"
-      Notes: "Optionally provided if the component has a Standard 205 *representation*"
-
 Performance:
   Object Type: "Data Group"
   Data Elements:
@@ -143,14 +121,16 @@ Performance:
       Data Type: "Numeric"
       Range: ">=0.0"
       Units: "m3/s"
-      Notes: "Nominal or rated air flow rate at *standard air conditions* used for calculating wet coil pressure drop"
+      Notes: "Nominal or rated air flow rate at *standard air conditions* used for calculating component wet pressure difference"
       Required: True
-    wet_coil_pressure_drop:
-      Description: "Additional static pressure drop for each cooling coil component collecting condensate"
-      Data Type: "Numeric"
-      Range: ">=0.0"
-      Units: "Pa"
-      Notes: "Corresponds to additional pressure drop at `nominal_air_volumetric_flow_rate`. If unknown, a value of 75 Pa shall be used"
+    is_enclosed:
+      Description: "Fan assembly is enclosed"
+      Data Type: "Boolean"
+      Notes: "True if the performance data reflects the static pressure difference across the enclosure"
+      Required: True
+    assembly_components:
+      Description: "An array of components in addition to fan(s) included in the fan assembly air stream" # TODO: Does the order matter? Should this include fans?
+      Data Type: "[{AssemblyComponent}]"
       Required: True
     heat_loss_fraction:
       Description: "Fraction of efficiency losses transferred into the air stream"
@@ -170,7 +150,7 @@ Performance:
       Data Type: "Numeric"
       Range: ">=0.0"
       Units: "rev/s"
-      Notes: "If no mimumum, use zero"
+      Notes: "If no minimum, use zero"
       Required: True
     stability_curve:
       Description: "The system curve defining the stability area for system selection"
@@ -195,6 +175,28 @@ Performance:
       Data Type: "({PerformanceMapContinuous}, {PerformanceMapDiscrete})"
       Required: True
 
+AssemblyComponent:
+  Object Type: "Data Group"
+  Data Elements:
+    component_type:
+      Description: "Type of component"
+      Data Type: "<ComponentType>"
+      Required: True
+    component_description:
+      Description: "Informative description of the component"
+      Data Type: "String"
+    component_id:
+      Description: "Identifier of the corresponding Standard 205 *representation*"
+      Data Type: "UUID"
+      Notes: "Optionally provided if the component has a Standard 205 *representation*"
+    wet_pressure_difference:
+      Description: "Additional static pressure difference if the component is wet (e.g., because of condensate collection or wetting evaporative media)"
+      Data Type: "Numeric"
+      Range: ">=0.0"
+      Units: "Pa"
+      Notes: "Corresponds to additional pressure difference at `nominal_air_volumetric_flow_rate`. If unknown, a value of 75 Pa shall be used"
+      Required: True
+
 SystemCurve:
   Object Type: "Data Group"
   Data Elements:
@@ -205,7 +207,7 @@ SystemCurve:
       Units: "m3/s"
       Required: True
     static_pressure_difference:
-      Description: "Static pressure drop of an air distribution system"
+      Description: "Static pressure difference of an air distribution system"
       Data Type: "[Numeric][2..]"
       Range: ">=0.0"
       Units: "Pa"
@@ -234,11 +236,11 @@ GridVariablesContinuous:
       Notes: "At *standard air conditions*"
       Required: True
     static_pressure_difference:
-      Description: "Static pressure across fan assembly at dry coil conditions"
+      Description: "External static pressure across fan assembly at dry coil conditions"
       Data Type: "[Numeric][1..]"
       Range: ">=0.0"
       Units: "Pa"
-      Notes: "Or external static at dry coil conditions\n\nAny static pressure deduction (or addition) for wet coil is specified by `wet_coil_pressure_drop` in 'Performance' data group"
+      Notes: "Any static pressure deduction (or addition) for wet coil is specified by `wet_pressure_difference` in 'assembly_components' data group"
       Required: True
 
 LookupVariablesContinuous:
@@ -281,11 +283,11 @@ GridVariablesDiscrete:
       Notes: "In rank order (with 1 being the lowest speed)"
       Required: True
     static_pressure_difference:
-      Description: "Static pressure across fan assembly at dry coil conditions"
+      Description: "External static pressure across fan assembly at dry coil conditions"
       Data Type: "[Numeric][1..]"
       Range: ">=0.0"
       Units: "Pa"
-      Notes: "Or external static at dry coil conditions\n\nAny static pressure deduction (or addition) for wet coil is specified by `wet_coil_pressure_drop` in 'Performance' data group"
+      Notes: "Any static pressure deduction (or addition) for wet coil is specified by `wet_pressure_difference` in 'assembly_components' data group"
       Required: True
 
 LookupVariablesDiscrete:

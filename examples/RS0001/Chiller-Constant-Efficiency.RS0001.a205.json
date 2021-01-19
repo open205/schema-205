@@ -43,7 +43,7 @@
             },
             "evaporator_fouling_factor": 0.01761,
             "condenser_fouling_factor": 0.04403,
-            "speed_control_type": "DISCRETE",
+            "compressor_speed_control_type": "DISCRETE",
             "maximum_power": 31400,
             "cycling_degradation_coefficient": 0.25,
             "performance_map_cooling": {
