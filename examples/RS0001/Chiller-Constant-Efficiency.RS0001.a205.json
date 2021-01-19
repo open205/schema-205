@@ -19,7 +19,7 @@
                 "compressor_type": "CENTRIFUGAL",
                 "liquid_data_source": "AHRI_550_590_2015",
                 "refrigerant": "R-134A",
-                "hotgas_bypass_installed": false
+                "hot_gas_bypass_installed": false
             }
         },
         "performance": {

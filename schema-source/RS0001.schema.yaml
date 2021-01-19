@@ -105,7 +105,7 @@ ProductInformation:
       Description: "Refrigerant used in the chiller"
       Data Type: "String"
       Notes: "The string shall start with 'R-' and then include the refrigerant number designation conforming to ANSI/ASHRAE Standard 34-2019 (ASHRAE 2019)"
-    hotgas_bypass_installed:
+    hot_gas_bypass_installed:
       Description: "Indicates if a hot-gas bypass valve is installed on the chiller"
       Data Type: "Boolean"
 
