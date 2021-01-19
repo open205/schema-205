@@ -26,6 +26,19 @@ AHRI210240TestStandardYear:
       Description: "Rating is based on 2017 AHRI standard"
       Display Text: "2017"
 
+AHRI210240CompressorStagingType:
+  Object Type: "Enumeration"
+  Enumerators:
+    SINGLE_STAGE:
+      Description: "Single, fixed capacity compressor"
+      Display Text: "Single Stage"
+    TWO_STAGE:
+      Description: "Compressor or group of compressors operating with only two stages of capacity"
+      Display Text: "Two-Stage"
+    VARIABLE_STAGE:
+      Description: "Variable speed compressor or compressor or group of compressors with three or more stages of capacity"
+      Display Text: "Variable Stage"
+
 AHRI340360TestStandardYear:
   Object Type: "Enumeration"
   Enumerators:
@@ -38,6 +51,19 @@ AHRI340360TestStandardYear:
     IP_2019:
       Description: "Rating is based on 2019 AHRI standard"
       Display Text: "2019"
+
+AHRI340360CapacityControlType:
+  Object Type: "Enumeration"
+  Enumerators:
+    FIXED_CAPACITY:
+      Description: "Limited to a single stage of refrigeration capacity"
+      Display Text: "Fixed Capacity"
+    STAGED_CAPACITY:
+      Description: "Limited to multiple fixed or discrete stages of refrigeration capacity"
+      Display Text: "Staged Capacity"
+    PROPORTIONAL_CAPACITY:
+      Description: "Compressor capacity can be modulated continuously or in steps not more than 5% of the rated capacity"
+      Display Text: "Proportional Capacity"
 
 # Data Groups
 RS0002:
@@ -57,10 +83,10 @@ Description:
     product_information:
       Description: "Data group describing product information"
       Data Type: "{ProductInformation}"
-    rating_AHRI_210_240:
+    rating_ahri_210_240:
       Description: "Data group containing information relevant to products rated under AHRI 210/240"
       Data Type: "{RatingAHRI210240}"
-    rating_AHRI_340_360:
+    rating_ahri_340_360:
       Description: "Data group containing information relevant to products rated under AHRI 340/360"
       Data Type: "{RatingAHRI340360}"
 
@@ -89,32 +115,100 @@ RatingAHRI210240:
     manufacturer_data_source_version:
       Description: "Version of the software used to generate the rating and performance maps"
       Data Type: "String"
-    SEER:
-      Description: "Seasonal Energy Efficiency Ratio as defined by AHRI 210/240"
+    staging_type:
+      Description: "Type of compressor staging"
+      Data Type: "<AHRI210240CompressorStagingType>"
+      Required: True
+    seer:
+      Description: "Seasonal Energy Efficiency Ratio"
       Data Type: "Numeric"
       Units: "Btu/W-h"
       Range: ">0.0"
       Required: True
-    EER:
-      Description: "Energy Efficiency Ratio (A) as defined by AHRI 210/240"
+    eer_a_full:
+      Description: "Full stage Energy Efficiency Ratio (at 'A' operating conditions)"
       Data Type: "Numeric"
       Units: "Btu/W-h"
       Range: ">0.0"
-      Notes: "The net efficiency (accounting for fan motor heat/power) at the AHRI 'A' operating conditions"
       Required: True
-    cooling_capacity:
-      Description: "Total cooling capacity (A) as defined by AHRI 210/240"
+    eer_b_full:
+      Description: "Full stage Energy Efficiency Ratio (at 'B' operating conditions)"
+      Data Type: "Numeric"
+      Units: "Btu/W-h"
+      Range: ">0.0"
+      # Required: Conditionally
+    cooling_a_full_capacity:
+      Description: "Full stage net total cooling capacity (at 'A' operating conditions)"
       Data Type: "Numeric"
       Units: "Btu/h"
       Range: ">=0.0"
-      Notes: "The net capacity (accounting for fan motor heat) at the AHRI 'A' operating conditions"
       Required: True
-    rating_fan_power_per_flow:
-      Description: "Power per air flow rate of the indoor fan used in the AHRI 210/240 calculation of SEER and EER"
+    cooling_b_full_capacity:
+      Description: "Full stage net total cooling capacity (at 'B' operating conditions)"
       Data Type: "Numeric"
-      Units: "W/cfm"
+      Units: "Btu/h"
+      Range: ">=0.0"
+      # Required: Conditionally
+    cooling_b_low_capacity:
+      Description: "Low stage net total cooling capacity (at 'B' operating conditions)"
+      Data Type: "Numeric"
+      Units: "Btu/h"
+      Range: ">=0.0"
+      # Required: Conditionally
+    cooling_f_low_capacity:
+      Description: "Low stage net total cooling capacity (at 'F' operating conditions)"
+      Data Type: "Numeric"
+      Units: "Btu/h"
+      Range: ">=0.0"
+      # Required: Conditionally
+    cooling_a_full_power:
+      Description: "Full stage net total cooling power (at 'A' operating conditions)"
+      Data Type: "Numeric"
+      Units: "W"
+      Range: ">=0.0"
+      # Required: Conditionally
+    cooling_b_full_power:
+      Description: "Full stage net total cooling power (at 'B' operating conditions)"
+      Data Type: "Numeric"
+      Units: "W"
+      Range: ">=0.0"
+      # Required: Conditionally
+    cooling_b_low_power:
+      Description: "Low stage net total cooling power (at 'B' operating conditions)"
+      Data Type: "Numeric"
+      Units: "W"
+      Range: ">=0.0"
+      # Required: Conditionally
+    cooling_f_low_power:
+      Description: "Low stage net total cooling power (at 'F' operating conditions)"
+      Data Type: "Numeric"
+      Units: "W"
+      Range: ">=0.0"
+      # Required: Conditionally
+    cooling_full_fan_power:
+      Description: "Power of the indoor fan at full load"
+      Data Type: "Numeric"
+      Units: "W"
       Range: ">0.0"
-      Notes: "Used for verification of the rated SEER value"
+      Required: True
+    cooling_full_air_volumetric_flow_rate:
+      Description: "*Standard air* volumetric rate of the indoor fan at full load"
+      Data Type: "Numeric"
+      Units: "cfm"
+      Range: ">0.0"
+      Required: True
+    cooling_low_fan_power:
+      Description: "Power of the indoor fan at low stage"
+      Data Type: "Numeric"
+      Units: "W"
+      Range: ">0.0"
+      # Required: Conditionally
+    cooling_low_air_volumetric_flow_rate:
+      Description: "*Standard air* volumetric rate of the indoor fan at low stage"
+      Data Type: "Numeric"
+      Units: "cfm"
+      Range: ">0.0"
+      # Required: Conditionally
     rating_reproducible_from_performance_data:
       Description: "Whether this rating can be reproduced using the performance data in the *representation*"
       Data Type: "Boolean"
@@ -135,36 +229,69 @@ RatingAHRI340360:
     manufacturer_data_source_version:
       Description: "Version of the software used to generate the AHRI rating and the performance maps"
       Data Type: "String"
-    IEER:
-      Description: "Integrated Energy Efficiency Ratio as defined by AHRI 340/360"
+    capacity_control_type:
+      Description: "Type of capacity control"
+      Data Type: "<AHRI340360CapacityControlType>"
+      Required: True
+    ieer:
+      Description: "Integrated Energy Efficiency Ratio"
       Data Type: "Numeric"
       Units: "Btu/W-h"
       Range: ">0.0"
       Required: True
-    EER:
-      Description: "Energy Efficiency Ratio as defined by AHRI 340/360"
+    eer:
+      Description: "Energy Efficiency Ratio at Standard Rating Conditions"
       Data Type: "Numeric"
       Units: "Btu/W-h"
       Range: ">0.0"
-      Notes: "Efficiency accounts for fan motor heat/power"
       Required: True
     cooling_capacity:
-      Description: "Total cooling capacity as defined by AHRI 340/360"
+      Description: "Net total cooling capacity at Standard Rating Conditions"
       Data Type: "Numeric"
       Units: "Btu/h"
       Range: ">=0.0"
-      Notes: "Net capacity accounts for fan motor heat"
       Required: True
-    rating_fan_power_per_flow:
-      Description: "Power per air flow rate of the indoor fan used in the AHRI 340/360 calculation of IEER and EER"
-      Data Type: "Numeric"
-      Units: "W/cfm"
-      Range: ">0.0"
-      Notes: "Used for verification of the rated IEER value"
+    part_load_points:
+      Description: "Four part load rating points"
+      Data Type: "[{RatingAHRI340360CoolingPartLoadPoint}][4]"
     rating_reproducible_from_performance_data:
       Description: "Whether this rating can be reproduced using the performance data in the *representation*"
       Data Type: "Boolean"
       Notes: "True if the rating values in this table can be reproduced using the performance data in the *representation* within the tolerance of the rating standard"
+      Required: True
+
+RatingAHRI340360CoolingPartLoadPoint:
+  Object Type: "Rating Data Group"
+  Data Elements:
+    capacity:
+      Description: "Net total cooling capacity"
+      Data Type: "Numeric"
+      Units: "Btu/h"
+      Range: ">=0.0"
+      Required: True
+    net_power:
+      Description: "Net cooling power (including the indoor fan motor, controls, and other auxiliary loads)"
+      Data Type: "Numeric"
+      Units: "W"
+      Range: ">=0.0"
+      Required: True
+    indoor_fan_power:
+      Description: "Power of the indoor fan motor"
+      Data Type: "Numeric"
+      Units: "W"
+      Range: ">0.0"
+      Required: True
+    auxiliary_power:
+      Description: "Power of the control circuit and any other auxiliary loads"
+      Data Type: "Numeric"
+      Units: "W"
+      Range: ">0.0"
+      Required: True
+    air_volumetric_flow_rate:
+      Description: "*Standard air* volumetric rate of the indoor fan"
+      Data Type: "Numeric"
+      Units: "cfm"
+      Range: ">0.0"
       Required: True
 
 Performance:
@@ -182,7 +309,7 @@ Performance:
       Data Type: "{ASHRAE205(rs_id=RS0003)}"
       Notes: "Required if the fan is packaged with the unitary equipment"
     fan_position:
-      Description: "Position of the fan relative to the indoor coil"
+      Description: "Position of the fan relative to the cooling coil"
       Data Type: "<FanPosition>"
       Required: True
     dx_system_representation:

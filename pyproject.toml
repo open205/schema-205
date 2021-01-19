@@ -1,0 +1,20 @@
+[tool.poetry]
+name = "schema205"
+version = "0.1.0"
+description = ""
+authors = ["Open205"]
+
+[tool.poetry.dependencies]
+python = "^3.6"
+jsonschema = "*"
+pyyaml = "*"
+pytablewriter = "*"
+
+[tool.poetry.dev-dependencies]
+pytest = "^5.2"
+doit = "*"
+pylint = "*"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
