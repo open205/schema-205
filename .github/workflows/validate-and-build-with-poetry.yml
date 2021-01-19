@@ -1,4 +1,4 @@
-name: Validate and Build with Poetry
+name: Validate and Build
 
 on: push
 
@@ -41,10 +41,5 @@ jobs:
       - name: Upload Markdown Documentation
         uses: actions/upload-artifact@v2
         with:
-          name: markdown-tables-${{ matrix.os }}-py${{ matrix.python-version }}
-          path: build/docs
-      - name: Upload JSON Schema
-        uses: actions/upload-artifact@v2
-        with:
-          name: json-schema-${{ matrix.os }}-py${{ matrix.python-version }}
-          path: build/schema
+          name: build-content-${{ matrix.os }}-py${{ matrix.python-version }}
+          path: build
