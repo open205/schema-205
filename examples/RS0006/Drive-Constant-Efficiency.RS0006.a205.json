@@ -1,15 +1,15 @@
 {
     "standard_version": "PPR2",
     "schema_version": "0.1.0",
-    "RS_ID": "RS0006",
+    "rs_id": "RS0006",
     "description": "Electronic Motor Drive with Constant Efficiency",
-    "ID": "bcf8b859-67a3-42f4-8f8d-4e57af1ccf22",
+    "id": "bcf8b859-67a3-42f4-8f8d-4e57af1ccf22",
     "data_timestamp": "2020-04-08T00:00Z",
     "data_version": 1,
     "data_source": "Committee",
     "disclaimer": "Example data not to be used for simulation",
     "notes": "An example representation that applies a constant efficiency of 0.985",
-    "RS_instance": {
+    "rs_instance": {
         "description": {
             "product_information": {
                 "manufacturer": "DrivesRUs",

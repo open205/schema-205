@@ -1,15 +1,15 @@
 {
   "standard_version": "PPR2",
   "schema_version": "0.1.0",
-  "RS_ID": "RS0002",
+  "rs_id": "RS0002",
   "description": "Unitary System with Constant Efficiency",
-  "ID": "bcf8b859-67a3-42f4-8f8d-4e57af1ccf22",
+  "id": "bcf8b859-67a3-42f4-8f8d-4e57af1ccf22",
   "data_timestamp": "2019-09-13T00:00Z",
   "data_version": 1,
   "data_source": "Committee",
   "disclaimer": "Example data not to be used for simulation",
   "notes": "An example representation that applies a constant COP of 3.1",
-  "RS_instance": {
+  "rs_instance": {
     "description": {
       "product_information": {
         "manufacturer": "ABC HVAC",
@@ -19,29 +19,29 @@
     "performance": {
       "standby_power": 10,
       "fan_position": "BLOW_THROUGH",
-      "DX_system_representation": {
+      "dx_system_representation": {
         "schema_version": "0.1.0",
         "standard_version": "PPR2",
-        "RS_ID": "RS0004",
+        "rs_id": "RS0004",
         "description": "DX System with Constant Efficiency",
-        "ID": "123e4567-e89b-12d3-a456-426614174000",
+        "id": "123e4567-e89b-12d3-a456-426614174000",
         "data_timestamp": "2020-05-07T00:00Z",
         "data_version": 1,
         "disclaimer": "Example data not to be used for simulation",
         "notes": "An example representation that applies a constant COP of 3.1",
-        "RS_instance": {
+        "rs_instance": {
           "description": {
             "product_information": {
               "outdoor_unit_manufacturer": "ABC HVAC",
               "outdoor_unit_model_number": "DX AB12",
               "indoor_unit_manufacturer": "ABC HVAC",
               "indoor_unit_model_number": "DX AB12",
-              "refrigerant_type": "R410A",
+              "refrigerant": "R-410A",
               "compressor_type": "SCROLL"
             }
           },
           "performance": {
-            "compressor_control_method": "STAGED",
+            "compressor_speed_control_type": "DISCRETE",
             "cycling_degradation_coefficient": 0.25,
             "performance_map_cooling": {
               "grid_variables": {
@@ -71,7 +71,7 @@
                 ]
               },
               "lookup_variables": {
-                "gross_total_cooling_capacity": [
+                "gross_total_capacity": [
                   42191.636,
                   42191.636,
                   56877.119999999995,
@@ -137,7 +137,7 @@
                   66637.795,
                   66637.795
                 ],
-                "gross_sensible_cooling_capacity": [
+                "gross_sensible_capacity": [
                   25314.9816,
                   25314.9816,
                   34126.272,
@@ -203,7 +203,7 @@
                   39982.676999999996,
                   39982.676999999996
                 ],
-                "gross_cooling_power": [
+                "gross_power": [
                   13610.205161290321,
                   13610.205161290321,
                   18347.458064516126,
