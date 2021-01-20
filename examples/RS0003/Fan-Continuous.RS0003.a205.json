@@ -12,13 +12,13 @@
             "product_information": {
                 "manufacturer": "ABC Fans",
                 "model_number": "Cont 1a2b",
-                "is_enclosed": false,
                 "impeller_type": "CENTRIFUGAL_AIR_FOIL"
             }
         },
         "performance": {
             "nominal_air_volumetric_flow_rate": 9.5,
-            "wet_coil_pressure_drop": 0,
+            "is_enclosed": false,
+            "assembly_components": [],
             "heat_loss_fraction": 1,
             "maximum_impeller_rotational_speed": 28,
             "minimum_impeller_rotational_speed": 15,
