@@ -1,16 +1,16 @@
 #ifndef {{include_guard}}_H_
 #define {{include_guard}}_H_
 
-#include "RS_instance_factory.h"
+#include "rs_instance_factory.h"
 
 /// @note  This class has been generated from a template. Local changes will not be saved!
 
 namespace ASHRAE205_NS {
 
-   class {{factory_subclass}} : public RS_instance_factory
+   class {{factory_subclass}} : public rs_instance_factory
    {
       public:
-         std::unique_ptr<RS_instance_base> Create_instance() const override;
+         std::unique_ptr<rs_instance_base> Create_instance() const override;
    };
 }
 
