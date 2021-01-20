@@ -159,13 +159,13 @@ Performance:
       Units: "-"
       Notes: "Used to determine amount of heat from the motor added to the air stream"
       Required: True
-    maximum_impeller_speed:
+    maximum_impeller_rotational_speed:
       Description: "Maximum impeller rotational speed"
       Data Type: "Numeric"
       Range: ">=0.0"
       Units: "rev/s"
       Required: True
-    minimum_impeller_speed:
+    minimum_impeller_rotational_speed:
       Description: "Minimum impeller rotational speed"
       Data Type: "Numeric"
       Range: ">=0.0"
@@ -188,10 +188,14 @@ Performance:
       Notes: "If `operation_speed_control_type` is `DISCRETE` and `installation_speed_control_type` is `FIXED`, impeller speed shall be restricted to a single discrete speed.\n\nIf `operation_speed_control_type` is `DISCRETE` and `installation_speed_control_type` is `VARIABLE`, impeller speed shall be restricted to a set of two or more discrete speed\n\nIf `operation_speed_control_type` is `CONTINUOUS` and `installation_speed_control_type` is `FIXED`, impeller speed shall be restricted to a single speed (which may be interpolated from `impeller_speed` values provided in the performance map\n\nIf `operation_speed_control_type` is `CONTINUOUS` and `installation_speed_control_type` is `VARIABLE`, impeller speed shall be unrestricted within operational limits"
     motor_representation:
       Description: "The corresponding Standard 205 motor *representation*"
-      Notes: "If the fan is packaged with a motor, a motor *representation* shall be provided"
+      Notes: "If the fan assembly is packaged with a motor, a motor *representation* shall be provided"
       Data Type: "{ASHRAE205(rs_id=RS0005)}"
+    mechanical_drive_representation:
+      Description: "The corresponding Standard 205 mechanical drive *representation*"
+      Notes: "If the fan assembly is packaged with a mechanical drive, a mechanical drive *representation* shall be provided"
+      Data Type: "{ASHRAE205(rs_id=RS0007)}"
     performance_map:
-      Description: "Data group describing fan performance when operating"
+      Description: "Data group describing fan assembly performance when operating"
       Data Type: "({PerformanceMapContinuous}, {PerformanceMapDiscrete})"
       Required: True
 
@@ -244,7 +248,7 @@ GridVariablesContinuous:
 LookupVariablesContinuous:
   Object Type: "Lookup Variables"
   Data Elements:
-    impeller_speed:
+    impeller_rotational_speed:
       Description: "Rotational speed of fan impeller"
       Data Type: "[Numeric/Null][1..]"
       Range: ">=0.0"
@@ -303,5 +307,11 @@ LookupVariablesDiscrete:
       Data Type: "[Numeric/Null][1..]"
       Range: ">=0.0"
       Units: "W"
-      Notes: "The mechanical efficiency of any belt drive used to modify rotational speed between the motor and impeller shall be implicit in this value"
+      Notes: "Does not include the mechanical efficiency of any mechanical drive used to modify rotational speed between the motor and impeller"
+      Required: True
+    impeller_rotational_speed:
+      Description: "Rotational speed of fan impeller"
+      Data Type: "[Numeric/Null][1..]"
+      Range: ">=0.0"
+      Units: "rev/s"
       Required: True

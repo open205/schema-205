@@ -20,8 +20,8 @@
             "nominal_air_volumetric_flow_rate": 9.5,
             "wet_coil_pressure_drop": 0,
             "heat_loss_fraction": 1,
-            "maximum_impeller_speed": 28,
-            "minimum_impeller_speed": 15,
+            "maximum_impeller_rotational_speed": 28,
+            "minimum_impeller_rotational_speed": 15,
             "stability_curve": {
                 "air_volumetric_flow_rate": [
                     0,
@@ -78,7 +78,7 @@
                     ]
                 },
                 "lookup_variables": {
-                    "impeller_speed": [
+                    "impeller_rotational_speed": [
                         15.133333333333333,
                         16,
                         16.816666666666666,
