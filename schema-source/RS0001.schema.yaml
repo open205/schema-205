@@ -11,7 +11,7 @@ Schema:
   Description: "Schema for ASHRAE 205 annex RS0001: Liquid-Cooled Chiller"
 
 # Local Enumerations
-AHRI550950TestStandardYear:
+AHRI550590TestStandardYear:
   Object Type: "Enumeration"
   Enumerators:
     IP_2015:
@@ -27,7 +27,7 @@ AHRI550950TestStandardYear:
       Description: "Ratings and design points defined using IP unit version of the standard, 2020 edition"
       Display Text: "AHRI 550/590 2020"
 
-AHRI551951TestStandardYear:
+AHRI551591TestStandardYear:
   Object Type: "Enumeration"
   Enumerators:
     SI_2015:
