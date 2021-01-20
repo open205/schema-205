@@ -105,7 +105,7 @@ ProductInformation:
       Description: "Refrigerant used in the chiller"
       Data Type: "String"
       Notes: "The string shall start with 'R-' and then include the refrigerant number designation conforming to ANSI/ASHRAE Standard 34-2019 (ASHRAE 2019)"
-    hotgas_bypass_installed:
+    hot_gas_bypass_installed:
       Description: "Indicates if a hot-gas bypass valve is installed on the chiller"
       Data Type: "Boolean"
 
@@ -171,12 +171,12 @@ RatingAHRI550590:
       Required: True
       Notes: "Evaporator liquid temperature at the exit flange of the evaporator at full load rating conditions"
     full_load_evaporator_liquid_differential_pressure:
-      Description: "Pressure drop across the evaporator at the full load design rating conditions"
+      Description: "Pressure difference across the evaporator at the full load design rating conditions"
       Data Type: "Numeric"
       Units: "ft of water"
       Range: ">0.0"
       Required: True
-      Notes: "Evaporator pressure drop as defined in the rating standard"
+      Notes: "Evaporator pressure difference as defined in the rating standard"
     full_load_evaporator_fouling_factor:
       Description: "Factor of heat transfer inhibition due to heat exchanger fouling layer at the full load design rating condition"
       Data Type: "Numeric"
@@ -205,13 +205,13 @@ RatingAHRI550590:
       Range: ">−459.67"
       Required: True
       Notes: "Condenser liquid temperature at the exit flange of the condenser at full load rating conditions"
-    full_load_condenser_liquid_dfferential_pressure:
-      Description: "Pressure drop across the condenser at the full load design rating conditions"
+    full_load_condenser_liquid_differential_pressure:
+      Description: "Pressure difference across the condenser at the full load design rating conditions"
       Data Type: "Numeric"
       Units: "ft of water"
       Range: ">0.0"
       Required: True
-      Notes: "Condenser pressure drop as defined in the rating standard"
+      Notes: "Condenser pressure difference as defined in the rating standard"
     full_load_condenser_fouling_factor:
       Description: "Factor of heat transfer inhibition due to heat exchanger fouling layer at the full load design rating conditions"
       Data Type: "Numeric"
@@ -266,7 +266,7 @@ RatingAHRI550590PartLoadPoint:
       Range: ">−459.67"
       Required: True
     evaporator_liquid_differential_pressure:
-      Description: "Pressure drop across the evaporator"
+      Description: "Pressure difference across the evaporator"
       Data Type: "Numeric"
       Units: "ft of water"
       Range: ">0.0"
@@ -296,8 +296,8 @@ RatingAHRI550590PartLoadPoint:
       Units: "F"
       Range: ">−459.67"
       Required: True
-    condenser_liquid_dfferential_pressure:
-      Description: "Pressure drop across the condenser"
+    condenser_liquid_differential_pressure:
+      Description: "Pressure difference across the condenser"
       Data Type: "Numeric"
       Units: "ft of water"
       Range: ">0.0"
@@ -371,12 +371,12 @@ RatingAHRI551591:
       Required: True
       Notes: "Evaporator liquid temperature at the exit flange of the evaporator at full load design rating conditions"
     full_load_evaporator_liquid_differential_pressure:
-      Description: "Pressure drop across the evaporator at the full load design rating conditions"
+      Description: "Pressure difference across the evaporator at the full load design rating conditions"
       Data Type: "Numeric"
       Units: "kPa"
       Range: ">0.0"
       Required: True
-      Notes: "Evaporator pressure drop as defined in the rating standard"
+      Notes: "Evaporator pressure difference as defined in the rating standard"
     full_load_evaporator_fouling_factor:
       Description: "Factor of heat transfer inhibition due to heat exchanger fouling layer at the full load design rating conditions"
       Data Type: "Numeric"
@@ -405,13 +405,13 @@ RatingAHRI551591:
       Range: ">−273.15"
       Required: True
       Notes: "Condenser liquid temperature at the exit flange of the condenser at full load rating conditions"
-    full_load_condenser_liquid_dfferential_pressure:
-      Description: "Pressure drop across the condenser at the full load design rating conditions"
+    full_load_condenser_liquid_differential_pressure:
+      Description: "Pressure difference across the condenser at the full load design rating conditions"
       Data Type: "Numeric"
       Units: "kPa"
       Range: ">0.0"
       Required: True
-      Notes: "Condenser pressure drop as defined in the rating standard"
+      Notes: "Condenser pressure difference as defined in the rating standard"
     full_load_condenser_fouling_factor:
       Description: "Factor of heat transfer inhibition due to heat exchanger fouling layer at the full load design rating conditions"
       Data Type: "Numeric"
@@ -466,7 +466,7 @@ RatingAHRI551591PartLoadPoint:
       Range: ">−273.15"
       Required: True
     evaporator_liquid_differential_pressure:
-      Description: "Pressure drop across the evaporator"
+      Description: "Pressure difference across the evaporator"
       Data Type: "Numeric"
       Units: "kPa"
       Range: ">0.0"
@@ -496,8 +496,8 @@ RatingAHRI551591PartLoadPoint:
       Units: "C"
       Range: ">−273.15"
       Required: True
-    condenser_liquid_dfferential_pressure:
-      Description: "Pressure drop across the condenser"
+    condenser_liquid_differential_pressure:
+      Description: "Pressure difference across the condenser"
       Data Type: "Numeric"
       Units: "kPa"
       Range: ">0.0"
@@ -536,7 +536,7 @@ Performance:
       Range: ">=0.0"
       Required: True
       Notes: "Condenser fouling factor at which the performance map was created. May be different from the certification data supplied"
-    speed_control_type:
+    compressor_speed_control_type:
       Description: "Type of compressor speed control"
       Data Type: "<CompressorSpeedControlType>"
       Required: True
@@ -645,13 +645,13 @@ LookupVariablesCooling:
       Range: ">0.0"
       Required: True
     evaporator_liquid_differential_pressure:
-      Description: "Pressure drop across the evaporator"
+      Description: "Pressure difference across the evaporator"
       Data Type: "[Numeric/Null][1..]"
       Units: "Pa"
       Range: ">0.0"
       Required: True
     condenser_liquid_differential_pressure:
-      Description: "Pressure drop across the condenser"
+      Description: "Pressure difference across the condenser"
       Data Type: "[Numeric/Null][1..]"
       Units: "Pa"
       Range: ">0.0"

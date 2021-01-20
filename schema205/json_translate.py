@@ -121,8 +121,6 @@ class DataGroup:
                         target_dict['maxItems'] = int(mnmx.group(3))
                     elif not mnmx.group(2):
                         target_dict['maxItems'] = int(mnmx.group(1))
-                else:
-                    target_dict['minItems'] = 1
                 # 3. 'items' entry
                 target_dict['items'] = dict()
                 self._get_simple_type(m[0], target_dict['items'])
