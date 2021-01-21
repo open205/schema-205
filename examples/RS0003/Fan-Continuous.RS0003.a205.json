@@ -16,14 +16,14 @@
             }
         },
         "performance": {
-            "nominal_air_volumetric_flow_rate": 9.5,
+            "nominal_standard_air_volumetric_flow_rate": 9.5,
             "is_enclosed": false,
             "assembly_components": [],
             "heat_loss_fraction": 1,
             "maximum_impeller_speed": 28,
             "minimum_impeller_speed": 15,
             "stability_curve": {
-                "air_volumetric_flow_rate": [
+                "standard_air_volumetric_flow_rate": [
                     0,
                     0.000943895,
                     0.002831685,
@@ -48,7 +48,7 @@
             "installation_speed_control_type": "FIXED",
             "performance_map": {
                 "grid_variables": {
-                    "air_volumetric_flow_rate": [
+                    "standard_air_volumetric_flow_rate": [
                         5.6633694,
                         6.13531685,
                         6.6072643,

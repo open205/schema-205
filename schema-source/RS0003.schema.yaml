@@ -116,12 +116,12 @@ ProductInformation:
 Performance:
   Object Type: "Data Group"
   Data Elements:
-    nominal_air_volumetric_flow_rate:
-      Description: "Nominal air flow rate for fan assembly"
+    nominal_standard_air_volumetric_flow_rate:
+      Description: "Nominal or rated air flow rate at *standard air conditions*"
       Data Type: "Numeric"
       Range: ">=0.0"
       Units: "m3/s"
-      Notes: "Nominal or rated air flow rate at *standard air conditions* used for calculating component wet pressure difference"
+      Notes: "Used for calculating component wet pressure difference"
       Required: True
     is_enclosed:
       Description: "Fan assembly is enclosed"
@@ -194,14 +194,14 @@ AssemblyComponent:
       Data Type: "Numeric"
       Range: ">=0.0"
       Units: "Pa"
-      Notes: "Corresponds to additional pressure difference at `nominal_air_volumetric_flow_rate`. If unknown, a value of 75 Pa shall be used"
+      Notes: "Corresponds to additional pressure difference at `nominal_standard_air_volumetric_flow_rate`. If unknown, a value of 75 Pa shall be used"
       Required: True
 
 SystemCurve:
   Object Type: "Data Group"
   Data Elements:
-    air_volumetric_flow_rate:
-      Description: "Volumetric air flow rate through an air distribution system"
+    standard_air_volumetric_flow_rate:
+      Description: "Volumetric air flow rate through an air distribution system at *standard air conditions*"
       Data Type: "[Numeric][2..]"
       Range: ">=0.0"
       Units: "m3/s"
@@ -228,12 +228,11 @@ PerformanceMapContinuous:
 GridVariablesContinuous:
   Object Type: "Grid Variables"
   Data Elements:
-    air_volumetric_flow_rate:
-      Description: "Volumetric air flow rate through fan assembly"
+    standard_air_volumetric_flow_rate:
+      Description: "Volumetric air flow rate through fan assembly at *standard air conditions*"
       Data Type: "[Numeric][1..]"
       Range: ">=0.0"
       Units: "m3/s"
-      Notes: "At *standard air conditions*"
       Required: True
     static_pressure_difference:
       Description: "External static pressure across fan assembly at dry coil conditions"
@@ -293,12 +292,11 @@ GridVariablesDiscrete:
 LookupVariablesDiscrete:
   Object Type: "Lookup Variables"
   Data Elements:
-    air_volumetric_flow_rate:
-      Description: "Volumetric air flow rate through fan assembly"
+    standard_air_volumetric_flow_rate:
+      Description: "Volumetric air flow rate through fan assembly at *standard air conditions*"
       Data Type: "[Numeric/Null][1..]"
       Range: ">=0.0"
       Units: "m3/s"
-      Notes: "At *standard air conditions*"
       Required: True
     shaft_power:
       Description: "Mechanical shaft power input to fan assembly"
