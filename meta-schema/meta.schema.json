@@ -102,6 +102,16 @@
       ],
       "additionalProperties": false
     },
+    "Notes": {
+      "oneOf": [
+        { "type": "string" },
+        { "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      ]
+    },
     "Enumerator": {
       "type": "object",
       "patternProperties": {
@@ -215,7 +225,7 @@
           "type": "boolean"
         },
         "Notes": {
-          "type": "string"
+          "$ref": "meta.schema.json#/definitions/Notes"
         }
       }
     },
@@ -238,7 +248,7 @@
           "type": "boolean"
         },
         "Notes": {
-          "type": "string"
+          "$ref": "meta.schema.json#/definitions/Notes"
         }
       }
     },
@@ -266,7 +276,7 @@
           "const": true
         },
         "Notes": {
-          "type": "string"
+          "$ref": "meta.schema.json#/definitions/Notes"
         }
       }
     },
@@ -294,7 +304,7 @@
           "const": true
         },
         "Notes": {
-          "type": "string"
+          "$ref": "meta.schema.json#/definitions/Notes"
         }
       }
     },
