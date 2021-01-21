@@ -15,13 +15,13 @@
                 "manufacturer": "MotorsRUs",
                 "model_number": "1357",
                 "nominal_voltage": 240,
-                "nominal_frequency": 60,
-                "number_of_poles": 4
+                "nominal_frequency": 60
             }
         },
         "performance": {
-            "maximum_power": 600,
+            "maximum_power": 10000,
             "standby_power": 1,
+            "number_of_poles": 4,
             "drive_representation": {
                 "standard_version": "PPR2",
                 "schema_version": "0.1.0",
@@ -49,10 +49,16 @@
                                 "output_power": [
                                     4052,
                                     8105
+                                ],
+                                "output_frequency": [
+                                    3.2,
+                                    114.6
                                 ]
                             },
                             "lookup_variables": {
                                 "efficiency": [
+                                    0.985,
+                                    0.985,
                                     0.985,
                                     0.985
                                 ]
@@ -66,14 +72,22 @@
                     "shaft_power": [
                         3726,
                         7450
+                    ],
+                    "shaft_rotational_speed": [
+                        1.6,
+                        57.3
                     ]
                 },
                 "lookup_variables": {
                     "efficiency": [
                         0.92,
+                        0.92,
+                        0.92,
                         0.92
                     ],
                     "power_factor": [
+                        0.90,
+                        0.90,
                         0.90,
                         0.90
                     ]
