@@ -65,7 +65,7 @@ Performance:
       Description: "Ratio of input shaft speed to output shaft speed"
       Data Type: "Numeric" # TODO: Should this be a list or a range of options?
       Units: "-"
-      Range: ">=0.0"
+      Range: ">0.0"
       Required: True
     performance_map:
       Description: "Data group describing drive performance when operating"
