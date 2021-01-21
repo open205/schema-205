@@ -658,19 +658,19 @@ LookupVariablesCooling:
       Range: ">0.0"
       Required: True
     oil_cooler_heat:
-      Description: "Heat rejected by the chiller oil cooler"
+      Description: "Heat transferred to another liquid crossing the control volume boundary from the chiller oil cooler."
       Data Type: "[Numeric/Null][1..]"
       Units: "W"
       Range: ">=0.0"
       Required: True
-      Notes: "Heat transferred to another liquid crossing the control volume boundary from the chiller oil cooler. \n\nSet as 0 if not present or if heat rejection is met by condenser"
+      Notes: "Set as 0 if not present or if heat rejection is met by condenser"
     auxiliary_heat:
-      Description: "Heat rejected by auxiliaries"
+      Description: "Heat transferred to another liquid crossing the control volume boundary from the chiller auxiliaries (motor, motor controller, inverter drive, starter, etc)."
       Data Type: "[Numeric/Null][1..]"
       Units: "W"
       Range: ">=0.0"
       Required: True
-      Notes: "Heat transferred to another liquid crossing the control volume boundary from the chiller auxiliaries (motor, motor controller, inverter drive, starter, etc).\n\nSet as 0 if not present or if heat rejection is met by condenser"
+      Notes: "Set as 0 if not present or if heat rejection is met by condenser"
 
 PerformanceMapStandby:
   Object Type: "Performance Map"
