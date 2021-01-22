@@ -73,7 +73,7 @@ class Member_function_definition(Implementation_entry):
 
     def __init__(self, header_entry, parent=None):
         super().__init__(None, parent)
-        self._func = f'void {header_entry.parent._name}::{header_entry._fname}{header_entry._args}'
+        self._func = f'{header_entry._ret_type} {header_entry.parent._name}::{header_entry._fname}{header_entry._args}'
 
     # .............................................................................................
     @property
@@ -233,6 +233,20 @@ class Data_table_impl(Implementation_entry):
 
 
 # -------------------------------------------------------------------------------------------------
+class Simple_return_property(Implementation_entry):
+
+    def __init__(self, name, parent):
+        super().__init__(name, parent)
+        self._func = f'return "{name}";'
+
+    # .............................................................................................
+    @property
+    def value(self):
+        entry = self.level*'\t' + self._func + '\n'
+        return entry
+
+
+# -------------------------------------------------------------------------------------------------
 class CPP_translator:
 
     def __init__(self):
@@ -299,17 +313,21 @@ class CPP_translator:
             if isinstance(entry, Member_function_override) or isinstance(entry, Initialize_function):
                 # Create the override function definition (header) using the declaration's signature
                 m = Member_function_definition(entry, self._namespace)
-                # In function body, choose element-wise ops based on the superclass
-                for e in [c for c in entry.parent.child_entries if isinstance(c, Data_element)]:
-                    if 'shared_ptr' in e._type:
-                        Class_factory_creation(e._name, m, e._selector)
-                        self._preamble.append(f'#include <{e._name}_factory.h>\n')
-                    else:
-                        self._implementations[entry.parent._superclass](e._name, m)
-                    if entry.parent._superclass == 'performance_map_base':
-                        Performance_map_impl(e._name, m, populates_self=True)
-                # Special case of grid_axis_base needs a finalize function after all grid axes 
-                # are added
+                # Dirty hack workaround for Name() function
+                if 'Name' in entry._fname:
+                   Simple_return_property(entry.parent._name, m)
+                else:
+                  # In function body, choose element-wise ops based on the superclass
+                  for e in [c for c in entry.parent.child_entries if isinstance(c, Data_element)]:
+                     if 'shared_ptr' in e._type:
+                           Class_factory_creation(e._name, m, e._selector)
+                           self._preamble.append(f'#include <{e._name}_factory.h>\n')
+                     else:
+                           self._implementations[entry.parent._superclass](e._name, m)
+                     if entry.parent._superclass == 'performance_map_base':
+                           Performance_map_impl(e._name, m, populates_self=True)
+                  # Special case of grid_axis_base needs a finalize function after all grid axes 
+                  # are added
                 if entry.parent._superclass == 'grid_variables_base':
                     Grid_axis_finalize('', m)
             # Lastly, handle the special case of objects that need both serialization 
