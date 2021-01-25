@@ -17,10 +17,9 @@
                 "nominal_voltage": 460,
                 "nominal_frequency": 60,
                 "compressor_type": "CENTRIFUGAL",
-                "speed_control_type": "DISCRETE",
                 "liquid_data_source": "AHRI_550_590_2015",
                 "refrigerant": "R-134A",
-                "hotgas_bypass_installed": false
+                "hot_gas_bypass_installed": false
             }
         },
         "performance": {
@@ -44,7 +43,8 @@
             },
             "evaporator_fouling_factor": 0.01761,
             "condenser_fouling_factor": 0.04403,
-            "unit_power_limit": 31400,
+            "compressor_speed_control_type": "DISCRETE",
+            "maximum_power": 31400,
             "cycling_degradation_coefficient": 0.25,
             "performance_map_cooling": {
                 "grid_variables": {
@@ -64,12 +64,12 @@
                         300.15,
                         302.59
                     ],
-                    "net_evaporator_capacity_fraction": [
-                        0.2,
-                        0.4,
-                        0.6,
-                        0.8,
-                        1
+                    "compressor_sequence_number": [
+                        1,
+                        2,
+                        3,
+                        4,
+                        5
                     ]
                 },
                 "lookup_variables": {

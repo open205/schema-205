@@ -25,10 +25,16 @@
                     "output_power": [
                         4052,
                         8105
+                    ],
+                    "output_frequency": [
+                        3.2,
+                        114.6
                     ]
                 },
                 "lookup_variables": {
                     "efficiency": [
+                        0.985,
+                        0.985,
                         0.985,
                         0.985
                     ]

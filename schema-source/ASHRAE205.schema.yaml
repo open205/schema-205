@@ -18,6 +18,7 @@ Schema:
     - "RS0004"
     - "RS0005"
     - "RS0006"
+    - "RS0007"
   Root Data Group: "ASHRAE205"
 
 # Data Types
@@ -128,6 +129,8 @@ RSID:
       Description: "Motor"
     RS0006:
       Description: "Electronic Motor Drive"
+    RS0007:
+      Description: "Mechanical Drive"
 
 CompressorType:
   Object Type: "Enumeration"
@@ -256,7 +259,7 @@ ASHRAE205:
       Data Type: "String"
     rs_instance:
       Description: "*Representation Specification* Data Group"
-      Data Type: "({RS0001}, {RS0002}, {RS0003}, {RS0004}, {RS0005}, {RS0006})"
+      Data Type: "({RS0001}, {RS0002}, {RS0003}, {RS0004}, {RS0005}, {RS0006}, {RS0007})"
       Notes: "Data Group defined by specific *representation specification* (e.g., 'RS0001')"
       Required: True
 

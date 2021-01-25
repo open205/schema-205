@@ -115,11 +115,12 @@ GridVariablesCooling:
       Units: "kg/s"
       Required: True
     compressor_sequence_number:
-      Description: "Index indicating the relative capacity order of the compressor speed/stage"
+      Description: "Index indicating the relative capacity order of the compressor speed/stage expressed in order from lowest capacity (starting at 1) to highest capacity"
       Data Type: "[Integer][1..]"
       Range: ">=0"
       Units: "-"
-      Notes: "Expressed in order from lowest capacity (starting at 1) to highest capacity\n\nIf `compressor_speed_control_type` is `DISCRETE`, sequence numbers shall be provided for each discrete stage of the compressor(s)\n\nIf `compressor_speed_control_type` is `CONTINUOUS`, sufficient sequence numbers shall be provided to capture the continuous operation of the compressor(s)"
+      Notes: ["If `compressor_speed_control_type` is `DISCRETE`, sequence numbers shall be provided for each discrete stage of the compressor(s)",
+              "If `compressor_speed_control_type` is `CONTINUOUS`, sufficient sequence numbers shall be provided to capture the continuous operation of the compressor(s)"]
       Required: True
     ambient_absolute_air_pressure:
       Description: "Ambient absolute air pressure"
@@ -151,7 +152,8 @@ LookupVariablesCooling:
       Range: ">0.0"
       Units: "W"
       Required: True
-      Notes: "Includes compressor, outdoor fan, and any auxiliary power used by the unit's controls and any sump heater.\n\nShall not include power drawn by the indoor fan"
+      Notes: ["Includes compressor, outdoor fan, and any auxiliary power used by the unit's controls and any sump heater.",
+              "Shall not include power drawn by the indoor fan"]
 
 PerformanceMapStandby:
   Object Type: "Performance Map"

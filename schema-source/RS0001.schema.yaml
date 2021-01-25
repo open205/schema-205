@@ -58,10 +58,10 @@ Description:
     product_information:
       Description: "Data group describing product information"
       Data Type: "{ProductInformation}"
-    rating_AHRI_550_590:
+    rating_ahri_550_590:
       Description: "Data group containing information relevant to products rated under AHRI 550/590"
       Data Type: "{RatingAHRI550590}"
-    rating_AHRI_551_591:
+    rating_ahri_551_591:
       Description: "Data group containing information relevant to products rated under AHRI 551/591"
       Data Type: "{RatingAHRI551591}"
 
@@ -97,9 +97,6 @@ ProductInformation:
     compressor_type:
       Description: "Type of compressor"
       Data Type: "<CompressorType>"
-    speed_control_type:
-      Description: "Type of compressor speed control"
-      Data Type: "<CompressorSpeedControlType>"
     liquid_data_source:
       Description: "Source of the liquid properties data"
       Data Type: "String"
@@ -108,7 +105,7 @@ ProductInformation:
       Description: "Refrigerant used in the chiller"
       Data Type: "String"
       Notes: "The string shall start with 'R-' and then include the refrigerant number designation conforming to ANSI/ASHRAE Standard 34-2019 (ASHRAE 2019)"
-    hotgas_bypass_installed:
+    hot_gas_bypass_installed:
       Description: "Indicates if a hot-gas bypass valve is installed on the chiller"
       Data Type: "Boolean"
 
@@ -174,12 +171,12 @@ RatingAHRI550590:
       Required: True
       Notes: "Evaporator liquid temperature at the exit flange of the evaporator at full load rating conditions"
     full_load_evaporator_liquid_differential_pressure:
-      Description: "Pressure drop across the evaporator at the full load design rating conditions"
+      Description: "Pressure difference across the evaporator at the full load design rating conditions"
       Data Type: "Numeric"
       Units: "ft of water"
       Range: ">0.0"
       Required: True
-      Notes: "Evaporator pressure drop as defined in the rating standard"
+      Notes: "Evaporator pressure difference as defined in the rating standard"
     full_load_evaporator_fouling_factor:
       Description: "Factor of heat transfer inhibition due to heat exchanger fouling layer at the full load design rating condition"
       Data Type: "Numeric"
@@ -208,13 +205,13 @@ RatingAHRI550590:
       Range: ">−459.67"
       Required: True
       Notes: "Condenser liquid temperature at the exit flange of the condenser at full load rating conditions"
-    full_load_condenser_liquid_dfferential_pressure:
-      Description: "Pressure drop across the condenser at the full load design rating conditions"
+    full_load_condenser_liquid_differential_pressure:
+      Description: "Pressure difference across the condenser at the full load design rating conditions"
       Data Type: "Numeric"
       Units: "ft of water"
       Range: ">0.0"
       Required: True
-      Notes: "Condenser pressure drop as defined in the rating standard"
+      Notes: "Condenser pressure difference as defined in the rating standard"
     full_load_condenser_fouling_factor:
       Description: "Factor of heat transfer inhibition due to heat exchanger fouling layer at the full load design rating conditions"
       Data Type: "Numeric"
@@ -269,7 +266,7 @@ RatingAHRI550590PartLoadPoint:
       Range: ">−459.67"
       Required: True
     evaporator_liquid_differential_pressure:
-      Description: "Pressure drop across the evaporator"
+      Description: "Pressure difference across the evaporator"
       Data Type: "Numeric"
       Units: "ft of water"
       Range: ">0.0"
@@ -299,8 +296,8 @@ RatingAHRI550590PartLoadPoint:
       Units: "F"
       Range: ">−459.67"
       Required: True
-    condenser_liquid_dfferential_pressure:
-      Description: "Pressure drop across the condenser"
+    condenser_liquid_differential_pressure:
+      Description: "Pressure difference across the condenser"
       Data Type: "Numeric"
       Units: "ft of water"
       Range: ">0.0"
@@ -374,12 +371,12 @@ RatingAHRI551591:
       Required: True
       Notes: "Evaporator liquid temperature at the exit flange of the evaporator at full load design rating conditions"
     full_load_evaporator_liquid_differential_pressure:
-      Description: "Pressure drop across the evaporator at the full load design rating conditions"
+      Description: "Pressure difference across the evaporator at the full load design rating conditions"
       Data Type: "Numeric"
       Units: "kPa"
       Range: ">0.0"
       Required: True
-      Notes: "Evaporator pressure drop as defined in the rating standard"
+      Notes: "Evaporator pressure difference as defined in the rating standard"
     full_load_evaporator_fouling_factor:
       Description: "Factor of heat transfer inhibition due to heat exchanger fouling layer at the full load design rating conditions"
       Data Type: "Numeric"
@@ -408,13 +405,13 @@ RatingAHRI551591:
       Range: ">−273.15"
       Required: True
       Notes: "Condenser liquid temperature at the exit flange of the condenser at full load rating conditions"
-    full_load_condenser_liquid_dfferential_pressure:
-      Description: "Pressure drop across the condenser at the full load design rating conditions"
+    full_load_condenser_liquid_differential_pressure:
+      Description: "Pressure difference across the condenser at the full load design rating conditions"
       Data Type: "Numeric"
       Units: "kPa"
       Range: ">0.0"
       Required: True
-      Notes: "Condenser pressure drop as defined in the rating standard"
+      Notes: "Condenser pressure difference as defined in the rating standard"
     full_load_condenser_fouling_factor:
       Description: "Factor of heat transfer inhibition due to heat exchanger fouling layer at the full load design rating conditions"
       Data Type: "Numeric"
@@ -469,7 +466,7 @@ RatingAHRI551591PartLoadPoint:
       Range: ">−273.15"
       Required: True
     evaporator_liquid_differential_pressure:
-      Description: "Pressure drop across the evaporator"
+      Description: "Pressure difference across the evaporator"
       Data Type: "Numeric"
       Units: "kPa"
       Range: ">0.0"
@@ -499,8 +496,8 @@ RatingAHRI551591PartLoadPoint:
       Units: "C"
       Range: ">−273.15"
       Required: True
-    condenser_liquid_dfferential_pressure:
-      Description: "Pressure drop across the condenser"
+    condenser_liquid_differential_pressure:
+      Description: "Pressure difference across the condenser"
       Data Type: "Numeric"
       Units: "kPa"
       Range: ">0.0"
@@ -539,12 +536,15 @@ Performance:
       Range: ">=0.0"
       Required: True
       Notes: "Condenser fouling factor at which the performance map was created. May be different from the certification data supplied"
-    unit_power_limit:
-      Description: "Maximum unit power input"
+    compressor_speed_control_type:
+      Description: "Type of compressor speed control"
+      Data Type: "<CompressorSpeedControlType>"
+      Required: True
+    maximum_power:
+      Description: "Maximum input power at which the chiller operates reliably and continuously"
       Data Type: "Numeric"
       Units: "W"
       Range: ">=0.0"
-      Notes: "Maximum input power at which the chiller operates reliably and continuously"
     cycling_degradation_coefficient:
       Description: "Cycling degradation coefficient (C<sub>D</sub>) as described in AHRI 550/590 or AHRI 551/591"
       Data Type: "Numeric"
@@ -600,13 +600,14 @@ GridVariablesCooling:
       Units: "K"
       Range: ">0.0"
       Required: True
-    net_evaporator_capacity_fraction:
-      Description: "Fraction of maximum net capacity at the same operating conditions"
-      Data Type: "[Numeric][1..]"
+    compressor_sequence_number:
+      Description: "Index indicating the relative capacity order of the compressor speed/stage expressed in order from lowest capacity (starting at 1) to highest capacity"
+      Data Type: "[Integer][1..]"
+      Range: ">=0"
       Units: "-"
-      Range: ">=0.0, <=1.0"
+      Notes: ["If `compressor_speed_control_type` is `DISCRETE`, sequence numbers shall be provided for each discrete stage of the compressor(s)",
+              "If `compressor_speed_control_type` is `CONTINUOUS`, sufficient sequence numbers shall be provided to capture the continuous operation of the compressor(s)"]
       Required: True
-      Notes: "Ratio of `net_evaporator_capacity` to the maximum evaporator capacity at the same operating conditions"
 
 LookupVariablesCooling:
   Object Type: "Lookup Variables"
@@ -645,31 +646,31 @@ LookupVariablesCooling:
       Range: ">0.0"
       Required: True
     evaporator_liquid_differential_pressure:
-      Description: "Pressure drop across the evaporator"
+      Description: "Pressure difference across the evaporator"
       Data Type: "[Numeric/Null][1..]"
       Units: "Pa"
       Range: ">0.0"
       Required: True
     condenser_liquid_differential_pressure:
-      Description: "Pressure drop across the condenser"
+      Description: "Pressure difference across the condenser"
       Data Type: "[Numeric/Null][1..]"
       Units: "Pa"
       Range: ">0.0"
       Required: True
     oil_cooler_heat:
-      Description: "Heat rejected by the chiller oil cooler"
+      Description: "Heat transferred to another liquid crossing the control volume boundary from the chiller oil cooler."
       Data Type: "[Numeric/Null][1..]"
       Units: "W"
       Range: ">=0.0"
       Required: True
-      Notes: "Heat transferred to another liquid crossing the control volume boundary from the chiller oil cooler. \n\nSet as 0 if not present or if heat rejection is met by condenser"
+      Notes: "Set as 0 if not present or if heat rejection is met by condenser"
     auxiliary_heat:
-      Description: "Heat rejected by auxiliaries"
+      Description: "Heat transferred to another liquid crossing the control volume boundary from the chiller auxiliaries (motor, motor controller, inverter drive, starter, etc)."
       Data Type: "[Numeric/Null][1..]"
       Units: "W"
       Range: ">=0.0"
       Required: True
-      Notes: "Heat transferred to another liquid crossing the control volume boundary from the chiller auxiliaries (motor, motor controller, inverter drive, starter, etc).\n\nSet as 0 if not present or if heat rejection is met by condenser"
+      Notes: "Set as 0 if not present or if heat rejection is met by condenser"
 
 PerformanceMapStandby:
   Object Type: "Performance Map"

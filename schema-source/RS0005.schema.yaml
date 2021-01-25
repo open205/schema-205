@@ -44,9 +44,6 @@ ProductInformation:
       Data Type: "Numeric"
       Units: "Hz"
       Range: ">=0.0"
-    number_of_poles:
-      Description: "Number of poles"
-      Data Type: "Integer"
 
 Performance:
   Object Type: "Data Group"
@@ -63,6 +60,10 @@ Performance:
       Data Type: "Numeric"
       Units: "W"
       Range: ">=0.0"
+      Required: True
+    number_of_poles:
+      Description: "Number of poles"
+      Data Type: "Integer"
       Required: True
     drive_representation:
       Description: "The corresponding Standard 205 drive *representation*"
@@ -92,6 +93,12 @@ GridVariables:
       Data Type: "[Numeric][1..]"
       Range: ">=0.0"
       Units: "W"
+      Required: True
+    shaft_rotational_speed:
+      Description: "Rotational speed of fan impeller"
+      Data Type: "[Numeric][1..]"
+      Range: ">=0.0"
+      Units: "rev/s"
       Required: True
 
 LookupVariables:

@@ -2,28 +2,31 @@ Schema:
   Object Type: "Meta"
   References:
     - "ASHRAE205"
-  Title: "Electronic Motor Drive"
-  Description: "Schema for ASHRAE 205 annex RS0006: Electronic Motor Drive"
+  Title: "Mechanical Drive"
+  Description: "Schema for ASHRAE 205 annex RS0007: Mechanical Drive" # TODO: Scope includes power transmission couplings. Allow chaining of drives?
 
 # Local Enumerations
-CoolingMethod:
+DriveType:
   Object Type: "Enumeration"
   Enumerators:
-    PASSIVE_COOLED:
-      Description: "Drive is cooled using natural air convection within the surrounding environment"
-      Display Text: "Passive Cooled"
-      Notes: "All drive efficiency losses are assumed to be added as heat to the surrounding environment"
-    ACTIVE_AIR_COOLED:
-      Description: "Drive is cooled using forced air convection within the surrounding environment"
-      Display Text: "Active Air Cooled"
-      Notes: "Electrical power required for the active cooling system shall be included in the efficiency of the drive. All drive efficiency losses are assumed to be added as heat to the surrounding environment"
-    ACTIVE_LIQUID_COOLED:
-      Description: "Drive is cooled using forced liquid convection, transferring heat to the liquid"
-      Display Text: "Active Liquid Cooled"
-      Notes: "Any liquid pumping power shall be modeled external to the drive by the *application software*. All drive efficiency losses are assumed to be added as heat to the liquid stream"
+    V_BELT:
+      Description: "V-Belt"
+      Display Text: "V-Belt"
+    COGGED_BELT:
+      Description: "Cogged Belt"
+      Display Text: "Cogged Belt"
+    SYNCHRONOUS_BELT:
+      Description: "Synchronous Belt"
+      Display Text: "Synchronous Belt"
+    GEAR:
+      Description: "Gear"
+      Display Text: "Gear"
+    CHAIN:
+      Description: "Chain"
+      Display Text: "Chain"
 
 # Data Groups
-RS0006:
+RS0007:
   Object Type: "Data Group"
   Data Elements:
     description:
@@ -51,25 +54,18 @@ ProductInformation:
         Description: "Model number"
         Data Type: "Pattern"
         Notes: "Pattern shall match all model numbers that can be represented by the *representation*"
+      drive_type:
+        Description: "Type of mechanical drive"
+        Data Type: "<DriveType>"
 
 Performance:
   Object Type: "Data Group"
   Data Elements:
-    maximum_power:
-      Description: "Maximum power draw of the drive"
-      Data Type: "Numeric"
-      Units: "W"
-      Range: ">=0.0"
-      Required: True
-    standby_power:
-      Description: "Power draw when the motor is not operating"
-      Data Type: "Numeric"
-      Units: "W"
-      Range: ">=0.0"
-      Required: True
-    cooling_method:
-      Description: "Method used to cool the drive"
-      Data Type: "<CoolingMethod>"
+    speed_ratio:
+      Description: "Ratio of input shaft speed to output shaft speed"
+      Data Type: "Numeric" # TODO: Should this be a list or a range of options?
+      Units: "-"
+      Range: ">0.0"
       Required: True
     performance_map:
       Description: "Data group describing drive performance when operating"
@@ -92,16 +88,10 @@ GridVariables:
   Object Type: "Grid Variables"
   Data Elements:
     output_power:
-      Description: "Power delivered to the motor"
+      Description: "Output shaft power"
       Data Type: "[Numeric][1..]"
       Range: ">=0.0"
       Units: "W"
-      Required: True
-    output_frequency:
-      Description: "Frequency delivered to the motor"
-      Data Type: "[Numeric][1..]"
-      Range: ">=0.0"
-      Units: "Hz"
       Required: True
 
 LookupVariables:
@@ -112,5 +102,5 @@ LookupVariables:
       Data Type: "[Numeric/Null][1..]"
       Range: ">=0.0,<=1.0"
       Units: "-"
-      Notes: "Defined as the ratio of electrical output power (to the motor) to electrical input power (to the drive). Input power shall include any power required to provide active air cooling for the drive"
+      Notes: "Defined as the ratio of output shaft power to input shaft power"
       Required: True
