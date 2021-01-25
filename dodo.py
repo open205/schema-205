@@ -1,6 +1,7 @@
 import schema205.validate
 import schema205.markdown
 import schema205.json_translate
+import schema205.render_jinja
 import os
 from doit.tools import create_folder
 
@@ -8,6 +9,8 @@ BUILD_PATH = "build"
 SOURCE_PATH = 'schema-source'
 DOCS_PATH = os.path.join(BUILD_PATH,"docs")
 SCHEMA_PATH = os.path.join(BUILD_PATH,"schema")
+RENDERED_TEMPLATE_PATH = os.path.realpath(
+        os.path.join(BUILD_PATH,"rendered_template"))
 
 def collect_source_files():
   file_list = []
@@ -43,6 +46,26 @@ def task_doc():
       ],
     'clean': True
   }
+
+def task_render_template():
+  '''
+  Demonstrate how to render a template using Jinja2 and the add_table hook.
+  '''
+  template_dir = os.path.realpath(
+          os.path.join('rendering_examples', 'template_rendering'))
+  return {
+          'file_dep': [os.path.join(template_dir, 'main.md')],
+          'targets': [os.path.join(RENDERED_TEMPLATE_PATH, 'main.md')],
+          'task_dep': ['validate'],
+          'actions': [
+              (create_folder, [RENDERED_TEMPLATE_PATH]),
+              (schema205.render_jinja.main, [
+                  'main.md',
+                  os.path.join(RENDERED_TEMPLATE_PATH, 'main.md'),
+                  template_dir,
+                  ])],
+          'clean': True,
+          }
 
 def task_schema():
   '''Generates JSON schema from common-scema'''
