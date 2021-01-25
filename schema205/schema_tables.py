@@ -36,6 +36,20 @@ def process_string_types(string_types):
     return new_list
 
 
+def compress_notes(d):
+    """
+    - d: Dict, a dictionary that may contain the key, 'Notes"
+    RETURN:
+    None
+    SIDE-EFFECTS:
+    modifies d in place to replace the "Notes" value with a string if it is an array.
+    """
+    k = "Notes"
+    if k in d:
+        if type(d[k]) is list:
+            d[k] = "\n\n".join([f"- {note}" for note in d[k]])
+
+
 def data_elements_dict_from_data_groups(data_groups):
     """
     - data_groups: Dict, the data groups dictionary
@@ -55,6 +69,7 @@ def data_elements_dict_from_data_groups(data_groups):
                 gte = u'\N{GREATER-THAN OR EQUAL TO}'
                 lte = u'\N{LESS-THAN OR EQUAL TO}'
                 new_obj["Range"] = f"`{new_obj['Range'].replace('<=',lte).replace('>=',gte)}`"
+            compress_notes(new_obj)
             data_elements.append(new_obj)
         output[dg] = data_elements
     return output
@@ -106,7 +121,9 @@ def load_structure_from_object(instance):
             new_obj["Examples"] = ', '.join(new_obj["Examples"])
             string_types.append(new_obj)
         elif object_type == "Enumeration":
-            enumerations[obj] = instance[obj]
+            new_obj = instance[obj]
+            compress_notes(new_obj)
+            enumerations[obj] = new_obj
         elif "Data Elements" in instance[obj]:
             data_groups[obj] = instance[obj]
         elif object_type == "Meta":
