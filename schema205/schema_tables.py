@@ -138,7 +138,15 @@ def load_structure_from_object(instance):
     }
 
 
-def create_table_from_list(columns, data_list, defaults=None):
+def trailing_ws(flag):
+    """
+    - flag: bool, if True, return two newlines
+    RETURN: string
+    """
+    return "\n\n" if flag else ""
+
+
+def create_table_from_list(columns, data_list, defaults=None, add_training_ws=True):
     """
     - columns: array of string, the column headers
     - data_list: array of dict with keys corresponding to columns array
@@ -158,10 +166,10 @@ def create_table_from_list(columns, data_list, defaults=None):
                 data[col].append(defaults[col])
             else:
                 raise Exception(f"Expected item to have key `{col}`: `{item}`")
-    return tables.string_out_table(data, columns, None, None, None) + "\n\n"
+    return tables.string_out_table(data, columns, None, None, None) + trailing_ws(add_training_ws)
 
 
-def data_types_table(data_types):
+def data_types_table(data_types, add_training_ws=True):
     """
     - data_types: array of ..., the data types
     RETURN: string, the table in Pandoc markdown grid table format
@@ -170,7 +178,8 @@ def data_types_table(data_types):
             columns=[
                 "Data Type", "Description", "JSON Schema Type", "Examples"],
             data_list=data_types,
-            defaults=None)
+            defaults=None,
+            add_training_ws=add_training_ws)
 
 
 def string_types_table(string_types):

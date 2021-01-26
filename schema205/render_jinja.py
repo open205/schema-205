@@ -236,18 +236,35 @@ SCHEMA_DIR = os.path.realpath(
 #    s = ", ".join([str(a) for a in args])
 #    return "add_data_model(" + s + ")"
 
+def make_args_string(args_dict):
+    """
+    - args_dict: dict, the dictionary of local variable to value such as returned by locals()
+    RETURN: string, all arguments in a string
+    """
+    return ", ".join(
+            [f"{k}={repr(v)}" for k, v in reversed(list(args_dict.items()))])
+
+
+def make_error_string(msg, args_str):
+    """
+    - msg: string, an error message
+    - args_str: string, original arguments
+    RETURN: string, an error message
+    """
+    return ("\n---\n" +
+            "ERROR\n" + msg + f"\nin call to `add_table({args_str})`\n---\n")
+
 
 def add_table(source, table_type, caption=None, preferred_column_widths=None, with_header=False):
     """
     TODO: document this
     """
-    args_str = ", ".join([f"{k}={repr(v)}" for k, v in reversed(list(locals().items()))])
+    args_str = make_args_string(locals())
     src_path = os.path.join(SCHEMA_DIR, source + '.schema.yaml')
     if not os.path.exists(src_path):
-        return ("\n---\n" +
-                f"Schema source \"{source}\" (i.e., \"{src_path}\") does not exist!\n" +
-                f"in call to `add_table({args_str})`\n" +
-                "---\n")
+        return make_error_string(
+                f"Schema source \"{source}\" (\"{src_path}\") doesn't exist!",
+                args_str)
     with open(src_path, 'r') as input_file:
         data = yaml.load(input_file, Loader=yaml.FullLoader)
     table_type_to_fn = {
@@ -255,11 +272,11 @@ def add_table(source, table_type, caption=None, preferred_column_widths=None, wi
             }
     gen_table = table_type_to_fn.get(table_type.lower(), None)
     if gen_table is None:
-        return ("\n---\n" +
-                f"Unhandled table type \"{table_type}\"!\n" +
-                f"in call to `add_table({args_str})`\n" +
-                "---\n")
-    return "\n`add_table(" + (", ".join([source, table_type])) + ")`\n"
+        return make_error_string(
+                f"Unhandled table type \"{table_type}\"!",
+                args_str)
+    struct = schema_tables.load_structure_from_object(data)
+    return gen_table(struct[table_type.lower()], add_training_ws=False)
 
 
 def main(main_template, output_path, template_dir):
@@ -278,6 +295,8 @@ def main(main_template, output_path, template_dir):
     env = Environment(
         loader=FileSystemLoader(template_dir),
         autoescape=select_autoescape(['html', 'xml']),
+        trim_blocks=True,
+        lstrip_blocks=True,
         comment_start_string="{##",
         comment_end_string="##}")
     try:
