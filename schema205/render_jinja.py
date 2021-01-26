@@ -7,6 +7,9 @@ import os.path
 import traceback
 
 from jinja2 import Environment, FileSystemLoader, select_autoescape, TemplateNotFound
+import yaml
+
+import schema205.schema_tables as schema_tables
 
 
 THIS_DIR = os.path.dirname(os.path.realpath(__file__))
@@ -241,10 +244,21 @@ def add_table(source, table_type, caption=None, preferred_column_widths=None, wi
     args_str = ", ".join([f"{k}={repr(v)}" for k, v in reversed(list(locals().items()))])
     src_path = os.path.join(SCHEMA_DIR, source + '.schema.yaml')
     if not os.path.exists(src_path):
-        return ("\n\n---\n" +
+        return ("\n---\n" +
                 f"Schema source \"{source}\" (i.e., \"{src_path}\") does not exist!\n" +
                 f"in call to `add_table({args_str})`\n" +
-                "---\n\n")
+                "---\n")
+    with open(src_path, 'r') as input_file:
+        data = yaml.load(input_file, Loader=yaml.FullLoader)
+    table_type_to_fn = {
+            'data_types': schema_tables.data_types_table,
+            }
+    gen_table = table_type_to_fn.get(table_type.lower(), None)
+    if gen_table is None:
+        return ("\n---\n" +
+                f"Unhandled table type \"{table_type}\"!\n" +
+                f"in call to `add_table({args_str})`\n" +
+                "---\n")
     return "\n`add_table(" + (", ".join([source, table_type])) + ")`\n"
 
 
