@@ -58,6 +58,7 @@ def task_render_template():
               os.path.join(template_dir, 'main.md'),
               os.path.join('schema205', 'markdown.py'),
               os.path.join('schema205', 'schema_tables.py'),
+              os.path.join('schema205', 'make_grid_table.py'),
               os.path.join('schema205', 'render_jinja.py'),
               ],
           'targets': [os.path.join(RENDERED_TEMPLATE_PATH, 'main.md')],
