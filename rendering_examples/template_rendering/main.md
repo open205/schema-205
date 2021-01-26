@@ -30,7 +30,8 @@ If you would also like to have the `add_table` hook render a header for you, you
 To insert a table, we need to provide the following:
 
 - the schema file name (see `schema-source/*.schema.yaml` -- the name is the `*` part)
-- the table type (one of `data_types`, `string_types`, `enumerations`, or `data_groups`)
+- the `table_type` (one of `data_types`, `string_types`, `enumerations`, or `data_groups`)
+- the `item_type` which is required for `enumerations` and `data_groups`
 
 If we specify those incorrectly, the rendered template will inform us with a friendly error message:
 
@@ -52,5 +53,25 @@ Here we run through the remaining table types with all options:
     'string_types',
     caption='The String Types Table',
     header_level_and_content=(3, "String Types"))
+}}
+
+
+{{ add_table(
+    'ASHRAE205',
+    'enumerations',
+    item_type='ASHRAE205Version',
+    caption='ASHRAE 205 Versions',
+    header_level_and_content=(3, "ASHRAE 205 Version"))
+}}
+
+The `item_type` value is used to pull out the correct item from all of the potential enumerations tables.
+If we don't specify it or specify it wrong, we get a helpful error message listing the possible `item_type` options:
+
+{{ add_table(
+    'ASHRAE205',
+    'enumerations',
+    item_type="we_do_not_know",
+    caption="When we don't know the item type...",
+    header_level_and_content=(3, "We Don't Know What Item Type to Choose..."))
 }}
 

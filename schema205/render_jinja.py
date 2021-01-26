@@ -278,6 +278,7 @@ def render_header(level_and_content):
 def add_table(
         source,
         table_type,
+        item_type=None,
         caption=None,
         header_level_and_content=None):
     """
@@ -294,6 +295,7 @@ def add_table(
     table_type_to_fn = {
             'data_types': schema_tables.data_types_table,
             'string_types': schema_tables.string_types_table,
+            'enumerations': schema_tables.enumerators_table,
             }
     gen_table = table_type_to_fn.get(table_type.lower(), None)
     if gen_table is None:
@@ -301,8 +303,28 @@ def add_table(
                 f"Unhandled table type \"{table_type}\"!",
                 args_str)
     struct = schema_tables.load_structure_from_object(data)
+    if table_type.lower() == 'enumerations':
+        if item_type is None:
+            return make_error_string(
+                    "Table type is \"enumerators\" but no `item_type` specified!",
+                    args_str)
+        potentials = []
+        found = False
+        for enum, enumerators in struct['enumerations'].items():
+            potentials.append(enum)
+            if enum.lower() == item_type.lower():
+                struct = enumerators
+                found = True
+                break
+        if not found:
+            return make_error_string(
+                    "`item_type` did not match any enumerators in file! " +
+                    f"Possible enumerators: {', '.join(potentials)}",
+                    args_str)
+    else:
+        struct = struct[table_type.lower()]
     return render_header(header_level_and_content) + gen_table(
-            struct[table_type.lower()],
+            struct,
             caption=caption,
             add_training_ws=False)
 

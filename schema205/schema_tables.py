@@ -196,6 +196,8 @@ def data_types_table(data_types, caption=None, add_training_ws=True):
 def string_types_table(string_types, caption=None, add_training_ws=True):
     """
     - string_types: array of ..., the string types
+    - caption: None or string, optional caption
+    - add_training_ws: Bool, if True, adds trailing whitespace
     RETURN: string, the table in Pandoc markdown grid table format
     """
     return create_table_from_list(
@@ -208,14 +210,18 @@ def string_types_table(string_types, caption=None, add_training_ws=True):
             defaults=None)
 
 
-def enumerators_table(enumerators):
+def enumerators_table(enumerators, caption=None, add_training_ws=True):
     """
     - enumerators: array of ..., the enumerators array
+    - caption: None or string, optional caption
+    - add_training_ws: Bool, if True, adds trailing whitespace
     RETURN: string, the table in Pandoc markdown grid table format
     """
     return create_table_from_list(
             columns=["Enumerator", "Description", "Notes"],
             data_list=enumerators,
+            caption=caption,
+            add_training_ws=add_training_ws,
             defaults={"Notes": ""})
 
 
