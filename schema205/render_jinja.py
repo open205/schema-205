@@ -238,7 +238,7 @@ def add_table(source, table_type, caption=None, preferred_column_widths=None, wi
     """
     TODO: document this
     """
-    return "\nadd_table(" + (", ".join([source, table_type])) + ")\n"
+    return "\n`add_table(" + (", ".join([source, table_type])) + ")`\n"
 
 
 def main(main_template, output_path, template_dir):
