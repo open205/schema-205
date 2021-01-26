@@ -1,6 +1,5 @@
 import os
 import yaml
-from pytablewriter import MarkdownTableWriter
 import sys
 from .schema_tables import data_types_table, string_types_table
 from .schema_tables import enumerators_table, data_groups_table, write_header
