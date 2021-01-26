@@ -54,7 +54,12 @@ def task_render_template():
   template_dir = os.path.realpath(
           os.path.join('rendering_examples', 'template_rendering'))
   return {
-          'file_dep': [os.path.join(template_dir, 'main.md')],
+          'file_dep': collect_source_files() + [
+              os.path.join(template_dir, 'main.md'),
+              os.path.join('schema205', 'markdown.py'),
+              os.path.join('schema205', 'schema_tables.py'),
+              os.path.join('schema205', 'render_jinja.py'),
+              ],
           'targets': [os.path.join(RENDERED_TEMPLATE_PATH, 'main.md')],
           'task_dep': ['validate'],
           'actions': [
