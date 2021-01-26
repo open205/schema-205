@@ -225,9 +225,11 @@ def enumerators_table(enumerators, caption=None, add_training_ws=True):
             defaults={"Notes": ""})
 
 
-def data_groups_table(data_elements):
+def data_groups_table(data_elements, caption=None, add_training_ws=True):
     """
     - data_elements: array of ..., the data elements
+    - caption: None or string, optional caption
+    - add_training_ws: Bool, if True, adds trailing whitespace
     RETURN: string, the table in Pandoc markdown grid table format
     """
     return create_table_from_list(
@@ -235,6 +237,8 @@ def data_groups_table(data_elements):
                 "Name", "Description", "Data Type", "Units", "Range",
                 "Req", "Notes"],
             data_list=data_elements,
+            caption=caption,
+            add_training_ws=add_training_ws,
             defaults={"Notes": "", "Req": "", "Units": "", "Range": ""})
 
 

@@ -55,6 +55,7 @@ Here we run through the remaining table types with all options:
     header_level_and_content=(3, "String Types"))
 }}
 
+The `enumerations` and `data_groups` tables require specifying an `item_type` to retrieve the correct table.
 
 {{ add_table(
     'ASHRAE205',
@@ -64,7 +65,7 @@ Here we run through the remaining table types with all options:
     header_level_and_content=(3, "ASHRAE 205 Version"))
 }}
 
-The `item_type` value is used to pull out the correct item from all of the potential enumerations tables.
+The `item_type` value is used to pull out the correct table from all of the potential enumerations tables.
 If we don't specify it or specify it wrong, we get a helpful error message listing the possible `item_type` options:
 
 {{ add_table(
@@ -74,4 +75,18 @@ If we don't specify it or specify it wrong, we get a helpful error message listi
     caption="When we don't know the item type...",
     header_level_and_content=(3, "We Don't Know What Item Type to Choose..."))
 }}
+
+The `data_groups` table operates similar to enumerations:
+
+{{ add_table(
+    'ASHRAE205',
+    'data_groups',
+    item_type='LiquidMixture',
+    caption='Liquid mixtures',
+    header_level_and_content=(3, "Available Liquid Mixture Options"))
+}}
+
+Similar to the `enumerations` table, if we don't know what `item_type` value to choose, we can leave it blank and let the system respond with all of the options in an error message:
+
+{{ add_table('ASHRAE205', 'data_groups', item_type="") }}
 
