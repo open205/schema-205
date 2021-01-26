@@ -65,6 +65,7 @@ Performance:
       Description: "Number of poles"
       Data Type: "Integer"
       Required: True
+      Range: ">0"
     drive_representation:
       Description: "The corresponding Standard 205 drive *representation*"
       Data Type: "{ASHRAE205(rs_id=RS0006)}"
