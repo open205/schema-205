@@ -55,6 +55,66 @@ def render_header(level_and_content):
     return "#" * level + " " + content + "\n\n"
 
 
+def extract_target_data(struct, table_type, item_type, args_str):
+    """
+    - struct: dict, raw data to pull from
+    - table_type: string, assumed to be in lower case
+    - item_type: string or None, if string, assumed to be in lower case
+    - args_str: string, arguments string for reporting errors
+    RETURN: Tuple of (None or string, None or dict or array),
+        - If there is an error, it is passed back as the first item; else None
+        - If there is no error, the target data is passed back; else None if an error
+    """
+    target = None
+    if table_type == 'enumerations':
+        if item_type is None:
+            return (
+                    make_error_string(
+                        "Table type is \"enumerators\" but no `item_type` specified!",
+                        args_str),
+                    None)
+        potentials = []
+        found = False
+        for enum, enumerators in struct['enumerations'].items():
+            potentials.append(enum)
+            if enum.lower() == item_type:
+                target = enumerators
+                found = True
+                break
+        if not found:
+            return (
+                    make_error_string(
+                        "`item_type` did not match any enumerators in file! " +
+                        f"Possible enumerators: {', '.join(potentials)}",
+                        args_str),
+                    None)
+    elif table_type == 'data_groups':
+        if item_type is None:
+            return (
+                    make_error_string(
+                        "Table type is \"data_groups\" but no `item_type` specified!",
+                        args_str),
+                    None)
+        potentials = []
+        found = False
+        for dat_gr, data_elements in struct['data_groups'].items():
+            potentials.append(dat_gr)
+            if dat_gr.lower() == item_type:
+                target = data_elements
+                found = True
+                break
+        if not found:
+            return (
+                    make_error_string(
+                        "`item_type` did not match any data groups in file! " +
+                        f"Possible data groups: {', '.join(potentials)}",
+                        args_str),
+                    None)
+    else:
+        target = struct[table_type]
+    return (None, target)
+
+
 def add_table(
         source,
         table_type,
@@ -62,7 +122,13 @@ def add_table(
         caption=None,
         header_level_and_content=None):
     """
-    TODO: document this
+    - source: string, the source key. E.g., for schema-source/ASHRAE205.schema.yaml, 'ASHRAE205'
+    - table_type: one of `data_types`, `string_types`, `enumerations`, or `data_groups`
+    - item_type: None or a string if table_type is `enumerations` or `data_groups`; the item to pull
+    - caption: None or string, the table caption if desired
+    - header_level_and_content: None OR Tuple of (positive-int, string), the
+      header level and header conent if desired
+    RETURN: string, returns a string representation of the given table
     """
     args_str = make_args_string(locals())
     src_path = os.path.join(SCHEMA_DIR, source + '.schema.yaml')
@@ -84,49 +150,13 @@ def add_table(
                 f"Unhandled table type \"{table_type}\"!",
                 args_str)
     struct = schema_tables.load_structure_from_object(data)
-    target = None
-    if table_type.lower() == 'enumerations':
-        if item_type is None:
-            return make_error_string(
-                    "Table type is \"enumerators\" but no `item_type` specified!",
-                    args_str)
-        potentials = []
-        found = False
-        for enum, enumerators in struct['enumerations'].items():
-            potentials.append(enum)
-            if enum.lower() == item_type.lower():
-                target = enumerators
-                found = True
-                break
-        if not found:
-            return make_error_string(
-                    "`item_type` did not match any enumerators in file! " +
-                    f"Possible enumerators: {', '.join(potentials)}",
-                    args_str)
-    elif table_type.lower() == 'data_groups':
-        if item_type is None:
-            return make_error_string(
-                    "Table type is \"data_groups\" but no `item_type` specified!",
-                    args_str)
-        potentials = []
-        found = False
-        for dat_gr, data_elements in struct['data_groups'].items():
-            potentials.append(dat_gr)
-            if dat_gr.lower() == item_type.lower():
-                target = data_elements
-                found = True
-                break
-        if not found:
-            return make_error_string(
-                    "`item_type` did not match any data groups in file! " +
-                    f"Possible data groups: {', '.join(potentials)}",
-                    args_str)
-    else:
-        target = struct[table_type.lower()]
-    if target is None:
-        return make_error_string(
-                "Somehow was unable to find data to plot...",
-                args_str)
+    err, target = extract_target_data(
+            struct,
+            table_type.lower(),
+            item_type.lower() if item_type is not None else None,
+            args_str)
+    if err is not None:
+        return err
     return render_header(header_level_and_content) + gen_table(
             target,
             caption=caption,
