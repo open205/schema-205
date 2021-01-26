@@ -193,7 +193,7 @@ def data_types_table(data_types, caption=None, add_training_ws=True):
             add_training_ws=add_training_ws)
 
 
-def string_types_table(string_types):
+def string_types_table(string_types, caption=None, add_training_ws=True):
     """
     - string_types: array of ..., the string types
     RETURN: string, the table in Pandoc markdown grid table format
@@ -203,6 +203,8 @@ def string_types_table(string_types):
                 "String Type", "Description", "JSON Schema Pattern",
                 "Examples"],
             data_list=string_types,
+            caption=caption,
+            add_training_ws=add_training_ws,
             defaults=None)
 
 

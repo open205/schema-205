@@ -293,6 +293,7 @@ def add_table(
         data = yaml.load(input_file, Loader=yaml.FullLoader)
     table_type_to_fn = {
             'data_types': schema_tables.data_types_table,
+            'string_types': schema_tables.string_types_table,
             }
     gen_table = table_type_to_fn.get(table_type.lower(), None)
     if gen_table is None:
