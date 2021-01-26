@@ -11,6 +11,10 @@ We will insert a table here:
 
 See how easy it is!
 
+To add a caption automatically to a table, just specify it in the call:
+
+{{ add_table('ASHRAE205', 'data_types', caption='The Data Types Table') }}
+
 ## Using Incorrect Parameters to Insert a Table
 
 To insert a table, we need to provide the following:

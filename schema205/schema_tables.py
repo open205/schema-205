@@ -146,12 +146,19 @@ def trailing_ws(flag):
     return "\n\n" if flag else ""
 
 
-def create_table_from_list(columns, data_list, defaults=None, add_training_ws=True):
+def create_table_from_list(
+        columns,
+        data_list,
+        defaults=None,
+        caption=None,
+        add_training_ws=True):
     """
     - columns: array of string, the column headers
     - data_list: array of dict with keys corresponding to columns array
     - defaults: None or dict from string to value, the defaults to use for a
       column if data missing
+    - caption: None or string, if specified, adds a caption
+    - add_training_ws: Bool, if True, adds trailing whitespace
     RETURN: string, the table in Pandoc markdown grid table format
     """
     if len(data_list) == 0:
@@ -166,12 +173,15 @@ def create_table_from_list(columns, data_list, defaults=None, add_training_ws=Tr
                 data[col].append(defaults[col])
             else:
                 raise Exception(f"Expected item to have key `{col}`: `{item}`")
-    return tables.string_out_table(data, columns, None, None, None) + trailing_ws(add_training_ws)
+    return (tables.string_out_table(data, columns, caption, None, None) +
+            trailing_ws(add_training_ws))
 
 
-def data_types_table(data_types, add_training_ws=True):
+def data_types_table(data_types, caption=None, add_training_ws=True):
     """
     - data_types: array of ..., the data types
+    - caption: None or string, optional caption
+    - add_training_ws: Bool, if True, adds trailing whitespace
     RETURN: string, the table in Pandoc markdown grid table format
     """
     return create_table_from_list(
@@ -179,6 +189,7 @@ def data_types_table(data_types, add_training_ws=True):
                 "Data Type", "Description", "JSON Schema Type", "Examples"],
             data_list=data_types,
             defaults=None,
+            caption=caption,
             add_training_ws=add_training_ws)
 
 

@@ -276,7 +276,10 @@ def add_table(source, table_type, caption=None, preferred_column_widths=None, wi
                 f"Unhandled table type \"{table_type}\"!",
                 args_str)
     struct = schema_tables.load_structure_from_object(data)
-    return gen_table(struct[table_type.lower()], add_training_ws=False)
+    return gen_table(
+            struct[table_type.lower()],
+            caption=caption,
+            add_training_ws=False)
 
 
 def main(main_template, output_path, template_dir):
