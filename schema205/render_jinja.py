@@ -238,6 +238,13 @@ def add_table(source, table_type, caption=None, preferred_column_widths=None, wi
     """
     TODO: document this
     """
+    args_str = ", ".join([f"{k}={repr(v)}" for k, v in reversed(list(locals().items()))])
+    src_path = os.path.join(SCHEMA_DIR, source + '.schema.yaml')
+    if not os.path.exists(src_path):
+        return ("\n\n---\n" +
+                f"Schema source \"{source}\" (i.e., \"{src_path}\") does not exist!\n" +
+                f"in call to `add_table({args_str})`\n" +
+                "---\n\n")
     return "\n`add_table(" + (", ".join([source, table_type])) + ")`\n"
 
 
