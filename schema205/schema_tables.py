@@ -62,7 +62,7 @@ def data_elements_dict_from_data_groups(data_groups):
             new_obj = data_groups[dg]["Data Elements"][element]
             new_obj["Name"] = f"`{element}`"
             if 'Required' in new_obj:
-                new_obj["Req"] = u'\N{check mark}' if new_obj["Required"] else ''
+                new_obj["Req"] = '\N{check mark}' if new_obj["Required"] else ''
                 new_obj.pop('Required')
             new_obj['Data Type'] = f"`{new_obj['Data Type']}`"
             if 'Range' in new_obj:
