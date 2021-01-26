@@ -15,6 +15,16 @@ To add a caption automatically to a table, just specify it in the call:
 
 {{ add_table('ASHRAE205', 'data_types', caption='The Data Types Table') }}
 
+If you would also like to have the `add_table` hook render a header for you, you can do that as well:
+
+{{ add_table(
+    'ASHRAE205',
+    'data_types',
+    caption='The Data Types Table',
+    header_level_and_content=(2, "Data Types"))
+}}
+
+
 ## Using Incorrect Parameters to Insert a Table
 
 To insert a table, we need to provide the following:

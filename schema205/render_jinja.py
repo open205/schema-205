@@ -255,7 +255,31 @@ def make_error_string(msg, args_str):
             "ERROR\n" + msg + f"\nin call to `add_table({args_str})`\n---\n")
 
 
-def add_table(source, table_type, caption=None, preferred_column_widths=None, with_header=False):
+def render_header(level_and_content):
+    """
+    - level_and_content: None OR string OR list of [postive-int, string] OR tuple of
+      (positive-int, string), the header level and content
+    RETURN: string, the header
+    """
+    if level_and_content is None:
+        return ""
+    if isinstance(level_and_content, str):
+        level = 1
+        content = level_and_content
+    elif isinstance(level_and_content, (list, tuple)):
+        level, content = level_and_content
+        if level < 1:
+            level = 1
+    else:
+        raise Exception("Unhandle type of level_and_content")
+    return "#" * level + " " + content + "\n\n"
+
+
+def add_table(
+        source,
+        table_type,
+        caption=None,
+        header_level_and_content=None):
     """
     TODO: document this
     """
@@ -276,7 +300,7 @@ def add_table(source, table_type, caption=None, preferred_column_widths=None, wi
                 f"Unhandled table type \"{table_type}\"!",
                 args_str)
     struct = schema_tables.load_structure_from_object(data)
-    return gen_table(
+    return render_header(header_level_and_content) + gen_table(
             struct[table_type.lower()],
             caption=caption,
             add_training_ws=False)
