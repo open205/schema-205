@@ -250,8 +250,10 @@ def write_out_table(d, columns, path, caption, preferred_sizes=None, table_size=
     RETURN: None
     SIDE_EFFECT: create table and write it to path as a pandoc grid table
     """
-    with open(path, 'w') as f:
-        f.write(string_out_table(d, columns, caption, preferred_sizes, table_size))
+    with open(path, 'w', encoding='utf-8') as handle:
+        handle.write(
+                string_out_table(
+                    d, columns, caption, preferred_sizes, table_size))
 
 
 def get_data_path_from_obj(id, obj, path, default=None):
@@ -337,7 +339,7 @@ def generate_table_to_string(table_spec, preferred_size=None, header=None, heade
         loading a table from YAML and writing it to Markdown
     RETURN: string    
     """
-    with open(table_spec["yaml_source"]) as f:
+    with open(table_spec["yaml_source"], encoding='utf-8') as f:
         raw_data = yaml.load(f, Loader=yaml.CLoader)
     table_data = {c["name_in_table"]:[] for c in table_spec["columns"]}
     selector = make_selector(table_spec["select_by"])
@@ -392,7 +394,7 @@ def generate_table(table_spec, preferred_size=None):
     - write the given table from source YAML to Markdown
     """
     s = generate_table_to_string(table_spec, preferred_size)
-    with open(table_spec["markdown_target"], 'w') as f:
+    with open(table_spec["markdown_target"], 'w', encoding='utf-8') as f:
         f.write(s)
 
 

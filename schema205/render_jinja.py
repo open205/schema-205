@@ -136,7 +136,7 @@ def add_table(
         return make_error_string(
                 f"Schema source \"{source}\" (\"{src_path}\") doesn't exist!",
                 args_str)
-    with open(src_path, 'r') as input_file:
+    with open(src_path, encoding='utf-8', mode='r') as input_file:
         data = yaml.load(input_file, Loader=yaml.FullLoader)
     table_type_to_fn = {
             'data_types': schema_tables.data_types_table,
@@ -185,7 +185,7 @@ def main(main_template, output_path, template_dir):
         comment_end_string="##}")
     try:
         temp = env.get_template(main_template)
-        with open(output_path, 'w') as handle:
+        with open(output_path, encoding='utf-8', mode='w') as handle:
             handle.write(temp.render(add_table=add_table))
     except TemplateNotFound as exc:
         print(f"Could not find main template {main_template}")
