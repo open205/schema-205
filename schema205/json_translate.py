@@ -132,13 +132,15 @@ class DataGroup:
             else:
                 # If the type is oneOf a set
                 m = re.findall(r'^\((.*)\)', parent_dict['Data Type'])
-                if m:
-                    target_dict['oneOf'] = list()
+                selector = parent_dict.get('Selector', '(').split('(')[0]
+                if m and selector:
+                    target_dict['allOf'] = list()
                     choices = m[0].split(',')
                     for c in choices:
                         c = c.strip()
-                        target_dict['oneOf'].append(dict())
-                        self._get_simple_type(c, target_dict['oneOf'][-1])
+                        target_dict['allOf'].append(dict())
+                        self._construct_if_else(target_dict['allOf'][-1], selector, c)
+                        self._get_simple_type(c, target_dict['allOf'][-1]['else'])
                 else:
                     # 1. 'type' entry
                     self._get_simple_type(parent_dict['Data Type'], target_dict)
@@ -147,6 +149,11 @@ class DataGroup:
         except KeyError as ke:
             #print('KeyError; no key exists called', ke)
             pass
+
+
+    def _construct_if_else(self, target_dict_to_append, selector, value):
+        target_dict_to_append['if'] = {'properties' : {selector : {'const' : ''.join(ch for ch in value if ch.isalnum())} } }
+        target_dict_to_append['else'] = dict()
 
 
     def _get_simple_type(self, type_str, target_dict_to_append):
