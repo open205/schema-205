@@ -1,11 +1,12 @@
 """
-Functionality to render Jinja templates with an add_table hook to generate schema tables in Markdown.
+Functionality to render Jinja templates with an add_table hook to generate
+schema tables in Markdown.
 """
 import re
 import os
 import traceback
 
-from jinja2 import Environment, FileSystemLoader, select_autoescape, TemplateNotFound, contextfilter
+from jinja2 import Environment, FileSystemLoader, select_autoescape, TemplateNotFound
 import yaml
 
 import schema205.md.schema_table as schema_table
@@ -37,9 +38,8 @@ def make_error_string(msg, args_str):
     - args_str: string, original arguments
     RETURN: string, an error message
     """
-    return ("\n---\n" +
-            f"ERROR\n" +
-            msg + f"\nin call to `add_table({args_str})`\n---\n")
+    return ("\n---\nERROR\n" + msg +
+            f"\nin call to `add_table({args_str})`\n---\n")
 
 
 def render_header(level_and_content):
@@ -97,8 +97,9 @@ def extract_target_data(struct, table_name):
     """
     if table_name in {'data_types', 'string_types'}:
         return (None, struct[table_name], table_name)
-    for tt in ['enumerations', 'data_groups']:
-        target, table_type = fetch_key_canonically(struct[tt], table_name), tt
+    for tbl in ['enumerations', 'data_groups']:
+        table_type = tbl
+        target = fetch_key_canonically(struct[tbl], table_name)
         if target is not None:
             break
     if target is None:
@@ -118,8 +119,10 @@ def make_add_table(schema_dir=None, error_log=None):
     - error_log: None or list, if a list, then errors will be appended to the
       log as well as rendered into the final product
     RETURN: returns the add_table function with the following characteristics:
-        - source: string, the source key. E.g., for schema-source/ASHRAE205.schema.yaml, 'ASHRAE205'
-        - table_name: one of `data_types`, `string_types`, or a specific item from `enumerations`, or `data_groups`
+        - source: string, the source key. E.g., for
+          schema-source/ASHRAE205.schema.yaml, 'ASHRAE205'
+        - table_name: one of `data_types`, `string_types`, or a specific item
+          from `enumerations`, or `data_groups`
         - caption: None or string, the table caption if desired
         - header_level_and_content: None OR Tuple of (positive-int, string), the
           header level and header conent if desired
@@ -214,7 +217,6 @@ def main(main_template, output_path, template_dir, schema_dir=None, log_file=Non
     if log_file is not None:
         with open(log_file, 'w') as handle:
             if len(errors) > 0:
-                for err_no, err in enumerate(errors):
+                for err in errors:
                     handle.write(err.strip())
                     handle.write("\n")
-

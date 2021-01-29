@@ -1,7 +1,6 @@
 """
 Specifics for setting up schema tables.
 """
-import os
 from copy import deepcopy
 
 import schema205.md.grid_table as grid_table
@@ -23,26 +22,27 @@ def process_string_types(string_types):
     properly
     """
     new_list = []
-    for st in string_types:
-        new_item = deepcopy(st)
+    for str_typ in string_types:
+        new_item = deepcopy(str_typ)
         if 'Is Regex' in new_item and new_item['Is Regex']:
             new_item['JSON Schema Pattern'] = '(Not applicable)'
         new_list.append(new_item)
     return new_list
 
 
-def compress_notes(d):
+def compress_notes(a_dict):
     """
-    - d: Dict, a dictionary that may contain the key, 'Notes"
+    - a_dict: Dict, a dictionary that may contain the key, 'Notes"
     RETURN:
     None
     SIDE-EFFECTS:
-    modifies d in place to replace the "Notes" value with a string if it is an array.
+    modifies d in place to replace the "Notes" value with a string if it is an
+    array.
     """
-    k = "Notes"
-    if k in d:
-        if type(d[k]) is list:
-            d[k] = "\n\n".join([f"- {note}" for note in d[k]])
+    notes = "Notes"
+    if notes in a_dict:
+        if isinstance(a_dict[notes], list):
+            a_dict[notes] = "\n\n".join([f"- {note}" for note in a_dict[notes]])
 
 
 def data_elements_dict_from_data_groups(data_groups):
@@ -51,10 +51,10 @@ def data_elements_dict_from_data_groups(data_groups):
     RETURN: Dict with data elements as an array
     """
     output = {}
-    for dg in data_groups:
+    for dat_gr in data_groups:
         data_elements = []
-        for element in data_groups[dg]["Data Elements"]:
-            new_obj = data_groups[dg]["Data Elements"][element]
+        for element in data_groups[dat_gr]["Data Elements"]:
+            new_obj = data_groups[dat_gr]["Data Elements"][element]
             new_obj["Name"] = f"`{element}`"
             if 'Required' in new_obj:
                 new_obj["Req"] = '\N{check mark}' if new_obj["Required"] else ''
@@ -66,7 +66,7 @@ def data_elements_dict_from_data_groups(data_groups):
                 new_obj["Range"] = f"`{new_obj['Range'].replace('<=',lte).replace('>=',gte)}`"
             compress_notes(new_obj)
             data_elements.append(new_obj)
-        output[dg] = data_elements
+        output[dat_gr] = data_elements
     return output
 
 
@@ -235,4 +235,3 @@ def data_groups_table(data_elements, caption=None, add_training_ws=True):
             caption=caption,
             add_training_ws=add_training_ws,
             defaults={"Notes": "", "Req": "", "Units": "", "Range": ""})
-

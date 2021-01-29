@@ -1,6 +1,11 @@
+"""
+Markdown rendering utilities.
+"""
 import os
-import yaml
 import sys
+
+import yaml
+
 import schema205.md.schema_table as schema_table
 
 def write_tables(instance, output_path, append=True):

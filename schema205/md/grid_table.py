@@ -14,7 +14,7 @@ def wrap_text_to_lines(text, width, bold=False, left_space=1, right_space=1):
     - right_space: int, >=0, the right space to enforce between cells
     RETURN: (Array String), the lines
     """
-    VERBOSE = False
+    verbose = False
     atoms = text.split(" ")
     if bold:
         atoms[0] = '**' + atoms[0]
@@ -24,12 +24,11 @@ def wrap_text_to_lines(text, width, bold=False, left_space=1, right_space=1):
         print("Warning! Need to hyphenate atoms!")
     lines = []
     atom_idx = 0
-    line_length = 0
     first = True
     line = ' '*left_space
     num_atoms = len(atoms)
     while atom_idx < num_atoms:
-        if VERBOSE:
+        if verbose:
             print(f"atom_idx: {atom_idx}")
             print(f"line    : {line}")
             print(f"lines   : {lines}")
@@ -47,7 +46,7 @@ def wrap_text_to_lines(text, width, bold=False, left_space=1, right_space=1):
         atom_idx += 1
     if len(line) > 0:
         lines.append(line + ' '*right_space)
-    if VERBOSE:
+    if verbose:
         print(f"line    : {line}")
         print(f"lines   : {lines}")
         print(f"atoms   : {atoms}")
@@ -131,17 +130,19 @@ def check_dict_of_arrays(doa, columns):
     """
     issues = []
     length = None
-    for c in columns:
-        if c not in doa:
-            issues.append(f"{c} not in doa")
+    for col in columns:
+        if col not in doa:
+            issues.append(f"{col} not in doa")
             continue
         if length is None:
             try:
-                length = len(doa[c])
-            except:
-                issues.append(f"could not take length of doa['{c}']")
-        elif len(doa[c]) != length:
-            issues.append(f"len(doa['{c}']) = {len(doa[c])} != {length}, the length of other columns")
+                length = len(doa[col])
+            except TypeError:
+                issues.append(f"could not take length of doa['{col}']")
+        elif len(doa[col]) != length:
+            issues.append(
+                    f"len(doa['{col}']) = {len(doa[col])} != {length}," +
+                    " the length of other columns")
     return issues
 
 
@@ -158,7 +159,7 @@ def assert_doa_valid(doa, columns):
 
 def remove_blank_columns(doa, columns, sizes):
     """
-    Remove columns that are blank. 
+    Remove columns that are blank.
     - doa: (Dict String (Array String)), dictionary with string keys to arrays of string
     - columns: (Array String), order of keys to write table out as
     RETURN: (Tuple (Array String), (Array Integer)), tuple of new columns with
@@ -166,14 +167,14 @@ def remove_blank_columns(doa, columns, sizes):
     """
     new_columns = []
     new_sizes = []
-    for c, s in zip(columns, sizes):
+    for col, size in zip(columns, sizes):
         non_blanks = 0
-        for row in doa[c]:
+        for row in doa[col]:
             if row is not None and row != "":
                 non_blanks += 1
         if non_blanks > 0:
-            new_columns.append(c)
-            new_sizes.append(s)
+            new_columns.append(col)
+            new_sizes.append(size)
     return new_columns, new_sizes
 
 
@@ -191,7 +192,6 @@ def make_table_from_dict_of_arrays(doa, columns, preferred_sizes=None, drop_blan
     if drop_blank_columns:
         columns, preferred_sizes = remove_blank_columns(doa, columns, preferred_sizes)
     assert_doa_valid(doa, columns)
-    VERBOSE = True
     sizes = get_column_sizes(
             columns, is_bold=True, has_spacing=True,
             preferred_sizes=preferred_sizes)
@@ -208,47 +208,50 @@ def make_table_from_dict_of_arrays(doa, columns, preferred_sizes=None, drop_blan
     return table
 
 
-def string_out_table(d, columns, caption, preferred_sizes=None, table_size="footnotesize"):
+def string_out_table(dat, columns, caption, preferred_sizes=None, table_size="footnotesize"):
     """
-    - d: (Dict String (Array String)), dict of arrays of data for the table
+    - dat: (Dict String (Array String)), dict of arrays of data for the table
     - columns: (Array String), the column names in desired order
     - path: string, path to where to save the table
     - caption: None or string
-    - preferred_sizes: None or (Array Integer), the preferred column sizes; column will be at least that size
-    - table_size: None or string, if string, one of "Huge", "huge", "LARGE", "Large", "large", "normalsize", "small", "footnotesize", "scriptsize", "tiny"
-        the table size
+    - preferred_sizes: None or (Array Integer), the preferred column sizes;
+      column will be at least that size
+    - table_size: None or string, if string, one of "Huge", "huge", "LARGE",
+      "Large", "large", "normalsize", "small", "footnotesize", "scriptsize",
+      "tiny", the table size
     RETURN: string of the table in Markdown
     """
     if preferred_sizes is None:
         preferred_sizes = [0] * len(columns)
-    s = ""
-    with io.StringIO() as f:
+    the_str = ""
+    with io.StringIO() as handle:
         if table_size is not None:
-            f.write(f"\\{table_size}\n\n")
-        f.write(make_table_from_dict_of_arrays(
-            d, columns=columns, preferred_sizes=preferred_sizes))
+            handle.write(f"\\{table_size}\n\n")
+        handle.write(make_table_from_dict_of_arrays(
+            dat, columns=columns, preferred_sizes=preferred_sizes))
         if caption is not None:
-            f.write(f"\nTable: {caption}\n")
+            handle.write(f"\nTable: {caption}\n")
         if table_size is not None:
-            f.write("\n\\normalsize\n\n")
-        s = f.getvalue()
-    return s
+            handle.write("\n\\normalsize\n\n")
+        the_str = handle.getvalue()
+    return the_str
 
 
-def write_out_table(d, columns, path, caption, preferred_sizes=None, table_size="footnotesize"):
+def write_out_table(dat, columns, path, caption, preferred_sizes=None, table_size="footnotesize"):
     """
-    - d: (Dict String (Array String)), dict of arrays of data for the table
+    - dat: (Dict String (Array String)), dict of arrays of data for the table
     - columns: (Array String), the column names in desired order
     - path: string, path to where to save the table
     - caption: None or string
-    - preferred_sizes: None or (Array Integer), the preferred column sizes; column will be at least that size
-    - table_size: None or string, if string, one of "Huge", "huge", "LARGE", "Large", "large", "normalsize", "small", "footnotesize", "scriptsize", "tiny"
-        the table size
+    - preferred_sizes: None or (Array Integer), the preferred column sizes;
+      column will be at least that size
+    - table_size: None or string, if string, one of "Huge", "huge", "LARGE",
+      "Large", "large", "normalsize", "small", "footnotesize", "scriptsize",
+      "tiny" the table size
     RETURN: None
     SIDE_EFFECT: create table and write it to path as a pandoc grid table
     """
     with open(path, 'w', encoding='utf-8') as handle:
         handle.write(
                 string_out_table(
-                    d, columns, caption, preferred_sizes, table_size))
-
+                    dat, columns, caption, preferred_sizes, table_size))
