@@ -58,6 +58,8 @@ def task_render_template():
   '''
   template_dir = os.path.realpath(
           os.path.join('rendering_examples', 'template_rendering'))
+  out_file = os.path.join(RENDERED_TEMPLATE_PATH, 'main.md')
+  log_file = os.path.join(RENDERED_TEMPLATE_PATH, 'error-log.txt') 
   return {
           'file_dep': collect_source_files() + [
               os.path.join(template_dir, 'main.md'),
@@ -67,15 +69,13 @@ def task_render_template():
               os.path.join('schema205', 'md', 'grid_table.py'),
               os.path.join('schema205', 'render_template.py'),
               ],
-          'targets': [os.path.join(RENDERED_TEMPLATE_PATH, 'main.md')],
+          'targets': [out_file, log_file],
           'task_dep': ['validate'],
           'actions': [
               (create_folder, [RENDERED_TEMPLATE_PATH]),
-              (schema205.render_template.main, [
-                  'main.md',
-                  os.path.join(RENDERED_TEMPLATE_PATH, 'main.md'),
-                  template_dir,
-                  ])],
+              (schema205.render_template.main,
+                  ['main.md', out_file, template_dir],
+                  {"log_file": log_file})],
           'clean': True,
           }
 
