@@ -7,10 +7,6 @@ from copy import deepcopy
 
 import schema205.md.grid_table as grid_table
 
-THIS_DIR = os.path.dirname(os.path.realpath(__file__))
-SCHEMA_DIR = os.path.abspath(
-    os.path.join(THIS_DIR, '..', 'schema-source'))
-
 
 def write_header(heading, level=1):
     """
