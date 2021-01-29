@@ -124,12 +124,9 @@ def make_add_table(schema_dir=None):
     """
     if schema_dir is None:
         # determine default path to package resources
-        schema_dir = os.path.realpath(
-                os.path.join(
-                    os.path.dirname(
-                        os.path.dirname(
-                            os.path.realpath(__file__))),
-                    'schema-source'))
+        schema_dir = os.path.join(
+                os.path.dirname(os.path.dirname(os.path.realpath(__file__))),
+                'schema-source')
     def add_table(
             source,
             table_type,
