@@ -5,7 +5,7 @@ import os
 import os.path
 from copy import deepcopy
 
-import schema205.md.make_grid_table as tables
+import schema205.md.grid_table as grid_table
 
 THIS_DIR = os.path.dirname(os.path.realpath(__file__))
 SCHEMA_DIR = os.path.abspath(
@@ -173,7 +173,7 @@ def create_table_from_list(
                 data[col].append(defaults[col])
             else:
                 raise Exception(f"Expected item to have key `{col}`: `{item}`")
-    return (tables.string_out_table(data, columns, caption, None, None) +
+    return (grid_table.string_out_table(data, columns, caption, None, None) +
             trailing_ws(add_training_ws))
 
 
