@@ -2,7 +2,6 @@
 Specifics for setting up schema tables.
 """
 import os
-import os.path
 from copy import deepcopy
 
 import schema205.md.grid_table as grid_table

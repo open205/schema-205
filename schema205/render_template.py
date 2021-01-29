@@ -3,7 +3,6 @@ Functionality to render Jinja templates with an add_table hook to generate schem
 """
 import re
 import os
-import os.path
 import traceback
 
 from jinja2 import Environment, FileSystemLoader, select_autoescape, TemplateNotFound, contextfilter
