@@ -6,9 +6,6 @@ from .schema_tables import enumerators_table, data_groups_table, write_header
 from .schema_tables import data_elements_dict_from_data_groups
 from .schema_tables import load_structure_from_object
 
-def format_table(writer):
-  return writer.dumps() + "\n"
-
 def write_tables(instance, output_path, append=True):
   struct = load_structure_from_object(instance)
   with open(output_path, 'a' if append else 'w', encoding="utf-8") as output_file:
