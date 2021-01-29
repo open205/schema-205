@@ -11,11 +11,6 @@ import yaml
 import schema205.md.schema_table as schema_table
 
 
-THIS_DIR = os.path.dirname(os.path.realpath(__file__))
-SCHEMA_DIR = os.path.realpath(
-        os.path.join(THIS_DIR, '..', 'schema-source'))
-
-
 def make_args_string(args_dict):
     """
     - args_dict: dict, the dictionary of local variable to value such as returned by locals()
@@ -115,61 +110,74 @@ def extract_target_data(struct, table_type, item_type, args_str):
     return (None, target)
 
 
-def add_table(
-        source,
-        table_type,
-        item_type=None,
-        caption=None,
-        header_level_and_content=None):
+def make_add_table(schema_dir=None):
     """
-    - source: string, the source key. E.g., for schema-source/ASHRAE205.schema.yaml, 'ASHRAE205'
-    - table_type: one of `data_types`, `string_types`, `enumerations`, or `data_groups`
-    - item_type: None or a string if table_type is `enumerations` or `data_groups`; the item to pull
-    - caption: None or string, the table caption if desired
-    - header_level_and_content: None OR Tuple of (positive-int, string), the
-      header level and header conent if desired
-    RETURN: string, returns a string representation of the given table
+    - schema_dir: string or pathlike, the path to the schema directory.
+    RETURN: returns the add_table function with the following characteristics:
+        - source: string, the source key. E.g., for schema-source/ASHRAE205.schema.yaml, 'ASHRAE205'
+        - table_type: one of `data_types`, `string_types`, `enumerations`, or `data_groups`
+        - item_type: None or a string if table_type is `enumerations` or `data_groups`; the item to pull
+        - caption: None or string, the table caption if desired
+        - header_level_and_content: None OR Tuple of (positive-int, string), the
+          header level and header conent if desired
+        RETURN: string, returns a string representation of the given table
     """
-    args_str = make_args_string(locals())
-    src_path = os.path.join(SCHEMA_DIR, source + '.schema.yaml')
-    if not os.path.exists(src_path):
-        return make_error_string(
-                f"Schema source \"{source}\" (\"{src_path}\") doesn't exist!",
+    if schema_dir is None:
+        # determine default path to package resources
+        schema_dir = os.path.realpath(
+                os.path.join(
+                    os.path.dirname(
+                        os.path.dirname(
+                            os.path.realpath(__file__))),
+                    'schema-source'))
+    def add_table(
+            source,
+            table_type,
+            item_type=None,
+            caption=None,
+            header_level_and_content=None):
+        args_str = make_args_string(locals())
+        src_path = os.path.join(schema_dir, source + '.schema.yaml')
+        if not os.path.exists(src_path):
+            return make_error_string(
+                    f"Schema source \"{source}\" (\"{src_path}\") doesn't exist!",
+                    args_str)
+        with open(src_path, encoding='utf-8', mode='r') as input_file:
+            data = yaml.load(input_file, Loader=yaml.FullLoader)
+        table_type_to_fn = {
+                'data_types': schema_table.data_types_table,
+                'string_types': schema_table.string_types_table,
+                'enumerations': schema_table.enumerators_table,
+                'data_groups': schema_table.data_groups_table,
+                }
+        gen_table = table_type_to_fn.get(table_type.lower(), None)
+        if gen_table is None:
+            return make_error_string(
+                    f"Unhandled table type \"{table_type}\"!",
+                    args_str)
+        struct = schema_table.load_structure_from_object(data)
+        err, target = extract_target_data(
+                struct,
+                table_type.lower(),
+                item_type.lower() if item_type is not None else None,
                 args_str)
-    with open(src_path, encoding='utf-8', mode='r') as input_file:
-        data = yaml.load(input_file, Loader=yaml.FullLoader)
-    table_type_to_fn = {
-            'data_types': schema_table.data_types_table,
-            'string_types': schema_table.string_types_table,
-            'enumerations': schema_table.enumerators_table,
-            'data_groups': schema_table.data_groups_table,
-            }
-    gen_table = table_type_to_fn.get(table_type.lower(), None)
-    if gen_table is None:
-        return make_error_string(
-                f"Unhandled table type \"{table_type}\"!",
-                args_str)
-    struct = schema_table.load_structure_from_object(data)
-    err, target = extract_target_data(
-            struct,
-            table_type.lower(),
-            item_type.lower() if item_type is not None else None,
-            args_str)
-    if err is not None:
-        return err
-    return render_header(header_level_and_content) + gen_table(
-            target,
-            caption=caption,
-            add_training_ws=False)
+        if err is not None:
+            return err
+        return render_header(header_level_and_content) + gen_table(
+                target,
+                caption=caption,
+                add_training_ws=False)
+    return add_table
 
 
-def main(main_template, output_path, template_dir):
+def main(main_template, output_path, template_dir, schema_dir=None):
     """
     - main_template: string, path to the main template file. Note: should be a
       path relative to template_dir, not a full path.
     - output_path: string, the output path to write the template to
     - template_dir: string, the directory where the templates (that
       main_template refers to) lives.
+    - schema_dir: string, a custom path to the schema files (*.schema.yaml) to work from
     RETURN: None
     SIDE-EFFECTS:
     - load the template main_template from template_dir
@@ -186,7 +194,7 @@ def main(main_template, output_path, template_dir):
     try:
         temp = env.get_template(main_template)
         with open(output_path, encoding='utf-8', mode='w') as handle:
-            handle.write(temp.render(add_table=add_table))
+            handle.write(temp.render(add_table=make_add_table(schema_dir)))
     except TemplateNotFound as exc:
         print(f"Could not find main template {main_template}")
         print(f"main_template = {main_template}")
