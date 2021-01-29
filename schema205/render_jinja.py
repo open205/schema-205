@@ -1,5 +1,5 @@
 """
-Calls all Jinja main_templates to render a result.
+Functionality to render Jinja templates with an add_table hook to generate schema tables in Markdown.
 """
 import os
 import os.path
