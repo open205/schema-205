@@ -195,3 +195,4 @@ def main(main_template, output_path, template_dir):
         print("Exception:")
         print(exc)
         traceback.print_exc()
+
