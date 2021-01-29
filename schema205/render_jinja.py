@@ -8,7 +8,7 @@ import traceback
 from jinja2 import Environment, FileSystemLoader, select_autoescape, TemplateNotFound
 import yaml
 
-import schema205.schema_tables as schema_tables
+import schema205.md.schema_table as schema_table
 
 
 THIS_DIR = os.path.dirname(os.path.realpath(__file__))
@@ -139,17 +139,17 @@ def add_table(
     with open(src_path, encoding='utf-8', mode='r') as input_file:
         data = yaml.load(input_file, Loader=yaml.FullLoader)
     table_type_to_fn = {
-            'data_types': schema_tables.data_types_table,
-            'string_types': schema_tables.string_types_table,
-            'enumerations': schema_tables.enumerators_table,
-            'data_groups': schema_tables.data_groups_table,
+            'data_types': schema_table.data_types_table,
+            'string_types': schema_table.string_types_table,
+            'enumerations': schema_table.enumerators_table,
+            'data_groups': schema_table.data_groups_table,
             }
     gen_table = table_type_to_fn.get(table_type.lower(), None)
     if gen_table is None:
         return make_error_string(
                 f"Unhandled table type \"{table_type}\"!",
                 args_str)
-    struct = schema_tables.load_structure_from_object(data)
+    struct = schema_table.load_structure_from_object(data)
     err, target = extract_target_data(
             struct,
             table_type.lower(),

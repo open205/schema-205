@@ -37,7 +37,12 @@ def task_validate():
 def task_doc():
   '''Generates Markdown tables from common-scema'''
   return {
-    'file_dep': collect_source_files() + [os.path.join('schema205','markdown.py')],
+    'file_dep': collect_source_files() + [
+        os.path.join('schema205','markdown.py'),
+        os.path.join('schema205','md','__init__.py'),
+        os.path.join('schema205','md','schema_table.py'),
+        os.path.join('schema205','md','make_grid_table.py'),
+        ],
     'targets': collect_target_files(DOCS_PATH,'md'),
     'task_dep': ['validate'],
     'actions': [
@@ -57,8 +62,9 @@ def task_render_template():
           'file_dep': collect_source_files() + [
               os.path.join(template_dir, 'main.md'),
               os.path.join('schema205', 'markdown.py'),
-              os.path.join('schema205', 'schema_tables.py'),
-              os.path.join('schema205', 'make_grid_table.py'),
+              os.path.join('schema205', 'md', '__init__.py'),
+              os.path.join('schema205', 'md', 'schema_table.py'),
+              os.path.join('schema205', 'md', 'make_grid_table.py'),
               os.path.join('schema205', 'render_jinja.py'),
               ],
           'targets': [os.path.join(RENDERED_TEMPLATE_PATH, 'main.md')],

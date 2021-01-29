@@ -5,7 +5,7 @@ import os
 import os.path
 from copy import deepcopy
 
-import schema205.make_grid_table as tables
+import schema205.md.make_grid_table as tables
 
 THIS_DIR = os.path.dirname(os.path.realpath(__file__))
 SCHEMA_DIR = os.path.abspath(

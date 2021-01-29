@@ -1,32 +1,29 @@
 import os
 import yaml
 import sys
-from .schema_tables import data_types_table, string_types_table
-from .schema_tables import enumerators_table, data_groups_table, write_header
-from .schema_tables import data_elements_dict_from_data_groups
-from .schema_tables import load_structure_from_object
+import schema205.md.schema_table as schema_table
 
 def write_tables(instance, output_path, append=True):
-  struct = load_structure_from_object(instance)
+  struct = schema_table.load_structure_from_object(instance)
   with open(output_path, 'a' if append else 'w', encoding="utf-8") as output_file:
     # Data Types
     if len(struct['data_types']) > 0:
-      output_file.writelines(write_header("Data Types"))
-      output_file.writelines(data_types_table(struct['data_types']))
+      output_file.writelines(schema_table.write_header("Data Types"))
+      output_file.writelines(schema_table.data_types_table(struct['data_types']))
     # String Types
     if len(struct['string_types']) > 0:
-      output_file.writelines(write_header("String Types"))
-      output_file.writelines(string_types_table(struct['string_types']))
+      output_file.writelines(schema_table.write_header("String Types"))
+      output_file.writelines(schema_table.string_types_table(struct['string_types']))
     # Enumerations
     if len(struct['enumerations']) > 0:
       for enum, enumerators in struct['enumerations'].items():
-        output_file.writelines(write_header(enum))
-        output_file.writelines(enumerators_table(enumerators))
+        output_file.writelines(schema_table.write_header(enum))
+        output_file.writelines(schema_table.enumerators_table(enumerators))
     # Data Groups
     if len(struct['data_groups']) > 0:
       for dg, data_elements in struct['data_groups'].items():
-        output_file.writelines(write_header(dg))
-        output_file.writelines(data_groups_table(data_elements))
+        output_file.writelines(schema_table.write_header(dg))
+        output_file.writelines(schema_table.data_groups_table(data_elements))
 
 def write_file(input_path, output_path):
   with open(input_path, 'r') as input_file:

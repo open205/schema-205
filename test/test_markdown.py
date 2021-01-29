@@ -1,7 +1,7 @@
 """
 Test aspects of the grid table maker.
 """
-import schema205.make_grid_table as table
+import schema205.md.make_grid_table as table
 
 
 EXPECTED_1 = """

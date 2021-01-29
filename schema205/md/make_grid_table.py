@@ -3,9 +3,6 @@ Markdown grid-table creation utilities
 """
 import copy
 import io
-import traceback
-
-import yaml
 
 
 def wrap_text_to_lines(text, width, bold=False, left_space=1, right_space=1):
