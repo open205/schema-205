@@ -1,5 +1,5 @@
 """
-Calls all Jinja templates to render a result.
+Specifics for setting up schema tables.
 """
 import os
 import os.path
