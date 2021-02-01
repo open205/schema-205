@@ -24,22 +24,26 @@ If you would also like to have the `add_table` hook render a header for you, you
     header_level_and_content=(3, "Data Types"))
 }}
 
+Note that there is some flexibility in how the table name is interpreted.
+For example, the following pulls the same table:
+
+{{ add_table('ASHRAE205', ' Data   TYPES  ') }}
+
 
 ## Using Incorrect Parameters to Insert a Table
 
 To insert a table, we need to provide the following:
 
 - the schema file name (see `schema-source/*.schema.yaml` -- the name is the `*` part)
-- the `table_type` (one of `data_types`, `string_types`, `enumerations`, or `data_groups`)
-- the `item_type` which is required for `enumerations` and `data_groups`
+- the `table_name` (one of `data_types`, `string_types`, or the name of an object that has an "Enumeration" or "Data Group" object type)
 
 If we specify those incorrectly, the rendered template will inform us with a friendly error message:
 
 {{ add_table('nonexistingfile', 'data_types') }}
 
-Or, if we specify a `table_type` value that doesn't exist, the system will also inform us:
+Or, if we specify a `table_name` value that doesn't exist, the system will also inform us:
 
-{{ add_table('ASHRAE205', 'dolphin_types') }}
+{{ add_table('ASHRAE205', 'dolphin') }}
 
 
 ## Going Through the Remaining Table Types
@@ -55,23 +59,21 @@ Here we run through the remaining table types with all options:
     header_level_and_content=(3, "String Types"))
 }}
 
-The `enumerations` and `data_groups` tables require specifying an `item_type` to retrieve the correct table.
+For an Enumeration or Data Group, just specify the object name to render the correct table.
 
 {{ add_table(
     'ASHRAE205',
-    'enumerations',
-    item_type='ASHRAE205Version',
+    'ASHRAE205Version',
     caption='ASHRAE 205 Versions',
     header_level_and_content=(3, "ASHRAE 205 Version"))
 }}
 
-The `item_type` value is used to pull out the correct table from all of the potential enumerations tables.
-If we don't specify it or specify it wrong, we get a helpful error message listing the possible `item_type` options:
+The `table_name` value is used to pull out the correct table from all of the potential enumerations or data group objects.
+If we don't specify it or specify it wrong, we get a helpful error message listing the possible `table_name` options:
 
 {{ add_table(
     'ASHRAE205',
-    'enumerations',
-    item_type="we_do_not_know",
+    "we_do_not_know",
     caption="When we don't know the item type...",
     header_level_and_content=(3, "We Don't Know What Item Type to Choose..."))
 }}
@@ -80,13 +82,12 @@ The `data_groups` table operates similar to enumerations:
 
 {{ add_table(
     'ASHRAE205',
-    'data_groups',
-    item_type='LiquidMixture',
+    'LiquidMixture',
     caption='Liquid mixtures',
     header_level_and_content=(3, "Available Liquid Mixture Options"))
 }}
 
-Similar to the `enumerations` table, if we don't know what `item_type` value to choose, we can leave it blank and let the system respond with all of the options in an error message:
+And similarly, if we don't know what `table_name` value to choose, we can leave it blank and let the system respond with all of the options in an error message:
 
-{{ add_table('ASHRAE205', 'data_groups', item_type="") }}
+{{ add_table('ASHRAE205', "") }}
 

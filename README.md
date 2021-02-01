@@ -66,7 +66,7 @@ If you would like to use this repository as a library to assit with rendering yo
 import os
 import os.path
 import glob
-from schema205.render_jinja import main as render_jinja
+from schema205.render_template import main as render_template
 
 def task_render_markdown():
     """
@@ -78,7 +78,7 @@ def task_render_markdown():
     main_source = "main.md"
     return {
         'actions': [
-            (render_jinja, [os.path.join(src_dir, main_source), os.path.join(BUILD_DIR, main_source), "src"]),
+            (render_template, [os.path.join(src_dir, main_source), os.path.join(BUILD_DIR, main_source), "src"]),
         ],
         'targets': [os.path.join(BUILD_DIR, main_source)],
         'file_dep': list(glob.glob(os.path.join(src_dir, '*.md'))),
