@@ -25,7 +25,7 @@ class A205Schema:
         '''
         messages = []
         for error in errors:
-            if error.validator in ['oneOf','anyOf']:
+            if error.validator in ['oneOf','anyOf','allOf']:
                 schema_node = self.get_schema_node(list(error.absolute_path))
                 if 'RS' in schema_node:
                     rs_index = get_rs_index(schema_node['RS'])
@@ -62,6 +62,13 @@ class A205Schema:
             raise Exception(f"Validation failed for \"{instance['description']}\" ({rs_id}) with {len(messages)} errors:\n  {message_str}")
 
     def resolve(self, node, step_in=True):
+        '''
+        Return this node with any references replaced by entire referenced object.
+        If step_in is True, return the node's properties instead.
+        '''
+        if isinstance(node, dict) and 'if' in node:
+            node = node['then']
+
         if '$ref' in node:
             resolution = self.resolve_ref(node['$ref'])
             # Carry other contents from location of reference
@@ -96,20 +103,20 @@ class A205Schema:
             if lineage[0] == item:
                 if len(lineage) == 1:
                     # This is the last node
-                    if 'oneOf' in node[item] and options[0] is not None:
-                        return self.resolve(node[item]['oneOf'][options[0]],False)
+                    if 'allOf' in node[item] and options[0] is not None:
+                        return self.resolve(node[item]['allOf'][options[0]],False)
                     else:
                         return self.resolve(node[item],False)
                 else:
                     # Keep digging
 
-                    if 'oneOf' in node[item]:
+                    if 'allOf' in node[item]:
                         if options[0] is not None:
-                            option = self.resolve(node[item]['oneOf'][options[0]])
+                            option = self.resolve(node[item]['allOf'][options[0]])
                             return self.trace_lineage(option,lineage[1:],options[1:])
                         else:
                             # Search in all options
-                            for option in node[item]['oneOf']:
+                            for option in node[item]['allOf']:
                                 option = self.resolve(option)
                                 if lineage[1] in option:
                                     try:
@@ -153,9 +160,9 @@ class A205Schema:
         if lineage[-1] != 'grid_variables':
             raise Exception(f"{lineage[-1]} is not a 'grid_variables' data group.")
         parent_schema_node = self.get_schema_node(lineage[:-1], rs_selections[:-1])
-        if 'oneOf' in parent_schema_node:
+        if 'allOf' in parent_schema_node:
             # Alternate performance maps allowed. Make sure we get the right one
-            for option in parent_schema_node['oneOf']:
+            for option in parent_schema_node['allOf']:
                 option = self.resolve(option)
                 for var in grid_vars:
                     option_grid_vars = self.resolve(option['grid_variables'])
