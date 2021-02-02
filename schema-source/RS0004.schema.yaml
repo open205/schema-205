@@ -61,7 +61,7 @@ Performance:
       Description: "Cycling degradation coefficient (C<sub>D</sub>) as described in AHRI 210/240"
       Data Type: "Numeric"
       Units: "-"
-      Range: ">=0.0,<1.0"
+      Constraints: [">=0.0","<1.0"]
       Required: True
       Notes: "Used for the lowest stage when the unit cycles to meet load. ***Informative note:*** 340/360 specifies a fixed cycling degradation coefficient of approximately 0.12"
     performance_map_cooling:
@@ -91,33 +91,33 @@ GridVariablesCooling:
     outdoor_coil_entering_dry_bulb_temperature:
       Description: "Dry bulb temperature of the air entering the outdoor coil"
       Data Type: "[Numeric][1..]"
-      Range: ">=0.0"
+      Constraints: ">=0.0"
       Units: "K"
       Required: True
     indoor_coil_entering_relative_humidity:
       Description: "Relative humidity of the air entering the indoor coil"
       Data Type: "[Numeric][1..]"
-      Range: ">=0.0,<=1.0"
+      Constraints: [">=0.0","<=1.0"]
       Units: "-"
       Notes: "As measured immediately before entering the coil (i.e., after the fan in a blow-through configuration)"
       Required: True
     indoor_coil_entering_dry_bulb_temperature:
       Description: "Dry bulb temperature of the air entering the indoor coil"
       Data Type: "[Numeric][1..]"
-      Range: ">=0.0"
+      Constraints: ">=0.0"
       Units: "K"
       Required: True
       Notes: "As measured immediately before entering the coil (i.e., after the fan in a blow-through configuration)"
     indoor_coil_air_mass_flow_rate:
       Description: "Mass flow rate of air entering the indoor coil"
       Data Type: "[Numeric][1..]"
-      Range: ">0.0"
+      Constraints: ">0.0"
       Units: "kg/s"
       Required: True
     compressor_sequence_number:
       Description: "Index indicating the relative capacity order of the compressor speed/stage expressed in order from lowest capacity (starting at 1) to highest capacity"
       Data Type: "[Integer][1..]"
-      Range: ">=0"
+      Constraints: ">=0"
       Units: "-"
       Notes: ["If `compressor_speed_control_type` is `DISCRETE`, sequence numbers shall be provided for each discrete stage of the compressor(s)",
               "If `compressor_speed_control_type` is `CONTINUOUS`, sufficient sequence numbers shall be provided to capture the continuous operation of the compressor(s)"]
@@ -125,7 +125,7 @@ GridVariablesCooling:
     ambient_absolute_air_pressure:
       Description: "Ambient absolute air pressure"
       Data Type: "[Numeric][1..]"
-      Range: ">=0.0"
+      Constraints: ">=0.0"
       Units: "Pa"
       Required: True
 
@@ -135,21 +135,21 @@ LookupVariablesCooling:
     gross_total_capacity:
       Description: "Total heat removed by the indoor coil"
       Data Type: "[Numeric/Null][1..]"
-      Range: ">=0.0"
+      Constraints: ">=0.0"
       Units: "W"
       Required: True
       Notes: "Shall not include fan heat"
     gross_sensible_capacity:
       Description: "Sensible heat removed by the indoor coil"
       Data Type: "[Numeric/Null][1..]"
-      Range: ">=0.0"
+      Constraints: ">=0.0"
       Units: "W"
       Required: True
       Notes: "Shall not include fan heat"
     gross_power:
       Description: "Gross power draw (of the outdoor unit)"
       Data Type: "[Numeric/Null][1..]"
-      Range: ">0.0"
+      Constraints: ">0.0"
       Units: "W"
       Required: True
       Notes: ["Includes compressor, outdoor fan, and any auxiliary power used by the unit's controls and any sump heater.",
@@ -173,7 +173,7 @@ GridVariablesStandby:
     outdoor_coil_environment_dry_bulb_temperature:
       Description: "Dry bulb temperature of the air in the environment of the outdoor coil"
       Data Type: "[Numeric][1..]"
-      Range: ">=0.0"
+      Constraints: ">=0.0"
       Units: "K"
       Required: True
 
@@ -183,7 +183,7 @@ LookupVariablesStandby:
     gross_power:
       Description: "Gross power draw (of the outdoor unit)"
       Data Type: "[Numeric/Null][1..]"
-      Range: ">0.0"
+      Constraints: ">0.0"
       Units: "W"
       Required: True
       Notes: "Includes any auxiliary power used by the unit's controls and any sump heater"

@@ -218,7 +218,7 @@
         "Units": {
           "$ref": "meta.schema.json#/definitions/StandardUnits"
         },
-        "Range": {
+        "Constraints": {
           "type": "string"
         },
         "Required": {
@@ -241,7 +241,7 @@
         "Units": {
           "$ref": "meta.schema.json#/definitions/RatingUnits"
         },
-        "Range": {
+        "Constraints": {
           "type": "string"
         },
         "Required": {
@@ -268,7 +268,7 @@
         "Units": {
           "$ref": "meta.schema.json#/definitions/StandardUnits"
         },
-        "Range": {
+        "Constraints": {
           "type": "string"
         },
         "Required": {
@@ -296,7 +296,7 @@
         "Units": {
           "$ref": "meta.schema.json#/definitions/StandardUnits"
         },
-        "Range": {
+        "Constraints": {
           "type": "string"
         },
         "Required": {
