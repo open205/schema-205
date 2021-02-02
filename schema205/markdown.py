@@ -67,6 +67,9 @@ def write_tables(instance, output_path, append=True):
         for enumerator in enumerations[enum]["Enumerators"]:
           new_obj = enumerations[enum]["Enumerators"][enumerator] if enumerations[enum]["Enumerators"][enumerator] else {}
           new_obj["Enumerator"] = f"`{enumerator}`"
+          if "Notes" in new_obj:
+            if type(new_obj["Notes"]) is list:
+              new_obj["Notes"] = "\n\n".join([f"- {note}" for note in new_obj["Notes"]])
           enumerators.append(new_obj)
         writer.value_matrix = enumerators
 
@@ -89,6 +92,9 @@ def write_tables(instance, output_path, append=True):
             gte = u'\N{GREATER-THAN OR EQUAL TO}'
             lte = u'\N{LESS-THAN OR EQUAL TO}'
             new_obj["Range"] = f"`{new_obj['Range'].replace('<=',lte).replace('>=',gte)}`"
+          if "Notes" in new_obj:
+            if type(new_obj["Notes"]) is list:
+              new_obj["Notes"] = "\n\n".join([f"- {note}" for note in new_obj["Notes"]])
           data_elements.append(new_obj)
         writer.value_matrix = data_elements
 

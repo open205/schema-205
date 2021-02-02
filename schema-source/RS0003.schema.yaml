@@ -116,12 +116,12 @@ ProductInformation:
 Performance:
   Object Type: "Data Group"
   Data Elements:
-    nominal_air_volumetric_flow_rate:
-      Description: "Nominal air flow rate for fan assembly"
+    nominal_standard_air_volumetric_flow_rate:
+      Description: "Nominal or rated air flow rate at *standard air conditions*"
       Data Type: "Numeric"
       Range: ">=0.0"
       Units: "m3/s"
-      Notes: "Nominal or rated air flow rate at *standard air conditions* used for calculating component wet pressure difference"
+      Notes: "Used for calculating component wet pressure difference"
       Required: True
     is_enclosed:
       Description: "Fan assembly is enclosed"
@@ -129,9 +129,10 @@ Performance:
       Notes: "True if the performance data reflects the static pressure difference across the enclosure"
       Required: True
     assembly_components:
-      Description: "An array of components in addition to fan(s) included in the fan assembly air stream" # TODO: Does the order matter? Should this include fans?
+      Description: "An array of components included in the fan assembly air stream, not including any fans" # TODO: Does the order matter? Should this include fans?
       Data Type: "[{AssemblyComponent}]"
       Required: True
+      Notes: "Components shall only be specified if `is_enclosed` is true"
     heat_loss_fraction:
       Description: "Fraction of efficiency losses transferred into the air stream"
       Data Type: "Numeric"
@@ -139,13 +140,13 @@ Performance:
       Units: "-"
       Notes: "Used to determine amount of heat from the motor added to the air stream"
       Required: True
-    maximum_impeller_speed:
+    maximum_impeller_rotational_speed:
       Description: "Maximum impeller rotational speed"
       Data Type: "Numeric"
       Range: ">=0.0"
       Units: "rev/s"
       Required: True
-    minimum_impeller_speed:
+    minimum_impeller_rotational_speed:
       Description: "Minimum impeller rotational speed"
       Data Type: "Numeric"
       Range: ">=0.0"
@@ -165,13 +166,20 @@ Performance:
       Description: "Type of fan impeller speed control"
       Data Type: "{InstallationSpeedControlType}"
       Required: True
-      Notes: "If `operation_speed_control_type` is `DISCRETE` and `installation_speed_control_type` is `FIXED`, impeller speed shall be restricted to a single discrete speed.\n\nIf `operation_speed_control_type` is `DISCRETE` and `installation_speed_control_type` is `VARIABLE`, impeller speed shall be restricted to a set of two or more discrete speed\n\nIf `operation_speed_control_type` is `CONTINUOUS` and `installation_speed_control_type` is `FIXED`, impeller speed shall be restricted to a single speed (which may be interpolated from `impeller_speed` values provided in the performance map\n\nIf `operation_speed_control_type` is `CONTINUOUS` and `installation_speed_control_type` is `VARIABLE`, impeller speed shall be unrestricted within operational limits"
+      Notes: ["If `operation_speed_control_type` is `DISCRETE` and `installation_speed_control_type` is `FIXED`, impeller speed shall be restricted to a single discrete speed.",
+              "If `operation_speed_control_type` is `DISCRETE` and `installation_speed_control_type` is `VARIABLE`, impeller speed shall be restricted to a set of two or more discrete speeds",
+              "If `operation_speed_control_type` is `CONTINUOUS` and `installation_speed_control_type` is `FIXED`, impeller speed shall be restricted to a single speed (which may be interpolated from `impeller_speed` values provided in the performance map)",
+              "If `operation_speed_control_type` is `CONTINUOUS` and `installation_speed_control_type` is `VARIABLE`, impeller speed shall be unrestricted within operational limits"]
     motor_representation:
       Description: "The corresponding Standard 205 motor *representation*"
-      Notes: "If the fan is packaged with a motor, a motor *representation* shall be provided"
+      Notes: "If the fan assembly is packaged with a motor, a motor *representation* shall be provided"
       Data Type: "{ASHRAE205(rs_id=RS0005)}"
+    mechanical_drive_representation:
+      Description: "The corresponding Standard 205 mechanical drive *representation*"
+      Notes: "If the fan assembly is packaged with a mechanical drive, a mechanical drive *representation* shall be provided"
+      Data Type: "{ASHRAE205(rs_id=RS0007)}"
     performance_map:
-      Description: "Data group describing fan performance when operating"
+      Description: "Data group describing fan assembly performance when operating"
       Data Type: "({PerformanceMapContinuous}, {PerformanceMapDiscrete})"
       Required: True
 
@@ -194,14 +202,14 @@ AssemblyComponent:
       Data Type: "Numeric"
       Range: ">=0.0"
       Units: "Pa"
-      Notes: "Corresponds to additional pressure difference at `nominal_air_volumetric_flow_rate`. If unknown, a value of 75 Pa shall be used"
+      Notes: "Corresponds to additional pressure difference at `nominal_standard_air_volumetric_flow_rate`. If unknown, a value of 75 Pa shall be used"
       Required: True
 
 SystemCurve:
   Object Type: "Data Group"
   Data Elements:
-    air_volumetric_flow_rate:
-      Description: "Volumetric air flow rate through an air distribution system"
+    standard_air_volumetric_flow_rate:
+      Description: "Volumetric air flow rate through an air distribution system at *standard air conditions*"
       Data Type: "[Numeric][2..]"
       Range: ">=0.0"
       Units: "m3/s"
@@ -228,12 +236,11 @@ PerformanceMapContinuous:
 GridVariablesContinuous:
   Object Type: "Grid Variables"
   Data Elements:
-    air_volumetric_flow_rate:
-      Description: "Volumetric air flow rate through fan assembly"
+    standard_air_volumetric_flow_rate:
+      Description: "Volumetric air flow rate through fan assembly at *standard air conditions*"
       Data Type: "[Numeric][1..]"
       Range: ">=0.0"
       Units: "m3/s"
-      Notes: "At *standard air conditions*"
       Required: True
     static_pressure_difference:
       Description: "External static pressure across fan assembly at dry coil conditions"
@@ -246,7 +253,7 @@ GridVariablesContinuous:
 LookupVariablesContinuous:
   Object Type: "Lookup Variables"
   Data Elements:
-    impeller_speed:
+    impeller_rotational_speed:
       Description: "Rotational speed of fan impeller"
       Data Type: "[Numeric/Null][1..]"
       Range: ">=0.0"
@@ -276,11 +283,11 @@ GridVariablesDiscrete:
   Object Type: "Grid Variables"
   Data Elements:
     speed_number:
-      Description: "Number indicating discrete speed of fan impeller"
+      Description: "Number indicating discrete speed of fan impeller in rank order (with 1 being the lowest speed)"
       Data Type: "[Integer][1..]"
       Range: ">=0"
       Units: "-"
-      Notes: "In rank order (with 1 being the lowest speed)"
+      Notes: "Data shall be provided for all allowable discrete speeds or settings."
       Required: True
     static_pressure_difference:
       Description: "External static pressure across fan assembly at dry coil conditions"
@@ -293,17 +300,22 @@ GridVariablesDiscrete:
 LookupVariablesDiscrete:
   Object Type: "Lookup Variables"
   Data Elements:
-    air_volumetric_flow_rate:
-      Description: "Volumetric air flow rate through fan assembly"
+    standard_air_volumetric_flow_rate:
+      Description: "Volumetric air flow rate through fan assembly at *standard air conditions*"
       Data Type: "[Numeric/Null][1..]"
       Range: ">=0.0"
       Units: "m3/s"
-      Notes: "At *standard air conditions*"
       Required: True
     shaft_power:
       Description: "Mechanical shaft power input to fan assembly"
       Data Type: "[Numeric/Null][1..]"
       Range: ">=0.0"
       Units: "W"
-      Notes: "The mechanical efficiency of any belt drive used to modify rotational speed between the motor and impeller shall be implicit in this value"
+      Notes: "Does not include the mechanical efficiency of any mechanical drive used to modify rotational speed between the motor and impeller"
+      Required: True
+    impeller_rotational_speed:
+      Description: "Rotational speed of fan impeller"
+      Data Type: "[Numeric/Null][1..]"
+      Range: ">=0.0"
+      Units: "rev/s"
       Required: True
