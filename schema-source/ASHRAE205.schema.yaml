@@ -251,7 +251,7 @@ ASHRAE205:
     data_source:
       Description: "Source of the performance data in this *representation*"
       Data Type: "String"
-      Note: "Used by *data publisher* to document methods (e.g. software and version) used to generate performance data.  `data_source` is generally different from ratings source(s) included elsewhere."
+      Note: "Used by *data publisher* to document methods (e.g. software and version) used to generate performance data.  Informative note: `data_source` may different from ratings source(s) included elsewhere."
     disclaimer:
       Description: "Characterization of accuracy, limitations, and applicability of this data"
       Data Type: "String"
