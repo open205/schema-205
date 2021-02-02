@@ -112,8 +112,8 @@ RatingAHRI210240:
       Description: "Year of the AHRI test standard"
       Data Type: "<AHRI210240TestStandardYear>"
       Required: True
-    manufacturer_data_source_version:
-      Description: "Version of the software used to generate the rating and performance maps"
+    rating_software_version:
+      Description: "Version of the software used to generate these ratings"
       Data Type: "String"
     staging_type:
       Description: "Type of compressor staging"
@@ -226,8 +226,8 @@ RatingAHRI340360:
       Description: "Name and version of the AHRI test standard"
       Data Type: "<AHRI340360TestStandardYear>"
       Required: True
-    manufacturer_data_source_version:
-      Description: "Version of the software used to generate the AHRI rating and the performance maps"
+    rating_software_version:
+      Description: "Version of the software used to generate these ratings"
       Data Type: "String"
     capacity_control_type:
       Description: "Type of capacity control"
