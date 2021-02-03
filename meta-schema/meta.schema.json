@@ -102,7 +102,16 @@
       ],
       "additionalProperties": false
     },
-    "Notes": {
+    "Constraints": {
+      "oneOf": [
+        { "type": "string" },
+        { "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      ]
+    },    "Notes": {
       "oneOf": [
         { "type": "string" },
         { "type": "array",
@@ -219,7 +228,7 @@
           "$ref": "meta.schema.json#/definitions/StandardUnits"
         },
         "Constraints": {
-          "type": "string"
+          "$ref": "meta.schema.json#/definitions/Constraints"
         },
         "Required": {
           "type": "boolean"
@@ -242,7 +251,7 @@
           "$ref": "meta.schema.json#/definitions/RatingUnits"
         },
         "Constraints": {
-          "type": "string"
+          "$ref": "meta.schema.json#/definitions/Constraints"
         },
         "Required": {
           "type": "boolean"
@@ -269,7 +278,7 @@
           "$ref": "meta.schema.json#/definitions/StandardUnits"
         },
         "Constraints": {
-          "type": "string"
+          "$ref": "meta.schema.json#/definitions/Constraints"
         },
         "Required": {
           "type": "boolean",
@@ -297,7 +306,7 @@
           "$ref": "meta.schema.json#/definitions/StandardUnits"
         },
         "Constraints": {
-          "type": "string"
+          "$ref": "meta.schema.json#/definitions/Constraints"
         },
         "Required": {
           "type": "boolean",
