@@ -3,14 +3,16 @@ Markdown rendering utilities.
 """
 import os
 import sys
+import io
 
 import yaml
 
 import schema205.md.schema_table as schema_table
 
-def write_tables(instance, output_path, append=True):
+def string_out_tables(instance):
   struct = schema_table.load_structure_from_object(instance)
-  with open(output_path, 'a' if append else 'w', encoding="utf-8") as output_file:
+  output = None
+  with io.StringIO() as output_file:
     # Data Types
     if len(struct['data_types']) > 0:
       output_file.writelines(schema_table.write_header("Data Types"))
@@ -29,6 +31,12 @@ def write_tables(instance, output_path, append=True):
       for dg, data_elements in struct['data_groups'].items():
         output_file.writelines(schema_table.write_header(dg))
         output_file.writelines(schema_table.data_groups_table(data_elements))
+    output = output_file.getvalue()
+  return output
+
+def write_tables(instance, output_path, append=True):
+  with open(output_path, 'a' if append else 'w', encoding="utf-8") as output_file:
+    output_file.write(string_out_tables(instance))
 
 def write_file(input_path, output_path):
   with open(input_path, 'r') as input_file:
