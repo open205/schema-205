@@ -3,12 +3,14 @@ name = "schema205"
 version = "0.1.0"
 description = ""
 authors = ["Open205"]
+include = ["schema205/schema_source/*.schema.yaml"]
 
 [tool.poetry.dependencies]
 python = "^3.6"
 jsonschema = "*"
 pyyaml = "*"
 Jinja2 = "*"
+importlib_resources = { version = "*", python = "~3.6" }
 
 [tool.poetry.dev-dependencies]
 pytest = "^5.2"
