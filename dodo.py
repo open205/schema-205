@@ -6,7 +6,7 @@ import os
 from doit.tools import create_folder
 
 BUILD_PATH = "build"
-SOURCE_PATH = 'schema-source'
+SOURCE_PATH = os.path.join('schema205', 'schema_source')
 DOCS_PATH = os.path.join(BUILD_PATH,"docs")
 SCHEMA_PATH = os.path.join(BUILD_PATH,"schema")
 RENDERED_TEMPLATE_PATH = os.path.realpath(
@@ -14,14 +14,14 @@ RENDERED_TEMPLATE_PATH = os.path.realpath(
 
 def collect_source_files():
   file_list = []
-  for file_name in sorted(os.listdir('schema-source')):
+  for file_name in sorted(os.listdir(SOURCE_PATH)):
     if '.schema.yaml' in file_name:
       file_list.append(os.path.join(SOURCE_PATH,file_name))
   return file_list
 
 def collect_target_files(target_dir, extension):
   file_list = []
-  for file_name in sorted(os.listdir('schema-source')):
+  for file_name in sorted(os.listdir(SOURCE_PATH)):
     if '.schema.yaml' in file_name:
       file_name_root = os.path.splitext(os.path.splitext(file_name)[0])[0]
       file_list.append(os.path.join(target_dir,f'{file_name_root}.schema.{extension}'))
