@@ -7,6 +7,15 @@ from .util import get_representation_node_and_rs_selections
 from .util import get_rs_index
 from .file_io import load_json
 
+def iterdict(d, dict_as_list, level=0):
+    for key in d:
+        preamble = 'Level ' + str(level) + ' ' + '  '*level + ' ' + key
+        if isinstance(d[key], dict):
+            dict_as_list.append(preamble + ': [dict]')
+            iterdict(d[key], dict_as_list, level+1)
+        else:
+            dict_as_list.append(preamble + ': ' + str(d[key]))
+
 
 class A205Schema:
     def __init__(self, schema_path):
@@ -61,13 +70,14 @@ class A205Schema:
             message_str = '\n  '.join(messages)
             raise Exception(f"Validation failed for \"{instance['description']}\" ({rs_id}) with {len(messages)} errors:\n  {message_str}")
 
-    def resolve(self, node, step_in=True):
+    def resolve(self, node, step_in=True, parent_node=None):
         '''
         Return this node with any references replaced by entire referenced object.
         If step_in is True, return the node's properties instead.
         '''
         if isinstance(node, dict) and 'if' in node:
             node = node['then']
+            resolution = node
 
         if '$ref' in node:
             resolution = self.resolve_ref(node['$ref'])
@@ -91,46 +101,47 @@ class A205Schema:
     def get_schema(self):
         return self.validator.schema
 
-    def trace_lineage(self, node, lineage, options):
+    def trace_lineage(self, node, lineage, options, parent_node=None):
         '''
         Search through lineage for the schema node one generation at a time.
 
         node: node to trace into
         lineage: remaining lineage to trace
         options: indices for any oneOf nodes
+        parent_node: aux node to check for additional property information
         '''
         for item in node:
-            if lineage[0] == item:
+            # Case where the node passed in contains additional properties fleshed out in allOf 
+            if item == 'allOf':
+                if options[0] is not None:
+                    resolution = self.resolve(node['allOf'][options[0]])
+                    if lineage[0] in resolution:
+                        #return self.resolve(resolution[lineage[0]])
+                        return self.trace_lineage(self.resolve(resolution[lineage[0]]),lineage[1:],options[1:],self.resolve(resolution[lineage[0]], False))
+                for option in node['allOf']:
+                    resolution = self.resolve(option) # each #ref will be evaluated separately
+                    if lineage[0] in resolution:
+                        if len(lineage) == 1:
+                            return self.resolve(resolution, False)
+                        else:
+                            next_node = self.resolve(resolution[lineage[0]], True)
+                            if lineage[1] in next_node:
+                                try:
+                                    return self.trace_lineage(next_node,lineage[1:],options[1:],self.resolve(resolution[lineage[0]], False))
+                                except KeyError:
+                                    pass
+            if item == lineage[0]:
                 if len(lineage) == 1:
                     # This is the last node
-                    if 'allOf' in node[item] and options[0] is not None:
-                        return self.resolve(node[item]['allOf'][options[0]],False)
-                    else:
-                        return self.resolve(node[item],False)
+                    return self.resolve(node[item],False)
                 else:
-                    # Keep digging
-
-                    if 'allOf' in node[item]:
-                        if options[0] is not None:
-                            option = self.resolve(node[item]['allOf'][options[0]])
-                            return self.trace_lineage(option,lineage[1:],options[1:])
-                        else:
-                            # Search in all options
-                            for option in node[item]['allOf']:
-                                option = self.resolve(option)
-                                if lineage[1] in option:
-                                    try:
-                                        return self.trace_lineage(option,lineage[1:],options[1:])
-                                    except KeyError:
-                                        # Not in this option try the next one
-                                        # TODO: Handle this better (custom exception type)
-                                        pass
-                            raise KeyError(f"'{lineage[1]}' not found in schema.")
-
-                    next_node = self.resolve(node[item])
-                    if 'items' in next_node:
-                        next_node = self.resolve(next_node['items'])
-                    return self.trace_lineage(next_node,lineage[1:],options[1:])
+                    if node[item]:
+                        next_node = self.resolve(node[item])
+                        if 'items' in next_node:
+                            next_node = self.resolve(next_node['items'])
+                        return self.trace_lineage(next_node, lineage[1:],options[1:], self.resolve(node[item],False))
+                    else:
+                        return self.trace_lineage(parent_node,lineage,options)
 
         raise KeyError(f"'{lineage[0]}' not found in schema.")
 
@@ -141,8 +152,8 @@ class A205Schema:
             options = [None]*len(lineage)
         schema = self.resolve(self.validator.schema)
         try:
-            return self.trace_lineage(schema, lineage, options)
-        except KeyError:
+            return self.trace_lineage(schema, lineage, options, self.resolve(self.validator.schema, False))
+        except KeyError as ke:
             return None
 
     def get_schema_version(self):
