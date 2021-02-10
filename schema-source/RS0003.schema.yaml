@@ -173,11 +173,13 @@ Performance:
     motor_representation:
       Description: "The corresponding Standard 205 motor *representation*"
       Notes: "If the fan assembly is packaged with a motor, a motor *representation* shall be provided"
-      Data Type: "{ASHRAE205(rs_id=RS0005)}"
+      Data Type: "{ASHRAE205}"
+      Constraints: "rs_id=RS0005"
     mechanical_drive_representation:
       Description: "The corresponding Standard 205 mechanical drive *representation*"
       Notes: "If the fan assembly is packaged with a mechanical drive, a mechanical drive *representation* shall be provided"
-      Data Type: "{ASHRAE205(rs_id=RS0007)}"
+      Data Type: "{ASHRAE205}"
+      Constraints: "rs_id=RS0007"
     performance_map:
       Description: "Data group describing fan assembly performance when operating"
       Data Type: "({PerformanceMapContinuous}, {PerformanceMapDiscrete})"
