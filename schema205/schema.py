@@ -135,12 +135,14 @@ class A205Schema:
                     # This is the last node
                     return self.resolve(node[item],False)
                 else:
-                    if node[item]:
+                    if '$ref' in node[item] or 'type' in node[item]:
+                        # node is not a "placeholder"; has contained information
                         next_node = self.resolve(node[item])
                         if 'items' in next_node:
                             next_node = self.resolve(next_node['items'])
                         return self.trace_lineage(next_node, lineage[1:],options[1:], self.resolve(node[item],False))
                     else:
+                        # node is a placeholder; find its info in parent
                         return self.trace_lineage(parent_node,lineage,options)
 
         raise KeyError(f"'{lineage[0]}' not found in schema.")
@@ -170,11 +172,12 @@ class A205Schema:
         '''
         if lineage[-1] != 'grid_variables':
             raise Exception(f"{lineage[-1]} is not a 'grid_variables' data group.")
-        parent_schema_node = self.get_schema_node(lineage[:-1], rs_selections[:-1])
+        parent_schema_node = self.get_schema_node(lineage[:-2], rs_selections[:-2])
         if 'allOf' in parent_schema_node:
             # Alternate performance maps allowed. Make sure we get the right one
             for option in parent_schema_node['allOf']:
-                option = self.resolve(option)
+                # allOf resolutions are 2-deep dictionaries; resolve twice
+                option = self.resolve(self.resolve(option)[lineage[-2]])
                 for var in grid_vars:
                     option_grid_vars = self.resolve(option['grid_variables'])
                     if var not in option_grid_vars:
