@@ -125,8 +125,8 @@ class DataGroup:
                 target_dict['items'] = dict()
                 self._get_simple_type(m[0], target_dict['items'])
                 #target_dict['items'][k] = v
-                if 'Range' in parent_dict:
-                    self._get_simple_minmax(parent_dict['Range'], target_dict['items'])
+                if 'Constraints' in parent_dict:
+                    self._get_simple_minmax(parent_dict['Constraints'], target_dict['items'])
             else:
                 # If the type is oneOf a set
                 m = re.findall(r'^\((.*)\)', parent_dict['Data Type'])
@@ -141,7 +141,7 @@ class DataGroup:
                     # 1. 'type' entry
                     self._get_simple_type(parent_dict['Data Type'], target_dict)
                     # 2. 'm[in/ax]imum' entry
-                    self._get_simple_minmax(parent_dict['Range'], target_dict)
+                    self._get_simple_minmax(parent_dict['Constraints'], target_dict)
         except KeyError as ke:
             #print('KeyError; no key exists called', ke)
             pass
@@ -194,7 +194,7 @@ class DataGroup:
     def _get_simple_minmax(self, range_str, target_dict):
         '''Process Range into min and max fields.'''
         if range_str is not None:
-            ranges = range_str.split(',')
+            ranges = range_str
             minimum=None
             maximum=None
             if 'type' not in target_dict:
@@ -210,6 +210,9 @@ class DataGroup:
                         maximum = (float(numerical_value) if 'number' in target_dict['type']  else int(numerical_value))
                         mx = 'exclusiveMaximum' if '=' not in r else 'maximum'
                         target_dict[mx] = maximum
+                except IndexError:
+                    # Constraint was non-numeric
+                    pass
                 except ValueError:
                     pass
 
