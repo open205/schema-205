@@ -194,13 +194,14 @@ class DataGroup:
     def _get_simple_minmax(self, range_str, target_dict):
         '''Process Range into min and max fields.'''
         if range_str is not None:
-            ranges = range_str
+            ranges = range_str if isinstance(range_str, list) else [range_str]
             minimum=None
             maximum=None
-            if 'type' not in target_dict:
-                target_dict['type'] = None
+            # if 'type' not in target_dict:
+            #     target_dict['type'] = None
             for r in ranges:
                 try:
+                    print(r)
                     numerical_value = re.findall(r'[+-]?\d*\.?\d+|\d+', r)[0]
                     if '>' in r:
                         minimum = (float(numerical_value) if 'number' in target_dict['type'] else int(numerical_value))
@@ -210,10 +211,15 @@ class DataGroup:
                         maximum = (float(numerical_value) if 'number' in target_dict['type']  else int(numerical_value))
                         mx = 'exclusiveMaximum' if '=' not in r else 'maximum'
                         target_dict[mx] = maximum
+                    elif '%' in r:
+                        target_dict['multipleOf'] = int(numerical_value)
                 except IndexError:
                     # Constraint was non-numeric
                     pass
                 except ValueError:
+                    pass
+                except KeyError:
+                    # 'type' not in dictionary
                     pass
 
 
