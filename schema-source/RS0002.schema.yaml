@@ -112,9 +112,10 @@ RatingAHRI210240:
       Description: "Year of the AHRI test standard"
       Data Type: "<AHRI210240TestStandardYear>"
       Required: True
-    rating_software_version:
-      Description: "Version of the software used to generate these ratings"
+    rating_source:
+      Description: "Source of this rating data"
       Data Type: "String"
+      Note: "Used by *data publisher* to document methods (e.g. software and version) used to generate rating data" 
     staging_type:
       Description: "Type of compressor staging"
       Data Type: "<AHRI210240CompressorStagingType>"
