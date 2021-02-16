@@ -102,6 +102,25 @@
       ],
       "additionalProperties": false
     },
+    "Constraints": {
+      "oneOf": [
+        { "type": "string" },
+        { "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      ]
+    },    "Notes": {
+      "oneOf": [
+        { "type": "string" },
+        { "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      ]
+    },
     "Enumerator": {
       "type": "object",
       "patternProperties": {
@@ -189,8 +208,7 @@
         "kW",
         "m2-K/kW",
         "kPa",
-        "l/s",
-        "rev/s"
+        "l/s"
       ]
     },
     "DataTypePattern": {
@@ -209,14 +227,14 @@
         "Units": {
           "$ref": "meta.schema.json#/definitions/StandardUnits"
         },
-        "Range": {
-          "type": "string"
+        "Constraints": {
+          "$ref": "meta.schema.json#/definitions/Constraints"
         },
         "Required": {
           "type": "boolean"
         },
         "Notes": {
-          "type": "string"
+          "$ref": "meta.schema.json#/definitions/Notes"
         }
       }
     },
@@ -232,14 +250,14 @@
         "Units": {
           "$ref": "meta.schema.json#/definitions/RatingUnits"
         },
-        "Range": {
-          "type": "string"
+        "Constraints": {
+          "$ref": "meta.schema.json#/definitions/Constraints"
         },
         "Required": {
           "type": "boolean"
         },
         "Notes": {
-          "type": "string"
+          "$ref": "meta.schema.json#/definitions/Notes"
         }
       }
     },
@@ -259,15 +277,15 @@
         "Units": {
           "$ref": "meta.schema.json#/definitions/StandardUnits"
         },
-        "Range": {
-          "type": "string"
+        "Constraints": {
+          "$ref": "meta.schema.json#/definitions/Constraints"
         },
         "Required": {
           "type": "boolean",
           "const": true
         },
         "Notes": {
-          "type": "string"
+          "$ref": "meta.schema.json#/definitions/Notes"
         }
       }
     },
@@ -287,15 +305,15 @@
         "Units": {
           "$ref": "meta.schema.json#/definitions/StandardUnits"
         },
-        "Range": {
-          "type": "string"
+        "Constraints": {
+          "$ref": "meta.schema.json#/definitions/Constraints"
         },
         "Required": {
           "type": "boolean",
           "const": true
         },
         "Notes": {
-          "type": "string"
+          "$ref": "meta.schema.json#/definitions/Notes"
         }
       }
     },

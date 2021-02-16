@@ -67,13 +67,16 @@ def write_tables(instance, output_path, append=True):
         for enumerator in enumerations[enum]["Enumerators"]:
           new_obj = enumerations[enum]["Enumerators"][enumerator] if enumerations[enum]["Enumerators"][enumerator] else {}
           new_obj["Enumerator"] = f"`{enumerator}`"
+          if "Notes" in new_obj:
+            if type(new_obj["Notes"]) is list:
+              new_obj["Notes"] = "\n\n".join([f"- {note}" for note in new_obj["Notes"]])
           enumerators.append(new_obj)
         writer.value_matrix = enumerators
 
         output_file.writelines(format_table(writer))
 
     # Data Groups
-    writer.headers = ["Name", "Description", "Data Type", "Units", "Range", "Req", "Notes"]
+    writer.headers = ["Name", "Description", "Data Type", "Units", "Constraints", "Req", "Notes"]
     if len(data_groups) > 0:
       for dg in data_groups:
         writer.table_name = dg
@@ -85,10 +88,15 @@ def write_tables(instance, output_path, append=True):
             new_obj["Req"] = u'\N{check mark}' if new_obj["Required"] else ''
             new_obj.pop('Required')
           new_obj['Data Type'] = f"`{new_obj['Data Type']}`"
-          if 'Range' in new_obj:
+          if 'Constraints' in new_obj:
             gte = u'\N{GREATER-THAN OR EQUAL TO}'
             lte = u'\N{LESS-THAN OR EQUAL TO}'
-            new_obj["Range"] = f"`{new_obj['Range'].replace('<=',lte).replace('>=',gte)}`"
+            if type(new_obj["Constraints"]) is list:
+              new_obj["Constraints"] = ", ".join(new_obj["Constraints"])
+            new_obj["Constraints"] = f"`{new_obj['Constraints'].replace('<=',lte).replace('>=',gte)}`"
+          if "Notes" in new_obj:
+            if type(new_obj["Notes"]) is list:
+              new_obj["Notes"] = "\n\n".join([f"- {note}" for note in new_obj["Notes"]])
           data_elements.append(new_obj)
         writer.value_matrix = data_elements
 

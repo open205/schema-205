@@ -122,14 +122,12 @@ class DataGroup:
                         target_property_entry['maxItems'] = int(mnmx.group(3))
                     elif not mnmx.group(2):
                         target_property_entry['maxItems'] = int(mnmx.group(1))
-                else:
-                    target_property_entry['minItems'] = 1
                 # 3. 'items' entry
                 target_property_entry['items'] = dict()
                 self._get_simple_type(m[0], target_property_entry['items'])
                 #target_property_entry['items'][k] = v
-                if 'Range' in parent_dict:
-                    self._get_simple_minmax(parent_dict['Range'], target_property_entry['items'])
+                if 'Constraints' in parent_dict:
+                    self._get_simple_constraints(parent_dict['Constraints'], target_dict['items'])
             else:
                 # If the type is oneOf a set
                 m = re.findall(r'^\((.*)\)', parent_dict['Data Type'])
@@ -146,7 +144,7 @@ class DataGroup:
                     # 1. 'type' entry
                     self._get_simple_type(parent_dict['Data Type'], target_property_entry)
                     # 2. 'm[in/ax]imum' entry
-                    self._get_simple_minmax(parent_dict['Range'], target_property_entry)
+                    self._get_simple_constraints(parent_dict['Constraints'], target_property_entry)
         except KeyError as ke:
             #print('KeyError; no key exists called', ke)
             pass
@@ -201,26 +199,35 @@ class DataGroup:
         return
 
 
-    def _get_simple_minmax(self, range_str, target_dict):
-        '''Process Range into min and max fields.'''
-        if range_str is not None:
-            ranges = range_str.split(',')
+    def _get_simple_constraints(self, constraints_str, target_dict):
+        '''Process Constraints into fields.'''
+        if constraints_str is not None:
+            constraints = constraints_str if isinstance(constraints_str, list) else [constraints_str]
             minimum=None
             maximum=None
-            if 'type' not in target_dict:
-                target_dict['type'] = None
-            for r in ranges:
+            # if 'type' not in target_dict:
+            #     target_dict['type'] = None
+            for c in constraints:
                 try:
-                    numerical_value = re.findall(r'[+-]?\d*\.?\d+|\d+', r)[0]
-                    if '>' in r:
+                    print(c)
+                    numerical_value = re.findall(r'[+-]?\d*\.?\d+|\d+', c)[0]
+                    if '>' in c:
                         minimum = (float(numerical_value) if 'number' in target_dict['type'] else int(numerical_value))
-                        mn = 'exclusiveMinimum' if '=' not in r else 'minimum'
+                        mn = 'exclusiveMinimum' if '=' not in c else 'minimum'
                         target_dict[mn] = minimum
-                    elif '<' in r:
+                    elif '<' in c:
                         maximum = (float(numerical_value) if 'number' in target_dict['type']  else int(numerical_value))
-                        mx = 'exclusiveMaximum' if '=' not in r else 'maximum'
+                        mx = 'exclusiveMaximum' if '=' not in c else 'maximum'
                         target_dict[mx] = maximum
+                    elif '%' in c:
+                        target_dict['multipleOf'] = int(numerical_value)
+                except IndexError:
+                    # Constraint was non-numeric
+                    pass
                 except ValueError:
+                    pass
+                except KeyError:
+                    # 'type' not in dictionary
                     pass
 
 

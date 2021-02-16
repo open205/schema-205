@@ -18,6 +18,7 @@ Schema:
     - "RS0004"
     - "RS0005"
     - "RS0006"
+    - "RS0007"
   Root Data Group: "ASHRAE205"
 
 # Data Types
@@ -128,6 +129,8 @@ RSID:
       Description: "Motor"
     RS0006:
       Description: "Electronic Motor Drive"
+    RS0007:
+      Description: "Mechanical Drive"
 
 CompressorType:
   Object Type: "Enumeration"
@@ -226,7 +229,7 @@ ASHRAE205:
       Required: True
       Notes: "Identifies the *representation specification* used to generate this *representation*"
     description:
-      Description: "Free-form description of equipment (suitable for display)"
+      Description: "Description of equipment (suitable for display)"
       Data Type: "String"
       Required: True
     id:
@@ -242,21 +245,22 @@ ASHRAE205:
     data_version:
       Description: "Integer version identifier for the data in the *representation*"
       Data Type: "Integer"
-      Range: ">=1"
+      Constraints: ">=1"
       Required: True
       Notes: "Used by *data publisher* to track revisions of the data for a specific *representation*. `data_version` shall be incremented for each data revision."
     data_source:
-      Description: "Free-form identification of the source of this data"
+      Description: "Source of the performance data in this *representation*"
       Data Type: "String"
+      Note: "Used by *data publisher* to document methods (e.g. software and version) used to generate performance data.  Informative note: `data_source` may different from ratings source(s) included elsewhere."
     disclaimer:
-      Description: "Free-form characterization of accuracy, limitations, and applicability of this data"
+      Description: "Characterization of accuracy, limitations, and applicability of this data"
       Data Type: "String"
     notes:
       Description: "Additional Information"
       Data Type: "String"
     rs_instance:
       Description: "*Representation Specification* Data Group"
-      Data Type: "({RS0001}, {RS0002}, {RS0003}, {RS0004}, {RS0005}, {RS0006})"
+      Data Type: "({RS0001}, {RS0002}, {RS0003}, {RS0004}, {RS0005}, {RS0006}, {RS0007})"
       Notes: "Data Group defined by specific *representation specification* (e.g., 'RS0001')"
       Selector: "rs_id(RSID::RS0001, RSID::RS0002, RSID::RS0003, RSID::RS0004, RSID::RS0005, RSID::RS0006)"
       Required: True
@@ -285,7 +289,7 @@ LiquidComponent:
     concentration:
       Description: "Concentration of this component of the mixture"
       Data Type: "Numeric"
-      Range: ">=0.0, <=1.0"
+      Constraints: [">=0.0", "<=1.0"]
       Notes: "If omitted, assume equal distribution with any other component with no defined concentration (e.g., can be left blank for the primary component)"
 
 
