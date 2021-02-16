@@ -102,7 +102,16 @@
       ],
       "additionalProperties": false
     },
-    "Notes": {
+    "Constraints": {
+      "oneOf": [
+        { "type": "string" },
+        { "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      ]
+    },    "Notes": {
       "oneOf": [
         { "type": "string" },
         { "type": "array",
@@ -218,8 +227,8 @@
         "Units": {
           "$ref": "meta.schema.json#/definitions/StandardUnits"
         },
-        "Range": {
-          "type": "string"
+        "Constraints": {
+          "$ref": "meta.schema.json#/definitions/Constraints"
         },
         "Required": {
           "type": "boolean"
@@ -241,8 +250,8 @@
         "Units": {
           "$ref": "meta.schema.json#/definitions/RatingUnits"
         },
-        "Range": {
-          "type": "string"
+        "Constraints": {
+          "$ref": "meta.schema.json#/definitions/Constraints"
         },
         "Required": {
           "type": "boolean"
@@ -268,8 +277,8 @@
         "Units": {
           "$ref": "meta.schema.json#/definitions/StandardUnits"
         },
-        "Range": {
-          "type": "string"
+        "Constraints": {
+          "$ref": "meta.schema.json#/definitions/Constraints"
         },
         "Required": {
           "type": "boolean",
@@ -296,8 +305,8 @@
         "Units": {
           "$ref": "meta.schema.json#/definitions/StandardUnits"
         },
-        "Range": {
-          "type": "string"
+        "Constraints": {
+          "$ref": "meta.schema.json#/definitions/Constraints"
         },
         "Required": {
           "type": "boolean",

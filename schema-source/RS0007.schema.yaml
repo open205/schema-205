@@ -65,7 +65,7 @@ Performance:
       Description: "Ratio of input shaft speed to output shaft speed"
       Data Type: "Numeric" # TODO: Should this be a list or a range of options?
       Units: "-"
-      Range: ">0.0"
+      Constraints: ">0.0"
       Required: True
     performance_map:
       Description: "Data group describing drive performance when operating"
@@ -90,7 +90,7 @@ GridVariables:
     output_power:
       Description: "Output shaft power"
       Data Type: "[Numeric][1..]"
-      Range: ">=0.0"
+      Constraints: ">=0.0"
       Units: "W"
       Required: True
 
@@ -100,7 +100,7 @@ LookupVariables:
     efficiency:
       Description: "Efficiency of drive"
       Data Type: "[Numeric/Null][1..]"
-      Range: ">=0.0,<=1.0"
+      Constraints: [">=0.0","<=1.0"]
       Units: "-"
       Notes: "Defined as the ratio of output shaft power to input shaft power"
       Required: True
