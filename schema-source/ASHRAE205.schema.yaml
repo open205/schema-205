@@ -229,7 +229,7 @@ ASHRAE205:
       Required: True
       Notes: "Identifies the *representation specification* used to generate this *representation*"
     description:
-      Description: "Free-form description of equipment (suitable for display)"
+      Description: "Description of equipment (suitable for display)"
       Data Type: "String"
       Required: True
     id:
@@ -249,10 +249,11 @@ ASHRAE205:
       Required: True
       Notes: "Used by *data publisher* to track revisions of the data for a specific *representation*. `data_version` shall be incremented for each data revision."
     data_source:
-      Description: "Free-form identification of the source of this data"
+      Description: "Source of the performance data in this *representation*"
       Data Type: "String"
+      Note: "Used by *data publisher* to document methods (e.g. software and version) used to generate performance data.  Informative note: `data_source` may different from ratings source(s) included elsewhere."
     disclaimer:
-      Description: "Free-form characterization of accuracy, limitations, and applicability of this data"
+      Description: "Characterization of accuracy, limitations, and applicability of this data"
       Data Type: "String"
     notes:
       Description: "Additional Information"

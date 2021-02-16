@@ -112,9 +112,10 @@ RatingAHRI210240:
       Description: "Year of the AHRI test standard"
       Data Type: "<AHRI210240TestStandardYear>"
       Required: True
-    manufacturer_data_source_version:
-      Description: "Version of the software used to generate the rating and performance maps"
+    rating_source:
+      Description: "Source of this rating data"
       Data Type: "String"
+      Note: "Used by *data publisher* to document methods (e.g. software and version) used to generate rating data" 
     staging_type:
       Description: "Type of compressor staging"
       Data Type: "<AHRI210240CompressorStagingType>"
@@ -226,9 +227,10 @@ RatingAHRI340360:
       Description: "Name and version of the AHRI test standard"
       Data Type: "<AHRI340360TestStandardYear>"
       Required: True
-    manufacturer_data_source_version:
-      Description: "Version of the software used to generate the AHRI rating and the performance maps"
+    rating_source:
+      Description: "Source of this rating data"
       Data Type: "String"
+      Note: "Used by *data publisher* to document methods (e.g. software and version) used to generate rating data" 
     capacity_control_type:
       Description: "Type of capacity control"
       Data Type: "<AHRI340360CapacityControlType>"
@@ -317,3 +319,4 @@ Performance:
       Description: "The corresponding Standard 205 direct expansion coil system *representation*"
       Data Type: "{ASHRAE205}"
       Constraints: "rs_id=RS0004"
+
