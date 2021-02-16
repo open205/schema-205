@@ -71,9 +71,6 @@ ProductInformation:
     manufacturer:
       Description: "Manufacturer name"
       Data Type: "String"
-    manufacturer_software_version:
-      Description: "Version of the software used to generate the performance map"
-      Data Type: "String"
     model_number:
       Description: "Model number"
       Data Type: "Pattern"
@@ -120,6 +117,10 @@ RatingAHRI550590:
       Description: "Year of the AHRI test standard"
       Data Type: "<AHRI550590TestStandardYear>"
       Required: True
+    rating_source:
+      Description: "Source of this rating data"
+      Data Type: "String"
+      Note: "Used by *data publisher* to document methods (e.g. software and version) used to generate rating data" 
     net_refrigerating_capacity:
       Description: "Rated net refrigeration capacity"
       Data Type: "Numeric"
@@ -320,6 +321,10 @@ RatingAHRI551591:
       Description: "Year of the AHRI test standard"
       Data Type: "<AHRI551591TestStandardYear>"
       Required: True
+    rating_source:
+      Description: "Source of this rating data"
+      Data Type: "String"
+      Note: "Used by *data publisher* to document methods (e.g. software and version) used to generate rating data" 
     net_refrigerating_capacity:
       Description: "Rated net refrigeration capacity"
       Data Type: "Numeric"
