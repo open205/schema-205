@@ -106,9 +106,6 @@ ProductInformation:
     impeller_type:
       Description: "Type of impeller in fan assembly"
       Data Type: "<ImpellerType>"
-    has_belt_drive:
-      Description: "The fan impeller is driven by a belt and pulley system"
-      Data Type: "Boolean"
     number_of_impellers:
       Description: "Number of impellers included in the fan assembly"
       Data Type: "Integer"
@@ -131,7 +128,7 @@ Performance:
     assembly_components:
       Description: "An array of components included in the fan assembly air stream, not including any fans" # TODO: Does the order matter? Should this include fans?
       Data Type: "[{AssemblyComponent}]"
-      Required: True
+      Required: True # Conditionally?
       Notes: "Components shall only be specified if `is_enclosed` is true"
     heat_loss_fraction:
       Description: "Fraction of efficiency losses transferred into the air stream"
