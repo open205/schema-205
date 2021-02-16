@@ -10,6 +10,7 @@ from jinja2 import Environment, FileSystemLoader, select_autoescape, TemplateNot
 import yaml
 
 import schema205.md.schema_table as schema_table
+import schema205.markdown as markdown
 
 
 def make_args_string(args_dict):
@@ -113,6 +114,41 @@ def extract_target_data(struct, table_name):
     return (None, target, table_type)
 
 
+def determine_schema_dir(schema_dir):
+    """
+    - schema_dir: None or path-like, the path to the schema directory
+    RETURN: path-like, the realized path
+    """
+    if schema_dir is None:
+        # determine default path to package resources
+        schema_dir = os.path.join(
+                os.path.dirname(os.path.dirname(os.path.realpath(__file__))),
+                'schema-source')
+    return schema_dir
+
+
+def load_yaml_source(schema_dir, source, args_str):
+    """
+    - schema_dir: pathlike, the path to the schema directory
+    - source: string, the source key. E.g., for
+      schema-source/ASHRAE205.schema.yaml, 'ASHRAE205'
+    - args_str: string, the arguments to the calling function (for error
+      reporting)
+    RETURN: (string or None, None or dict), tuple of the error string if didn't
+            load or the data to return
+    """
+    src_path = os.path.join(schema_dir, source + '.schema.yaml')
+    if not os.path.exists(src_path):
+        return (
+                make_error_string(
+                    f"Schema source \"{source}\" (\"{src_path}\") doesn't exist!",
+                    args_str),
+                None)
+    with open(src_path, encoding='utf-8', mode='r') as input_file:
+        data = yaml.load(input_file, Loader=yaml.FullLoader)
+    return (None, data)
+
+
 def make_add_table(schema_dir=None, error_log=None):
     """
     - schema_dir: string or pathlike, the path to the schema directory.
@@ -128,26 +164,16 @@ def make_add_table(schema_dir=None, error_log=None):
           header level and header conent if desired
         RETURN: string, returns a string representation of the given table
     """
-    if schema_dir is None:
-        # determine default path to package resources
-        schema_dir = os.path.join(
-                os.path.dirname(os.path.dirname(os.path.realpath(__file__))),
-                'schema-source')
+    schema_dir = determine_schema_dir(schema_dir)
     def add_table(
             source,
             table_name,
             caption=None,
             header_level_and_content=None):
         args_str = make_args_string(locals())
-        src_path = os.path.join(schema_dir, source + '.schema.yaml')
-        if not os.path.exists(src_path):
-            return log_error(
-                    make_error_string(
-                        f"Schema source \"{source}\" (\"{src_path}\") doesn't exist!",
-                        args_str),
-                    error_log)
-        with open(src_path, encoding='utf-8', mode='r') as input_file:
-            data = yaml.load(input_file, Loader=yaml.FullLoader)
+        err, data = load_yaml_source(schema_dir, source, args_str)
+        if err is not None:
+            return log_error(err, error_log)
         struct = schema_table.load_structure_from_object(data)
         err, target, table_type = extract_target_data(
                 struct,
@@ -176,6 +202,26 @@ def make_add_table(schema_dir=None, error_log=None):
     return add_table
 
 
+def make_add_data_model(schema_dir, error_log):
+    """
+    - schema_dir: string or pathlike, the path to the schema directory.
+    - error_log: None or list, if a list, then errors will be appended to the
+      log as well as rendered into the final product
+    RETURN: returns the add_data_model function with the following characteristics:
+        - source: string, the source key. E.g., for
+          schema-source/ASHRAE205.schema.yaml, 'ASHRAE205'
+        RETURN: string, returns a string representation of the given data models
+    """
+    schema_dir = determine_schema_dir(schema_dir)
+    def add_data_model(source):
+        args_str = make_args_string(locals())
+        err, data = load_yaml_source(schema_dir, source, args_str)
+        if err is not None:
+            return log_error(err, error_log)
+        return markdown.string_out_tables(data)
+    return add_data_model
+
+
 def main(main_template, output_path, template_dir, schema_dir=None, log_file=None):
     """
     - main_template: string, path to the main template file. Note: should be a
@@ -198,14 +244,16 @@ def main(main_template, output_path, template_dir, schema_dir=None, log_file=Non
         lstrip_blocks=True,
         comment_start_string="{##",
         comment_end_string="##}")
-    errors = None
+    errs = None # errors
     if log_file is not None:
-        errors = []
+        errs = []
     try:
         temp = env.get_template(main_template)
         with open(output_path, encoding='utf-8', mode='w') as handle:
             handle.write(
-                    temp.render(add_table=make_add_table(schema_dir, errors)))
+                    temp.render(
+                        add_table=make_add_table(schema_dir, errs),
+                        add_data_model=make_add_data_model(schema_dir, errs)))
     except TemplateNotFound as exc:
         print(f"Could not find main template {main_template}")
         print(f"main_template = {main_template}")
@@ -216,7 +264,7 @@ def main(main_template, output_path, template_dir, schema_dir=None, log_file=Non
         traceback.print_exc()
     if log_file is not None:
         with open(log_file, 'w') as handle:
-            if len(errors) > 0:
-                for err in errors:
+            if len(errs) > 0:
+                for err in errs:
                     handle.write(err.strip())
                     handle.write("\n")

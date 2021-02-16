@@ -91,3 +91,11 @@ And similarly, if we don't know what `table_name` value to choose, we can leave 
 
 {{ add_table('ASHRAE205', "") }}
 
+
+## Rendering the Entire Data Model
+
+Finally, it is also possible to render an entire data model from file as shown below.
+This uses the `add_data_model` hook to generate *all* the tables from a given schema source.
+
+{{ add_data_model('ASHRAE205') }}
+
