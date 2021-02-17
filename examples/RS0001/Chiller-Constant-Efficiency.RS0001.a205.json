@@ -12,7 +12,6 @@
         "description": {
             "product_information": {
                 "manufacturer": "ABC Chillers",
-                "manufacturer_software_version": "NA",
                 "model_number": "Chiller A1B2",
                 "nominal_voltage": 460,
                 "nominal_frequency": 60,

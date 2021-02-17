@@ -57,13 +57,15 @@ def data_elements_dict_from_data_groups(data_groups):
             new_obj = data_groups[dat_gr]["Data Elements"][element]
             new_obj["Name"] = f"`{element}`"
             if 'Required' in new_obj:
-                new_obj["Req"] = '\N{check mark}' if new_obj["Required"] else ''
+                new_obj["Req"] = u'\N{check mark}' if new_obj["Required"] else ''
                 new_obj.pop('Required')
             new_obj['Data Type'] = f"`{new_obj['Data Type']}`"
-            if 'Range' in new_obj:
+            if 'Constraints' in new_obj:
                 gte = u'\N{GREATER-THAN OR EQUAL TO}'
                 lte = u'\N{LESS-THAN OR EQUAL TO}'
-                new_obj["Range"] = f"`{new_obj['Range'].replace('<=',lte).replace('>=',gte)}`"
+                if type(new_obj["Constraints"]) is list:
+                    new_obj["Constraints"] = ", ".join(new_obj["Constraints"])
+                new_obj["Constraints"] = f"`{new_obj['Constraints'].replace('<=',lte).replace('>=',gte)}`"
             compress_notes(new_obj)
             data_elements.append(new_obj)
         output[dat_gr] = data_elements
@@ -229,9 +231,9 @@ def data_groups_table(data_elements, caption=None, add_training_ws=True):
     """
     return create_table_from_list(
             columns=[
-                "Name", "Description", "Data Type", "Units", "Range",
+                "Name", "Description", "Data Type", "Units", "Constraints",
                 "Req", "Notes"],
             data_list=data_elements,
             caption=caption,
             add_training_ws=add_training_ws,
-            defaults={"Notes": "", "Req": "", "Units": "", "Range": ""})
+            defaults={"Notes": "", "Req": "", "Units": "", "Constraints": ""})
