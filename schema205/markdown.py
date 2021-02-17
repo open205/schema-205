@@ -85,7 +85,12 @@ def write_tables(instance, output_path, append=True):
           new_obj = data_groups[dg]["Data Elements"][element]
           new_obj["Name"] = f"`{element}`"
           if 'Required' in new_obj:
-            new_obj["Req"] = u'\N{check mark}' if new_obj["Required"] else ''
+            if new_obj["Required"] == True:
+              new_obj["Req"] = u'\N{check mark}'
+            elif new_obj["Required"] == False:
+              new_obj["Req"] = ''
+            else:
+              new_obj["Req"] = f"`{new_obj['Required']}`"
             new_obj.pop('Required')
           new_obj['Data Type'] = f"`{new_obj['Data Type']}`"
           if 'Constraints' in new_obj:

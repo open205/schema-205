@@ -128,8 +128,7 @@ Performance:
     assembly_components:
       Description: "An array of components included in the fan assembly air stream, not including any fans" # TODO: Does the order matter? Should this include fans?
       Data Type: "[{AssemblyComponent}]"
-      Required: True # Conditionally?
-      Notes: "Components shall only be specified if `is_enclosed` is true"
+      Required: "if is_enclosed=True"
     heat_loss_fraction:
       Description: "Fraction of efficiency losses transferred into the air stream"
       Data Type: "Numeric"

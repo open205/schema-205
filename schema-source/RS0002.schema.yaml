@@ -137,7 +137,7 @@ RatingAHRI210240:
       Data Type: "Numeric"
       Units: "Btu/W-h"
       Constraints: ">0.0"
-      # Required: Conditionally
+      Required: "if staging_type!=SINGLE_STAGE"
     cooling_a_full_capacity:
       Description: "Full stage net total cooling capacity (at 'A' operating conditions)"
       Data Type: "Numeric"
@@ -149,43 +149,43 @@ RatingAHRI210240:
       Data Type: "Numeric"
       Units: "Btu/h"
       Constraints: ">=0.0"
-      # Required: Conditionally
+      Required: "if staging_type!=SINGLE_STAGE"
     cooling_b_low_capacity:
       Description: "Low stage net total cooling capacity (at 'B' operating conditions)"
       Data Type: "Numeric"
       Units: "Btu/h"
       Constraints: ">=0.0"
-      # Required: Conditionally
+      Required: "if staging_type!=SINGLE_STAGE"
     cooling_f_low_capacity:
       Description: "Low stage net total cooling capacity (at 'F' operating conditions)"
       Data Type: "Numeric"
       Units: "Btu/h"
       Constraints: ">=0.0"
-      # Required: Conditionally
+      Required: "if staging_type!=SINGLE_STAGE"
     cooling_a_full_power:
       Description: "Full stage net total cooling power (at 'A' operating conditions)"
       Data Type: "Numeric"
       Units: "W"
       Constraints: ">=0.0"
-      # Required: Conditionally
+      Required: "if staging_type!=SINGLE_STAGE"
     cooling_b_full_power:
       Description: "Full stage net total cooling power (at 'B' operating conditions)"
       Data Type: "Numeric"
       Units: "W"
       Constraints: ">=0.0"
-      # Required: Conditionally
+      Required: "if staging_type!=SINGLE_STAGE"
     cooling_b_low_power:
       Description: "Low stage net total cooling power (at 'B' operating conditions)"
       Data Type: "Numeric"
       Units: "W"
       Constraints: ">=0.0"
-      # Required: Conditionally
+      Required: "if staging_type!=SINGLE_STAGE"
     cooling_f_low_power:
       Description: "Low stage net total cooling power (at 'F' operating conditions)"
       Data Type: "Numeric"
       Units: "W"
       Constraints: ">=0.0"
-      # Required: Conditionally
+      Required: "if staging_type!=SINGLE_STAGE"
     cooling_full_fan_power:
       Description: "Power of the indoor fan at full load"
       Data Type: "Numeric"
@@ -203,13 +203,13 @@ RatingAHRI210240:
       Data Type: "Numeric"
       Units: "W"
       Constraints: ">0.0"
-      # Required: Conditionally
+      Required: "if staging_type!=SINGLE_STAGE"
     cooling_low_air_volumetric_flow_rate:
       Description: "*Standard air* volumetric rate of the indoor fan at low stage"
       Data Type: "Numeric"
       Units: "cfm"
       Constraints: ">0.0"
-      # Required: Conditionally
+      Required: "if staging_type!=SINGLE_STAGE"
     rating_reproducible_from_performance_data:
       Description: "Whether this rating can be reproduced using the performance data in the *representation*"
       Data Type: "Boolean"
@@ -314,7 +314,7 @@ Performance:
     fan_position:
       Description: "Position of the fan relative to the cooling coil"
       Data Type: "<FanPosition>"
-      Required: True
+      Required: "if fan_representation"
     dx_system_representation:
       Description: "The corresponding Standard 205 direct expansion coil system *representation*"
       Data Type: "{ASHRAE205}"
