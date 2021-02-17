@@ -116,7 +116,7 @@ RatingAHRI550590:
     rating_source:
       Description: "Source of this rating data"
       Data Type: "String"
-      Note: "Used by *data publisher* to document methods (e.g. software and version) used to generate rating data" 
+      Note: "Used by *data publisher* to document methods (e.g. software and version) used to generate rating data"
     net_refrigerating_capacity:
       Description: "Rated net refrigeration capacity"
       Data Type: "Numeric"
@@ -157,14 +157,14 @@ RatingAHRI550590:
       Description: "Entering evaporator liquid temperature at the full load design rating conditions"
       Data Type: "Numeric"
       Units: "F"
-      Constraints: ">−459.67"
+      Constraints: ">-459.67"
       Required: True
       Notes: "Evaporator liquid temperature at the entry flange of the evaporator at full load rating conditions"
     full_load_evaporator_liquid_leaving_temperature:
       Description: "Leaving evaporator liquid temperature at the full load design rating conditions"
       Data Type: "Numeric"
       Units: "F"
-      Constraints: ">−459.67"
+      Constraints: ">-459.67"
       Required: True
       Notes: "Evaporator liquid temperature at the exit flange of the evaporator at full load rating conditions"
     full_load_evaporator_liquid_differential_pressure:
@@ -192,14 +192,14 @@ RatingAHRI550590:
       Description: "Entering condenser liquid temperature at the full load design rating conditions"
       Data Type: "Numeric"
       Units: "F"
-      Constraints: ">−459.67"
+      Constraints: ">-459.67"
       Required: True
       Notes: "Condenser liquid temperature at the entry flange of the condenser at full load rating conditions"
     full_load_condenser_liquid_leaving_temperature:
       Description: "Leaving condenser liquid temperature at the full load design rating conditions"
       Data Type: "Numeric"
       Units: "F"
-      Constraints: ">−459.67"
+      Constraints: ">-459.67"
       Required: True
       Notes: "Condenser liquid temperature at the exit flange of the condenser at full load rating conditions"
     full_load_condenser_liquid_differential_pressure:
@@ -254,13 +254,13 @@ RatingAHRI550590PartLoadPoint:
       Description: "Liquid temperature at the entry flange of the evaporator"
       Data Type: "Numeric"
       Units: "F"
-      Constraints: ">−459.67"
+      Constraints: ">-459.67"
       Required: True
     evaporator_liquid_leaving_temperature:
       Description: "Liquid temperature at the exit flange of the evaporator"
       Data Type: "Numeric"
       Units: "F"
-      Constraints: ">−459.67"
+      Constraints: ">-459.67"
       Required: True
     evaporator_liquid_differential_pressure:
       Description: "Pressure difference across the evaporator"
@@ -285,13 +285,13 @@ RatingAHRI550590PartLoadPoint:
       Description: "Liquid temperature at the entry flange of the condenser"
       Data Type: "Numeric"
       Units: "F"
-      Constraints: ">−459.67"
+      Constraints: ">-459.67"
       Required: True
     condenser_liquid_leaving_temperature:
       Description: "Liquid temperature at the exit flange of the condenser"
       Data Type: "Numeric"
       Units: "F"
-      Constraints: ">−459.67"
+      Constraints: ">-459.67"
       Required: True
     condenser_liquid_differential_pressure:
       Description: "Pressure difference across the condenser"
@@ -320,7 +320,7 @@ RatingAHRI551591:
     rating_source:
       Description: "Source of this rating data"
       Data Type: "String"
-      Note: "Used by *data publisher* to document methods (e.g. software and version) used to generate rating data" 
+      Note: "Used by *data publisher* to document methods (e.g. software and version) used to generate rating data"
     net_refrigerating_capacity:
       Description: "Rated net refrigeration capacity"
       Data Type: "Numeric"
@@ -361,14 +361,14 @@ RatingAHRI551591:
       Description: "Entering evaporator liquid temperature at the full load design rating conditions"
       Data Type: "Numeric"
       Units: "C"
-      Constraints: ">−273.15"
+      Constraints: ">-273.15"
       Required: True
       Notes: "Evaporator liquid temperature at the entry flange of the evaporator at full load rating conditions"
     full_load_evaporator_liquid_leaving_temperature:
       Description: "Leaving evaporator liquid temperature at the full load design rating conditions"
       Data Type: "Numeric"
       Units: "C"
-      Constraints: ">−273.15"
+      Constraints: ">-273.15"
       Required: True
       Notes: "Evaporator liquid temperature at the exit flange of the evaporator at full load design rating conditions"
     full_load_evaporator_liquid_differential_pressure:
@@ -396,14 +396,14 @@ RatingAHRI551591:
       Description: "Entering condenser liquid temperature at the full load design rating conditions"
       Data Type: "Numeric"
       Units: "C"
-      Constraints: ">−273.15"
+      Constraints: ">-273.15"
       Required: True
       Notes: "Condenser liquid temperature at the entry flange of the condenser at full load rating conditions"
     full_load_condenser_liquid_leaving_temperature:
       Description: "Leaving condenser liquid temperature at the full load design rating conditions"
       Data Type: "Numeric"
       Units: "C"
-      Constraints: ">−273.15"
+      Constraints: ">-273.15"
       Required: True
       Notes: "Condenser liquid temperature at the exit flange of the condenser at full load rating conditions"
     full_load_condenser_liquid_differential_pressure:
@@ -458,13 +458,13 @@ RatingAHRI551591PartLoadPoint:
       Description: "Liquid temperature at the entry flange of the evaporator"
       Data Type: "Numeric"
       Units: "C"
-      Constraints: ">−273.15"
+      Constraints: ">-273.15"
       Required: True
     evaporator_liquid_leaving_temperature:
       Description: "Liquid temperature at the exit flange of the evaporator"
       Data Type: "Numeric"
       Units: "C"
-      Constraints: ">−273.15"
+      Constraints: ">-273.15"
       Required: True
     evaporator_liquid_differential_pressure:
       Description: "Pressure difference across the evaporator"
@@ -489,13 +489,13 @@ RatingAHRI551591PartLoadPoint:
       Description: "Liquid temperature at the entry flange of the condenser"
       Data Type: "Numeric"
       Units: "C"
-      Constraints: ">−273.15"
+      Constraints: ">-273.15"
       Required: True
     condenser_liquid_leaving_temperature:
       Description: "Liquid temperature at the exit flange of the condenser"
       Data Type: "Numeric"
       Units: "C"
-      Constraints: ">−273.15"
+      Constraints: ">-273.15"
       Required: True
     condenser_liquid_differential_pressure:
       Description: "Pressure difference across the condenser"
