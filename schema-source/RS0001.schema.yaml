@@ -11,7 +11,7 @@ Schema:
   Description: "Schema for ASHRAE 205 annex RS0001: Liquid-Cooled Chiller"
 
 # Local Enumerations
-AHRI550950TestStandardYear:
+AHRI550590TestStandardYear:
   Object Type: "Enumeration"
   Enumerators:
     IP_2015:
@@ -27,7 +27,7 @@ AHRI550950TestStandardYear:
       Description: "Ratings and design points defined using IP unit version of the standard, 2020 edition"
       Display Text: "AHRI 550/590 2020"
 
-AHRI551951TestStandardYear:
+AHRI551591TestStandardYear:
   Object Type: "Enumeration"
   Enumerators:
     SI_2015:
@@ -144,7 +144,7 @@ RatingAHRI550590:
       Notes: "Represents the IPLV.IP or NPLV.IP"
     part_load_rating_points:
       Description: "The four measured data points used to calculate the part load rating value"
-      Data Type: "[{PartLoadRatingPoint550590}][4]"
+      Data Type: "[{RatingAHRI550590PartLoadPoint}][4]"
       Notes: "The measured data for all 4 points used to calculate the IPLV or NPLV rating point"
     full_load_evaporator_liquid_volumetric_flow_rate:
       Description: "Chilled liquid flow at the full load design point rating condition"
@@ -348,7 +348,7 @@ RatingAHRI551591:
       Notes: "Represents the IPLV.SI or NPLV.SI"
     part_load_rating_points:
       Description: "The four measured data points used to calculate the part load rating value"
-      Data Type: "[{PartLoadRatingPoint551591}][4]"
+      Data Type: "[{RatingAHRI551591PartLoadPoint}][4]"
       Notes: "The measured data for all 4 points used to calculate the IPLV or NPLV rating point"
     full_load_evaporator_liquid_volumetric_flow_rate:
       Description: "Chilled liquid flow at the full load design rating conditions"

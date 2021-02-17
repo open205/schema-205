@@ -180,6 +180,7 @@ Performance:
     performance_map:
       Description: "Data group describing fan assembly performance when operating"
       Data Type: "({PerformanceMapContinuous}, {PerformanceMapDiscrete})"
+      Selector: "operation_speed_control_type(OperationSpeedControlType::CONTINUOUS, OperationSpeedControlType::DISCRETE)"
       Required: True
 
 AssemblyComponent:
