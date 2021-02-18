@@ -104,12 +104,17 @@ Following are some considerations you should go through to configure your enviro
 
     If you don't desire to support multiple versions of Python, then you need only ensure that you have at least one version of Python installed. This project requires Python 3.6 or higher. Please see the [Python Website](https://www.python.org/) for installation instructions for your operating system.
 
-    If you wish to support multiple versions of Python during development, there are several options. One simple option is to just ensure you start up your command prompt (i.e., shell) with the Python version you wish to develop with. However, for something more sophisticated, we recommend [mini-conda](https://docs.conda.io/en/latest/miniconda.html), a free minimal installer for Conda. Conda is an open-source package and environment management system that runs on Windows, macOS, and Linux.
+    If you wish to support multiple versions of Python during development, there are several options. One simple option is to just ensure you start up your command prompt (i.e., shell) with the Python version you wish to develop with.
+    
+    For something more sophisticated, we recommend [mini-conda](https://docs.conda.io/en/latest/miniconda.html), a free minimal installer for Conda. Conda is an open-source package and environment management system that runs on Windows, macOS, and Linux.  Use the following steps:
 
-    First [install mini-conda](https://docs.conda.io/en/latest/miniconda.html).
-    Next [start conda](https://docs.conda.io/projects/conda/en/latest/user-guide/getting-started.html#starting-conda). After that, create an environment for the version of Python you would like to use with Poetry and this project by typing the following at the shell:
+    a) [install mini-conda](https://docs.conda.io/en/latest/miniconda.html).
+    
+    b) [start conda](https://docs.conda.io/projects/conda/en/latest/user-guide/getting-started.html#starting-conda).  This will bring up a shell window that "knows" about conda capabilities.  Windows note: be sure to follow the recommended start procedure -- generally conda *cannot* be started from a native shell prompt (due to path issues).
+    
+    c) Create an environment for the version of Python you would like to use with Poetry and this project by typing the following at the conda shell:
 
-    > conda create -n py36 python=3.6
+    > (base) conda create -n py36 python=3.6
 
     Note: these environments persist between usage so you only need to create the environment once.
 
@@ -122,11 +127,11 @@ Following are some considerations you should go through to configure your enviro
 
     Once the desired environments are created, you can activate an environment by typing:
 
-    > conda activate py36
+    > (base) conda activate py36
 
     When you are done with the environment, type:
 
-    > conda deactivate
+    > (py36) conda deactivate
 
     ... or simply close your command shell when done.
 
@@ -143,7 +148,37 @@ Following are some considerations you should go through to configure your enviro
     This will install all of the normal and developer dependencies.
     If you have done this previously and there are no changes to the library versions being used, nothing will happen.
 
-4. **Use the project**
+4. **Using an editor**
+
+    You can use any editor you desire to edit or explore the Python code and schema documents in our repository.
+
+    We recommend [Visual Studio Code](https://code.visualstudio.com/) because of its strong Python integration.
+
+    To get Visual Studio Code to work with Poetry, first follow steps 1-3 above.
+
+    macOS: a) if you do not have command-line integration, [follow these instructions](https://code.visualstudio.com/docs/setup/mac#_launching-from-the-command-line), and restart your shell. b) follow steps 1-3.
+
+    Windows: Follow steps 1-3 above.  The `code` command (see below) is already integrated into your shell.
+
+    From within your running Python environment, type:
+
+    > poetry shell
+
+    This activates the virtual environment for Poetry.  Then enter:
+
+    ```
+    > cd toolkit-205/schema-205
+    > code .
+    ```
+
+    This launches Visual Studio Code from within your Poetry environment.
+    At the bottom left, choose the Python version you wish to use with the given environment.
+
+    Open a terminal window TODO
+
+    You're now ready to develop using Visual Studio Code!
+
+5. **Use the project**
 
     To run the various scripts and commands of the project, you can use the [DoIt!](https://pydoit.org/) file as follows:
 
@@ -152,25 +187,6 @@ Following are some considerations you should go through to configure your enviro
     The first part of the command, `poetry run`, uses Poetry to place the remaining part of the command within a Python virtual environment with all dependencies setup.
     The second part of the command, `doit`, runs all of the tasks available in the `dodo.py` file.
 
-5. **Using an editor**
-
-    Of course, you can use any editor you desire to edit or explore the Python code and schema documents in our repository.
-    However, we recommend [Visual Studio Code](https://code.visualstudio.com/) because of its strong Python integration.
-    To get Visual Studio Code to work with Poetry, first follow steps 1-3 above.
-    Next, if you are on macOS and do not have command-line integration, [follow these instructions](https://code.visualstudio.com/docs/setup/mac#_launching-from-the-command-line), restart your shell, perform steps 1-3 and return here.
-    If you are on Windows, the `code` command is already integrated into your shell.
-
-    From within your running Python environment, type:
-
-    > poetry shell
-
-    This activates the virtual environment for Poetry.
-
-    > code .
-
-    This launches Visual Studio Code from within your Poetry environment.
-    At the bottom left, choose the Python version you wish to use with the given environment.
-    You're now ready to develop using Visual Studio Code!
 
 ### Developing with Toolkit 205
 

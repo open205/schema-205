@@ -38,12 +38,12 @@ ProductInformation:
       Description: "Nominal voltage"
       Data Type: "Numeric"
       Units: "V"
-      Range: ">=0.0"
+      Constraints: ">=0.0"
     nominal_frequency:
       Description: "Nominal frequency"
       Data Type: "Numeric"
       Units: "Hz"
-      Range: ">=0.0"
+      Constraints: ">=0.0"
 
 Performance:
   Object Type: "Data Group"
@@ -52,22 +52,24 @@ Performance:
       Description: "Maximum operational input power to the motor"
       Data Type: "Numeric"
       Units: "W"
-      Range: ">=0.0"
+      Constraints: ">=0.0"
       Notes: "This is the operational limit set to prevent overheating or overcurrent. This is not the rated name plate power"
       Required: True
     standby_power:
       Description: "Power draw when motor is not operating"
       Data Type: "Numeric"
       Units: "W"
-      Range: ">=0.0"
+      Constraints: ">=0.0"
       Required: True
     number_of_poles:
       Description: "Number of poles"
       Data Type: "Integer"
       Required: True
+      Constraints: ">0"
     drive_representation:
       Description: "The corresponding Standard 205 drive *representation*"
-      Data Type: "{ASHRAE205(rs_id=RS0006)}"
+      Data Type: "{ASHRAE205}"
+      Constraints: "rs_id=RS0006"
     performance_map:
       Description: "Data group describing motor performance when operating"
       Data Type: "{PerformanceMap}"
@@ -91,13 +93,13 @@ GridVariables:
     shaft_power:
       Description: "Delivered rotational shaft power"
       Data Type: "[Numeric][1..]"
-      Range: ">=0.0"
+      Constraints: ">=0.0"
       Units: "W"
       Required: True
     shaft_rotational_speed:
       Description: "Rotational speed of fan impeller"
       Data Type: "[Numeric][1..]"
-      Range: ">=0.0"
+      Constraints: ">=0.0"
       Units: "rev/s"
       Required: True
 
@@ -107,13 +109,13 @@ LookupVariables:
     efficiency:
       Description: "Efficiency of motor"
       Data Type: "[Numeric/Null][1..]"
-      Range: ">=0.0, <=1.0"
+      Constraints: [">=0.0", "<=1.0"]
       Units: "-"
       Notes: "Defined as the ratio of mechanical shaft power to electrical input power of the motor"
       Required: True
     power_factor:
       Description: "Power factor of the motor"
       Data Type: "[Numeric/Null][1..]"
-      Range: ">=0.0, <=1.0"
+      Constraints: [">=0.0", "<=1.0"]
       Units: "-"
       Required: True

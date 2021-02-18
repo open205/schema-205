@@ -28,14 +28,14 @@ def collect_target_files(target_dir, extension):
   return file_list
 
 def task_validate():
-  '''Validates common-schema against meta-schema'''
+  '''Validates source-schema against meta-schema'''
   return {
     'file_dep': [os.path.join("meta-schema","meta.schema.json")] + collect_source_files(),
     'actions': [(schema205.validate.validate_dir,[SOURCE_PATH])]
   }
 
 def task_doc():
-  '''Generates Markdown tables from common-scema'''
+  '''Generates Markdown tables from source-schema'''
   return {
     'file_dep': collect_source_files() + [
         os.path.join('schema205','markdown.py'),
@@ -80,7 +80,7 @@ def task_render_template():
           }
 
 def task_schema():
-  '''Generates JSON schema from common-scema'''
+  '''Generates JSON schema from source-schema'''
   return {
     'file_dep': collect_source_files(),
     'targets': collect_target_files(SCHEMA_PATH,'json'),
