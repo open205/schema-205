@@ -53,7 +53,7 @@ Performance:
       Data Type: "Numeric"
       Units: "W"
       Constraints: ">=0.0"
-      Notes: "This is the operational limit set to prevent overheating or overcurrent. This is not the rated name plate power"
+      Notes: "Operational limit set to prevent overheating or overcurrent, not the rated name plate power"
       Required: True
     standby_power:
       Description: "Power draw when motor is not operating"
@@ -73,7 +73,8 @@ Performance:
     performance_map:
       Description: "Data group describing motor performance when operating"
       Data Type: "{PerformanceMap}"
-      Notes: "If no performance map is defined, the motor shall be assumed to transfer all electric power directly to mechanical shaft power. ***Informative note:*** This field may be omitted for motor-driven equipment where motor efficiencies are incorporated into their performance data"
+      Notes: ["If no performance map is defined, the motor shall be assumed to transfer all electric power directly to mechanical shaft power",
+              "***Informative note:*** This field may be omitted for motor-driven equipment where motor efficiencies are incorporated into their performance data"]
 
 PerformanceMap:
   Object Type: "Performance Map"

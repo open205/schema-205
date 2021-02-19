@@ -1,6 +1,7 @@
 import schema205.validate
 import schema205.markdown
 import schema205.json_translate
+import schema205.render_template
 import os
 from doit.tools import create_folder
 
@@ -8,6 +9,8 @@ BUILD_PATH = "build"
 SOURCE_PATH = 'schema-source'
 DOCS_PATH = os.path.join(BUILD_PATH,"docs")
 SCHEMA_PATH = os.path.join(BUILD_PATH,"schema")
+RENDERED_TEMPLATE_PATH = os.path.realpath(
+        os.path.join(BUILD_PATH,"rendered_template"))
 
 def collect_source_files():
   file_list = []
@@ -34,7 +37,12 @@ def task_validate():
 def task_doc():
   '''Generates Markdown tables from source-schema'''
   return {
-    'file_dep': collect_source_files() + [os.path.join('schema205','markdown.py')],
+    'file_dep': collect_source_files() + [
+        os.path.join('schema205','markdown.py'),
+        os.path.join('schema205','md','__init__.py'),
+        os.path.join('schema205','md','schema_table.py'),
+        os.path.join('schema205','md','grid_table.py'),
+        ],
     'targets': collect_target_files(DOCS_PATH,'md'),
     'task_dep': ['validate'],
     'actions': [
@@ -43,6 +51,33 @@ def task_doc():
       ],
     'clean': True
   }
+
+def task_render_template():
+  '''
+  Demonstrate how to render a template using Jinja2 and the add_table hook.
+  '''
+  template_dir = os.path.realpath(
+          os.path.join('rendering_examples', 'template_rendering'))
+  out_file = os.path.join(RENDERED_TEMPLATE_PATH, 'main.md')
+  log_file = os.path.join(RENDERED_TEMPLATE_PATH, 'error-log.txt') 
+  return {
+          'file_dep': collect_source_files() + [
+              os.path.join(template_dir, 'main.md'),
+              os.path.join('schema205', 'markdown.py'),
+              os.path.join('schema205', 'md', '__init__.py'),
+              os.path.join('schema205', 'md', 'schema_table.py'),
+              os.path.join('schema205', 'md', 'grid_table.py'),
+              os.path.join('schema205', 'render_template.py'),
+              ],
+          'targets': [out_file, log_file],
+          'task_dep': ['validate'],
+          'actions': [
+              (create_folder, [RENDERED_TEMPLATE_PATH]),
+              (schema205.render_template.main,
+                  ['main.md', out_file, template_dir],
+                  {"log_file": log_file})],
+          'clean': True,
+          }
 
 def task_schema():
   '''Generates JSON schema from source-schema'''

@@ -38,7 +38,7 @@ jobs:
         run: |
           source $VENV
           poetry run doit
-      - name: Upload Markdown Documentation
+      - name: Upload Build Content
         uses: actions/upload-artifact@v2
         with:
           name: build-content-${{ matrix.os }}-py${{ matrix.python-version }}

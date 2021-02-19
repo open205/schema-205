@@ -1,106 +1,42 @@
+"""
+Markdown rendering utilities.
+"""
 import os
-import yaml
-from pytablewriter import MarkdownTableWriter
 import sys
+import io
 
-def format_table(writer):
-  return writer.dumps() + "\n"
+import yaml
+
+import schema205.md.schema_table as schema_table
+
+def string_out_tables(instance):
+  struct = schema_table.load_structure_from_object(instance)
+  output = None
+  with io.StringIO() as output_file:
+    # Data Types
+    if len(struct['data_types']) > 0:
+      output_file.writelines(schema_table.write_header("Data Types"))
+      output_file.writelines(schema_table.data_types_table(struct['data_types']))
+    # String Types
+    if len(struct['string_types']) > 0:
+      output_file.writelines(schema_table.write_header("String Types"))
+      output_file.writelines(schema_table.string_types_table(struct['string_types']))
+    # Enumerations
+    if len(struct['enumerations']) > 0:
+      for enum, enumerators in struct['enumerations'].items():
+        output_file.writelines(schema_table.write_header(enum))
+        output_file.writelines(schema_table.enumerators_table(enumerators))
+    # Data Groups
+    if len(struct['data_groups']) > 0:
+      for dg, data_elements in struct['data_groups'].items():
+        output_file.writelines(schema_table.write_header(dg))
+        output_file.writelines(schema_table.data_groups_table(data_elements))
+    output = output_file.getvalue()
+  return output
 
 def write_tables(instance, output_path, append=True):
-  data_types = []
-  string_types = []
-  enumerations = {}
-  data_groups = {}
-
-  for obj in instance:
-    object_type = instance[obj]["Object Type"]
-    if object_type == "Data Type":
-      new_obj = instance[obj]
-      new_obj["Data Type"] = f'`{obj}`'
-      new_obj["Examples"] = ', '.join(new_obj["Examples"])
-      data_types.append(new_obj)
-    elif object_type == "String Type":
-      new_obj = instance[obj]
-      new_obj["String Type"] = f'`{obj}`'
-      new_obj["Examples"] = ', '.join(new_obj["Examples"])
-      string_types.append(new_obj)
-    elif object_type == "Enumeration":
-      enumerations[obj] = instance[obj]
-    elif "Data Elements" in instance[obj]:
-      data_groups[obj] = instance[obj]
-    elif object_type == "Meta":
-      None
-    else:
-      print(f"Unknown object type: {object_type}.")
-
-  writer = MarkdownTableWriter()
-  writer.margin = 1
-
   with open(output_path, 'a' if append else 'w', encoding="utf-8") as output_file:
-
-    # Data Types
-    if len(data_types) > 0:
-      writer.table_name = "Data Types"
-      writer.headers = ["Data Type", "Description", "JSON Schema Type", "Examples"]
-      writer.value_matrix = data_types
-
-      output_file.writelines(format_table(writer))
-
-    # String Types
-    if len(string_types) > 0:
-      writer.table_name = "String Types"
-      writer.headers = ["String Type", "Description", "JSON Schema Pattern", "Examples"]
-      for st in string_types:
-        if 'Is Regex' in st:
-          st['JSON Schema Pattern'] = '(Not applicable)' if st['Is Regex'] else st['JSON Schema Pattern']
-
-      writer.value_matrix = string_types
-
-      output_file.writelines(format_table(writer))
-
-    # Enumerations
-    if len(enumerations) > 0:
-      writer.headers = ["Enumerator", "Description", "Notes"]
-      for enum in enumerations:
-        writer.table_name = enum
-        enumerators = []
-        for enumerator in enumerations[enum]["Enumerators"]:
-          new_obj = enumerations[enum]["Enumerators"][enumerator] if enumerations[enum]["Enumerators"][enumerator] else {}
-          new_obj["Enumerator"] = f"`{enumerator}`"
-          if "Notes" in new_obj:
-            if type(new_obj["Notes"]) is list:
-              new_obj["Notes"] = "\n\n".join([f"- {note}" for note in new_obj["Notes"]])
-          enumerators.append(new_obj)
-        writer.value_matrix = enumerators
-
-        output_file.writelines(format_table(writer))
-
-    # Data Groups
-    writer.headers = ["Name", "Description", "Data Type", "Units", "Constraints", "Req", "Notes"]
-    if len(data_groups) > 0:
-      for dg in data_groups:
-        writer.table_name = dg
-        data_elements = []
-        for element in data_groups[dg]["Data Elements"]:
-          new_obj = data_groups[dg]["Data Elements"][element]
-          new_obj["Name"] = f"`{element}`"
-          if 'Required' in new_obj:
-            new_obj["Req"] = u'\N{check mark}' if new_obj["Required"] else ''
-            new_obj.pop('Required')
-          new_obj['Data Type'] = f"`{new_obj['Data Type']}`"
-          if 'Constraints' in new_obj:
-            gte = u'\N{GREATER-THAN OR EQUAL TO}'
-            lte = u'\N{LESS-THAN OR EQUAL TO}'
-            if type(new_obj["Constraints"]) is list:
-              new_obj["Constraints"] = ", ".join(new_obj["Constraints"])
-            new_obj["Constraints"] = f"`{new_obj['Constraints'].replace('<=',lte).replace('>=',gte)}`"
-          if "Notes" in new_obj:
-            if type(new_obj["Notes"]) is list:
-              new_obj["Notes"] = "\n\n".join([f"- {note}" for note in new_obj["Notes"]])
-          data_elements.append(new_obj)
-        writer.value_matrix = data_elements
-
-        output_file.writelines(format_table(writer))
+    output_file.write(string_out_tables(instance))
 
 def write_file(input_path, output_path):
   with open(input_path, 'r') as input_file:
