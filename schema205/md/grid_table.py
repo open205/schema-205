@@ -5,6 +5,17 @@ import copy
 import io
 
 
+def flatten(list_of_lists):
+    """
+    - list_of_lists: (list (list *)), a list of lists
+    RETURN: (List *), the list flattened 
+    """
+    return [
+        item
+        for sublist in list_of_lists
+        for item in sublist]
+
+
 def wrap_text_to_lines(text, width, bold=False, left_space=1, right_space=1):
     """
     - text: string, the text to wrap
@@ -12,9 +23,14 @@ def wrap_text_to_lines(text, width, bold=False, left_space=1, right_space=1):
     - bold: bool, if True, allow space for surrounding the beginning and end with **
     - left_space: int, >=0, the left space to enforce between cells
     - right_space: int, >=0, the right space to enforce between cells
+    NOTE: width includes both left_space and right_space
     RETURN: (Array String), the lines
     """
     verbose = False
+    if "\n" in text:
+        return flatten([
+            wrap_text_to_lines(t, width, bold, left_space, right_space)
+            for t in text.split("\n")])
     atoms = text.split(" ")
     if bold:
         atoms[0] = '**' + atoms[0]
@@ -42,7 +58,7 @@ def wrap_text_to_lines(text, width, bold=False, left_space=1, right_space=1):
             line = new_line
         else:
             lines.append(line + ' '*right_space)
-            line = ' '*left_space + atoms[atom_idx]
+            line = (' '*left_space) + atoms[atom_idx]
         atom_idx += 1
     if len(line) > 0:
         lines.append(line + ' '*right_space)

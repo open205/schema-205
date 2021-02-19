@@ -170,3 +170,25 @@ def test_rendering_no_1():
             preferred_sizes=[40] + [0]*6,
             ).strip()
     assert actual == EXPECTED_1
+
+
+def test_wrap_text_to_lines():
+    s = "Mares eat oats and does eat oats and little lambs eat ivy"
+    expected = [
+        #012345678901
+        " Mares eat ",
+        " oats and ",
+        " does eat ",
+        " oats and ",
+        " little ",
+        " lambs eat ",
+        " ivy ",
+        ]
+    actual = table.wrap_text_to_lines(s, 12)
+    assert expected == actual
+
+
+def test_wrap_text_to_lines_with_newlines():
+    expected = [" a ", " b ", " c "]
+    actual = table.wrap_text_to_lines("a\nb\nc", 3)
+    assert expected == actual
