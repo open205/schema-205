@@ -144,7 +144,7 @@
               "type": "string"
             },
             "Notes": {
-              "type": "string"
+              "$ref": "meta.schema.json#/definitions/Notes"
             }
           },
           "required": [],
