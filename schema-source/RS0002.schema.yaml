@@ -115,7 +115,7 @@ RatingAHRI210240:
     rating_source:
       Description: "Source of this rating data"
       Data Type: "String"
-      Note: "Used by *data publisher* to document methods (e.g. software and version) used to generate rating data" 
+      Notes: "Used by *data publisher* to document methods (e.g. software and version) used to generate rating data"
     staging_type:
       Description: "Type of compressor staging"
       Data Type: "<AHRI210240CompressorStagingType>"
@@ -230,7 +230,7 @@ RatingAHRI340360:
     rating_source:
       Description: "Source of this rating data"
       Data Type: "String"
-      Note: "Used by *data publisher* to document methods (e.g. software and version) used to generate rating data" 
+      Notes: "Used by *data publisher* to document methods (e.g. software and version) used to generate rating data"
     capacity_control_type:
       Description: "Type of capacity control"
       Data Type: "<AHRI340360CapacityControlType>"
