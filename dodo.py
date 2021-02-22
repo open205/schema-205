@@ -5,8 +5,8 @@ import schema205.cpp_translate
 import os
 from doit.tools import create_folder
 
-BUILD_PATH = "build"
-SOURCE_PATH = 'schema-source'
+BUILD_PATH = os.path.join(os.path.dirname(__file__), 'build')
+SOURCE_PATH = os.path.join(os.path.dirname(__file__), 'schema-source')
 DOCS_PATH = os.path.join(BUILD_PATH,"docs")
 SCHEMA_PATH = os.path.join(BUILD_PATH,"schema")
 HEADER_PATH = os.path.join(BUILD_PATH, "include")
