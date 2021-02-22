@@ -8,8 +8,7 @@ authors = ["Open205"]
 python = "^3.6"
 jsonschema = "*"
 pyyaml = "*"
-pytablewriter = "*"
-jinja2 = "*"
+Jinja2 = "*"
 
 [tool.poetry.dev-dependencies]
 pytest = "^5.2"

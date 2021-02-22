@@ -112,9 +112,10 @@ RatingAHRI210240:
       Description: "Year of the AHRI test standard"
       Data Type: "<AHRI210240TestStandardYear>"
       Required: True
-    manufacturer_data_source_version:
-      Description: "Version of the software used to generate the rating and performance maps"
+    rating_source:
+      Description: "Source of this rating data"
       Data Type: "String"
+      Notes: "Used by *data publisher* to document methods (e.g. software and version) used to generate rating data"
     staging_type:
       Description: "Type of compressor staging"
       Data Type: "<AHRI210240CompressorStagingType>"
@@ -123,91 +124,91 @@ RatingAHRI210240:
       Description: "Seasonal Energy Efficiency Ratio"
       Data Type: "Numeric"
       Units: "Btu/W-h"
-      Range: ">0.0"
+      Constraints: ">0.0"
       Required: True
     eer_a_full:
       Description: "Full stage Energy Efficiency Ratio (at 'A' operating conditions)"
       Data Type: "Numeric"
       Units: "Btu/W-h"
-      Range: ">0.0"
+      Constraints: ">0.0"
       Required: True
     eer_b_full:
       Description: "Full stage Energy Efficiency Ratio (at 'B' operating conditions)"
       Data Type: "Numeric"
       Units: "Btu/W-h"
-      Range: ">0.0"
+      Constraints: ">0.0"
       # Required: Conditionally
     cooling_a_full_capacity:
       Description: "Full stage net total cooling capacity (at 'A' operating conditions)"
       Data Type: "Numeric"
       Units: "Btu/h"
-      Range: ">=0.0"
+      Constraints: ">=0.0"
       Required: True
     cooling_b_full_capacity:
       Description: "Full stage net total cooling capacity (at 'B' operating conditions)"
       Data Type: "Numeric"
       Units: "Btu/h"
-      Range: ">=0.0"
+      Constraints: ">=0.0"
       # Required: Conditionally
     cooling_b_low_capacity:
       Description: "Low stage net total cooling capacity (at 'B' operating conditions)"
       Data Type: "Numeric"
       Units: "Btu/h"
-      Range: ">=0.0"
+      Constraints: ">=0.0"
       # Required: Conditionally
     cooling_f_low_capacity:
       Description: "Low stage net total cooling capacity (at 'F' operating conditions)"
       Data Type: "Numeric"
       Units: "Btu/h"
-      Range: ">=0.0"
+      Constraints: ">=0.0"
       # Required: Conditionally
     cooling_a_full_power:
       Description: "Full stage net total cooling power (at 'A' operating conditions)"
       Data Type: "Numeric"
       Units: "W"
-      Range: ">=0.0"
+      Constraints: ">=0.0"
       # Required: Conditionally
     cooling_b_full_power:
       Description: "Full stage net total cooling power (at 'B' operating conditions)"
       Data Type: "Numeric"
       Units: "W"
-      Range: ">=0.0"
+      Constraints: ">=0.0"
       # Required: Conditionally
     cooling_b_low_power:
       Description: "Low stage net total cooling power (at 'B' operating conditions)"
       Data Type: "Numeric"
       Units: "W"
-      Range: ">=0.0"
+      Constraints: ">=0.0"
       # Required: Conditionally
     cooling_f_low_power:
       Description: "Low stage net total cooling power (at 'F' operating conditions)"
       Data Type: "Numeric"
       Units: "W"
-      Range: ">=0.0"
+      Constraints: ">=0.0"
       # Required: Conditionally
     cooling_full_fan_power:
       Description: "Power of the indoor fan at full load"
       Data Type: "Numeric"
       Units: "W"
-      Range: ">0.0"
+      Constraints: ">0.0"
       Required: True
     cooling_full_air_volumetric_flow_rate:
       Description: "*Standard air* volumetric rate of the indoor fan at full load"
       Data Type: "Numeric"
       Units: "cfm"
-      Range: ">0.0"
+      Constraints: ">0.0"
       Required: True
     cooling_low_fan_power:
       Description: "Power of the indoor fan at low stage"
       Data Type: "Numeric"
       Units: "W"
-      Range: ">0.0"
+      Constraints: ">0.0"
       # Required: Conditionally
     cooling_low_air_volumetric_flow_rate:
       Description: "*Standard air* volumetric rate of the indoor fan at low stage"
       Data Type: "Numeric"
       Units: "cfm"
-      Range: ">0.0"
+      Constraints: ">0.0"
       # Required: Conditionally
     rating_reproducible_from_performance_data:
       Description: "Whether this rating can be reproduced using the performance data in the *representation*"
@@ -226,9 +227,10 @@ RatingAHRI340360:
       Description: "Name and version of the AHRI test standard"
       Data Type: "<AHRI340360TestStandardYear>"
       Required: True
-    manufacturer_data_source_version:
-      Description: "Version of the software used to generate the AHRI rating and the performance maps"
+    rating_source:
+      Description: "Source of this rating data"
       Data Type: "String"
+      Notes: "Used by *data publisher* to document methods (e.g. software and version) used to generate rating data"
     capacity_control_type:
       Description: "Type of capacity control"
       Data Type: "<AHRI340360CapacityControlType>"
@@ -237,19 +239,19 @@ RatingAHRI340360:
       Description: "Integrated Energy Efficiency Ratio"
       Data Type: "Numeric"
       Units: "Btu/W-h"
-      Range: ">0.0"
+      Constraints: ">0.0"
       Required: True
     eer:
       Description: "Energy Efficiency Ratio at Standard Rating Conditions"
       Data Type: "Numeric"
       Units: "Btu/W-h"
-      Range: ">0.0"
+      Constraints: ">0.0"
       Required: True
     cooling_capacity:
       Description: "Net total cooling capacity at Standard Rating Conditions"
       Data Type: "Numeric"
       Units: "Btu/h"
-      Range: ">=0.0"
+      Constraints: ">=0.0"
       Required: True
     part_load_points:
       Description: "Four part load rating points"
@@ -267,31 +269,31 @@ RatingAHRI340360CoolingPartLoadPoint:
       Description: "Net total cooling capacity"
       Data Type: "Numeric"
       Units: "Btu/h"
-      Range: ">=0.0"
+      Constraints: ">=0.0"
       Required: True
     net_power:
       Description: "Net cooling power (including the indoor fan motor, controls, and other auxiliary loads)"
       Data Type: "Numeric"
       Units: "W"
-      Range: ">=0.0"
+      Constraints: ">=0.0"
       Required: True
     indoor_fan_power:
       Description: "Power of the indoor fan motor"
       Data Type: "Numeric"
       Units: "W"
-      Range: ">0.0"
+      Constraints: ">0.0"
       Required: True
     auxiliary_power:
       Description: "Power of the control circuit and any other auxiliary loads"
       Data Type: "Numeric"
       Units: "W"
-      Range: ">0.0"
+      Constraints: ">0.0"
       Required: True
     air_volumetric_flow_rate:
       Description: "*Standard air* volumetric rate of the indoor fan"
       Data Type: "Numeric"
       Units: "cfm"
-      Range: ">0.0"
+      Constraints: ">0.0"
       Required: True
 
 Performance:
@@ -301,12 +303,13 @@ Performance:
       Description: "Continuous unit power draw regardless of fan or DX system operation"
       Data Type: "Numeric"
       Units: "W"
-      Range: ">=0.0"
+      Constraints: ">=0.0"
       Notes: "Includes on-board controls and other power not included in the fan or dx system *representations*"
       Required: True
     fan_representation:
       Description: "The corresponding Standard 205 fan assembly *representation*"
-      Data Type: "{ASHRAE205(rs_id=RS0003)}"
+      Data Type: "{ASHRAE205}"
+      Constraints: "rs_id=RS0003"
       Notes: "Required if the fan is packaged with the unitary equipment"
     fan_position:
       Description: "Position of the fan relative to the cooling coil"
@@ -314,4 +317,6 @@ Performance:
       Required: True
     dx_system_representation:
       Description: "The corresponding Standard 205 direct expansion coil system *representation*"
-      Data Type: "{ASHRAE205(rs_id=RS0004)}"
+      Data Type: "{ASHRAE205}"
+      Constraints: "rs_id=RS0004"
+

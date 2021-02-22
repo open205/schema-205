@@ -102,6 +102,32 @@
       ],
       "additionalProperties": false
     },
+    "Constraints": {
+      "oneOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      ]
+    },
+    "Notes": {
+      "oneOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      ]
+    },
     "Enumerator": {
       "type": "object",
       "patternProperties": {
@@ -118,7 +144,7 @@
               "type": "string"
             },
             "Notes": {
-              "type": "string"
+              "$ref": "meta.schema.json#/definitions/Notes"
             }
           },
           "required": [],
@@ -189,8 +215,7 @@
         "kW",
         "m2-K/kW",
         "kPa",
-        "l/s",
-        "rev/s"
+        "l/s"
       ]
     },
     "DataTypePattern": {
@@ -209,19 +234,27 @@
         "Units": {
           "$ref": "meta.schema.json#/definitions/StandardUnits"
         },
-        "Range": {
-          "type": "string"
+        "Constraints": {
+          "$ref": "meta.schema.json#/definitions/Constraints"
         },
         "Required": {
           "type": "boolean"
         },
         "Notes": {
+          "$ref": "meta.schema.json#/definitions/Notes"
+        },
+        "Selector": {
           "type": "string"
         },
         "Selector": {
           "type": "string"
         }
-      }
+      },
+      "required": [
+        "Description",
+        "Data Type"
+      ],
+      "additionalProperties": false
     },
     "RatingDataElementAttributes": {
       "type": "object",
@@ -235,16 +268,21 @@
         "Units": {
           "$ref": "meta.schema.json#/definitions/RatingUnits"
         },
-        "Range": {
-          "type": "string"
+        "Constraints": {
+          "$ref": "meta.schema.json#/definitions/Constraints"
         },
         "Required": {
           "type": "boolean"
         },
         "Notes": {
-          "type": "string"
+          "$ref": "meta.schema.json#/definitions/Notes"
         }
-      }
+      },
+      "required": [
+        "Description",
+        "Data Type"
+      ],
+      "additionalProperties": false
     },
     "GridVariableDataElementAttributes": {
       "type": "object",
@@ -262,17 +300,24 @@
         "Units": {
           "$ref": "meta.schema.json#/definitions/StandardUnits"
         },
-        "Range": {
-          "type": "string"
+        "Constraints": {
+          "$ref": "meta.schema.json#/definitions/Constraints"
         },
         "Required": {
           "type": "boolean",
           "const": true
         },
         "Notes": {
-          "type": "string"
+          "$ref": "meta.schema.json#/definitions/Notes"
         }
-      }
+      },
+      "required": [
+        "Description",
+        "Data Type",
+        "Units",
+        "Required"
+      ],
+      "additionalProperties": false
     },
     "LookupVariableDataElementAttributes": {
       "type": "object",
@@ -290,28 +335,30 @@
         "Units": {
           "$ref": "meta.schema.json#/definitions/StandardUnits"
         },
-        "Range": {
-          "type": "string"
+        "Constraints": {
+          "$ref": "meta.schema.json#/definitions/Constraints"
         },
         "Required": {
           "type": "boolean",
           "const": true
         },
         "Notes": {
-          "type": "string"
+          "$ref": "meta.schema.json#/definitions/Notes"
         }
-      }
+      },
+      "required": [
+        "Description",
+        "Data Type",
+        "Units",
+        "Required"
+      ],
+      "additionalProperties": false
     },
     "DataElement": {
       "type": "object",
       "patternProperties": {
         "(^([a-z]+)(_([a-z]|[0-9])+)*$)": {
-          "$ref": "meta.schema.json#/definitions/DataElementAttributes",
-          "required": [
-            "Description",
-            "Data Type"
-          ],
-          "additionalProperties": false
+          "$ref": "meta.schema.json#/definitions/DataElementAttributes"
         }
       },
       "additionalProperties": false
@@ -319,13 +366,8 @@
     "RatingDataElement": {
       "type": "object",
       "patternProperties": {
-        "(^([A-Z]*|[a-z]*)(_([a-z]*|[0-9]*)|([A-Z]*|[0-9]*))*$)": {
-          "$ref": "meta.schema.json#/definitions/RatingDataElementAttributes",
-          "required": [
-            "Description",
-            "Data Type"
-          ],
-          "additionalProperties": false
+        "(^([a-z]+)(_([a-z]|[0-9])+)*$)": {
+          "$ref": "meta.schema.json#/definitions/RatingDataElementAttributes"
         }
       },
       "additionalProperties": false
@@ -333,15 +375,8 @@
     "GridVariableDataElement": {
       "type": "object",
       "patternProperties": {
-        "(^([A-Z]*|[a-z]*)(_([a-z]*|[0-9]*)|([A-Z]*|[0-9]*))*$)": {
-          "$ref": "meta.schema.json#/definitions/GridVariableDataElementAttributes",
-          "required": [
-            "Description",
-            "Data Type",
-            "Units",
-            "Required"
-          ],
-          "additionalProperties": false
+        "(^([a-z]+)(_([a-z]|[0-9])+)*$)": {
+          "$ref": "meta.schema.json#/definitions/GridVariableDataElementAttributes"
         }
       },
       "additionalProperties": false
@@ -349,15 +384,8 @@
     "LookupVariableDataElement": {
       "type": "object",
       "patternProperties": {
-        "(^([A-Z]*|[a-z]*)(_([a-z]*|[0-9]*)|([A-Z]*|[0-9]*))*$)": {
-          "$ref": "meta.schema.json#/definitions/LookupVariableDataElementAttributes",
-          "required": [
-            "Description",
-            "Data Type",
-            "Units",
-            "Required"
-          ],
-          "additionalProperties": false
+        "(^([a-z]+)(_([a-z]|[0-9])+)*$)": {
+          "$ref": "meta.schema.json#/definitions/LookupVariableDataElementAttributes"
         }
       },
       "additionalProperties": false
@@ -387,10 +415,7 @@
           "const": "Rating Data Group"
         },
         "Data Elements": {
-          "$ref": "meta.schema.json#/definitions/RatingDataElement",
-          "required": [
-            "rating_reproducible_from_performance_data"
-          ]
+          "$ref": "meta.schema.json#/definitions/RatingDataElement"
         }
       },
       "required": [
@@ -410,22 +435,10 @@
           "type": "object",
           "properties": {
             "grid_variables": {
-              "$ref": "meta.schema.json#/definitions/DataElementAttributes",
-              "required": [
-                "Description",
-                "Data Type",
-                "Required"
-              ],
-              "additionalProperties": false
+              "$ref": "meta.schema.json#/definitions/DataElementAttributes"
             },
             "lookup_variables": {
-              "$ref": "meta.schema.json#/definitions/DataElementAttributes",
-              "required": [
-                "Description",
-                "Data Type",
-                "Required"
-              ],
-              "additionalProperties": false
+              "$ref": "meta.schema.json#/definitions/DataElementAttributes"
             }
           },
           "required": [

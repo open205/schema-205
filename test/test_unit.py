@@ -78,7 +78,7 @@ def test_get_grid_variable_order():
     assert(order == grid_vars_names)
 
     # "oneOf" case 1
-    grid_vars_names = ['air_volumetric_flow_rate','static_pressure_difference']
+    grid_vars_names = ['standard_air_volumetric_flow_rate','static_pressure_difference']
     lineage = ['rs_instance','performance','performance_map','grid_variables']
     rs_selections = [None]*len(lineage)
     rs_selections[0] = schema205.util.get_rs_index('RS0003')
