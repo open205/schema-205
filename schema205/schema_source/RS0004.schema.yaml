@@ -63,7 +63,8 @@ Performance:
       Units: "-"
       Constraints: [">=0.0","<1.0"]
       Required: True
-      Notes: "Used for the lowest stage when the unit cycles to meet load. ***Informative note:*** 340/360 specifies a fixed cycling degradation coefficient of approximately 0.12"
+      Notes: ["Used for the lowest stage when the unit cycles to meet load",
+              "***Informative note:*** 340/360 specifies a fixed cycling degradation coefficient of approximately 0.12"]
     performance_map_cooling:
       Description: "Data group describing cooling performance over a range of conditions"
       Data Type: "{PerformanceMapCooling}"
@@ -152,7 +153,7 @@ LookupVariablesCooling:
       Constraints: ">0.0"
       Units: "W"
       Required: True
-      Notes: ["Includes compressor, outdoor fan, and any auxiliary power used by the unit's controls and any sump heater.",
+      Notes: ["Includes compressor, outdoor fan, and any auxiliary power used by the unit's controls and any sump heater",
               "Shall not include power drawn by the indoor fan"]
 
 PerformanceMapStandby:

@@ -214,15 +214,13 @@ ASHRAE205:
   Object Type: "Data Group"
   Data Elements:
     standard_version:
-      Description: "*ASHRAE 205 standard* version"
+      Description: "The version of the *ASHRAE 205 Standard* this *representation* complies with"
       Data Type: "<ASHRAE205Version>"
       Required: True
-      Notes: "Identifies the version of the *ASHRAE 205 Standard* this *representation* complies with."
     schema_version:
-      Description: "*ASHRAE 205 schema* version"
+      Description: "The version of the *ASHRAE 205 JSON schema* this *representation* complies with"
       Data Type: "Version"
       Required: True
-      Notes: "Identifies the version of the *ASHRAE 205 JSON schema* this *representation* complies with."
     rs_id:
       Description: "*Representation specification* identifier"
       Data Type: "<RSID>"
@@ -236,22 +234,24 @@ ASHRAE205:
       Description: "Unique equipment identifier"
       Data Type: "UUID"
       Required: True
-      Notes: "Assigned by *data publisher* to identify a *representation* for a specific set of equipment. `id` shall remain unchanged for revised *representations* for the same equipment."
+      Notes: ["Assigned by *data publisher* to identify a *representation* for a specific set of equipment",
+              "`id` shall remain unchanged for revised *representations* for the same equipment"]
     data_timestamp:
       Description: "Date of publication"
       Data Type: "Timestamp"
       Required: True
-      Notes: "Date/time of publication of this *representation*."
+      Notes: "Date/time of publication of this *representation*"
     data_version:
       Description: "Integer version identifier for the data in the *representation*"
       Data Type: "Integer"
       Constraints: ">=1"
       Required: True
-      Notes: "Used by *data publisher* to track revisions of the data for a specific *representation*. `data_version` shall be incremented for each data revision."
+      Notes: ["Used by *data publisher* to track revisions of the data for a specific *representation*",
+              "`data_version` shall be incremented for each data revision"]
     data_source:
       Description: "Source of the performance data in this *representation*"
       Data Type: "String"
-      Note: "Used by *data publisher* to document methods (e.g. software and version) used to generate performance data.  Informative note: `data_source` may different from ratings source(s) included elsewhere."
+      Notes: ["Used by *data publisher* to document methods (e.g. software and version) used to generate performance data", "***Informative note:*** `data_source` may be different from ratings source(s) included elsewhere"]
     disclaimer:
       Description: "Characterization of accuracy, limitations, and applicability of this data"
       Data Type: "String"
@@ -261,8 +261,8 @@ ASHRAE205:
     rs_instance:
       Description: "*Representation Specification* Data Group"
       Data Type: "({RS0001}, {RS0002}, {RS0003}, {RS0004}, {RS0005}, {RS0006}, {RS0007})"
-      Notes: "Data Group defined by specific *representation specification* (e.g., 'RS0001')"
       Selector: "rs_id(RSID::RS0001, RSID::RS0002, RSID::RS0003, RSID::RS0004, RSID::RS0005, RSID::RS0006)"
+      Notes: "Data Group defined by specific *representation specification* (e.g., 'RS0001')"
       Required: True
 
 # Reusable Data Groups
@@ -273,7 +273,7 @@ LiquidMixture:
       Description: "An array of all liquid components within the liquid mixture"
       Data Type: "[{LiquidComponent}]"
       Required: True
-      Notes: "Array may contain a single component."
+      Notes: "Array may contain a single component"
     concentration_type:
       Description: "Defines whether concentration is defined on a volume or mass basis"
       Data Type: "<ConcentrationType>"

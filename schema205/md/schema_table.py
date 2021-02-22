@@ -86,6 +86,7 @@ def enumerators_dict_from_enumerations(enumerations):
             else:
                 item = {}
             item["Enumerator"] = f"`{enumerator}`"
+            compress_notes(item)
             output[enum].append(item)
     return output
 
