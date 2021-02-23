@@ -2,8 +2,12 @@ Schema:
   Object Type: "Meta"
   References:
     - "ASHRAE205"
+    - "RS0005"
+    - "RS0007"
   Title: "Fan Assembly"
   Description: "Schema for ASHRAE 205 annex RS0003: Fan Assembly"
+  Version: "0.1.0"
+  Root Data Group: "RS0003"
 
 # Local Enumerations
 OperationSpeedControlType:
@@ -78,11 +82,22 @@ ComponentType:
 RS0003:
   Object Type: "Data Group"
   Data Elements:
+    metadata:
+      Description: "Metadata *data group*"
+      Data Type: "{Metadata}"
+      Required: True
+    data:
+      Description: "*Data group* describing *representation* data"
+      Data Type: "{Representation}"
+
+Representation:
+  Object Type: "Data Group"
+  Data Elements:
     description:
-      Description: "Data group describing product and rating information"
+      Description: "*Data group* describing product and rating information"
       Data Type: "{Description}"
     performance:
-      Description: "Data group containing performance information"
+      Description: "*Data group* containing performance information"
       Data Type: "{Performance}"
       Required: True
 
@@ -170,13 +185,11 @@ Performance:
     motor_representation:
       Description: "The corresponding Standard 205 motor *representation*"
       Notes: "If the fan assembly is packaged with a motor, a motor *representation* shall be provided"
-      Data Type: "{ASHRAE205}"
-      Constraints: "rs_id=RS0005"
+      Data Type: "{RS0005}"
     mechanical_drive_representation:
       Description: "The corresponding Standard 205 mechanical drive *representation*"
       Notes: "If the fan assembly is packaged with a mechanical drive, a mechanical drive *representation* shall be provided"
-      Data Type: "{ASHRAE205}"
-      Constraints: "rs_id=RS0007"
+      Data Type: "{RS0007}"
     performance_map:
       Description: "Data group describing fan assembly performance when operating"
       Data Type: "({PerformanceMapContinuous}, {PerformanceMapDiscrete})"

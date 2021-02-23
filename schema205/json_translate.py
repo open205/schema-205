@@ -221,6 +221,8 @@ class DataGroup:
                         target_dict[mx] = maximum
                     elif '%' in c:
                         target_dict['multipleOf'] = int(numerical_value)
+                    elif 'string' in target_dict['type']:
+                        target_dict['pattern'] = c
                 except IndexError:
                     # Constraint was non-numeric
                     pass
@@ -316,10 +318,9 @@ class JSON_translator:
         if 'Root Data Group' in schema_section:
             self._schema['$ref'] = self._schema_name + '.schema.json#/definitions/' + schema_section['Root Data Group']
         # Create a dictionary of available external objects for reference
-        refs = list()
+        refs = [self._schema_name]
         if 'References' in schema_section:
-            refs = schema_section['References']
-        refs.append(self._schema_name)
+            refs += schema_section['References']
         for ref_file in refs:
             ext_dict = load(os.path.join(self._source_dir, ref_file + '.schema.yaml'))
             external_objects = list()

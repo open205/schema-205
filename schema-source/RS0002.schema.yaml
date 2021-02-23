@@ -2,8 +2,12 @@ Schema:
   Object Type: "Meta"
   References:
     - "ASHRAE205"
+    - "RS0003"
+    - "RS0004"
   Title: "Unitary Cooling Air-Conditioning Equipment"
   Description: "Schema for ASHRAE 205 annex RS0002: Unitary Cooling Air-Conditioning Equipment"
+  Version: "0.1.0"
+  Root Data Group: "RS0002"
 
 # Local Enumerations
 FanPosition:
@@ -69,11 +73,22 @@ AHRI340360CapacityControlType:
 RS0002:
   Object Type: "Data Group"
   Data Elements:
+    metadata:
+      Description: "Metadata *data group*"
+      Data Type: "{Metadata}"
+      Required: True
+    data:
+      Description: "*Data group* describing *representation* data"
+      Data Type: "{Representation}"
+
+Representation:
+  Object Type: "Data Group"
+  Data Elements:
     description:
-      Description: "Data group describing product and rating information"
+      Description: "*Data group* describing product and rating information"
       Data Type: "{Description}"
     performance:
-      Description: "Data group containing performance information"
+      Description: "*Data group* containing performance information"
       Data Type: "{Performance}"
       Required: True
 
@@ -308,8 +323,7 @@ Performance:
       Required: True
     fan_representation:
       Description: "The corresponding Standard 205 fan assembly *representation*"
-      Data Type: "{ASHRAE205}"
-      Constraints: "rs_id=RS0003"
+      Data Type: "{RS0003}"
       Notes: "Required if the fan is packaged with the unitary equipment"
     fan_position:
       Description: "Position of the fan relative to the cooling coil"
@@ -317,6 +331,4 @@ Performance:
       Required: True
     dx_system_representation:
       Description: "The corresponding Standard 205 direct expansion coil system *representation*"
-      Data Type: "{ASHRAE205}"
-      Constraints: "rs_id=RS0004"
-
+      Data Type: "{RS0004}"

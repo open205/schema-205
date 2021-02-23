@@ -3,22 +3,16 @@ import itertools
 def get_rs_index(rs):
     return int(rs[2:]) - 1
 
-def get_representation_node_and_rs_selections(representation, lineage):
-    selections = []
+def get_representation_node(representation, lineage):
     node = representation
     for name in lineage:
-        if name == 'rs_instance':
-            rs = node['rs_id']
-            selections.append(get_rs_index(rs))
-        else:
-            selections.append(None)
         node = node[name]
-    return node, selections
+    return node
 
 def create_grid_set(grid_variables, order):
     lists = []
     if len(grid_variables) != len(order):
-        raise Exception(f"order: {order} must contain the keys of 'grid_variables'")
+        raise Exception(f"order: {order} must contain the keys of 'grid_variables': {grid_variables}")
 
     for var in order:
         if var not in grid_variables:

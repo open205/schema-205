@@ -3,8 +3,7 @@ import json
 import posixpath
 import jsonschema
 from .util import create_grid_set
-from .util import get_representation_node_and_rs_selections
-from .util import get_rs_index
+from .util import get_representation_node
 from .file_io import load_json
 
 def iterdict(d, dict_as_list, level=0):
@@ -28,7 +27,7 @@ class A205Schema:
 
             self.validator = jsonschema.Draft7Validator(json.load(schema_file), resolver=resolver)
 
-    def process_errors(self, errors, rs_index, parent_level = 0):
+    def process_errors(self, errors, parent_level = 0):
         '''
         This method collects relevant error messages using recursion for 'oneOf' or 'anyOf' validations
         '''
@@ -36,16 +35,8 @@ class A205Schema:
         for error in errors:
             if error.validator in ['oneOf','anyOf','allOf']:
                 schema_node = self.get_schema_node(list(error.absolute_path))
-                if 'RS' in schema_node:
-                    rs_index = get_rs_index(schema_node['RS'])
-                if rs_index is not None:
-                    rs_errors = []
-                    for rs_error in error.context:
-                        if rs_error.relative_schema_path[0] == rs_index:
-                            rs_errors.append(rs_error)
-                else:
-                    rs_errors = error.context
-                messages += self.process_errors(rs_errors, rs_index, len(error.path))
+                rs_errors = error.context
+                messages += self.process_errors(rs_errors, len(error.path))
             else:
                 if len(error.path) >= parent_level:
                     messages.append(f"{error.message} ({'.'.join([str(x) for x in error.path])})")
@@ -57,18 +48,12 @@ class A205Schema:
     def validate(self, instance):
         errors = sorted(self.validator.iter_errors(instance), key=lambda e: e.path)
         if len(errors) == 0:
-            print(f"Validation successful for {instance['description']}")
+            print(f"Validation successful for {instance['metadata']['description']}")
         else:
-            if 'rs_id' in instance:
-                rs_id = instance['rs_id']
-                rs_index = get_rs_index(rs_id)
-            else:
-                rs_id = "RS????"
-                rs_index = None
-            messages = self.process_errors(errors, rs_index)
+            messages = self.process_errors(errors)
             messages = [f"{i}. {message}" for i, message in enumerate(messages, start=1)]
             message_str = '\n  '.join(messages)
-            raise Exception(f"Validation failed for \"{instance['description']}\" ({rs_id}) with {len(messages)} errors:\n  {message_str}")
+            raise Exception(f"Validation failed for \"{instance['metadata']['description']}\" ({instance['metadata']['schema']}) with {len(messages)} errors:\n  {message_str}")
 
     def resolve(self, node, step_in=True, parent_node=None):
         '''
@@ -111,7 +96,7 @@ class A205Schema:
         parent_node: aux node to check for additional property information
         '''
         for item in node:
-            # Case where the node passed in contains additional properties fleshed out in allOf 
+            # Case where the node passed in contains additional properties fleshed out in allOf
             if item == 'allOf':
                 if options[0] is not None:
                     resolution = self.resolve(node['allOf'][options[0]])
@@ -153,10 +138,7 @@ class A205Schema:
         if options is None:
             options = [None]*len(lineage)
         schema = self.resolve(self.validator.schema)
-        try:
-            return self.trace_lineage(schema, lineage, options, self.resolve(self.validator.schema, False))
-        except KeyError as ke:
-            return None
+        return self.trace_lineage(schema, lineage, options, self.resolve(self.validator.schema, False))
 
     def get_schema_version(self):
         return self.validator.schema["version"]
@@ -164,7 +146,7 @@ class A205Schema:
     def get_rs_title(self, rs):
         return self.resolve_ref(f'{rs}.schema.json#/title')
 
-    def get_grid_variable_order(self, rs_selections, lineage, grid_vars):
+    def get_grid_variable_order(self, lineage, grid_vars):
         '''
         Get the order of grid variables.
 
@@ -172,7 +154,7 @@ class A205Schema:
         '''
         if lineage[-1] != 'grid_variables':
             raise Exception(f"{lineage[-1]} is not a 'grid_variables' data group.")
-        parent_schema_node = self.get_schema_node(lineage[:-2], rs_selections[:-2])
+        parent_schema_node = self.get_schema_node(lineage[:-2])
         if 'allOf' in parent_schema_node:
             # Alternate performance maps allowed. Make sure we get the right one
             for option in parent_schema_node['allOf']:
@@ -188,7 +170,7 @@ class A205Schema:
                 if schema_node:
                     break
         else:
-            schema_node = self.get_schema_node(lineage, rs_selections)['properties']
+            schema_node = self.get_schema_node(lineage)['properties']
         order = []
 
         if not schema_node:
@@ -199,24 +181,26 @@ class A205Schema:
         return order
 
     def create_grid_set(self, representation, lineage):
-        grid_var_content, rs_selections = get_representation_node_and_rs_selections(representation, lineage)
-        order = self.get_grid_variable_order(rs_selections, lineage,[x for x in grid_var_content])
+        grid_var_content = get_representation_node(representation, lineage)
+        order = self.get_grid_variable_order(lineage, [x for x in grid_var_content])
         return create_grid_set(grid_var_content, order)
 
-def validate(file_path):
-    a205schema = A205Schema(os.path.join(os.path.dirname(__file__),'..','build','schema',"ASHRAE205.schema.json"))
+def validate(file_path, schema_path):
+    a205schema = A205Schema(schema_path)
     a205schema.validate(load_json(file_path))
 
-def validate_directory(example_dir):
+def validate_directory(example_dir, schema_dir):
     errors = []
     for example in os.listdir(example_dir):
         example_path = os.path.join(example_dir,example)
         if os.path.isdir(example_path):
-            errors += validate_directory(example_path)
+            errors += validate_directory(example_path, schema_dir)
         else:
             if '~$' not in example:  # Ignore temporary Excel files
                 try:
-                    validate(os.path.join(example_dir,example))
+                    schema_name = load_json(example_path)["metadata"]["schema"]
+                    schema_path = os.path.join(schema_dir,f"{schema_name}.schema.json")
+                    validate(example_path)
                 except Exception as e: # Change to tk205 Exception
                     errors.append(e)
     if len(errors) > 0:

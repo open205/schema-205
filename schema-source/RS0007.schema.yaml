@@ -4,6 +4,8 @@ Schema:
     - "ASHRAE205"
   Title: "Mechanical Drive"
   Description: "Schema for ASHRAE 205 annex RS0007: Mechanical Drive" # TODO: Scope includes power transmission couplings. Allow chaining of drives?
+  Version: "0.1.0"
+  Root Data Group: "RS0007"
 
 # Local Enumerations
 DriveType:
@@ -29,11 +31,22 @@ DriveType:
 RS0007:
   Object Type: "Data Group"
   Data Elements:
+    metadata:
+      Description: "Metadata *data group*"
+      Data Type: "{Metadata}"
+      Required: True
+    data:
+      Description: "*Data group* describing *representation* data"
+      Data Type: "{Representation}"
+
+Representation:
+  Object Type: "Data Group"
+  Data Elements:
     description:
-      Description: "Data group describing product and rating information"
+      Description: "*Data group* describing product and rating information"
       Data Type: "{Description}"
     performance:
-      Description: "Data group containing performance information"
+      Description: "*Data group* containing performance information"
       Data Type: "{Performance}"
       Required: True
 

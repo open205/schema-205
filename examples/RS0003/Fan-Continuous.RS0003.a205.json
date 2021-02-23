@@ -1,13 +1,15 @@
 {
-    "standard_version": "PPR2",
-    "schema_version": "0.1.0",
-    "rs_id": "RS0003",
-    "description": "Continuous Fan",
-    "id": "123e4567-e89b-12d3-a456-426614174000",
-    "data_timestamp": "2020-05-11T00:00Z",
-    "data_version": 1,
-    "disclaimer": "Example data not to be used for simulation",
-    "rs_instance": {
+    "metadata": {
+        "data_model": "ASHRAE 205",
+        "schema": "RS0003",
+        "schema_version": "0.1.0",
+        "description": "Continuous Fan",
+        "id": "123e4567-e89b-12d3-a456-426614174000",
+        "data_timestamp": "2020-05-11T00:00Z",
+        "data_version": 1,
+        "disclaimer": "Example data not to be used for simulation"
+    },
+    "data": {
         "description": {
             "product_information": {
                 "manufacturer": "ABC Fans",

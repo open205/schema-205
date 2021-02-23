@@ -1,15 +1,17 @@
 {
-  "standard_version": "PPR2",
-  "schema_version": "0.1.0",
-  "rs_id": "RS0002",
-  "description": "Unitary System with Constant Efficiency",
-  "id": "bcf8b859-67a3-42f4-8f8d-4e57af1ccf22",
-  "data_timestamp": "2019-09-13T00:00Z",
-  "data_version": 1,
-  "data_source": "Committee",
-  "disclaimer": "Example data not to be used for simulation",
-  "notes": "An example representation that applies a constant COP of 3.1",
-  "rs_instance": {
+  "metadata": {
+    "data_model": "ASHRAE 205",
+    "schema": "RS0002",
+    "schema_version": "0.1.0",
+    "description": "Unitary System with Constant Efficiency",
+    "id": "bcf8b859-67a3-42f4-8f8d-4e57af1ccf22",
+    "data_timestamp": "2019-09-13T00:00Z",
+    "data_version": 1,
+    "data_source": "Committee",
+    "disclaimer": "Example data not to be used for simulation",
+    "notes": "An example representation that applies a constant COP of 3.1"
+  },
+  "data": {
     "description": {
       "product_information": {
         "manufacturer": "ABC HVAC",
@@ -20,16 +22,18 @@
       "standby_power": 10,
       "fan_position": "BLOW_THROUGH",
       "dx_system_representation": {
-        "schema_version": "0.1.0",
-        "standard_version": "PPR2",
-        "rs_id": "RS0004",
-        "description": "DX System with Constant Efficiency",
-        "id": "123e4567-e89b-12d3-a456-426614174000",
-        "data_timestamp": "2020-05-07T00:00Z",
-        "data_version": 1,
-        "disclaimer": "Example data not to be used for simulation",
-        "notes": "An example representation that applies a constant COP of 3.1",
-        "rs_instance": {
+        "metadata": {
+          "schema_version": "0.1.0",
+          "data_model": "ASHRAE 205",
+          "schema": "RS0004",
+          "description": "DX System with Constant Efficiency",
+          "id": "123e4567-e89b-12d3-a456-426614174000",
+          "data_timestamp": "2020-05-07T00:00Z",
+          "data_version": 1,
+          "disclaimer": "Example data not to be used for simulation",
+          "notes": "An example representation that applies a constant COP of 3.1"
+        },
+        "data": {
           "description": {
             "product_information": {
               "outdoor_unit_manufacturer": "ABC HVAC",

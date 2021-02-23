@@ -59,7 +59,7 @@ def task_render_template():
   template_dir = os.path.realpath(
           os.path.join('rendering_examples', 'template_rendering'))
   out_file = os.path.join(RENDERED_TEMPLATE_PATH, 'main.md')
-  log_file = os.path.join(RENDERED_TEMPLATE_PATH, 'error-log.txt') 
+  log_file = os.path.join(RENDERED_TEMPLATE_PATH, 'error-log.txt')
   return {
           'file_dep': collect_source_files() + [
               os.path.join(template_dir, 'main.md'),
@@ -82,7 +82,7 @@ def task_render_template():
 def task_schema():
   '''Generates JSON schema from source-schema'''
   return {
-    'file_dep': collect_source_files(),
+    'file_dep': [os.path.join('schema205', 'json_translate.py')] + collect_source_files(),
     'targets': collect_target_files(SCHEMA_PATH,'json'),
     'task_dep': ['validate'],
     'actions': [
