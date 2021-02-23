@@ -47,7 +47,7 @@ def task_doc():
     'task_dep': ['validate'],
     'actions': [
       (create_folder, [DOCS_PATH]),
-      (schema205.markdown.write_dir,[SOURCE_PATH, DOCS_PATH])
+      (schema205.markdown.write_dir,[SOURCE_PATH, DOCS_PATH], {"checkmark": u'\N{check mark}'})
       ],
     'clean': True
   }

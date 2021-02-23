@@ -9,8 +9,8 @@ import yaml
 
 import schema205.md.schema_table as schema_table
 
-def string_out_tables(instance):
-  struct = schema_table.load_structure_from_object(instance)
+def string_out_tables(instance, checkmark=None):
+  struct = schema_table.load_structure_from_object(instance, checkmark=checkmark)
   output = None
   with io.StringIO() as output_file:
     # Data Types
@@ -34,23 +34,23 @@ def string_out_tables(instance):
     output = output_file.getvalue()
   return output
 
-def write_tables(instance, output_path, append=True):
+def write_tables(instance, output_path, append=True, checkmark=None):
   with open(output_path, 'a' if append else 'w', encoding="utf-8") as output_file:
-    output_file.write(string_out_tables(instance))
+    output_file.write(string_out_tables(instance, checkmark=checkmark))
 
-def write_file(input_path, output_path):
+def write_file(input_path, output_path, checkmark=None):
   with open(input_path, 'r') as input_file:
       instance = yaml.load(input_file, Loader=yaml.FullLoader)
-  write_tables(instance, output_path,append=False)
+  write_tables(instance, output_path,append=False, checkmark=checkmark)
   print(f'Markdown generation successful for {input_path}')
 
-def write_dir(input_dir_path, output_dir_path):
+def write_dir(input_dir_path, output_dir_path, checkmark=None):
   for file_name in sorted(os.listdir(input_dir_path)):
     if '.schema.yaml' in file_name:
       file_name_root = os.path.splitext(os.path.splitext(file_name)[0])[0]
       with open(os.path.join(input_dir_path,file_name), 'r') as input_file:
           instance = yaml.load(input_file, Loader=yaml.FullLoader)
-      write_tables(instance, os.path.join(output_dir_path,f'{file_name_root}.schema.md'), append=False)
+      write_tables(instance, os.path.join(output_dir_path,f'{file_name_root}.schema.md'), append=False, checkmark=checkmark)
       print(f'Markdown generation successful for {file_name}')
 
 if __name__ == '__main__':

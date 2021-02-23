@@ -45,9 +45,10 @@ def compress_notes(a_dict):
             a_dict[notes] = "\n\n".join([f"- {note}" for note in a_dict[notes]])
 
 
-def data_elements_dict_from_data_groups(data_groups):
+def data_elements_dict_from_data_groups(data_groups, checkmark="\\Checkmark"):
     """
     - data_groups: Dict, the data groups dictionary
+    - checkmark: string, the checkmark symbol to use
     RETURN: Dict with data elements as an array
     """
     output = {}
@@ -57,7 +58,7 @@ def data_elements_dict_from_data_groups(data_groups):
             new_obj = data_groups[dat_gr]["Data Elements"][element]
             new_obj["Name"] = f"`{element}`"
             if 'Required' in new_obj:
-                new_obj["Req"] = u'\N{check mark}' if new_obj["Required"] else ''
+                new_obj["Req"] = checkmark if new_obj["Required"] else ''
                 new_obj.pop('Required')
             new_obj['Data Type'] = f"`{new_obj['Data Type']}`"
             if 'Constraints' in new_obj:
@@ -91,9 +92,10 @@ def enumerators_dict_from_enumerations(enumerations):
     return output
 
 
-def load_structure_from_object(instance):
+def load_structure_from_object(instance, checkmark=None):
     """
     - instance: dictionary, the result of loading a *.schema.yaml file
+    - checkmark: string or None, the default checkmark symbol to use
     RETURN: {
         'data_types': array,
         'string_types': array,
@@ -105,6 +107,9 @@ def load_structure_from_object(instance):
     string_types = []
     enumerations = {}
     data_groups = {}
+
+    if checkmark is None:
+        checkmark = "\\Checkmark"
 
     for obj in instance:
         object_type = instance[obj]["Object Type"]
@@ -132,7 +137,7 @@ def load_structure_from_object(instance):
         'data_types': data_types,
         'string_types': process_string_types(string_types),
         'enumerations': enumerators_dict_from_enumerations(enumerations),
-        'data_groups': data_elements_dict_from_data_groups(data_groups),
+        'data_groups': data_elements_dict_from_data_groups(data_groups, checkmark=checkmark),
     }
 
 
