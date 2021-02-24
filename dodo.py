@@ -30,6 +30,15 @@ def collect_target_files(target_dir, extension):
       file_list.append(os.path.join(target_dir,f'{file_name_root}.schema.{extension}'))
   return file_list
 
+def collect_lib_target_files(target_dir, extension):
+  file_list = []
+  for file_name in sorted(os.listdir('schema-source')):
+    if '.schema.yaml' in file_name:
+      file_name_root = os.path.splitext(os.path.splitext(file_name)[0])[0]
+      file_list.append(os.path.join(target_dir,f'{file_name_root}.{extension}'))
+      file_list.append(os.path.join(target_dir,f'{file_name_root}_factory.{extension}'))
+  return file_list
+
 def task_validate():
   '''Validates source-schema against meta-schema'''
   return {
@@ -99,7 +108,7 @@ def task_headers():
   '''Generates CPP header files from common-schema'''
   return {
     'file_dep': collect_source_files(),
-    'targets': collect_target_files(HEADER_PATH,'h'),
+    'targets': collect_lib_target_files(HEADER_PATH,'h'),
     'task_dep': ['validate'],
     'actions': [
       (create_folder, [HEADER_PATH]),
@@ -112,7 +121,7 @@ def task_cpp():
   '''Generates CPP source files from common-schema'''
   return {
     'file_dep': collect_source_files(),
-    'targets': collect_target_files(CPP_PATH,'cpp'),
+    'targets': collect_lib_target_files(CPP_PATH,'cpp'),
     'task_dep': ['validate'],
     'actions': [
       (create_folder, [CPP_PATH]),
