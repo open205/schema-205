@@ -8,7 +8,7 @@ import io
 def flatten(list_of_lists):
     """
     - list_of_lists: (list (list *)), a list of lists
-    RETURN: (List *), the list flattened 
+    RETURN: (List *), the list flattened
     """
     return [
         item
@@ -242,6 +242,7 @@ def string_out_table(dat, columns, caption, preferred_sizes=None, table_size="fo
     the_str = ""
     with io.StringIO() as handle:
         if table_size is not None:
+            handle.write("\n\\normalsize\n\n")
             handle.write(f"\\{table_size}\n\n")
         handle.write(make_table_from_dict_of_arrays(
             dat, columns=columns, preferred_sizes=preferred_sizes))

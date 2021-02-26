@@ -57,7 +57,8 @@ def data_elements_dict_from_data_groups(data_groups):
             new_obj = data_groups[dat_gr]["Data Elements"][element]
             new_obj["Name"] = f"`{element}`"
             if 'Required' in new_obj:
-                new_obj["Req"] = u'\N{check mark}' if new_obj["Required"] else ''
+                check = u'\N{check mark}'
+                new_obj["Req"] = f"${check}$" if new_obj["Required"] else ''
                 new_obj.pop('Required')
             new_obj['Data Type'] = f"`{new_obj['Data Type']}`"
             if 'Constraints' in new_obj:
@@ -66,6 +67,9 @@ def data_elements_dict_from_data_groups(data_groups):
                 if type(new_obj["Constraints"]) is list:
                     new_obj["Constraints"] = ", ".join(new_obj["Constraints"])
                 new_obj["Constraints"] = f"`{new_obj['Constraints'].replace('<=',lte).replace('>=',gte)}`"
+            if 'Units' in new_obj:
+                if new_obj['Units'] == '-':
+                    new_obj['Units'] = '\\-'
             compress_notes(new_obj)
             data_elements.append(new_obj)
         output[dat_gr] = data_elements
@@ -171,7 +175,7 @@ def create_table_from_list(
                 data[col].append(defaults[col])
             else:
                 raise Exception(f"Expected item to have key `{col}`: `{item}`")
-    return (grid_table.string_out_table(data, columns, caption, None, None) +
+    return (grid_table.string_out_table(data, columns, caption) +
             trailing_ws(add_training_ws))
 
 
