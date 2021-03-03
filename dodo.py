@@ -125,7 +125,7 @@ def task_cpp():
     'task_dep': ['validate'],
     'actions': [
       (create_folder, [CPP_PATH]),
-      (schema205.cpp_translate.translate_all_to_source,[SOURCE_PATH, CPP_PATH, "RS_instance_base", "ASHRAE205"])
+      (schema205.cpp_translate.translate_all_to_source,[SOURCE_PATH, CPP_PATH, "rs_instance_base", "ASHRAE205"])
       ],
     'clean': True
   }
