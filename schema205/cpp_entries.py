@@ -133,7 +133,7 @@ class Owned_element_creation(Element_serialization):
         type_sel = list(selector_dict.keys())[0]
         for enum in selector_dict[type_sel]:
             self._func += [f'if (x.{type_sel} == {enum}) {{',
-                           f'\tx.{name} = std::make_shared<{selector_dict[type_sel][enum]}>();',
+                           f'\tx.{name} = std::make_unique<{selector_dict[type_sel][enum]}>();',
                            f'\tif (x.{name}) {{',
                            f'\t\tx.{name}->Initialize(j.at("{name}"));',
                            '\t}',
@@ -301,7 +301,7 @@ class CPP_translator:
                 s = Struct_serialization(entry._name, self._namespace)
                 for e in [c for c in entry.child_entries if isinstance(c, Data_element)]:
                     # In function body, create each "get_to" for individual data elements
-                    if 'shared_ptr' in e._type:
+                    if 'unique_ptr' in e._type:
                         Owned_element_creation(e._name, s, e._selector)
                     else:
                         Owned_element_serialization(e._name, s)
@@ -319,7 +319,7 @@ class CPP_translator:
                 else:
                   # In function body, choose element-wise ops based on the superclass
                   for e in [c for c in entry.parent.child_entries if isinstance(c, Data_element)]:
-                     if 'shared_ptr' in e._type:
+                     if 'unique_ptr' in e._type:
                            Class_factory_creation(e._name, m, e._selector)
                            self._preamble.append(f'#include <{e._name}_factory.h>\n')
                      else:

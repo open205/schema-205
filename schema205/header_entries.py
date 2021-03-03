@@ -242,7 +242,7 @@ class Data_element(Header_entry):
                     selectors = [s.strip() for s in m_opt.group(1).split(',')]
 
                     self._selector[oneof_selection_key] = dict(zip(selectors, types))
-                    self._type = f'std::shared_ptr<{self._name}_base>'
+                    self._type = f'std::unique_ptr<{self._name}_base>'
                 else:
                     # 1. 'type' entry
                     self._type = self._get_simple_type(parent_dict['Data Type'])
@@ -523,7 +523,7 @@ class H_translator:
 
     # .............................................................................................
     def _add_member_headers(self, data_element):
-        if 'shared_ptr' in data_element._type:
+        if 'unique_ptr' in data_element._type:
             m = re.search(r'\<(.*)\>', data_element._type)
             if m:
                 include = f'#include <{m.group(1)}.h>\n'

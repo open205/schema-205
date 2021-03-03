@@ -19,7 +19,7 @@ namespace ASHRAE205_NS  {
       virtual ~rs_instance_factory() = default;
 
       static bool Register_factory(std::string const &RS_ID,
-                                 std::shared_ptr<rs_instance_factory> factory);
+                                 std::unique_ptr<rs_instance_factory> factory);
 
       // Universal factory interface Create(). Factory::Create() will, through delegation,
       // actually return the requested object.
