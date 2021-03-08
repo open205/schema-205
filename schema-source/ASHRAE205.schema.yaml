@@ -195,7 +195,7 @@ Metadata:
     data_model:
       Description: "Data model name"
       Data Type: "String"
-      Constraints: "ASHRAE 205"
+      Constraints: "ASHRAE_205"
       Required: True
       Notes: "Identifies the data model where the schema is defined"
     schema:

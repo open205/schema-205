@@ -1,6 +1,6 @@
 {
     "metadata": {
-        "data_model": "ASHRAE 205",
+        "data_model": "ASHRAE_205",
         "schema_version": "0.1.0",
         "schema": "RS0006",
         "description": "Electronic Motor Drive with Constant Efficiency",
@@ -11,36 +11,34 @@
         "disclaimer": "Example data not to be used for simulation",
         "notes": "An example representation that applies a constant efficiency of 0.985"
     },
-    "data": {
-        "description": {
-            "product_information": {
-                "manufacturer": "DrivesRUs",
-                "model_number": "5791"
-            }
-        },
-        "performance": {
-            "maximum_power": 10000,
-            "standby_power": 10,
-            "cooling_method": "PASSIVE_COOLED",
-            "performance_map": {
-                "grid_variables": {
-                    "output_power": [
-                        4052,
-                        8105
-                    ],
-                    "output_frequency": [
-                        3.2,
-                        114.6
-                    ]
-                },
-                "lookup_variables": {
-                    "efficiency": [
-                        0.985,
-                        0.985,
-                        0.985,
-                        0.985
-                    ]
-                }
+    "description": {
+        "product_information": {
+            "manufacturer": "DrivesRUs",
+            "model_number": "5791"
+        }
+    },
+    "performance": {
+        "maximum_power": 10000,
+        "standby_power": 10,
+        "cooling_method": "PASSIVE_COOLED",
+        "performance_map": {
+            "grid_variables": {
+                "output_power": [
+                    4052,
+                    8105
+                ],
+                "output_frequency": [
+                    3.2,
+                    114.6
+                ]
+            },
+            "lookup_variables": {
+                "efficiency": [
+                    0.985,
+                    0.985,
+                    0.985,
+                    0.985
+                ]
             }
         }
     }

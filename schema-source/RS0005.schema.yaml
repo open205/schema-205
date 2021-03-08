@@ -15,14 +15,8 @@ RS0005:
     metadata:
       Description: "Metadata *data group*"
       Data Type: "{Metadata}"
+      Constraints: "schema=RS0005"
       Required: True
-    data:
-      Description: "*Data group* describing *representation* data"
-      Data Type: "{Representation}"
-
-Representation:
-  Object Type: "Data Group"
-  Data Elements:
     description:
       Description: "*Data group* describing product and rating information"
       Data Type: "{Description}"
