@@ -242,14 +242,13 @@ def string_out_table(dat, columns, caption, preferred_sizes=None, table_size="fo
     the_str = ""
     with io.StringIO() as handle:
         if table_size is not None:
-            handle.write("\n\\normalsize\n\n")
-            handle.write(f"\\{table_size}\n\n")
+            handle.write(f"\\pandocbegin{{{table_size}}}\n\n")
         handle.write(make_table_from_dict_of_arrays(
             dat, columns=columns, preferred_sizes=preferred_sizes))
         if caption is not None:
             handle.write(f"\nTable: {caption}\n")
         if table_size is not None:
-            handle.write("\n\\normalsize\n\n")
+            handle.write(f"\n\\pandocend{{{table_size}}}\n\n")
         the_str = handle.getvalue()
     return the_str
 

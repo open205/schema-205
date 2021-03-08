@@ -204,7 +204,10 @@ def make_add_schema_table(schema_dir=None, error_log=None):
 
 def make_add_yaml_table():
     """
-    RETURN:
+    RETURN: returns the add_yaml_table function with the following characteristics:
+        - content: string containing YAML syntax for Headers and Data.
+        - caption: None or string, the table caption if desired
+        RETURN: string, returns a string representation of the given table
     """
     def add_yaml_table(
             content,
