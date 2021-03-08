@@ -1,5 +1,5 @@
 """
-Functionality to render Jinja templates with an add_table hook to generate
+Functionality to render Jinja templates with an add_schema_table hook to generate
 schema tables in Markdown.
 """
 import re
@@ -10,6 +10,7 @@ from jinja2 import Environment, FileSystemLoader, select_autoescape, TemplateNot
 import yaml
 
 import schema205.md.schema_table as schema_table
+import schema205.md.grid_table as grid_table
 import schema205.markdown as markdown
 
 
@@ -40,7 +41,7 @@ def make_error_string(msg, args_str):
     RETURN: string, an error message
     """
     return ("\n---\nERROR\n" + msg +
-            f"\nin call to `add_table({args_str})`\n---\n")
+            f"\nin call to `add_schema_table({args_str})`\n---\n")
 
 
 def render_header(level_and_content):
@@ -149,23 +150,23 @@ def load_yaml_source(schema_dir, source, args_str):
     return (None, data)
 
 
-def make_add_table(schema_dir=None, error_log=None):
+def make_add_schema_table(schema_dir=None, error_log=None):
     """
     - schema_dir: string or pathlike, the path to the schema directory.
     - error_log: None or list, if a list, then errors will be appended to the
       log as well as rendered into the final product
-    RETURN: returns the add_table function with the following characteristics:
+    RETURN: returns the add_schema_table function with the following characteristics:
         - source: string, the source key. E.g., for
           schema-source/ASHRAE205.schema.yaml, 'ASHRAE205'
         - table_name: one of `data_types`, `string_types`, or a specific item
           from `enumerations`, or `data_groups`
         - caption: None or string, the table caption if desired
         - header_level_and_content: None OR Tuple of (positive-int, string), the
-          header level and header conent if desired
+          header level and header content if desired
         RETURN: string, returns a string representation of the given table
     """
     schema_dir = determine_schema_dir(schema_dir)
-    def add_table(
+    def add_schema_table(
             source,
             table_name,
             caption=None,
@@ -199,7 +200,27 @@ def make_add_table(schema_dir=None, error_log=None):
                 target,
                 caption=caption,
                 add_training_ws=False)
-    return add_table
+    return add_schema_table
+
+def make_add_yaml_table():
+    """
+    RETURN: returns the add_yaml_table function with the following characteristics:
+        - content: string containing YAML syntax for Headers and Data.
+        - caption: None or string, the table caption if desired
+        RETURN: string, returns a string representation of the given table
+    """
+    def add_yaml_table(
+            content,
+            caption=None):
+        table_data = yaml.load(content, Loader=yaml.FullLoader)
+        columns = table_data["Headers"]
+        data = {}
+        for i, column in enumerate(columns):
+            data[column] = []
+            for row in table_data["Data"]:
+                data[column].append(row[i])
+        return grid_table.string_out_table(data, columns, caption)
+    return add_yaml_table
 
 
 def make_add_data_model(schema_dir, error_log):
@@ -252,7 +273,8 @@ def main(main_template, output_path, template_dir, schema_dir=None, log_file=Non
         with open(output_path, encoding='utf-8', mode='w') as handle:
             handle.write(
                     temp.render(
-                        add_table=make_add_table(schema_dir, errs),
+                        add_schema_table=make_add_schema_table(schema_dir, errs),
+                        add_yaml_table=make_add_yaml_table(),
                         add_data_model=make_add_data_model(schema_dir, errs)))
     except TemplateNotFound as exc:
         print(f"Could not find main template {main_template}")

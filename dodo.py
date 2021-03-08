@@ -54,7 +54,7 @@ def task_doc():
 
 def task_render_template():
   '''
-  Demonstrate how to render a template using Jinja2 and the add_table hook.
+  Demonstrate how to render a template
   '''
   template_dir = os.path.realpath(
           os.path.join('rendering_examples', 'template_rendering'))
@@ -62,7 +62,7 @@ def task_render_template():
   log_file = os.path.join(RENDERED_TEMPLATE_PATH, 'error-log.txt')
   return {
           'file_dep': collect_source_files() + [
-              os.path.join(template_dir, 'main.md'),
+              os.path.join(template_dir, 'main.md.j2'),
               os.path.join('schema205', 'markdown.py'),
               os.path.join('schema205', 'md', '__init__.py'),
               os.path.join('schema205', 'md', 'schema_table.py'),
@@ -74,7 +74,7 @@ def task_render_template():
           'actions': [
               (create_folder, [RENDERED_TEMPLATE_PATH]),
               (schema205.render_template.main,
-                  ['main.md', out_file, template_dir],
+                  ['main.md.j2', out_file, template_dir],
                   {"log_file": log_file})],
           'clean': True,
           }
