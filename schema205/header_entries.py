@@ -419,7 +419,7 @@ class H_translator:
         return swapped
 
     # .............................................................................................
-    def translate(self, input_file_path, schema_base_class_name, container_class_name):
+    def translate(self, input_file_path, container_class_name, schema_base_class_name=None):
         '''X'''
         self._source_dir = os.path.dirname(os.path.abspath(input_file_path))
         self._schema_name = os.path.splitext(os.path.splitext(os.path.basename(input_file_path))[0])[0]
@@ -432,6 +432,8 @@ class H_translator:
 
         # If container_class_name is empty, I must be the top container. Also true if container_class_name is my name.
         self._is_top_container = not container_class_name or (container_class_name == self._schema_name)
+
+        self._fundamental_base_class = schema_base_class_name if schema_base_class_name else ''
 
         # Load meta info first (assuming that base level tag == Schema means object type == Meta)
         self._load_meta_info(self._contents['Schema'])
@@ -458,8 +460,8 @@ class H_translator:
             [tag for tag in self._contents if self._contents[tag].get('Object Type') in self._data_group_types]):
             if base_level_tag == self._schema_name:
                 if not self._is_top_container:
-                    s = Struct(base_level_tag, self._namespace, superclass=schema_base_class_name)
-                    self._add_function_overrides(s, schema_base_class_name)
+                    s = Struct(base_level_tag, self._namespace, superclass=self._fundamental_base_class)
+                    self._add_function_overrides(s, self._fundamental_base_class)
                 else: 
                     s = Struct(base_level_tag, self._namespace)
                     # Manual insertion of Initialize function into top_container, since it 
@@ -503,6 +505,8 @@ class H_translator:
                     # objects might be included and used from elsewhere.
                     Object_serialization(base_level_tag, self._namespace)
 
+        return self._fundamental_base_class
+
     # .............................................................................................
     def _add_include_guard(self, header_name):
         s1 = f'#ifndef {header_name.upper()}_H_'
@@ -529,6 +533,9 @@ class H_translator:
                 include = f'#include <{m.group(1)}.h>\n'
                 if include not in self._preamble:
                     self._preamble.append(f'#include <{m.group(1)}.h>\n')
+                # This is a perfect opportunity to cache the fundamental base class owned by the
+                # top-level container
+                self._fundamental_base_class = m.group(1)
         if data_element._initlist:
             l = data_element._initlist.split()
             if l:

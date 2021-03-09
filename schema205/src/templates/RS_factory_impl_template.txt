@@ -1,12 +1,12 @@
 #include "{{ factory_subclass }}.h"
-#include "{{ RS_subclass }}.h"
+#include "{{ subclass }}.h"
 #include <memory>
 
 /// @note  This class has been generated from a template. Local changes will not be saved!
 
-using namespace ASHRAE205_NS;
+using namespace {{container}}_NS;
 
-std::unique_ptr<rs_instance_base> {{ factory_subclass }}::Create_instance() const
+std::unique_ptr<{{ base_class_root_name }}_base> {{ factory_subclass }}::Create_instance() const
 {
-    return std::make_unique<ASHRAE205_NS::{{ RS_subclass }}_NS::{{ RS_subclass }}>();
+    return std::make_unique<{{container}}_NS::{{ subclass }}_NS::{{ subclass }}>();
 }
