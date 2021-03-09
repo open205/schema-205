@@ -60,7 +60,7 @@ def translate_all_to_source(input_dir_path, output_dir_path, container=''):
         c.translate(container, h)
         dump(str(c), os.path.join(output_dir_path, file_name_root + '.cpp'))
         if file_name_root != container:
-            factory_src = generate_factory_source(file_name_root, container)
+            factory_src = generate_factory_source(file_name_root, base_class, container)
             dump(factory_src, os.path.join(output_dir_path, file_name_root + '_factory.cpp'))
 
 # -------------------------------------------------------------------------------------------------
