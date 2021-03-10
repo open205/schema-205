@@ -130,16 +130,20 @@ class DataGroup:
                     self._get_simple_constraints(parent_dict['Constraints'], target_dict['items'])
             else:
                 # If the type is oneOf a set
-                m = re.findall(r'^\((.*)\)', parent_dict['Data Type'])
-                selector = parent_dict.get('Selector', '(').split('(')[0]
-                if m and selector:
+                m = re.match(r'\((.*)\)', parent_dict['Data Type']) #re.findall(r'^\((.*)\)', parent_dict['Data Type'])
+                if m:
+                    selection_key = parent_dict['Constraints'].split('(')[0]
+                    types = [t.strip() for t in m.group(1).split(',')]
+                    # m_opt = re.match(r'.*\((.*)\)', parent_dict['Constraints'])
+                    # if not m_opt:
+                    #     raise TypeError
+                    # selectors = [s.strip() for s in m_opt.group(1).split(',')]
                     target_dict['allOf'] = list()
-                    choices = m[0].split(',')
-                    for c in choices:
-                        c = c.strip()
+                    for t in types:
+                        #c = c.strip()
                         target_dict['allOf'].append(dict())
-                        self._construct_if_else(target_dict['allOf'][-1], selector, c, entry_name)
-                        self._get_simple_type(c, target_dict['allOf'][-1]['then']['properties'][entry_name])
+                        self._construct_if_else(target_dict['allOf'][-1], selection_key, t, entry_name)
+                        self._get_simple_type(t, target_dict['allOf'][-1]['then']['properties'][entry_name])
                 else:
                     # 1. 'type' entry
                     self._get_simple_type(parent_dict['Data Type'], target_property_entry)
@@ -209,7 +213,6 @@ class DataGroup:
             #     target_dict['type'] = None
             for c in constraints:
                 try:
-                    print(c)
                     numerical_value = re.findall(r'[+-]?\d*\.?\d+|\d+', c)[0]
                     if '>' in c:
                         minimum = (float(numerical_value) if 'number' in target_dict['type'] else int(numerical_value))

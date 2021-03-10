@@ -63,6 +63,7 @@ string = "\".*\""
 enumerator = "([A-Z]([A-Z]|[0-9])*)(_([A-Z]|[0-9])+)*"
 boolean = "True|False"
 values = f"({number})|({string})|({enumerator})|({boolean})"
+enum_list = f"\(({enumerator})(, *({enumerator}))*\)"
 
 print_regex(values,"Values")
 
@@ -71,7 +72,8 @@ ranges = f"(>|>=|<=|<){number}"
 multiples = f"%{number}"
 data_element_value = f"({element_names})=({values})"
 sets = f"\\[{number}(, {number})*\\]"
-constraints = f"({ranges})|({multiples})|({sets})|({data_element_value})"
+oneofs = f"({element_names})({enum_list})"
+constraints = f"({ranges})|({multiples})|({sets})|({data_element_value})|{oneofs}"
 
 '''
 >=0
