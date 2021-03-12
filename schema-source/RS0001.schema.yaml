@@ -15,29 +15,29 @@ AHRI550590TestStandardYear:
   Object Type: "Enumeration"
   Enumerators:
     IP_2015:
-      Description: "Ratings and design points defined using IP unit version of the standard, 2015 edition"
+      Description: "Ratings and design points defined using IP unit version of the standard, 2015 edition[@AHRI5502015]"
       Display Text: "AHRI 550/590 2015"
     IP_2015_ADDENDUM_1:
-      Description: "Ratings and design points defined using IP unit version of the standard, 2015 edition with Addendum 1"
+      Description: "Ratings and design points defined using IP unit version of the standard, 2015 edition with Addendum 1[@AHRI550A12015]"
       Display Text: "AHRI 550/590 2015 Addendum 1"
     IP_2018:
-      Description: "Ratings and design points defined using IP unit version of the standard, 2018 edition"
+      Description: "Ratings and design points defined using IP unit version of the standard, 2018 edition[@AHRI5502018]"
       Display Text: "AHRI 550/590 2018"
     IP_2020:
-      Description: "Ratings and design points defined using IP unit version of the standard, 2020 edition"
+      Description: "Ratings and design points defined using IP unit version of the standard, 2020 edition[@AHRI5502020]"
       Display Text: "AHRI 550/590 2020"
 
 AHRI551591TestStandardYear:
   Object Type: "Enumeration"
   Enumerators:
     SI_2015:
-      Description: "Ratings and design points defined using SI unit version of the standard, 2015 edition"
+      Description: "Ratings and design points defined using SI unit version of the standard, 2015 edition[@AHRI5512015]"
       Display Text: "AHRI 551/591 2015"
     SI_2015_ADDENDUM_1:
-      Description: "Ratings and design points defined using SI unit version of the standard, 2015 edition with Addendum 1"
+      Description: "Ratings and design points defined using SI unit version of the standard, 2015 edition with Addendum 1[@AHRI551A12015]"
       Display Text: "AHRI 551/591 2015 Addendum 1"
     SI_2018:
-      Description: "Ratings and design points defined using SI unit version of the standard, 2018 edition"
+      Description: "Ratings and design points defined using SI unit version of the standard, 2018 edition[@AHRI5512018]"
       Display Text: "AHRI 551/591 2018"
 
 # Data Groups
@@ -97,7 +97,7 @@ ProductInformation:
     refrigerant:
       Description: "Refrigerant used in the chiller"
       Data Type: "String"
-      Notes: "The string shall start with 'R-' and then include the refrigerant number designation conforming to ANSI/ASHRAE Standard 34-2019 (ASHRAE 2019)"
+      Notes: "The string shall start with 'R-' and then include the refrigerant number designation conforming to ANSI/ASHRAE Standard 34-2019[@ASHRAE34]"
     hot_gas_bypass_installed:
       Description: "Indicates if a hot-gas bypass valve is installed on the chiller"
       Data Type: "Boolean"
