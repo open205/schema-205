@@ -85,6 +85,7 @@ class DataGroup:
         elements = {'type': 'object',
                     'properties' : dict()}
         required = list()
+        dependencies = dict()
         for e in group_subdict:
             element = group_subdict[e]
             if 'Description' in element:
@@ -96,12 +97,37 @@ class DataGroup:
             if 'Notes' in element:
                 elements['properties'][e]['notes'] = element['Notes']
             if 'Required' in element:
-                required.append(e)
+                #required.append(e)
+                req = element['Required']
+                if isinstance(req, bool) and req == True:
+                    required.append(e)
+                elif req.startswith('if'):
+                    if '!=' in req:
+                        self._construct_requirement_if_else(elements, req.split(' ')[1].split('!')[0],
+                                                            False, req.split('=')[1], e)
+                    elif '=' in req:
+                        self._construct_requirement_if_else(elements, req.split(' ')[1].split('!')[0],
+                                                            True, req.split('=')[1], e)
+                    else:
+                        dependency = req.split(' ')[1]
+                        dependencies[dependency] = [e]
         if required:
             elements['required'] = required
+        if dependencies:
+            elements['dependencies'] = dependencies
         elements['additionalProperties'] = False
-
         return {group_name : elements}
+
+
+    def _construct_requirement_if_else(self, 
+                                       target_dict_to_append, 
+                                       selector, is_equal, selector_state, requirement):
+        if is_equal:
+            target_dict_to_append['if'] = {'properties' : {selector : {'const' : selector_state} } }
+        else:
+            target_dict_to_append['if'] = {'properties' : {selector : {'not' : {'const' : selector_state} } } }
+        # TODO: accommodate multiple requirements
+        target_dict_to_append['then'] = {'required' : [requirement]}
 
 
     def _create_type_entry(self, parent_dict, target_dict, entry_name):
@@ -142,7 +168,7 @@ class DataGroup:
                     for t in types:
                         #c = c.strip()
                         target_dict['allOf'].append(dict())
-                        self._construct_if_else(target_dict['allOf'][-1], selection_key, t, entry_name)
+                        self._construct_selection_if_else(target_dict['allOf'][-1], selection_key, t, entry_name)
                         self._get_simple_type(t, target_dict['allOf'][-1]['then']['properties'][entry_name])
                 else:
                     # 1. 'type' entry
@@ -154,7 +180,7 @@ class DataGroup:
             pass
 
 
-    def _construct_if_else(self, target_dict_to_append, selector, selection, entry_name):
+    def _construct_selection_if_else(self, target_dict_to_append, selector, selection, entry_name):
         target_dict_to_append['if'] = {'properties' : {selector : {'const' : ''.join(ch for ch in selection if ch.isalnum())} } }
         target_dict_to_append['then'] = {'properties' : {entry_name : dict()}}
 
