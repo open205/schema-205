@@ -9,6 +9,7 @@ def get_extension(file):
 
 
 def load(input_file_path):
+    ''' Load schema file based on extension and return resulting dictionary. '''
     ext = get_extension(input_file_path).lower()
     if (ext == '.json'):
         with open(input_file_path, 'r') as input_file:
@@ -21,6 +22,7 @@ def load(input_file_path):
 
 
 def dump(content, output_file_path):
+    ''' Save schema file of dictionary content. '''
     ext = get_extension(output_file_path).lower()
     if (ext == '.json'):
         with open(output_file_path,'w') as output_file:
@@ -41,6 +43,7 @@ def compare_dicts(original, modified, error_list):
 
 # https://stackoverflow.com/questions/4527942/comparing-two-dictionaries-and-checking-how-many-key-value-pairs-are-equal
 def dict_compare(d1, d2, errors, level=0, lineage=None, hide_value_mismatches=False, hide_key_mismatches=False):
+    ''' Compare two order-independent dictionaries, labeling added or deleted keys or mismatched values. '''
     if not lineage:
         lineage = list()
     if d1 == d2:
@@ -82,6 +85,12 @@ class DataGroup:
 
 
     def add_data_group(self, group_name, group_subdict):
+        '''
+        Process Data Group from the source schema into a properties node in json.
+
+        :param group_name:      Data Group name; this will become a schema definition key
+        :param group_subdict:   Dictionary of Data Elements where each element is a key
+        '''
         elements = {'type': 'object',
                     'properties' : dict()}
         required = list()
@@ -122,6 +131,17 @@ class DataGroup:
     def _construct_requirement_if_else(self, 
                                        target_dict_to_append, 
                                        selector, is_equal, selector_state, requirement):
+        ''' 
+        Construct paired if-else json entries for conditional requirements.
+
+        :param target_dict_to_append:   This dictionary is modified in-situ with an if key and 
+                                        an associated then key
+        :param selector:                see selector_state 
+        :param is_equal:                see selector_state
+        :param selector_state:          Format the condition {selector} [is/isn't] {is_equal} 
+                                        {selector_state}
+        :param requirement:             This item's presence is dependent on the above condition
+        '''
         if is_equal:
             target_dict_to_append['if'] = {'properties' : {selector : {'const' : selector_state} } }
         else:
@@ -131,7 +151,12 @@ class DataGroup:
 
 
     def _create_type_entry(self, parent_dict, target_dict, entry_name):
-        '''Create type node and its nested nodes if necessary.'''
+        '''
+        Create json type node and its nested nodes if necessary.
+        :param parent_dict:     A Data Element's subdictionary, from source schema
+        :param target_dict:     The json definition node that will be populated
+        :param entry_name:      Data Element name
+        '''
         try:
             # If the type is an array, extract the surrounding [] first (using non-greedy qualifier "?")
             m = re.findall(r'\[(.*?)\]', parent_dict['Data Type'])
@@ -181,15 +206,29 @@ class DataGroup:
 
 
     def _construct_selection_if_else(self, target_dict_to_append, selector, selection, entry_name):
+        ''' 
+        Construct paired if-else json entries for allOf collections translated from source-schema 
+        "choice" Constraints.
+
+        :param target_dict_to_append:   This dictionary is modified in-situ with an if key and 
+                                        associated then key
+        :param selector:                Choice from the Constraints list
+        :param selection:               Choice from Data Type list. Format the condition 
+                                        if {selector} then {selection}.
+        :param entry_name:              Data Element for which the Data Type must match the 
+                                        Constraint
+        '''
         target_dict_to_append['if'] = {'properties' : {selector : {'const' : ''.join(ch for ch in selection if ch.isalnum())} } }
         target_dict_to_append['then'] = {'properties' : {entry_name : dict()}}
 
 
     def _get_simple_type(self, type_str, target_dict_to_append):
         ''' Return the internal type described by type_str, along with its json-appropriate key.
-
             First, attempt to capture enum, definition, or special string type as references;
             then default to fundamental types with simple key "type".
+
+            :param type_str:                Input string from source schema's Data Type key
+            :param target_dict_to_append:   The json "items" node
         '''
         enum_or_def = r'(\{|\<)(.*)(\}|\>)'
         internal_type = None
@@ -230,13 +269,16 @@ class DataGroup:
 
 
     def _get_simple_constraints(self, constraints_str, target_dict):
-        '''Process Constraints into fields.'''
+        '''
+        Process numeric Constraints into fields.
+
+        :param constraints_str:     Raw numerical limits and/or multiple information
+        :param target_dict:         json property node
+        '''
         if constraints_str is not None:
             constraints = constraints_str if isinstance(constraints_str, list) else [constraints_str]
             minimum=None
             maximum=None
-            # if 'type' not in target_dict:
-            #     target_dict['type'] = None
             for c in constraints:
                 try:
                     numerical_value = re.findall(r'[+-]?\d*\.?\d+|\d+', c)[0]
@@ -276,8 +318,9 @@ class Enumeration:
         self._enumerants.append((value, description, display_text, notes))
 
     def create_dictionary_entry(self):
-        '''Convert information currently grouped per enumerant, into json groups for
-           the whole enumeration.
+        '''
+        Convert information currently grouped per enumerant, into json groups for
+        the whole enumeration.
         '''
         z = list(zip(*self._enumerants))
         enums = {'type': 'string',
