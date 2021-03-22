@@ -52,7 +52,7 @@ ProductInformation:
     refrigerant:
       Description: "Refrigerant used"
       Data Type: "String"
-      Notes: "The string shall start with 'R-' and then include the refrigerant number designation conforming to ANSI/ASHRAE Standard 34-2019 (ASHRAE 2019)"
+      Notes: "The string shall start with 'R-' and then include the refrigerant number designation conforming to ANSI/ASHRAE Standard 34-2019[@ASHRAE34]"
     compressor_type:
       Description: "Type of compressor"
       Data Type: "<CompressorType>"

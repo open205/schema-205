@@ -24,10 +24,10 @@ AHRI210240TestStandardYear:
   Object Type: "Enumeration"
   Enumerators:
     IP_2008:
-      Description: "Rating is based on 2008 AHRI standard"
+      Description: "Rating is based on 2008 AHRI standard[@AHRI2102008]"
       Display Text: "2008"
     IP_2017:
-      Description: "Rating is based on 2017 AHRI standard"
+      Description: "Rating is based on 2017 AHRI standard[@AHRI2102017]"
       Display Text: "2017"
 
 AHRI210240CompressorStagingType:
@@ -47,13 +47,13 @@ AHRI340360TestStandardYear:
   Object Type: "Enumeration"
   Enumerators:
     IP_2007:
-      Description: "Rating is based on 2007 AHRI standard"
+      Description: "Rating is based on 2007 AHRI standard[@AHRI3402007]"
       Display Text: "2007"
     IP_2015:
-      Description: "Rating is based on 2015 AHRI standard"
+      Description: "Rating is based on 2015 AHRI standard[@AHRI3402015]"
       Display Text: "2015"
     IP_2019:
-      Description: "Rating is based on 2019 AHRI standard"
+      Description: "Rating is based on 2019 AHRI standard[@AHRI3402019]"
       Display Text: "2019"
 
 AHRI340360CapacityControlType:
