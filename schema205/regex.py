@@ -72,8 +72,8 @@ ranges = f"(>|>=|<=|<){number}"
 multiples = f"%{number}"
 data_element_value = f"({element_names})=({values})"
 sets = f"\\[{number}(, {number})*\\]"
-oneofs = f"({element_names})({enum_list})"
-constraints = f"({ranges})|({multiples})|({sets})|({data_element_value})|{oneofs}"
+selectors = f"({element_names})({enum_list})"
+constraints = f"({ranges})|({multiples})|({sets})|({data_element_value})|{selectors}"
 
 '''
 >=0
