@@ -11,6 +11,82 @@ This package is used to generate:
 
 **Warning!**  As the proposed ASHRAE Standard 205P has not yet been published, the content in this repository is subject to change and should be considered unstable for application development.
 
+Using DOIT Tasks!
+-----------------
+
+This repository ships with the [DoIt!](https://pydoit.org/) task automation tool.
+
+The following DoIt! tasks are available:
+
+- `doc`: Generates Markdown tables from common-scema
+- `render_template`: Demonstrate how to render a template
+- `schema`: Generates JSON schema from common-scema
+- `test`: Performs unit tests and example file validation tests
+- `validate`: Validates common-schema against meta-schema
+
+Details of some of the tasks above are explained more below.
+
+### Rendering a Jinja Template: `render_template`
+
+This task takes an example template using the [Jinja](https://palletsprojects.com/p/jinja/) templating system and renders it.
+The example file used is located at `rendering_examples/template_rendering/main.md`.
+The base file is written in the [Markdown](https://commonmark.org/) language.
+It includes examples of using the `add_schema_table` hook to insert Schema 205 tables into markdown text.
+
+The rendered result appears in `build/rendered_template/main.md`.
+
+
+Using Schema 205 for Rendering Tables
+-------------------------------------
+
+If you would like to use this repository as a library to assit with rendering your own files, this section will give you some tips on how to set that up and use the `add_schema_table` hook.
+
+1. We recommend starting a new repository to hold your document and to use version control
+
+    > mkdir my-project
+    > cd my-project
+    > git init
+
+2. Within that new repository, use the [Poetry](https://python-poetry.org/docs/#installation) python package management tool:
+
+    # assuming you have poetry installed...
+    > poetry init
+
+3. Edit `pyproject.toml` to add this repository as a dependency. You can do that by either installing this repository as a submodule. Note: set develop to `true` if you plan to develop on schema205 while building your documentation:
+
+    [tool.poetry.dependencies]
+    python = "^3.6"
+    schema205 = { path = "./schema-205/", develop = false }
+
+4. Create a `src` directory containing your markdown as Jinja templates.
+
+5. Lastly, install DoIt! and setup a `dodo.py` file such as the following:
+
+```python
+import os
+import os.path
+import glob
+from schema205.render_template import main as render_template
+
+def task_render_markdown():
+    """
+    Render a Markdown Template to Markdown
+    """
+    BUILD_DIR = 'build'
+    os.makedirs(BUILD_DIR, exist_ok=True)
+    src_dir = 'src'
+    main_source = "main.md"
+    return {
+        'actions': [
+            (render_template, [os.path.join(src_dir, main_source), os.path.join(BUILD_DIR, main_source), "src"]),
+        ],
+        'targets': [os.path.join(BUILD_DIR, main_source)],
+        'file_dep': list(glob.glob(os.path.join(src_dir, '*.md'))),
+        'clean': True,
+    }
+```
+
+
 Development Workflow
 --------------------
 
@@ -29,13 +105,13 @@ Following are some considerations you should go through to configure your enviro
     If you don't desire to support multiple versions of Python, then you need only ensure that you have at least one version of Python installed. This project requires Python 3.6 or higher. Please see the [Python Website](https://www.python.org/) for installation instructions for your operating system.
 
     If you wish to support multiple versions of Python during development, there are several options. One simple option is to just ensure you start up your command prompt (i.e., shell) with the Python version you wish to develop with.
-    
+
     For something more sophisticated, we recommend [mini-conda](https://docs.conda.io/en/latest/miniconda.html), a free minimal installer for Conda. Conda is an open-source package and environment management system that runs on Windows, macOS, and Linux.  Use the following steps:
 
     a) [install mini-conda](https://docs.conda.io/en/latest/miniconda.html).
-    
+
     b) [start conda](https://docs.conda.io/projects/conda/en/latest/user-guide/getting-started.html#starting-conda).  This will bring up a shell window that "knows" about conda capabilities.  Windows note: be sure to follow the recommended start procedure -- generally conda *cannot* be started from a native shell prompt (due to path issues).
-    
+
     c) Create an environment for the version of Python you would like to use with Poetry and this project by typing the following at the conda shell:
 
     > (base) conda create -n py36 python=3.6

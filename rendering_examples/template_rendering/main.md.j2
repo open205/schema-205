@@ -1,0 +1,115 @@
+# Example of Templating
+
+This example uses the Python [Jinja](https://palletsprojects.com/p/jinja/)
+project and the `add_schema_table` hook.
+
+We will insert a table here:
+
+{{ add_schema_table('ASHRAE205', 'data_types') }}
+
+{## this is a comment ##}
+
+See how easy it is!
+
+To add a caption automatically to a table, just specify it in the call:
+
+{{ add_schema_table('ASHRAE205', 'data_types', caption='The Data Types Table') }}
+
+If you would also like to have the `add_schema_table` hook render a header for you, you can do that as well:
+
+{{ add_schema_table(
+    'ASHRAE205',
+    'data_types',
+    caption='The Data Types Table',
+    header_level_and_content=(3, "Data Types"))
+}}
+
+Note that there is some flexibility in how the table name is interpreted.
+For example, the following pulls the same table:
+
+{{ add_schema_table('ASHRAE205', ' Data   TYPES  ') }}
+
+
+## Using Incorrect Parameters to Insert a Table
+
+To insert a table, we need to provide the following:
+
+- the schema file name (see `schema-source/*.schema.yaml` -- the name is the `*` part)
+- the `table_name` (one of `data_types`, `string_types`, or the name of an object that has an "Enumeration" or "Data Group" object type)
+
+If we specify those incorrectly, the rendered template will inform us with a friendly error message:
+
+{{ add_schema_table('nonexistingfile', 'data_types') }}
+
+Or, if we specify a `table_name` value that doesn't exist, the system will also inform us:
+
+{{ add_schema_table('ASHRAE205', 'dolphin') }}
+
+
+## Going Through the Remaining Table Types
+
+We saw usage fo the `data_types` table already.
+Here we run through the remaining table types with all options:
+
+
+{{ add_schema_table(
+    'ASHRAE205',
+    'string_types',
+    caption='The String Types Table',
+    header_level_and_content=(3, "String Types"))
+}}
+
+For an Enumeration or Data Group, just specify the object name to render the correct table.
+
+{{ add_schema_table(
+    'ASHRAE205',
+    'ASHRAE205Version',
+    caption='ASHRAE 205 Versions',
+    header_level_and_content=(3, "ASHRAE 205 Version"))
+}}
+
+The `table_name` value is used to pull out the correct table from all of the potential enumerations or data group objects.
+If we don't specify it or specify it wrong, we get a helpful error message listing the possible `table_name` options:
+
+{{ add_schema_table(
+    'ASHRAE205',
+    "we_do_not_know",
+    caption="When we don't know the item type...",
+    header_level_and_content=(3, "We Don't Know What Item Type to Choose..."))
+}}
+
+The `data_groups` table operates similar to enumerations:
+
+{{ add_schema_table(
+    'ASHRAE205',
+    'LiquidMixture',
+    caption='Liquid mixtures',
+    header_level_and_content=(3, "Available Liquid Mixture Options"))
+}}
+
+And similarly, if we don't know what `table_name` value to choose, we can leave it blank and let the system respond with all of the options in an error message:
+
+{{ add_schema_table('ASHRAE205', "") }}
+
+
+## Rendering the Entire Data Model
+
+Finally, it is also possible to render an entire data model from file as shown below.
+This uses the `add_data_model` hook to generate *all* the tables from a given schema source.
+
+{{ add_data_model('ASHRAE205') }}
+
+## Rendering a table from local YAML
+
+{{ add_yaml_table(
+    '''
+Headers: ["Attribute", "Description", "Notes"]
+Data:
+  - ["Enumerator", "Public name of enumerator", "See [@sec:enumeration-names]"]
+  - ["Description", "Text description that defines the meaning of the enumerator", ""]
+  - ["Display Text", "Text used by application for enumerator", ""]
+  - ["Notes", "Any supplementary information", ""]
+
+    ''',
+    caption='Enumerator Attributes {#tbl:enumerator-attributes}')
+}}
