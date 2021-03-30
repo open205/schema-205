@@ -115,7 +115,7 @@ class DataGroup:
                         self._construct_requirement_if_else(elements, req.split(' ')[1].split('!')[0],
                                                             False, req.split('=')[1], e)
                     elif '=' in req:
-                        self._construct_requirement_if_else(elements, req.split(' ')[1].split('!')[0],
+                        self._construct_requirement_if_else(elements, req.split(' ')[1].split('=')[0],
                                                             True, req.split('=')[1], e)
                     else:
                         dependency = req.split(' ')[1]
