@@ -142,12 +142,13 @@ class DataGroup:
                                         {selector_state}
         :param requirement:             This item's presence is dependent on the above condition
         '''
-        if is_equal:
-            target_dict_to_append['if'] = {'properties' : {selector : {'const' : selector_state} } }
+        selector_dict = ({'properties' : {selector : {'const' : selector_state} } } if is_equal 
+                         else {'properties' : {selector : {'not' : {'const' : selector_state} } } })
+        if target_dict_to_append.get('if') == selector_dict: # condition already exists
+            target_dict_to_append['then']['required'].append(requirement)
         else:
-            target_dict_to_append['if'] = {'properties' : {selector : {'not' : {'const' : selector_state} } } }
-        # TODO: accommodate multiple requirements
-        target_dict_to_append['then'] = {'required' : [requirement]}
+            target_dict_to_append['if'] = selector_dict
+            target_dict_to_append['then'] = {'required' : [requirement]}
 
 
     def _create_type_entry(self, parent_dict, target_dict, entry_name):
