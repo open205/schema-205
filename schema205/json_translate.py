@@ -142,6 +142,10 @@ class DataGroup:
                                         {selector_state}
         :param requirement:             This item's presence is dependent on the above condition
         '''
+        if 'true' in selector_state.lower():
+            selector_state = True
+        elif 'false' in selector_state.lower():
+            selector_state = False
         selector_dict = ({'properties' : {selector : {'const' : selector_state} } } if is_equal 
                          else {'properties' : {selector : {'not' : {'const' : selector_state} } } })
         if target_dict_to_append.get('if') == selector_dict: # condition already exists
