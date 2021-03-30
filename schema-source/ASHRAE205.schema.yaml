@@ -11,15 +11,6 @@ Schema:
   Title: "ASHRAE 205"
   Description: "Base schema for ASHRAE 205 representations"
   Version: "0.1.0"
-  References:
-    - "RS0001"
-    - "RS0002"
-    - "RS0003"
-    - "RS0004"
-    - "RS0005"
-    - "RS0006"
-    - "RS0007"
-  Root Data Group: "ASHRAE205"
 
 # Data Types
 
@@ -102,19 +93,7 @@ Pattern:
 
 # Common Enumerations
 
-ASHRAE205Version:
-  Object Type: "Enumeration"
-  Enumerators:
-    PPR2:
-      Description: "ASHRAE205 - 2020 Publication Public Review 2"
-      Display Text: "ASHRAE205 - 2020 Publication Public Review 2"
-      Notes: "Unpublished"
-    PPR3:
-      Description: "ASHRAE205 - 2020 Publication Public Review 3"
-      Display Text: "ASHRAE205 - 2020 Publication Public Review 3"
-      Notes: "Unpublished"
-
-RSID:
+SchemaType:
   Object Type: "Enumeration"
   Enumerators:
     RS0001:
@@ -210,37 +189,39 @@ ConcentrationType:
       Display Text: "By Mass"
 
 #Common Data Groups
-ASHRAE205:
+Metadata:
   Object Type: "Data Group"
   Data Elements:
-    standard_version:
-      Description: "The version of the *ASHRAE 205 Standard* this *representation* complies with"
-      Data Type: "<ASHRAE205Version>"
-      Required: True
-    schema_version:
-      Description: "The version of the *ASHRAE 205 JSON schema* this *representation* complies with"
-      Data Type: "Version"
-      Required: True
-    rs_id:
-      Description: "*Representation specification* identifier"
-      Data Type: "<RSID>"
-      Required: True
-      Notes: "Identifies the *representation specification* used to generate this *representation*"
-    description:
-      Description: "Description of equipment (suitable for display)"
+    data_model:
+      Description: "Data model name"
       Data Type: "String"
+      Constraints: '"ASHRAE_205"'
+      Required: True
+      Notes: "Identifies the data model where the schema is defined"
+    schema:
+      Description: "Schema name or identifier"
+      Data Type: "<SchemaType>"
+      Required: True
+      Notes: "Identifies the schema used to define the data content"
+    schema_version:
+      Description: "The version of the schema the data complies with"
+      Data Type: "Version"
       Required: True
     id:
       Description: "Unique equipment identifier"
       Data Type: "UUID"
       Required: True
-      Notes: ["Assigned by *data publisher* to identify a *representation* for a specific set of equipment",
-              "`id` shall remain unchanged for revised *representations* for the same equipment"]
+      Notes: ["Assigned by *data publisher* to identify the contained data",
+              "`id` shall remain unchanged for revised data"]
+    description:
+      Description: "Description of data (suitable for display)"
+      Data Type: "String"
+      Required: True
     data_timestamp:
       Description: "Date of publication"
       Data Type: "Timestamp"
       Required: True
-      Notes: "Date/time of publication of this *representation*"
+      Notes: "Date/time of publication of the data"
     data_version:
       Description: "Integer version identifier for the data in the *representation*"
       Data Type: "Integer"
@@ -249,21 +230,16 @@ ASHRAE205:
       Notes: ["Used by *data publisher* to track revisions of the data for a specific *representation*",
               "`data_version` shall be incremented for each data revision"]
     data_source:
-      Description: "Source of the performance data in this *representation*"
+      Description: "Source(s) of the data"
       Data Type: "String"
-      Notes: ["Used by *data publisher* to document methods (e.g. software and version) used to generate performance data", "***Informative note:*** `data_source` may be different from ratings source(s) included elsewhere"]
+      Notes: ["Used by *data publisher* to document methods (e.g. software and version) used to generate data",
+              "***Informative note:*** `data_source` may be different from other data source(s) included elsewhere within the data"]
     disclaimer:
       Description: "Characterization of accuracy, limitations, and applicability of this data"
       Data Type: "String"
     notes:
       Description: "Additional Information"
       Data Type: "String"
-    rs_instance:
-      Description: "*Representation Specification* Data Group"
-      Data Type: "({RS0001}, {RS0002}, {RS0003}, {RS0004}, {RS0005}, {RS0006}, {RS0007})"
-      Constraints: "rs_id(RS0001, RS0002, RS0003, RS0004, RS0005, RS0006, RS0007)"
-      Notes: "Data Group defined by specific *representation specification* (e.g., 'RS0001')"
-      Required: True
 
 # Reusable Data Groups
 LiquidMixture:

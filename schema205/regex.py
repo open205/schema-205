@@ -73,7 +73,8 @@ multiples = f"%{number}"
 data_element_value = f"({element_names})=({values})"
 sets = f"\\[{number}(, {number})*\\]"
 selectors = f"({element_names})({enum_list})"
-constraints = f"({ranges})|({multiples})|({sets})|({data_element_value})|{selectors}"
+string_pattern = f"({string})"
+constraints = f"({ranges})|({multiples})|({sets})|({data_element_value})|({selectors})|({string_pattern})"
 
 '''
 >=0

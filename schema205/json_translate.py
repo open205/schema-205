@@ -128,17 +128,17 @@ class DataGroup:
         return {group_name : elements}
 
 
-    def _construct_requirement_if_else(self, 
-                                       target_dict_to_append, 
+    def _construct_requirement_if_else(self,
+                                       target_dict_to_append,
                                        selector, is_equal, selector_state, requirement):
-        ''' 
+        '''
         Construct paired if-else json entries for conditional requirements.
 
-        :param target_dict_to_append:   This dictionary is modified in-situ with an if key and 
+        :param target_dict_to_append:   This dictionary is modified in-situ with an if key and
                                         an associated then key
-        :param selector:                see selector_state 
+        :param selector:                see selector_state
         :param is_equal:                see selector_state
-        :param selector_state:          Format the condition {selector} [is/isn't] {is_equal} 
+        :param selector_state:          Format the condition {selector} [is/isn't] {is_equal}
                                         {selector_state}
         :param requirement:             This item's presence is dependent on the above condition
         '''
@@ -146,7 +146,7 @@ class DataGroup:
             selector_state = True
         elif 'false' in selector_state.lower():
             selector_state = False
-        selector_dict = ({'properties' : {selector : {'const' : selector_state} } } if is_equal 
+        selector_dict = ({'properties' : {selector : {'const' : selector_state} } } if is_equal
                          else {'properties' : {selector : {'not' : {'const' : selector_state} } } })
         if target_dict_to_append.get('if') == selector_dict: # condition already exists
             target_dict_to_append['then']['required'].append(requirement)
@@ -211,16 +211,16 @@ class DataGroup:
 
 
     def _construct_selection_if_else(self, target_dict_to_append, selector, selection, entry_name):
-        ''' 
-        Construct paired if-else json entries for allOf collections translated from source-schema 
+        '''
+        Construct paired if-else json entries for allOf collections translated from source-schema
         "choice" Constraints.
 
-        :param target_dict_to_append:   This dictionary is modified in-situ with an if key and 
+        :param target_dict_to_append:   This dictionary is modified in-situ with an if key and
                                         associated then key
         :param selector:                Choice from the Constraints list
-        :param selection:               Choice from Data Type list. Format the condition 
+        :param selection:               Choice from Data Type list. Format the condition
                                         if {selector} then {selection}.
-        :param entry_name:              Data Element for which the Data Type must match the 
+        :param entry_name:              Data Element for which the Data Type must match the
                                         Constraint
         '''
         target_dict_to_append['if'] = {'properties' : {selector : {'const' : ''.join(ch for ch in selection if ch.isalnum())} } }
@@ -297,6 +297,8 @@ class DataGroup:
                         target_dict[mx] = maximum
                     elif '%' in c:
                         target_dict['multipleOf'] = int(numerical_value)
+                    elif 'string' in target_dict['type']:  # String pattern match
+                        target_dict['pattern'] = c.replace('"','')  # TODO: Find better way to remove quotes.
                 except IndexError:
                     # Constraint was non-numeric
                     pass
@@ -393,10 +395,9 @@ class JSON_translator:
         if 'Root Data Group' in schema_section:
             self._schema['$ref'] = self._schema_name + '.schema.json#/definitions/' + schema_section['Root Data Group']
         # Create a dictionary of available external objects for reference
-        refs = list()
+        refs = [self._schema_name]
         if 'References' in schema_section:
-            refs = schema_section['References']
-        refs.append(self._schema_name)
+            refs += schema_section['References']
         for ref_file in refs:
             ext_dict = load(os.path.join(self._source_dir, ref_file + '.schema.yaml'))
             external_objects = list()
