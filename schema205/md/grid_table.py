@@ -121,7 +121,7 @@ def get_column_sizes(content, is_bold=False, has_spacing=True, preferred_sizes=N
         sizes = copy.deepcopy(preferred_sizes)
     assert len(content) == len(sizes), "len(content) must equal len(sizes)"
     for col_num, col_name in enumerate(content):
-        atoms = col_name.split(' ')
+        atoms = col_name.replace('\n',' ').split(' ')
         longest_atom = max([len(s) for s in atoms])
         if is_bold:
             num_atoms = len(atoms)
