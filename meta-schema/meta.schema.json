@@ -102,16 +102,31 @@
       ],
       "additionalProperties": false
     },
+    "ConstraintsPattern": {
+      "type": "string",
+      "pattern": "((>|>=|<=|<)([-+]?[0-9]*\\.?[0-9]+([eE][-+]?[0-9]+)?))|(%([-+]?[0-9]*\\.?[0-9]+([eE][-+]?[0-9]+)?))|(\\[([-+]?[0-9]*\\.?[0-9]+([eE][-+]?[0-9]+)?)(, ([-+]?[0-9]*\\.?[0-9]+([eE][-+]?[0-9]+)?))*\\])|((([a-z]+)(_([a-z]|[0-9])+)*)=((([-+]?[0-9]*\\.?[0-9]+([eE][-+]?[0-9]+)?))|(\".*\")|(([A-Z]([A-Z]|[0-9])*)(_([A-Z]|[0-9])+)*)|(True|False)))|(([a-z]+)(_([a-z]|[0-9])+)*)(\\((([A-Z]([A-Z]|[0-9])*)(_([A-Z]|[0-9])+)*)(, *(([A-Z]([A-Z]|[0-9])*)(_([A-Z]|[0-9])+)*))*\\))"
+    },
     "Constraints": {
       "oneOf": [
         {
-          "type": "string"
+          "$ref": "meta.schema.json#/definitions/ConstraintsPattern"
         },
         {
           "type": "array",
           "items": {
-            "type": "string"
+            "$ref": "meta.schema.json#/definitions/ConstraintsPattern"
           }
+        }
+      ]
+    },
+    "Required": {
+      "oneOf": [
+        {
+          "type": "boolean"
+        },
+        {
+          "type": "string",
+          "pattern": "if (([a-z]+)(_([a-z]|[0-9])+)*)(!?=((([-+]?[0-9]*\\.?[0-9]+([eE][-+]?[0-9]+)?))|(\".*\")|(([A-Z]([A-Z]|[0-9])*)(_([A-Z]|[0-9])+)*)|(True|False)))?"
         }
       ]
     },
@@ -220,7 +235,7 @@
     },
     "DataTypePattern": {
       "type": "string",
-      "pattern": "((Numeric|String|Integer|Boolean|Null){1}(\\/(Numeric|String|Integer|Boolean|Null))*|(UUID|Date|Timestamp|Version|Pattern)|\\{[A-Z]([A-Z]|[a-z]|[0-9])*(\\(([A-Z]*|[a-z]*)(_([a-z]*|[0-9]*)|([A-Z]*|[0-9]*))*=(.*)\\))?\\}|<[A-Z]([A-Z]|[a-z]|[0-9])*>)|\\(((Numeric|String|Integer|Boolean|Null){1}(\\/(Numeric|String|Integer|Boolean|Null))*|(UUID|Date|Timestamp|Version|Pattern)|\\{[A-Z]([A-Z]|[a-z]|[0-9])*(\\(([A-Z]*|[a-z]*)(_([a-z]*|[0-9]*)|([A-Z]*|[0-9]*))*=(.*)\\))?\\}|<[A-Z]([A-Z]|[a-z]|[0-9])*>)(,\\s*((Numeric|String|Integer|Boolean|Null){1}(\\/(Numeric|String|Integer|Boolean|Null))*|(UUID|Date|Timestamp|Version|Pattern)|\\{[A-Z]([A-Z]|[a-z]|[0-9])*(\\(([A-Z]*|[a-z]*)(_([a-z]*|[0-9]*)|([A-Z]*|[0-9]*))*=(.*)\\))?\\}|<[A-Z]([A-Z]|[a-z]|[0-9])*>))+\\)|\\[((Numeric|String|Integer|Boolean|Null){1}(\\/(Numeric|String|Integer|Boolean|Null))*|(UUID|Date|Timestamp|Version|Pattern)|\\{[A-Z]([A-Z]|[a-z]|[0-9])*(\\(([A-Z]*|[a-z]*)(_([a-z]*|[0-9]*)|([A-Z]*|[0-9]*))*=(.*)\\))?\\}|<[A-Z]([A-Z]|[a-z]|[0-9])*>)\\]"
+      "pattern": "((Numeric|String|Integer|Boolean|Null){1}(\\/(Numeric|String|Integer|Boolean|Null))*|(UUID|Date|Timestamp|Version|Pattern)|\\{[A-Z]([A-Z]|[a-z]|[0-9])*\\}|<[A-Z]([A-Z]|[a-z]|[0-9])*>)|\\(((Numeric|String|Integer|Boolean|Null){1}(\\/(Numeric|String|Integer|Boolean|Null))*|(UUID|Date|Timestamp|Version|Pattern)|\\{[A-Z]([A-Z]|[a-z]|[0-9])*\\}|<[A-Z]([A-Z]|[a-z]|[0-9])*>)(,\\s*((Numeric|String|Integer|Boolean|Null){1}(\\/(Numeric|String|Integer|Boolean|Null))*|(UUID|Date|Timestamp|Version|Pattern)|\\{[A-Z]([A-Z]|[a-z]|[0-9])*\\}|<[A-Z]([A-Z]|[a-z]|[0-9])*>))+\\)|\\[((Numeric|String|Integer|Boolean|Null){1}(\\/(Numeric|String|Integer|Boolean|Null))*|(UUID|Date|Timestamp|Version|Pattern)|\\{[A-Z]([A-Z]|[a-z]|[0-9])*\\}|<[A-Z]([A-Z]|[a-z]|[0-9])*>)\\]"
     },
     "DataElementAttributes": {
       "type": "object",
@@ -238,7 +253,7 @@
           "$ref": "meta.schema.json#/definitions/Constraints"
         },
         "Required": {
-          "type": "boolean"
+          "$ref": "meta.schema.json#/definitions/Required"
         },
         "Notes": {
           "$ref": "meta.schema.json#/definitions/Notes"
@@ -269,7 +284,7 @@
           "$ref": "meta.schema.json#/definitions/Constraints"
         },
         "Required": {
-          "type": "boolean"
+          "$ref": "meta.schema.json#/definitions/Required"
         },
         "Notes": {
           "$ref": "meta.schema.json#/definitions/Notes"
@@ -301,7 +316,7 @@
           "$ref": "meta.schema.json#/definitions/Constraints"
         },
         "Required": {
-          "type": "boolean",
+          "$ref": "meta.schema.json#/definitions/Required",
           "const": true
         },
         "Notes": {
@@ -336,7 +351,7 @@
           "$ref": "meta.schema.json#/definitions/Constraints"
         },
         "Required": {
-          "type": "boolean",
+          "$ref": "meta.schema.json#/definitions/Required",
           "const": true
         },
         "Notes": {
