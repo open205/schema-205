@@ -59,12 +59,13 @@ def data_elements_dict_from_data_groups(data_groups):
             new_obj["Name"] = f"`{element}`"
             if 'Required' in new_obj:
                 if new_obj["Required"] == True:
-                    new_obj["Req"] = u'\N{check mark}'
+                    check = u'\N{check mark}'
+                    new_obj["Req"] = f"${check}$" if new_obj["Required"] else ''
                 elif new_obj["Required"] == False:
                     new_obj["Req"] = ''
                 else:
                     new_obj["Req"] = f"`{new_obj['Required']}`"
-                    new_obj.pop('Required')
+                new_obj.pop('Required')
             new_obj['Data Type'] = f"`{new_obj['Data Type']}`"
             if 'Constraints' in new_obj:
                 gte = u'\N{GREATER-THAN OR EQUAL TO}'
