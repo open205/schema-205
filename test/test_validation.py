@@ -15,8 +15,9 @@ def collect_examples(example_dir):
             paths += collect_examples(example_path)[0]
             names += collect_examples(example_path)[1]
         else:
-            paths.append(os.path.join(example_dir,example))
-            names.append(example)
+            if ".a205.json" in example:
+                paths.append(os.path.join(example_dir,example))
+                names.append(example)
     return paths, names
 
 paths, names = collect_examples(EXAMPLES_DIR)
