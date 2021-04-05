@@ -9,27 +9,29 @@ import yaml
 
 import schema205.md.schema_table as schema_table
 
-def string_out_tables(instance):
+def string_out_tables(instance,base_level=1):
   struct = schema_table.load_structure_from_object(instance)
   output = None
   with io.StringIO() as output_file:
     # Data Types
     if len(struct['data_types']) > 0:
-      output_file.writelines(schema_table.write_header("Data Types"))
+      output_file.writelines(schema_table.write_header("Data Types", base_level))
       output_file.writelines(schema_table.data_types_table(struct['data_types']))
     # String Types
     if len(struct['string_types']) > 0:
-      output_file.writelines(schema_table.write_header("String Types"))
+      output_file.writelines(schema_table.write_header("String Types", base_level))
       output_file.writelines(schema_table.string_types_table(struct['string_types']))
     # Enumerations
     if len(struct['enumerations']) > 0:
+      output_file.writelines(schema_table.write_header("Local Enumerations", base_level))
       for enum, enumerators in struct['enumerations'].items():
-        output_file.writelines(schema_table.write_header(enum))
+        output_file.writelines(schema_table.write_header(enum, base_level+1))
         output_file.writelines(schema_table.enumerators_table(enumerators))
     # Data Groups
     if len(struct['data_groups']) > 0:
+      output_file.writelines(schema_table.write_header("Data Groups", base_level))
       for dg, data_elements in struct['data_groups'].items():
-        output_file.writelines(schema_table.write_header(dg))
+        output_file.writelines(schema_table.write_header(dg, base_level+1))
         output_file.writelines(schema_table.data_groups_table(data_elements))
     output = output_file.getvalue()
   return output
