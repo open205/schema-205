@@ -22,17 +22,21 @@ def string_out_tables(instance,base_level=1):
       output_file.writelines(schema_table.write_header("String Types", base_level))
       output_file.writelines(schema_table.string_types_table(struct['string_types']))
     # Enumerations
+    output_file.writelines(schema_table.write_header("Enumerations", base_level))
     if len(struct['enumerations']) > 0:
-      output_file.writelines(schema_table.write_header("Local Enumerations", base_level))
       for enum, enumerators in struct['enumerations'].items():
         output_file.writelines(schema_table.write_header(enum, base_level+1))
         output_file.writelines(schema_table.enumerators_table(enumerators))
+    else:
+      output_file.writelines(["None.","\n"*2])
     # Data Groups
+    output_file.writelines(schema_table.write_header("Data Groups", base_level))
     if len(struct['data_groups']) > 0:
-      output_file.writelines(schema_table.write_header("Data Groups", base_level))
       for dg, data_elements in struct['data_groups'].items():
         output_file.writelines(schema_table.write_header(dg, base_level+1))
         output_file.writelines(schema_table.data_groups_table(data_elements))
+    else:
+      output_file.writelines(["None.","\n"*2])
     output = output_file.getvalue()
   return output
 
