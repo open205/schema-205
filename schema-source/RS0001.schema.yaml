@@ -714,9 +714,10 @@ LookupVariablesStandby:
   Object Type: "Lookup Variables"
   Data Elements:
     input_power:
-      Description: "Total power consumed by the chiller when not running. Value shall include all power sources and auxiliary equipment"
+      Description: "Total power consumed in *standby operation*"
       Data Type: "[Numeric/Null][1..]"
       Units: "W"
       Constraints: ">=0.0"
       Required: True
-      Notes: "Power consumed by chiller during off cycle"
+      Notes: ["Includes devices that cycle on and off (e.g., purge units and sump units) and devices that draw continuous power (e.g., fans and controls)",
+              "Expressed as a time averaged power consumption"]
