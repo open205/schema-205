@@ -260,6 +260,9 @@
         },
         "Selector": {
           "type": "string"
+        },
+        "Selector": {
+          "type": "string"
         }
       },
       "required": [
