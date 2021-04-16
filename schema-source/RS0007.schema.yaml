@@ -48,7 +48,7 @@ Description:
   Object Type: "Data Group"
   Data Elements:
     product_information:
-      Description: "Data group describing product information"
+      Description: "*Data group* describing product information"
       Data Type: "{ProductInformation}"
 
 ProductInformation:
@@ -75,7 +75,7 @@ Performance:
       Constraints: ">0.0"
       Required: True
     performance_map:
-      Description: "Data group describing drive performance when operating"
+      Description: "*Data group* describing drive performance when operating"
       Data Type: "{PerformanceMap}"
       Required: True
 
@@ -83,11 +83,11 @@ PerformanceMap:
   Object Type: "Performance Map"
   Data Elements:
     grid_variables:
-      Description: "Data group describing grid variables for drive performance"
+      Description: "*Data group* describing *grid variables* for drive performance"
       Data Type: "{GridVariables}"
       Required: True
     lookup_variables:
-      Description: "Data group describing lookup variables for drive performance"
+      Description: "*Data group* describing *lookup variables* for drive performance"
       Data Type: "{LookupVariables}"
       Required: True
 

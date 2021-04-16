@@ -193,11 +193,11 @@ Metadata:
   Object Type: "Data Group"
   Data Elements:
     data_model:
-      Description: "Data model name"
+      Description: "*Data model* name"
       Data Type: "String"
       Constraints: '"ASHRAE_205"'
       Required: True
-      Notes: "Identifies the data model where the schema is defined"
+      Notes: "Identifies the *data model* where the schema is defined"
     schema:
       Description: "Schema name or identifier"
       Data Type: "<SchemaType>"

@@ -28,7 +28,7 @@ Description:
   Object Type: "Data Group"
   Data Elements:
     product_information:
-      Description: "Data group describing product information"
+      Description: "*Data group* describing product information"
       Data Type: "{ProductInformation}"
 
 ProductInformation:
@@ -73,11 +73,11 @@ Performance:
       Notes: ["Used for the lowest stage when the unit cycles to meet load",
               "***Informative note:*** 340/360 specifies a fixed cycling degradation coefficient of approximately 0.12"]
     performance_map_cooling:
-      Description: "Data group describing cooling performance over a range of conditions"
+      Description: "*Data group* describing cooling performance over a range of conditions"
       Data Type: "{PerformanceMapCooling}"
       Required: True
     performance_map_standby:
-      Description: "Data group describing standby performance"
+      Description: "*Data group* describing standby performance"
       Data Type: "{PerformanceMapStandby}"
       Required: True
 
@@ -85,11 +85,11 @@ PerformanceMapCooling:
   Object Type: "Performance Map"
   Data Elements:
     grid_variables:
-      Description: "Data group defining the grid variables for cooling performance"
+      Description: "*Data group* defining the *grid variables* for cooling performance"
       Data Type: "{GridVariablesCooling}"
       Required: True
     lookup_variables:
-      Description: "Data group defining the lookup variables for cooling performance"
+      Description: "*Data group* defining the *lookup variables* for cooling performance"
       Data Type: "{LookupVariablesCooling}"
       Required: True
 
@@ -167,11 +167,11 @@ PerformanceMapStandby:
   Object Type: "Performance Map"
   Data Elements:
     grid_variables:
-      Description: "Data group defining the grid variables for standby performance"
+      Description: "*Data group* defining the *grid variables* for standby performance"
       Data Type: "{GridVariablesStandby}"
       Required: True
     lookup_variables:
-      Description: "Data group defining the lookup variables for standby performance"
+      Description: "*Data group* defining the *lookup variables* for standby performance"
       Data Type: "{LookupVariablesStandby}"
       Required: True
 
