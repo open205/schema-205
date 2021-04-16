@@ -47,15 +47,15 @@ RS0001:
   Object Type: "Data Group"
   Data Elements:
     metadata:
-      Description: "Metadata *data group*"
+      Description: "Metadata data group"
       Data Type: "{Metadata}"
       Constraints: "schema=RS0001"
       Required: True
     description:
-      Description: "*Data group* describing product and rating information"
+      Description: "Data group describing product and rating information"
       Data Type: "{Description}"
     performance:
-      Description: "*Data group* containing performance information"
+      Description: "Data group containing performance information"
       Data Type: "{Performance}"
       Required: True
 
@@ -63,13 +63,13 @@ Description:
   Object Type: "Data Group"
   Data Elements:
     product_information:
-      Description: "*Data group* describing product information"
+      Description: "Data group describing product information"
       Data Type: "{ProductInformation}"
     rating_ahri_550_590:
-      Description: "*Data group* containing information relevant to products rated under AHRI 550/590"
+      Description: "Data group containing information relevant to products rated under AHRI 550/590"
       Data Type: "{RatingAHRI550590}"
     rating_ahri_551_591:
-      Description: "*Data group* containing information relevant to products rated under AHRI 551/591"
+      Description: "Data group containing information relevant to products rated under AHRI 551/591"
       Data Type: "{RatingAHRI551591}"
 
 ProductInformation:
@@ -81,7 +81,7 @@ ProductInformation:
     model_number:
       Description: "Model number"
       Data Type: "Pattern"
-      Notes: "Pattern shall match all model numbers that can be represented by the *representation*"
+      Notes: "Pattern shall match all model numbers that can be represented by the representation"
     nominal_voltage:
       Description: "Unit nominal voltage"
       Data Type: "Numeric"
@@ -123,7 +123,7 @@ RatingAHRI550590:
     rating_source:
       Description: "Source of this rating data"
       Data Type: "String"
-      Notes: "Used by *data publisher* to document methods (e.g. software and version) used to generate rating data"
+      Notes: "Used by data publisher to document methods (e.g. software and version) used to generate rating data"
     net_refrigerating_capacity:
       Description: "Rated net refrigeration capacity"
       Data Type: "Numeric"
@@ -226,10 +226,10 @@ RatingAHRI550590:
       Required: True
       Notes: "Condenser fouling factor at which the full load rating condition was measured"
     rating_reproducible_from_performance_data:
-      Description: "Whether this rating can be reproduced using the performance data in the *representation*"
+      Description: "Whether this rating can be reproduced using the performance data in the representation"
       Data Type: "Boolean"
       Required: True
-      Notes: "True if the rating values in this table can be reproduced using the performance data in the *representation* within the tolerance of the rating standard"
+      Notes: "True if the rating values in this table can be reproduced using the performance data in the representation within the tolerance of the rating standard"
 
 RatingAHRI550590PartLoadPoint:
   Object Type: "Rating Data Group"
@@ -329,7 +329,7 @@ RatingAHRI551591:
     rating_source:
       Description: "Source of this rating data"
       Data Type: "String"
-      Notes: "Used by *data publisher* to document methods (e.g. software and version) used to generate rating data"
+      Notes: "Used by data publisher to document methods (e.g. software and version) used to generate rating data"
     net_refrigerating_capacity:
       Description: "Rated net refrigeration capacity"
       Data Type: "Numeric"
@@ -432,10 +432,10 @@ RatingAHRI551591:
       Required: True
       Notes: "Condenser fouling factor at which the full rating was measured"
     rating_reproducible_from_performance_data:
-      Description: "Whether this rating can be reproduced using the performance data in the *representation*"
+      Description: "Whether this rating can be reproduced using the performance data in the representation"
       Data Type: "Boolean"
       Required: True
-      Notes: "True if the rating values in this table can be reproduced using the performance data in the *representation* within the tolerance of the rating standard"
+      Notes: "True if the rating values in this table can be reproduced using the performance data in the representation within the tolerance of the rating standard"
 
 RatingAHRI551591PartLoadPoint:
   Object Type: "Rating Data Group"
@@ -542,7 +542,7 @@ Performance:
       Units: "m2-K/W"
       Constraints: ">=0.0"
       Required: True
-      Notes: ["Evaporator fouling factor at which the *performance map* was created",
+      Notes: ["Evaporator fouling factor at which the performance map was created",
               "May be different from the certification data supplied"]
     condenser_fouling_factor:
       Description: "Factor of heat transfer inhibition due to heat exchanger fouling layer"
@@ -550,7 +550,7 @@ Performance:
       Units: "m2-K/W"
       Constraints: ">=0.0"
       Required: True
-      Notes: ["Condenser fouling factor at which the *performance map* was created",
+      Notes: ["Condenser fouling factor at which the performance map was created",
               "May be different from the certification data supplied"]
     compressor_speed_control_type:
       Description: "Type of compressor speed control"
@@ -569,11 +569,11 @@ Performance:
       Required: True
       Notes: "Used when the unit cycles to meet a setpoint"
     performance_map_cooling:
-      Description: "*Data group* describing cooling performance over a range of conditions"
+      Description: "Data group describing cooling performance over a range of conditions"
       Data Type: "{PerformanceMapCooling}"
       Required: True
     performance_map_standby:
-      Description: "*Data group* describing standby performance"
+      Description: "Data group describing standby performance"
       Data Type: "{PerformanceMapStandby}"
       Required: True
 
@@ -581,11 +581,11 @@ PerformanceMapCooling:
   Object Type: "Performance Map"
   Data Elements:
     grid_variables:
-      Description: "*Data group* defining the *grid variables* for cooling performance"
+      Description: "Data group defining the grid variables for cooling performance"
       Data Type: "{GridVariablesCooling}"
       Required: True
     lookup_variables:
-      Description: "*Data group* defining the *lookup variables* for cooling performance"
+      Description: "Data group defining the lookup variables for cooling performance"
       Data Type: "{LookupVariablesCooling}"
       Required: True
 
@@ -692,11 +692,11 @@ PerformanceMapStandby:
   Object Type: "Performance Map"
   Data Elements:
     grid_variables:
-      Description: "*Data group* defining the *grid variables* for standby performance"
+      Description: "Data group defining the grid variables for standby performance"
       Data Type: "{GridVariablesStandby}"
       Required: True
     lookup_variables:
-      Description: "*Data group* defining the *lookup variables* for standby performance"
+      Description: "Data group defining the lookup variables for standby performance"
       Data Type: "{LookupVariablesStandby}"
       Required: True
 
@@ -714,7 +714,7 @@ LookupVariablesStandby:
   Object Type: "Lookup Variables"
   Data Elements:
     input_power:
-      Description: "Total power consumed in *standby operation*"
+      Description: "Total power consumed in standby operation"
       Data Type: "[Numeric/Null][1..]"
       Units: "W"
       Constraints: ">=0.0"

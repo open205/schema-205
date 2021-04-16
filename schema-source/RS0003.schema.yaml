@@ -16,11 +16,11 @@ OperationSpeedControlType:
     DISCRETE:
       Description: "Fan assemblies that operate at one or more defined speeds dictated by a tap or dip switch"
       Display Text: "Discrete"
-      Notes: "*Performance map* data is provided at individual impeller speeds"
+      Notes: "Performance map data is provided at individual impeller speeds"
     CONTINUOUS:
       Description: "Fan assemblies that operate within a continuous range of speeds"
       Display Text: "Continuous"
-      Notes: "*Performance map* data is provided over a range of impeller speeds"
+      Notes: "Performance map data is provided over a range of impeller speeds"
 
 InstallationSpeedControlType:
   Object Type: "Enumeration"
@@ -83,15 +83,15 @@ RS0003:
   Object Type: "Data Group"
   Data Elements:
     metadata:
-      Description: "Metadata *data group*"
+      Description: "Metadata data group"
       Data Type: "{Metadata}"
       Constraints: "schema=RS0003"
       Required: True
     description:
-      Description: "*Data group* describing product and rating information"
+      Description: "Data group describing product and rating information"
       Data Type: "{Description}"
     performance:
-      Description: "*Data group* containing performance information"
+      Description: "Data group containing performance information"
       Data Type: "{Performance}"
       Required: True
 
@@ -99,7 +99,7 @@ Description:
   Object Type: "Data Group"
   Data Elements:
     product_information:
-      Description: "*Data group* describing product information"
+      Description: "Data group describing product information"
       Data Type: "{ProductInformation}"
 
 ProductInformation:
@@ -111,7 +111,7 @@ ProductInformation:
     model_number:
       Description: "Assembly/unit model number"
       Data Type: "Pattern"
-      Notes: "Pattern shall match all model numbers that can be represented by the *representation*"
+      Notes: "Pattern shall match all model numbers that can be represented by the representation"
     impeller_type:
       Description: "Type of impeller in fan assembly"
       Data Type: "<ImpellerType>"
@@ -123,7 +123,7 @@ Performance:
   Object Type: "Data Group"
   Data Elements:
     nominal_standard_air_volumetric_flow_rate:
-      Description: "Nominal or rated air flow rate at *standard air conditions*"
+      Description: "Nominal or rated air flow rate at standard air conditions"
       Data Type: "Numeric"
       Constraints: ">=0.0"
       Units: "m3/s"
@@ -161,30 +161,30 @@ Performance:
     stability_curve:
       Description: "The system curve defining the stability area for system selection"
       Data Type: "{SystemCurve}"
-      Notes: "***Informative note:*** *Application software* may use this curve to indicate to *application software users* when a selected fan is operating in an unstable region where surging or stalling is likely to occur"
+      Notes: "***Informative note:*** Application software may use this curve to indicate to application software users when a selected fan is operating in an unstable region where surging or stalling is likely to occur"
     operation_speed_control_type:
-      Description: "Type of *performance map*"
+      Description: "Type of performance map"
       Data Type: "{OperationSpeedControlType}"
       Required: True
-      Notes: "Determines which *performance map* *data group* is used for `performance_map`"
+      Notes: "Determines which performance map data group is used for `performance_map`"
     installation_speed_control_type:
       Description: "Type of fan impeller speed control"
       Data Type: "{InstallationSpeedControlType}"
       Required: True
       Notes: ["If `operation_speed_control_type` is `DISCRETE` and `installation_speed_control_type` is `FIXED`, impeller speed shall be restricted to a single discrete speed",
               "If `operation_speed_control_type` is `DISCRETE` and `installation_speed_control_type` is `VARIABLE`, impeller speed shall be restricted to a set of two or more discrete speeds",
-              "If `operation_speed_control_type` is `CONTINUOUS` and `installation_speed_control_type` is `FIXED`, impeller speed shall be restricted to a single speed (which may be interpolated from `impeller_speed` values provided in the *performance map*)",
+              "If `operation_speed_control_type` is `CONTINUOUS` and `installation_speed_control_type` is `FIXED`, impeller speed shall be restricted to a single speed (which may be interpolated from `impeller_speed` values provided in the performance map)",
               "If `operation_speed_control_type` is `CONTINUOUS` and `installation_speed_control_type` is `VARIABLE`, impeller speed shall be unrestricted within operational limits"]
     motor_representation:
-      Description: "The corresponding Standard 205 motor *representation*"
-      Notes: "If the fan assembly is packaged with a motor, a motor *representation* shall be provided"
+      Description: "The corresponding Standard 205 motor representation"
+      Notes: "If the fan assembly is packaged with a motor, a motor representation shall be provided"
       Data Type: "{RS0005}"
     mechanical_drive_representation:
-      Description: "The corresponding Standard 205 mechanical drive *representation*"
-      Notes: "If the fan assembly is packaged with a mechanical drive, a mechanical drive *representation* shall be provided"
+      Description: "The corresponding Standard 205 mechanical drive representation"
+      Notes: "If the fan assembly is packaged with a mechanical drive, a mechanical drive representation shall be provided"
       Data Type: "{RS0007}"
     performance_map:
-      Description: "*Data group* describing fan assembly performance when operating"
+      Description: "Data group describing fan assembly performance when operating"
       Data Type: "({PerformanceMapContinuous}, {PerformanceMapDiscrete})"
       Constraints: "operation_speed_control_type(CONTINUOUS, DISCRETE)"
       Required: True
@@ -200,9 +200,9 @@ AssemblyComponent:
       Description: "Informative description of the component"
       Data Type: "String"
     component_id:
-      Description: "Identifier of the corresponding Standard 205 *representation*"
+      Description: "Identifier of the corresponding Standard 205 representation"
       Data Type: "UUID"
-      Notes: "Optionally provided if the component has a Standard 205 *representation*"
+      Notes: "Optionally provided if the component has a Standard 205 representation"
     wet_pressure_difference:
       Description: "Additional static pressure difference if the component is wet (e.g., because of condensate collection or wetting evaporative media)"
       Data Type: "Numeric"
@@ -216,7 +216,7 @@ SystemCurve:
   Object Type: "Data Group"
   Data Elements:
     standard_air_volumetric_flow_rate:
-      Description: "Volumetric air flow rate through an air distribution system at *standard air conditions*"
+      Description: "Volumetric air flow rate through an air distribution system at standard air conditions"
       Data Type: "[Numeric][2..]"
       Constraints: ">=0.0"
       Units: "m3/s"
@@ -232,11 +232,11 @@ PerformanceMapContinuous:
   Object Type: "Performance Map"
   Data Elements:
     grid_variables:
-      Description: "*Data group* describing *grid variables* for continuous fan performance"
+      Description: "Data group describing grid variables for continuous fan performance"
       Data Type: "{GridVariablesContinuous}"
       Required: True
     lookup_variables:
-      Description: "*Data group* describing *lookup variables* for continuous fan performance"
+      Description: "Data group describing lookup variables for continuous fan performance"
       Data Type: "{LookupVariablesContinuous}"
       Required: True
 
@@ -244,7 +244,7 @@ GridVariablesContinuous:
   Object Type: "Grid Variables"
   Data Elements:
     standard_air_volumetric_flow_rate:
-      Description: "Volumetric air flow rate through fan assembly at *standard air conditions*"
+      Description: "Volumetric air flow rate through fan assembly at standard air conditions"
       Data Type: "[Numeric][1..]"
       Constraints: ">=0.0"
       Units: "m3/s"
@@ -254,7 +254,7 @@ GridVariablesContinuous:
       Data Type: "[Numeric][1..]"
       Constraints: ">=0.0"
       Units: "Pa"
-      Notes: "Any static pressure deduction (or addition) for wet coil is specified by `wet_pressure_difference` in 'assembly_components' *data group*"
+      Notes: "Any static pressure deduction (or addition) for wet coil is specified by `wet_pressure_difference` in 'assembly_components' data group"
       Required: True
 
 LookupVariablesContinuous:
@@ -278,11 +278,11 @@ PerformanceMapDiscrete:
   Object Type: "Performance Map"
   Data Elements:
     grid_variables:
-      Description: "*Data group* describing *grid variables* for discrete fan performance"
+      Description: "Data group describing grid variables for discrete fan performance"
       Data Type: "{GridVariablesDiscrete}"
       Required: True
     lookup_variables:
-      Description: "*Data group* describing *lookup variables* for discrete fan performance"
+      Description: "Data group describing lookup variables for discrete fan performance"
       Data Type: "{LookupVariablesDiscrete}"
       Required: True
 
@@ -301,14 +301,14 @@ GridVariablesDiscrete:
       Data Type: "[Numeric][1..]"
       Constraints: ">=0.0"
       Units: "Pa"
-      Notes: "Any static pressure deduction (or addition) for wet coil is specified by `wet_pressure_difference` in 'assembly_components' *data group*"
+      Notes: "Any static pressure deduction (or addition) for wet coil is specified by `wet_pressure_difference` in 'assembly_components' data group"
       Required: True
 
 LookupVariablesDiscrete:
   Object Type: "Lookup Variables"
   Data Elements:
     standard_air_volumetric_flow_rate:
-      Description: "Volumetric air flow rate through fan assembly at *standard air conditions*"
+      Description: "Volumetric air flow rate through fan assembly at standard air conditions"
       Data Type: "[Numeric/Null][1..]"
       Constraints: ">=0.0"
       Units: "m3/s"

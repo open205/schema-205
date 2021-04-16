@@ -74,15 +74,15 @@ RS0002:
   Object Type: "Data Group"
   Data Elements:
     metadata:
-      Description: "Metadata *data group*"
+      Description: "Metadata data group"
       Data Type: "{Metadata}"
       Constraints: "schema=RS0002"
       Required: True
     description:
-      Description: "*Data group* describing product and rating information"
+      Description: "Data group describing product and rating information"
       Data Type: "{Description}"
     performance:
-      Description: "*Data group* containing performance information"
+      Description: "Data group containing performance information"
       Data Type: "{Performance}"
       Required: True
 
@@ -90,13 +90,13 @@ Description:
   Object Type: "Data Group"
   Data Elements:
     product_information:
-      Description: "*Data group* describing product information"
+      Description: "Data group describing product information"
       Data Type: "{ProductInformation}"
     rating_ahri_210_240:
-      Description: "*Data group* containing information relevant to products rated under AHRI 210/240"
+      Description: "Data group containing information relevant to products rated under AHRI 210/240"
       Data Type: "{RatingAHRI210240}"
     rating_ahri_340_360:
-      Description: "*Data group* containing information relevant to products rated under AHRI 340/360"
+      Description: "Data group containing information relevant to products rated under AHRI 340/360"
       Data Type: "{RatingAHRI340360}"
 
 ProductInformation:
@@ -108,7 +108,7 @@ ProductInformation:
     model_number:
       Description: "Package model number"
       Data Type: "Pattern"
-      Notes: "Pattern shall match all model numbers that can be represented by the *representation*"
+      Notes: "Pattern shall match all model numbers that can be represented by the representation"
 
 RatingAHRI210240:
   Object Type: "Rating Data Group"
@@ -124,7 +124,7 @@ RatingAHRI210240:
     rating_source:
       Description: "Source of this rating data"
       Data Type: "String"
-      Notes: "Used by *data publisher* to document methods (e.g. software and version) used to generate rating data"
+      Notes: "Used by data publisher to document methods (e.g. software and version) used to generate rating data"
     staging_type:
       Description: "Type of compressor staging"
       Data Type: "<AHRI210240CompressorStagingType>"
@@ -202,7 +202,7 @@ RatingAHRI210240:
       Constraints: ">0.0"
       Required: True
     cooling_full_air_volumetric_flow_rate:
-      Description: "*Standard air* volumetric rate of the indoor fan at full load"
+      Description: "Standard air volumetric rate of the indoor fan at full load"
       Data Type: "Numeric"
       Units: "cfm"
       Constraints: ">0.0"
@@ -214,15 +214,15 @@ RatingAHRI210240:
       Constraints: ">0.0"
       Required: "if staging_type!=SINGLE_STAGE"
     cooling_low_air_volumetric_flow_rate:
-      Description: "*Standard air* volumetric rate of the indoor fan at low stage"
+      Description: "Standard air volumetric rate of the indoor fan at low stage"
       Data Type: "Numeric"
       Units: "cfm"
       Constraints: ">0.0"
       Required: "if staging_type!=SINGLE_STAGE"
     rating_reproducible_from_performance_data:
-      Description: "Whether this rating can be reproduced using the performance data in the *representation*"
+      Description: "Whether this rating can be reproduced using the performance data in the representation"
       Data Type: "Boolean"
-      Notes: "True if the rating values in this table can be reproduced using the performance data in the *representation* within the tolerance of the rating standard"
+      Notes: "True if the rating values in this table can be reproduced using the performance data in the representation within the tolerance of the rating standard"
       Required: True
 
 RatingAHRI340360:
@@ -239,7 +239,7 @@ RatingAHRI340360:
     rating_source:
       Description: "Source of this rating data"
       Data Type: "String"
-      Notes: "Used by *data publisher* to document methods (e.g. software and version) used to generate rating data"
+      Notes: "Used by data publisher to document methods (e.g. software and version) used to generate rating data"
     capacity_control_type:
       Description: "Type of capacity control"
       Data Type: "<AHRI340360CapacityControlType>"
@@ -266,9 +266,9 @@ RatingAHRI340360:
       Description: "Four part load rating points"
       Data Type: "[{RatingAHRI340360CoolingPartLoadPoint}][4]"
     rating_reproducible_from_performance_data:
-      Description: "Whether this rating can be reproduced using the performance data in the *representation*"
+      Description: "Whether this rating can be reproduced using the performance data in the representation"
       Data Type: "Boolean"
-      Notes: "True if the rating values in this table can be reproduced using the performance data in the *representation* within the tolerance of the rating standard"
+      Notes: "True if the rating values in this table can be reproduced using the performance data in the representation within the tolerance of the rating standard"
       Required: True
 
 RatingAHRI340360CoolingPartLoadPoint:
@@ -299,7 +299,7 @@ RatingAHRI340360CoolingPartLoadPoint:
       Constraints: ">0.0"
       Required: True
     air_volumetric_flow_rate:
-      Description: "*Standard air* volumetric rate of the indoor fan"
+      Description: "Standard air volumetric rate of the indoor fan"
       Data Type: "Numeric"
       Units: "cfm"
       Constraints: ">0.0"
@@ -313,10 +313,10 @@ Performance:
       Data Type: "Numeric"
       Units: "W"
       Constraints: ">=0.0"
-      Notes: "Includes on-board controls and other power not included in the fan or dx system *representations*"
+      Notes: "Includes on-board controls and other power not included in the fan or dx system representations"
       Required: True
     fan_representation:
-      Description: "The corresponding Standard 205 fan assembly *representation*"
+      Description: "The corresponding Standard 205 fan assembly representation"
       Data Type: "{RS0003}"
       Notes: "Required if the fan is packaged with the unitary equipment"
     fan_position:
@@ -324,5 +324,5 @@ Performance:
       Data Type: "<FanPosition>"
       Required: "if fan_representation"
     dx_system_representation:
-      Description: "The corresponding Standard 205 direct expansion coil system *representation*"
+      Description: "The corresponding Standard 205 direct expansion coil system representation"
       Data Type: "{RS0004}"

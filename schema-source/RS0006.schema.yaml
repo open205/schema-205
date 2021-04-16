@@ -23,7 +23,7 @@ CoolingMethod:
     ACTIVE_LIQUID_COOLED:
       Description: "Drive is cooled using forced liquid convection, transferring heat to the liquid"
       Display Text: "Active Liquid Cooled"
-      Notes: ["Any liquid pumping power shall be modeled external to the drive by the *application software*",
+      Notes: ["Any liquid pumping power shall be modeled external to the drive by the application software",
               "All drive efficiency losses are assumed to be added as heat to the liquid stream"]
 
 # Data Groups
@@ -31,15 +31,15 @@ RS0006:
   Object Type: "Data Group"
   Data Elements:
     metadata:
-      Description: "Metadata *data group*"
+      Description: "Metadata data group"
       Data Type: "{Metadata}"
       Constraints: "schema=RS0006"
       Required: True
     description:
-      Description: "*Data group* describing product and rating information"
+      Description: "Data group describing product and rating information"
       Data Type: "{Description}"
     performance:
-      Description: "*Data group* containing performance information"
+      Description: "Data group containing performance information"
       Data Type: "{Performance}"
       Required: True
 
@@ -47,7 +47,7 @@ Description:
   Object Type: "Data Group"
   Data Elements:
     product_information:
-      Description: "*Data group* describing product information"
+      Description: "Data group describing product information"
       Data Type: "{ProductInformation}"
 
 ProductInformation:
@@ -59,7 +59,7 @@ ProductInformation:
       model_number:
         Description: "Model number"
         Data Type: "Pattern"
-        Notes: "Pattern shall match all model numbers that can be represented by the *representation*"
+        Notes: "Pattern shall match all model numbers that can be represented by the representation"
 
 Performance:
   Object Type: "Data Group"
@@ -81,7 +81,7 @@ Performance:
       Data Type: "<CoolingMethod>"
       Required: True
     performance_map:
-      Description: "*Data group* describing drive performance when operating"
+      Description: "Data group describing drive performance when operating"
       Data Type: "{PerformanceMap}"
       Required: True
 
@@ -89,11 +89,11 @@ PerformanceMap:
   Object Type: "Performance Map"
   Data Elements:
     grid_variables:
-      Description: "*Data group* describing *grid variables* for drive performance"
+      Description: "Data group describing grid variables for drive performance"
       Data Type: "{GridVariables}"
       Required: True
     lookup_variables:
-      Description: "*Data group* describing *lookup variables* for drive performance"
+      Description: "Data group describing lookup variables for drive performance"
       Data Type: "{LookupVariables}"
       Required: True
 
