@@ -2,8 +2,12 @@ Schema:
   Object Type: "Meta"
   References:
     - "ASHRAE205"
+    - "RS0003"
+    - "RS0004"
   Title: "Unitary Cooling Air-Conditioning Equipment"
   Description: "Schema for ASHRAE 205 annex RS0002: Unitary Cooling Air-Conditioning Equipment"
+  Version: "0.1.0"
+  Root Data Group: "RS0002"
 
 # Local Enumerations
 FanPosition:
@@ -20,10 +24,10 @@ AHRI210240TestStandardYear:
   Object Type: "Enumeration"
   Enumerators:
     IP_2008:
-      Description: "Rating is based on 2008 AHRI standard"
+      Description: "Rating is based on 2008 AHRI standard[@AHRI2102008]"
       Display Text: "2008"
     IP_2017:
-      Description: "Rating is based on 2017 AHRI standard"
+      Description: "Rating is based on 2017 AHRI standard[@AHRI2102017]"
       Display Text: "2017"
 
 AHRI210240CompressorStagingType:
@@ -43,13 +47,13 @@ AHRI340360TestStandardYear:
   Object Type: "Enumeration"
   Enumerators:
     IP_2007:
-      Description: "Rating is based on 2007 AHRI standard"
+      Description: "Rating is based on 2007 AHRI standard[@AHRI3402007]"
       Display Text: "2007"
     IP_2015:
-      Description: "Rating is based on 2015 AHRI standard"
+      Description: "Rating is based on 2015 AHRI standard[@AHRI3402015]"
       Display Text: "2015"
     IP_2019:
-      Description: "Rating is based on 2019 AHRI standard"
+      Description: "Rating is based on 2019 AHRI standard[@AHRI3402019]"
       Display Text: "2019"
 
 AHRI340360CapacityControlType:
@@ -69,11 +73,16 @@ AHRI340360CapacityControlType:
 RS0002:
   Object Type: "Data Group"
   Data Elements:
+    metadata:
+      Description: "Metadata *data group*"
+      Data Type: "{Metadata}"
+      Constraints: "schema=RS0002"
+      Required: True
     description:
-      Description: "Data group describing product and rating information"
+      Description: "*Data group* describing product and rating information"
       Data Type: "{Description}"
     performance:
-      Description: "Data group containing performance information"
+      Description: "*Data group* containing performance information"
       Data Type: "{Performance}"
       Required: True
 
@@ -137,7 +146,7 @@ RatingAHRI210240:
       Data Type: "Numeric"
       Units: "Btu/W-h"
       Constraints: ">0.0"
-      # Required: Conditionally
+      Required: "if staging_type!=SINGLE_STAGE"
     cooling_a_full_capacity:
       Description: "Full stage net total cooling capacity (at 'A' operating conditions)"
       Data Type: "Numeric"
@@ -149,43 +158,43 @@ RatingAHRI210240:
       Data Type: "Numeric"
       Units: "Btu/h"
       Constraints: ">=0.0"
-      # Required: Conditionally
+      Required: "if staging_type!=SINGLE_STAGE"
     cooling_b_low_capacity:
       Description: "Low stage net total cooling capacity (at 'B' operating conditions)"
       Data Type: "Numeric"
       Units: "Btu/h"
       Constraints: ">=0.0"
-      # Required: Conditionally
+      Required: "if staging_type!=SINGLE_STAGE"
     cooling_f_low_capacity:
       Description: "Low stage net total cooling capacity (at 'F' operating conditions)"
       Data Type: "Numeric"
       Units: "Btu/h"
       Constraints: ">=0.0"
-      # Required: Conditionally
+      Required: "if staging_type!=SINGLE_STAGE"
     cooling_a_full_power:
       Description: "Full stage net total cooling power (at 'A' operating conditions)"
       Data Type: "Numeric"
       Units: "W"
       Constraints: ">=0.0"
-      # Required: Conditionally
+      Required: "if staging_type!=SINGLE_STAGE"
     cooling_b_full_power:
       Description: "Full stage net total cooling power (at 'B' operating conditions)"
       Data Type: "Numeric"
       Units: "W"
       Constraints: ">=0.0"
-      # Required: Conditionally
+      Required: "if staging_type!=SINGLE_STAGE"
     cooling_b_low_power:
       Description: "Low stage net total cooling power (at 'B' operating conditions)"
       Data Type: "Numeric"
       Units: "W"
       Constraints: ">=0.0"
-      # Required: Conditionally
+      Required: "if staging_type!=SINGLE_STAGE"
     cooling_f_low_power:
       Description: "Low stage net total cooling power (at 'F' operating conditions)"
       Data Type: "Numeric"
       Units: "W"
       Constraints: ">=0.0"
-      # Required: Conditionally
+      Required: "if staging_type!=SINGLE_STAGE"
     cooling_full_fan_power:
       Description: "Power of the indoor fan at full load"
       Data Type: "Numeric"
@@ -203,13 +212,13 @@ RatingAHRI210240:
       Data Type: "Numeric"
       Units: "W"
       Constraints: ">0.0"
-      # Required: Conditionally
+      Required: "if staging_type!=SINGLE_STAGE"
     cooling_low_air_volumetric_flow_rate:
       Description: "*Standard air* volumetric rate of the indoor fan at low stage"
       Data Type: "Numeric"
       Units: "cfm"
       Constraints: ">0.0"
-      # Required: Conditionally
+      Required: "if staging_type!=SINGLE_STAGE"
     rating_reproducible_from_performance_data:
       Description: "Whether this rating can be reproduced using the performance data in the *representation*"
       Data Type: "Boolean"
@@ -308,15 +317,12 @@ Performance:
       Required: True
     fan_representation:
       Description: "The corresponding Standard 205 fan assembly *representation*"
-      Data Type: "{ASHRAE205}"
-      Constraints: "rs_id=RS0003"
+      Data Type: "{RS0003}"
       Notes: "Required if the fan is packaged with the unitary equipment"
     fan_position:
       Description: "Position of the fan relative to the cooling coil"
       Data Type: "<FanPosition>"
-      Required: True
+      Required: "if fan_representation"
     dx_system_representation:
       Description: "The corresponding Standard 205 direct expansion coil system *representation*"
-      Data Type: "{ASHRAE205}"
-      Constraints: "rs_id=RS0004"
-
+      Data Type: "{RS0004}"

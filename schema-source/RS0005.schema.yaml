@@ -2,18 +2,26 @@ Schema:
   Object Type: "Meta"
   References:
     - "ASHRAE205"
+    - "RS0006"
   Title: "Motor"
   Description: "Schema for ASHRAE 205 annex RS0005: Motor"
+  Version: "0.1.0"
+  Root Data Group: "RS0005"
 
 # Data Groups
 RS0005:
   Object Type: "Data Group"
   Data Elements:
+    metadata:
+      Description: "Metadata *data group*"
+      Data Type: "{Metadata}"
+      Constraints: "schema=RS0005"
+      Required: True
     description:
-      Description: "Data group describing product and rating information"
+      Description: "*Data group* describing product and rating information"
       Data Type: "{Description}"
     performance:
-      Description: "Data group containing performance information"
+      Description: "*Data group* containing performance information"
       Data Type: "{Performance}"
       Required: True
 
@@ -68,8 +76,7 @@ Performance:
       Constraints: [">0", "%2"]
     drive_representation:
       Description: "The corresponding Standard 205 drive *representation*"
-      Data Type: "{ASHRAE205}"
-      Constraints: "rs_id=RS0006"
+      Data Type: "{RS0006}"
     performance_map:
       Description: "Data group describing motor performance when operating"
       Data Type: "{PerformanceMap}"

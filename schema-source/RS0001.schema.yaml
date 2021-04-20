@@ -9,46 +9,53 @@ Schema:
     - "ASHRAE205"
   Title: "Liquid-Cooled Chiller"
   Description: "Schema for ASHRAE 205 annex RS0001: Liquid-Cooled Chiller"
+  Version: "0.1.0"
+  Root Data Group: "RS0001"
 
 # Local Enumerations
 AHRI550590TestStandardYear:
   Object Type: "Enumeration"
   Enumerators:
     IP_2015:
-      Description: "Ratings and design points defined using IP unit version of the standard, 2015 edition"
+      Description: "Ratings and design points defined using IP unit version of the standard, 2015 edition[@AHRI5502015]"
       Display Text: "AHRI 550/590 2015"
     IP_2015_ADDENDUM_1:
-      Description: "Ratings and design points defined using IP unit version of the standard, 2015 edition with Addendum 1"
+      Description: "Ratings and design points defined using IP unit version of the standard, 2015 edition with Addendum 1[@AHRI550A12015]"
       Display Text: "AHRI 550/590 2015 Addendum 1"
     IP_2018:
-      Description: "Ratings and design points defined using IP unit version of the standard, 2018 edition"
+      Description: "Ratings and design points defined using IP unit version of the standard, 2018 edition[@AHRI5502018]"
       Display Text: "AHRI 550/590 2018"
     IP_2020:
-      Description: "Ratings and design points defined using IP unit version of the standard, 2020 edition"
+      Description: "Ratings and design points defined using IP unit version of the standard, 2020 edition[@AHRI5502020]"
       Display Text: "AHRI 550/590 2020"
 
 AHRI551591TestStandardYear:
   Object Type: "Enumeration"
   Enumerators:
     SI_2015:
-      Description: "Ratings and design points defined using SI unit version of the standard, 2015 edition"
+      Description: "Ratings and design points defined using SI unit version of the standard, 2015 edition[@AHRI5512015]"
       Display Text: "AHRI 551/591 2015"
     SI_2015_ADDENDUM_1:
-      Description: "Ratings and design points defined using SI unit version of the standard, 2015 edition with Addendum 1"
+      Description: "Ratings and design points defined using SI unit version of the standard, 2015 edition with Addendum 1[@AHRI551A12015]"
       Display Text: "AHRI 551/591 2015 Addendum 1"
     SI_2018:
-      Description: "Ratings and design points defined using SI unit version of the standard, 2018 edition"
+      Description: "Ratings and design points defined using SI unit version of the standard, 2018 edition[@AHRI5512018]"
       Display Text: "AHRI 551/591 2018"
 
 # Data Groups
 RS0001:
   Object Type: "Data Group"
   Data Elements:
+    metadata:
+      Description: "Metadata *data group*"
+      Data Type: "{Metadata}"
+      Constraints: "schema=RS0001"
+      Required: True
     description:
-      Description: "Data group describing product and rating information"
+      Description: "*Data group* describing product and rating information"
       Data Type: "{Description}"
     performance:
-      Description: "Data group containing performance information"
+      Description: "*Data group* containing performance information"
       Data Type: "{Performance}"
       Required: True
 
@@ -97,7 +104,7 @@ ProductInformation:
     refrigerant:
       Description: "Refrigerant used in the chiller"
       Data Type: "String"
-      Notes: "The string shall start with 'R-' and then include the refrigerant number designation conforming to ANSI/ASHRAE Standard 34-2019 (ASHRAE 2019)"
+      Notes: "The string shall start with 'R-' and then include the refrigerant number designation conforming to ANSI/ASHRAE Standard 34-2019[@ASHRAE34]"
     hot_gas_bypass_installed:
       Description: "Indicates if a hot-gas bypass valve is installed on the chiller"
       Data Type: "Boolean"
@@ -158,14 +165,14 @@ RatingAHRI550590:
       Description: "Entering evaporator liquid temperature at the full load design rating conditions"
       Data Type: "Numeric"
       Units: "F"
-      Constraints: ">−459.67"
+      Constraints: ">-459.67"
       Required: True
       Notes: "Evaporator liquid temperature at the entry flange of the evaporator at full load rating conditions"
     full_load_evaporator_liquid_leaving_temperature:
       Description: "Leaving evaporator liquid temperature at the full load design rating conditions"
       Data Type: "Numeric"
       Units: "F"
-      Constraints: ">−459.67"
+      Constraints: ">-459.67"
       Required: True
       Notes: "Evaporator liquid temperature at the exit flange of the evaporator at full load rating conditions"
     full_load_evaporator_liquid_differential_pressure:
@@ -194,14 +201,14 @@ RatingAHRI550590:
       Description: "Entering condenser liquid temperature at the full load design rating conditions"
       Data Type: "Numeric"
       Units: "F"
-      Constraints: ">−459.67"
+      Constraints: ">-459.67"
       Required: True
       Notes: "Condenser liquid temperature at the entry flange of the condenser at full load rating conditions"
     full_load_condenser_liquid_leaving_temperature:
       Description: "Leaving condenser liquid temperature at the full load design rating conditions"
       Data Type: "Numeric"
       Units: "F"
-      Constraints: ">−459.67"
+      Constraints: ">-459.67"
       Required: True
       Notes: "Condenser liquid temperature at the exit flange of the condenser at full load rating conditions"
     full_load_condenser_liquid_differential_pressure:
@@ -256,13 +263,13 @@ RatingAHRI550590PartLoadPoint:
       Description: "Liquid temperature at the entry flange of the evaporator"
       Data Type: "Numeric"
       Units: "F"
-      Constraints: ">−459.67"
+      Constraints: ">-459.67"
       Required: True
     evaporator_liquid_leaving_temperature:
       Description: "Liquid temperature at the exit flange of the evaporator"
       Data Type: "Numeric"
       Units: "F"
-      Constraints: ">−459.67"
+      Constraints: ">-459.67"
       Required: True
     evaporator_liquid_differential_pressure:
       Description: "Pressure difference across the evaporator"
@@ -287,13 +294,13 @@ RatingAHRI550590PartLoadPoint:
       Description: "Liquid temperature at the entry flange of the condenser"
       Data Type: "Numeric"
       Units: "F"
-      Constraints: ">−459.67"
+      Constraints: ">-459.67"
       Required: True
     condenser_liquid_leaving_temperature:
       Description: "Liquid temperature at the exit flange of the condenser"
       Data Type: "Numeric"
       Units: "F"
-      Constraints: ">−459.67"
+      Constraints: ">-459.67"
       Required: True
     condenser_liquid_differential_pressure:
       Description: "Pressure difference across the condenser"
@@ -364,14 +371,14 @@ RatingAHRI551591:
       Description: "Entering evaporator liquid temperature at the full load design rating conditions"
       Data Type: "Numeric"
       Units: "C"
-      Constraints: ">−273.15"
+      Constraints: ">-273.15"
       Required: True
       Notes: "Evaporator liquid temperature at the entry flange of the evaporator at full load rating conditions"
     full_load_evaporator_liquid_leaving_temperature:
       Description: "Leaving evaporator liquid temperature at the full load design rating conditions"
       Data Type: "Numeric"
       Units: "C"
-      Constraints: ">−273.15"
+      Constraints: ">-273.15"
       Required: True
       Notes: "Evaporator liquid temperature at the exit flange of the evaporator at full load design rating conditions"
     full_load_evaporator_liquid_differential_pressure:
@@ -400,14 +407,14 @@ RatingAHRI551591:
       Description: "Entering condenser liquid temperature at the full load design rating conditions"
       Data Type: "Numeric"
       Units: "C"
-      Constraints: ">−273.15"
+      Constraints: ">-273.15"
       Required: True
       Notes: "Condenser liquid temperature at the entry flange of the condenser at full load rating conditions"
     full_load_condenser_liquid_leaving_temperature:
       Description: "Leaving condenser liquid temperature at the full load design rating conditions"
       Data Type: "Numeric"
       Units: "C"
-      Constraints: ">−273.15"
+      Constraints: ">-273.15"
       Required: True
       Notes: "Condenser liquid temperature at the exit flange of the condenser at full load rating conditions"
     full_load_condenser_liquid_differential_pressure:
@@ -462,13 +469,13 @@ RatingAHRI551591PartLoadPoint:
       Description: "Liquid temperature at the entry flange of the evaporator"
       Data Type: "Numeric"
       Units: "C"
-      Constraints: ">−273.15"
+      Constraints: ">-273.15"
       Required: True
     evaporator_liquid_leaving_temperature:
       Description: "Liquid temperature at the exit flange of the evaporator"
       Data Type: "Numeric"
       Units: "C"
-      Constraints: ">−273.15"
+      Constraints: ">-273.15"
       Required: True
     evaporator_liquid_differential_pressure:
       Description: "Pressure difference across the evaporator"
@@ -493,13 +500,13 @@ RatingAHRI551591PartLoadPoint:
       Description: "Liquid temperature at the entry flange of the condenser"
       Data Type: "Numeric"
       Units: "C"
-      Constraints: ">−273.15"
+      Constraints: ">-273.15"
       Required: True
     condenser_liquid_leaving_temperature:
       Description: "Liquid temperature at the exit flange of the condenser"
       Data Type: "Numeric"
       Units: "C"
-      Constraints: ">−273.15"
+      Constraints: ">-273.15"
       Required: True
     condenser_liquid_differential_pressure:
       Description: "Pressure difference across the condenser"
@@ -707,9 +714,10 @@ LookupVariablesStandby:
   Object Type: "Lookup Variables"
   Data Elements:
     input_power:
-      Description: "Total power consumed by the chiller when not running. Value shall include all power sources and auxiliary equipment"
+      Description: "Total power consumed in *standby operation*"
       Data Type: "[Numeric/Null][1..]"
       Units: "W"
       Constraints: ">=0.0"
       Required: True
-      Notes: "Power consumed by chiller during off cycle"
+      Notes: ["Includes devices that cycle on and off (e.g., purge units and sump units) and devices that draw continuous power (e.g., fans and controls)",
+              "Expressed as a time averaged power consumption"]

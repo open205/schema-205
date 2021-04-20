@@ -8,7 +8,7 @@ import io
 def flatten(list_of_lists):
     """
     - list_of_lists: (list (list *)), a list of lists
-    RETURN: (List *), the list flattened 
+    RETURN: (List *), the list flattened
     """
     return [
         item
@@ -121,7 +121,7 @@ def get_column_sizes(content, is_bold=False, has_spacing=True, preferred_sizes=N
         sizes = copy.deepcopy(preferred_sizes)
     assert len(content) == len(sizes), "len(content) must equal len(sizes)"
     for col_num, col_name in enumerate(content):
-        atoms = col_name.split(' ')
+        atoms = col_name.replace('\n',' ').split(' ')
         longest_atom = max([len(s) for s in atoms])
         if is_bold:
             num_atoms = len(atoms)
@@ -242,13 +242,13 @@ def string_out_table(dat, columns, caption, preferred_sizes=None, table_size="fo
     the_str = ""
     with io.StringIO() as handle:
         if table_size is not None:
-            handle.write(f"\\{table_size}\n\n")
+            handle.write(f"\\pandocbegin{{{table_size}}}\n\n")
         handle.write(make_table_from_dict_of_arrays(
             dat, columns=columns, preferred_sizes=preferred_sizes))
         if caption is not None:
             handle.write(f"\nTable: {caption}\n")
         if table_size is not None:
-            handle.write("\n\\normalsize\n\n")
+            handle.write(f"\n\\pandocend{{{table_size}}}\n\n")
         the_str = handle.getvalue()
     return the_str
 
