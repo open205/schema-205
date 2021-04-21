@@ -211,7 +211,7 @@ Metadata:
       Description: "Unique equipment identifier"
       Data Type: "UUID"
       Required: True
-      Notes: ["Assigned by *data publisher* to identify the contained data",
+      Notes: ["Assigned by data publisher to identify the contained data",
               "`id` shall remain unchanged for revised data"]
     description:
       Description: "Description of data (suitable for display)"
@@ -223,16 +223,16 @@ Metadata:
       Required: True
       Notes: "Date/time of publication of the data"
     data_version:
-      Description: "Integer version identifier for the data in the *representation*"
+      Description: "Integer version identifier for the data in the representation"
       Data Type: "Integer"
       Constraints: ">=1"
       Required: True
-      Notes: ["Used by *data publisher* to track revisions of the data for a specific *representation*",
+      Notes: ["Used by data publisher to track revisions of the data for a specific representation",
               "`data_version` shall be incremented for each data revision"]
     data_source:
       Description: "Source(s) of the data"
       Data Type: "String"
-      Notes: ["Used by *data publisher* to document methods (e.g. software and version) used to generate data",
+      Notes: ["Used by data publisher to document methods (e.g. software and version) used to generate data",
               "***Informative note:*** `data_source` may be different from other data source(s) included elsewhere within the data"]
     disclaimer:
       Description: "Characterization of accuracy, limitations, and applicability of this data"

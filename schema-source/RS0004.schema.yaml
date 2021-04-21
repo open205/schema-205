@@ -12,15 +12,15 @@ RS0004:
   Object Type: "Data Group"
   Data Elements:
     metadata:
-      Description: "Metadata *data group*"
+      Description: "Metadata data group"
       Data Type: "{Metadata}"
       Constraints: "schema=RS0004"
       Required: True
     description:
-      Description: "*Data group* describing product and rating information"
+      Description: "Data group describing product and rating information"
       Data Type: "{Description}"
     performance:
-      Description: "*Data group* containing performance information"
+      Description: "Data group containing performance information"
       Data Type: "{Performance}"
       Required: True
 
@@ -40,7 +40,7 @@ ProductInformation:
     outdoor_unit_model_number:
       Description: "Outdoor unit model number"
       Data Type: "Pattern"
-      Notes: "Pattern shall match all model numbers that can be represented by the *representation*"
+      Notes: "Pattern shall match all model numbers that can be represented by the representation"
     indoor_unit_manufacturer:
       Description: "Indoor unit manufacturer name"
       Data Type: "String"
@@ -48,7 +48,7 @@ ProductInformation:
     indoor_unit_model_number:
       Description: "Indoor unit model number"
       Data Type: "Pattern"
-      Notes: "Pattern shall match all model numbers that can be represented by the *representation*"
+      Notes: "Pattern shall match all model numbers that can be represented by the representation"
     refrigerant:
       Description: "Refrigerant used"
       Data Type: "String"

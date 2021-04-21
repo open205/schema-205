@@ -32,15 +32,15 @@ RS0007:
   Object Type: "Data Group"
   Data Elements:
     metadata:
-      Description: "Metadata *data group*"
+      Description: "Metadata data group"
       Data Type: "{Metadata}"
       Constraints: "schema=RS0007"
       Required: True
     description:
-      Description: "*Data group* describing product and rating information"
+      Description: "Data group describing product and rating information"
       Data Type: "{Description}"
     performance:
-      Description: "*Data group* containing performance information"
+      Description: "Data group containing performance information"
       Data Type: "{Performance}"
       Required: True
 
@@ -60,7 +60,7 @@ ProductInformation:
       model_number:
         Description: "Model number"
         Data Type: "Pattern"
-        Notes: "Pattern shall match all model numbers that can be represented by the *representation*"
+        Notes: "Pattern shall match all model numbers that can be represented by the representation"
       drive_type:
         Description: "Type of mechanical drive"
         Data Type: "<DriveType>"
