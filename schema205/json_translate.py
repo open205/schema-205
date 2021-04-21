@@ -186,19 +186,15 @@ class DataGroup:
                     self._get_simple_constraints(parent_dict['Constraints'], target_dict['items'])
             else:
                 # If the type is oneOf a set
-                m = re.match(r'\((.*)\)', parent_dict['Data Type']) #re.findall(r'^\((.*)\)', parent_dict['Data Type'])
+                m = re.match(r'\((.*)\)', parent_dict['Data Type']) 
                 if m:
-                    selection_key = parent_dict['Constraints'].split('(')[0]
                     types = [t.strip() for t in m.group(1).split(',')]
-                    # m_opt = re.match(r'.*\((.*)\)', parent_dict['Constraints'])
-                    # if not m_opt:
-                    #     raise TypeError
-                    # selectors = [s.strip() for s in m_opt.group(1).split(',')]
+                    selection_key, selections = parent_dict['Constraints'].split('(')
                     target_dict['allOf'] = list()
-                    for t in types:
+                    for s, t in zip(selections.split(','), types):
                         #c = c.strip()
                         target_dict['allOf'].append(dict())
-                        self._construct_selection_if_else(target_dict['allOf'][-1], selection_key, t, entry_name)
+                        self._construct_selection_if_then(target_dict['allOf'][-1], selection_key, s, entry_name)
                         self._get_simple_type(t, target_dict['allOf'][-1]['then']['properties'][entry_name])
                 else:
                     # 1. 'type' entry
@@ -210,16 +206,15 @@ class DataGroup:
             pass
 
 
-    def _construct_selection_if_else(self, target_dict_to_append, selector, selection, entry_name):
+    def _construct_selection_if_then(self, target_dict_to_append, selector, selection, entry_name):
         '''
-        Construct paired if-else json entries for allOf collections translated from source-schema
+        Construct paired if-then json entries for allOf collections translated from source-schema
         "choice" Constraints.
 
         :param target_dict_to_append:   This dictionary is modified in-situ with an if key and
                                         associated then key
-        :param selector:                Choice from the Constraints list
-        :param selection:               Choice from Data Type list. Format the condition
-                                        if {selector} then {selection}.
+        :param selector:                Constraints key
+        :param selection:               Item from constraints values list. 
         :param entry_name:              Data Element for which the Data Type must match the
                                         Constraint
         '''
