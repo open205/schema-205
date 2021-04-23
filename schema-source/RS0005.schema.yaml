@@ -105,7 +105,7 @@ GridVariables:
       Units: "W"
       Required: True
     shaft_rotational_speed:
-      Description: "Rotational speed of fan impeller"
+      Description: "Rotational speed of shaft"
       Data Type: "[Numeric][1..]"
       Constraints: ">=0.0"
       Units: "rev/s"

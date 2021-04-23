@@ -50,7 +50,7 @@ String:
 
 "Null":
   Object Type: "Data Type"
-  Description: "Used to represent a missing value. Shall only be used in combination with other data types, e.g., 'Number/Null'."
+  Description: "Used to represent a missing value. Shall only be used in combination with other data types, e.g., 'Numeric/Null'."
   JSON Schema Type: "null"
   Examples:
     - "null"
@@ -86,7 +86,7 @@ Version:
 
 Pattern:
   Object Type: "String Type"
-  Description: "A regular expression pattern as defined by ECMA-262[@RegEx]. Used for characterizing e.g. model numbers."
+  Description: "A regular expression pattern as defined by ECMA-262[@RegEx]. Used for characterization (e.g. model numbers)."
   Is Regex: True
   Examples:
     - "CA225FB.[1-9]"
