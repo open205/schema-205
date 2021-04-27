@@ -516,13 +516,13 @@ Performance:
       Description: "Type of liquid in evaporator"
       Data Type: "{LiquidMixture}"
       Required: True
-      Notes: ["LiquidMixture specifies liquid constituents and their concentrations",
+      Notes: ["`LiquidMixture` specifies liquid constituents and their concentrations",
               "Density shall be evaluated at the evaporator inlet liquid temperature"]
     condenser_liquid_type:
       Description: "Type of liquid in condenser"
       Data Type: "{LiquidMixture}"
       Required: True
-      Notes: ["LiquidMixture specifies liquid constituents and their concentrations",
+      Notes: ["`LiquidMixture` specifies liquid constituents and their concentrations",
               "Density shall be evaluated at the condenser inlet liquid temperature"]
     evaporator_fouling_factor:
       Description: "Factor of heat transfer inhibition due to heat exchanger fouling layer"
