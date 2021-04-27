@@ -14,10 +14,10 @@ FanPosition:
   Object Type: "Enumeration"
   Enumerators:
     BLOW_THROUGH:
-      Description: "Fan is placed downstream of the indoor coil"
+      Description: "Fan is placed upstream of the indoor coil"
       Display Text: "Blow Through"
     DRAW_THROUGH:
-      Description: "Fan is placed upstream of the indoor coil"
+      Description: "Fan is placed downstream of the indoor coil"
       Display Text: "Draw Through"
 
 AHRI210240TestStandardYear:

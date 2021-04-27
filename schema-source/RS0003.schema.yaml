@@ -271,7 +271,7 @@ LookupVariablesContinuous:
       Data Type: "[Numeric/Null][1..]"
       Constraints: ">=0.0"
       Units: "W"
-      Notes: "The mechanical efficiency of any belt drive used to modify rotational speed between the motor and impeller shall be implicit in this value"
+      Notes: "Does not include the mechanical efficiency of any mechanical drive used to modify rotational speed between the motor and impeller"
       Required: True
 
 PerformanceMapDiscrete:

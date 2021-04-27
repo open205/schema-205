@@ -154,27 +154,24 @@ RatingAHRI550590:
       Data Type: "[{RatingAHRI550590PartLoadPoint}][4]"
       Notes: "The measured data for all 4 points used to calculate the IPLV or NPLV rating point"
     full_load_evaporator_liquid_volumetric_flow_rate:
-      Description: "Chilled liquid flow at the full load design point rating condition"
+      Description: "Evaporator liquid volumetric flow rate at the full load design point rating condition"
       Data Type: "Numeric"
       Units: "gpm"
       Constraints: ">0.0"
       Required: True
-      Notes: ["Evaporator liquid volumetric flow rate at the full load rating conditions",
-              " Density calculations shall be made at the inlet temperature of the heat exchanger at full load rating conditions"]
+      Notes: "Density calculations shall be made at the inlet temperature of the heat exchanger at full load rating conditions"
     full_load_evaporator_liquid_entering_temperature:
-      Description: "Entering evaporator liquid temperature at the full load design rating conditions"
+      Description: "Liquid temperature at the entry flange of the evaporator at the full load design rating conditions"
       Data Type: "Numeric"
       Units: "F"
       Constraints: ">-459.67"
       Required: True
-      Notes: "Evaporator liquid temperature at the entry flange of the evaporator at full load rating conditions"
     full_load_evaporator_liquid_leaving_temperature:
-      Description: "Leaving evaporator liquid temperature at the full load design rating conditions"
+      Description: "Liquid temperature at the exit flange of the evaporator at the full load design rating conditions"
       Data Type: "Numeric"
       Units: "F"
       Constraints: ">-459.67"
       Required: True
-      Notes: "Evaporator liquid temperature at the exit flange of the evaporator at full load rating conditions"
     full_load_evaporator_liquid_differential_pressure:
       Description: "Pressure difference across the evaporator at the full load design rating conditions"
       Data Type: "Numeric"
@@ -183,34 +180,31 @@ RatingAHRI550590:
       Required: True
       Notes: "Evaporator pressure difference as defined in the rating standard"
     full_load_evaporator_fouling_factor:
-      Description: "Factor of heat transfer inhibition due to heat exchanger fouling layer at the full load design rating condition"
+      Description: "Factor of heat transfer inhibition due to evaporator heat exchanger fouling layer at the full load design rating condition"
       Data Type: "Numeric"
       Units: "h-ft2-F/Btu"
       Constraints: ">=0.0"
       Required: True
       Notes: "Evaporator fouling factor at which the full load rating was measured"
     full_load_condenser_liquid_volumetric_flow_rate:
-      Description: "Condenser liquid flow at the full load design rating conditions"
+      Description: "Condenser liquid volumetric flow rate at the full load design rating conditions"
       Data Type: "Numeric"
       Units: "gpm"
       Constraints: ">0.0"
       Required: True
-      Notes: ["Condenser liquid volumetric flow rate at the full load rating conditions",
-              "Density calculations shall be made at the inlet temperature of the heat exchanger at full load rating conditions"]
+      Notes: "Density calculations shall be made at the inlet temperature of the heat exchanger at full load rating conditions"
     full_load_condenser_liquid_entering_temperature:
-      Description: "Entering condenser liquid temperature at the full load design rating conditions"
+      Description: "Liquid temperature at the entry flange of the condenser at the full load design rating conditions"
       Data Type: "Numeric"
       Units: "F"
       Constraints: ">-459.67"
       Required: True
-      Notes: "Condenser liquid temperature at the entry flange of the condenser at full load rating conditions"
     full_load_condenser_liquid_leaving_temperature:
-      Description: "Leaving condenser liquid temperature at the full load design rating conditions"
+      Description: "Liquid temperature at the exit flange of the condenser at the full load design rating conditions"
       Data Type: "Numeric"
       Units: "F"
       Constraints: ">-459.67"
       Required: True
-      Notes: "Condenser liquid temperature at the exit flange of the condenser at full load rating conditions"
     full_load_condenser_liquid_differential_pressure:
       Description: "Pressure difference across the condenser at the full load design rating conditions"
       Data Type: "Numeric"
@@ -219,7 +213,7 @@ RatingAHRI550590:
       Required: True
       Notes: "Condenser pressure difference as defined in the rating standard"
     full_load_condenser_fouling_factor:
-      Description: "Factor of heat transfer inhibition due to heat exchanger fouling layer at the full load design rating conditions"
+      Description: "Factor of heat transfer inhibition due to condenser heat exchanger fouling layer at the full load design rating conditions"
       Data Type: "Numeric"
       Units: "h-ft2-F/Btu"
       Constraints: ">=0.0"
@@ -360,27 +354,24 @@ RatingAHRI551591:
       Data Type: "[{RatingAHRI551591PartLoadPoint}][4]"
       Notes: "The measured data for all 4 points used to calculate the IPLV or NPLV rating point"
     full_load_evaporator_liquid_volumetric_flow_rate:
-      Description: "Chilled liquid flow at the full load design rating conditions"
+      Description: "Evaporator liquid volumetric flow rate at the full load design rating conditions"
       Data Type: "Numeric"
       Units: "l/s"
       Constraints: ">0.0"
       Required: True
-      Notes: ["Evaporator liquid volumetric flow rate at the full load rating conditions",
-              "Density calculations shall be made at the inlet temperature of the heat exchanger at full load rating conditions"]
+      Notes: "Density calculations shall be made at the inlet temperature of the heat exchanger at full load rating conditions"
     full_load_evaporator_liquid_entering_temperature:
-      Description: "Entering evaporator liquid temperature at the full load design rating conditions"
+      Description: "Liquid temperature at the entry flange of the evaporator at the full load design rating conditions"
       Data Type: "Numeric"
       Units: "C"
       Constraints: ">-273.15"
       Required: True
-      Notes: "Evaporator liquid temperature at the entry flange of the evaporator at full load rating conditions"
     full_load_evaporator_liquid_leaving_temperature:
-      Description: "Leaving evaporator liquid temperature at the full load design rating conditions"
+      Description: "Liquid temperature at the exit flange of the evaporator at the full load design rating conditions"
       Data Type: "Numeric"
       Units: "C"
       Constraints: ">-273.15"
       Required: True
-      Notes: "Evaporator liquid temperature at the exit flange of the evaporator at full load design rating conditions"
     full_load_evaporator_liquid_differential_pressure:
       Description: "Pressure difference across the evaporator at the full load design rating conditions"
       Data Type: "Numeric"
@@ -389,34 +380,31 @@ RatingAHRI551591:
       Required: True
       Notes: "Evaporator pressure difference as defined in the rating standard"
     full_load_evaporator_fouling_factor:
-      Description: "Factor of heat transfer inhibition due to heat exchanger fouling layer at the full load design rating conditions"
+      Description: "Factor of heat transfer inhibition due to evaporator heat exchanger fouling layer at the full load design rating conditions"
       Data Type: "Numeric"
       Units: "m2-K/kW"
       Constraints: ">=0.0"
       Required: True
       Notes: "Evaporator fouling factor at which the full rating was measured"
     full_load_condenser_liquid_volumetric_flow_rate:
-      Description: "Condenser liquid flow at the full load design rating conditions"
+      Description: "Condenser liquid volumetric flow rate at the full load design rating conditions"
       Data Type: "Numeric"
       Units: "l/s"
       Constraints: ">0.0"
       Required: True
-      Notes: ["Condenser liquid volumetric flow rate at the full load rating conditions",
-              "Density calculations shall be made at the inlet temperature of the heat exchanger at full load rating conditions"]
+      Notes: "Density calculations shall be made at the inlet temperature of the heat exchanger at full load rating conditions"
     full_load_condenser_liquid_entering_temperature:
-      Description: "Entering condenser liquid temperature at the full load design rating conditions"
+      Description: "Liquid temperature at the entry flange of the condenser at the full load design rating conditions"
       Data Type: "Numeric"
       Units: "C"
       Constraints: ">-273.15"
       Required: True
-      Notes: "Condenser liquid temperature at the entry flange of the condenser at full load rating conditions"
     full_load_condenser_liquid_leaving_temperature:
-      Description: "Leaving condenser liquid temperature at the full load design rating conditions"
+      Description: "Liquid temperature at the exit flange of the condenser at the full load design rating conditions"
       Data Type: "Numeric"
       Units: "C"
       Constraints: ">-273.15"
       Required: True
-      Notes: "Condenser liquid temperature at the exit flange of the condenser at full load rating conditions"
     full_load_condenser_liquid_differential_pressure:
       Description: "Pressure difference across the condenser at the full load design rating conditions"
       Data Type: "Numeric"
@@ -425,7 +413,7 @@ RatingAHRI551591:
       Required: True
       Notes: "Condenser pressure difference as defined in the rating standard"
     full_load_condenser_fouling_factor:
-      Description: "Factor of heat transfer inhibition due to heat exchanger fouling layer at the full load design rating conditions"
+      Description: "Factor of heat transfer inhibition due to condenser heat exchanger fouling layer at the full load design rating conditions"
       Data Type: "Numeric"
       Units: "m2-K/kW"
       Constraints: ">=0.0"
