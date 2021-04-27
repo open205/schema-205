@@ -25,7 +25,7 @@ Integer:
 
 Numeric:
   Object Type: "Data Type"
-  Description: "A number that may include a fractional part with optional leading sign and optional exponent (engineering notation)."
+  Description: "A number that may include a fractional part with optional leading sign and optional exponent (engineering notation).  Numeric values are conveyed in CBOR files in IEEE 754[@IEEE754] binary64 format without rounding."
   JSON Schema Type: number
   Examples:
     - "3.43"
