@@ -36,9 +36,9 @@ def translate_all_to_headers(input_dir_path, output_dir_path, container=''):
         file_name_root = os.path.splitext(os.path.splitext(file_name)[0])[0]
         h.translate(os.path.join(input_dir_path, file_name), container, base_class)
         dump(str(h), os.path.join(output_dir_path, file_name_root + '.h'))
-        if file_name_root != container:
-            factory_header = generate_factory_headers(file_name_root, base_class, container)
-            dump(factory_header, os.path.join(output_dir_path, file_name_root + '_factory.h'))
+        # if file_name_root != container:
+        #     factory_header = generate_factory_headers(file_name_root, 'rs_instance', container) # Remove!!
+        #     dump(factory_header, os.path.join(output_dir_path, file_name_root + '_factory.h'))
 
 # -------------------------------------------------------------------------------------------------
 def translate_all_to_source(input_dir_path, output_dir_path, container=''):
@@ -59,9 +59,9 @@ def translate_all_to_source(input_dir_path, output_dir_path, container=''):
         h.translate(os.path.join(input_dir_path, file_name), container, base_class)
         c.translate(container, h)
         dump(str(c), os.path.join(output_dir_path, file_name_root + '.cpp'))
-        if file_name_root != container:
-            factory_src = generate_factory_source(file_name_root, base_class, container)
-            dump(factory_src, os.path.join(output_dir_path, file_name_root + '_factory.cpp'))
+        # if file_name_root != container:
+        #     factory_src = generate_factory_source(file_name_root, 'rs_instance', container)
+        #     dump(factory_src, os.path.join(output_dir_path, file_name_root + '_factory.cpp'))
 
 # -------------------------------------------------------------------------------------------------
 if __name__ == '__main__':
@@ -69,7 +69,7 @@ if __name__ == '__main__':
     import glob
 
     source_dir = os.path.join(os.path.dirname(__file__),'..','schema-source')
-    build_dir = os.path.join(os.path.dirname(__file__),'..','build')
+    build_dir = os.path.join(os.path.dirname(__file__),'..','build','cpp')
     if not os.path.exists(build_dir):
         os.mkdir(build_dir)
     dump_dir = os.path.join(build_dir,'cpp')
@@ -84,9 +84,8 @@ if __name__ == '__main__':
                             os.path.join(dump_dir, file_name_root),
                             base_class, 
                             container)
-    elif len(sys.argv) == 3:
-        base_class = sys.argv[1]
-        container = sys.argv[2]
-        translate_all_to_headers(source_dir, dump_dir, base_class, container)
+    elif len(sys.argv) == 2:
+        container = sys.argv[1]
+        translate_all_to_headers(source_dir, dump_dir, container)
     else:
         print('Script requires arguments [ContainerName] or [SchemaName] [ContainerName]')

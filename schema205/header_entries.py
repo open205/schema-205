@@ -201,7 +201,7 @@ class Union(Header_entry):
 # -------------------------------------------------------------------------------------------------
 class Data_element(Header_entry):
 
-    def __init__(self, name, parent, element, data_types, references):
+    def __init__(self, name, parent, element, data_types, references, find_func=None):
         super().__init__(name, parent)
         self._access_specifier = ''
         self._datatypes = data_types
@@ -209,7 +209,7 @@ class Data_element(Header_entry):
         self._has_nested = False
         self._selector = dict()
 
-        self._create_type_entry(element)
+        self._create_type_entry(element, find_func)
 
     # .............................................................................................
     @property
@@ -220,35 +220,38 @@ class Data_element(Header_entry):
             return self.level*'\t' + self._type + ' ' + self._name + ';'
 
     # .............................................................................................
-    def _create_type_entry(self, parent_dict):
+    def _create_type_entry(self, parent_dict, type_finder=None):
         '''Create type node.'''
         try:
             # If the type is an array, extract the surrounding [] first (using non-greedy qualifier "?")
             m = re.findall(r'\[(.*?)\]', parent_dict['Data Type'])
             if m:
                 self._type = 'std::vector<' + self._get_simple_type(m[0]) + '>'
-                # if 'Range' in parent_dict:
-                #     self._get_simple_minmax(parent_dict['Range'])
             else:
                 # If the type is oneOf a set
                 m = re.match(r'\((.*)\)', parent_dict['Data Type'])
                 if m:
                     # Choices can only be mapped to enums, so store the mapping for future use
-                    oneof_selection_key = parent_dict['Selector'].split('(')[0]
+                    # Constraints (of selection type) are of the form 
+                    # selection_key(ENUM_VAL_1, ENUM_VAL_2, ENUM_VAL_3)
+                    # They connect pairwise with Data Type of the form ({Type_1}, {Type_2}, {Type_3})
+                    oneof_selection_key = parent_dict['Constraints'].split('(')[0]
+                    if type_finder:
+                        selection_key_type = ''.join(ch for ch in type_finder(oneof_selection_key) if ch.isalnum()) + '::'
+                    else:
+                        selection_key_type = ''
                     types = [self._get_simple_type(t.strip()) for t in m.group(1).split(',')]
-                    m_opt = re.match(r'.*\((.*)\)', parent_dict['Selector'])
+                    m_opt = re.match(r'.*\((.*)\)', parent_dict['Constraints'])
                     if not m_opt:
                         raise TypeError
-                    selectors = [s.strip() for s in m_opt.group(1).split(',')]
+                    selectors = [(selection_key_type + s.strip()) for s in m_opt.group(1).split(',')]
 
                     self._selector[oneof_selection_key] = dict(zip(selectors, types))
                     self._type = f'std::unique_ptr<{self._name}_base>'
                 else:
                     # 1. 'type' entry
                     self._type = self._get_simple_type(parent_dict['Data Type'])
-                    #self._get_simple_minmax(parent_dict['Range'])
         except KeyError as ke:
-            #print('KeyError; no key exists called', ke)
             pass
 
     # .............................................................................................
@@ -274,14 +277,14 @@ class Data_element(Header_entry):
                 internal_type = m.group(2)
         else:
             internal_type = type_str
-        # Look through the references to assign a source to the type
+        # Look through the references to assign a source to the type. 'key' is generally a
+        # schema name; its value will be a list of matchable data object names
         for key in self._refs:
             if internal_type in self._refs[key]:
                 simple_type = internal_type
-                # if key == self.rootname:
-                #     simple_type = internal_type
-                # else:
-                #     simple_type = internal_type #key + '::' + internal_type
+                #
+                if key == internal_type:
+                    simple_type = f'{key}_NS::{internal_type}'
                 if nested_type:
                     # e.g. 'ASHRAE205' from the composite 'ASHRAE205(RS_ID=RSXXXX)'
                     #simple_type = f'std::shared_ptr<{internal_type}>'
@@ -459,14 +462,14 @@ class H_translator:
         for base_level_tag in (
             [tag for tag in self._contents if self._contents[tag].get('Object Type') in self._data_group_types]):
             if base_level_tag == self._schema_name:
-                if not self._is_top_container:
-                    s = Struct(base_level_tag, self._namespace, superclass=self._fundamental_base_class)
-                    self._add_function_overrides(s, self._fundamental_base_class)
-                else: 
-                    s = Struct(base_level_tag, self._namespace)
-                    # Manual insertion of Initialize function into top_container, since it 
-                    # doesn't have a virtual parent
-                    Initialize_function(base_level_tag, s)
+                # if not self._is_top_container:
+                #     s = Struct(base_level_tag, self._namespace)
+                #     self._add_function_overrides(s, self._fundamental_base_class)
+                # else: 
+                s = Struct(base_level_tag, self._namespace)
+                # Manual insertion of Initialize function into top_container, since it 
+                # doesn't have a virtual parent
+                Initialize_function(base_level_tag, s)
             elif self._contents[base_level_tag].get('Object Type') == 'Performance Map':
                 s = Struct(base_level_tag, self._namespace, superclass='performance_map_base')
                 self._add_member_headers(s)
@@ -487,7 +490,8 @@ class H_translator:
                                     s, 
                                     self._contents[base_level_tag]['Data Elements'][data_element],
                                     self._fundamental_data_types,
-                                    self._references
+                                    self._references,
+                                    self._search_nodes_for_datatype
                                     )
                 self._add_member_headers(d)
         H_translator.modified_insertion_sort(self._namespace.child_entries)
@@ -498,7 +502,7 @@ class H_translator:
             Enum_serialization(base_level_tag, 
                                self._namespace, 
                                self._contents[base_level_tag]['Enumerators'])
-        if self._is_top_container:
+        if True:#self._is_top_container:
             for base_level_tag in ([tag for tag in self._contents 
                 if self._contents[tag].get('Object Type') in self._data_group_types]):
                     # from_json declarations are necessary in top container, as the header-declared
@@ -523,7 +527,7 @@ class H_translator:
                 includes += f'#include <{r}.h>'
                 includes += '\n'
             self._preamble.append(includes)
-        self._preamble.append('#include <string>\n#include <vector>\n#include <nlohmann/json.hpp>\n')
+        self._preamble.append('#include <string>\n#include <vector>\n#include <nlohmann/json.hpp>\n#include <error_handling_tk205.h>\n')
 
     # .............................................................................................
     def _add_member_headers(self, data_element):
@@ -582,12 +586,24 @@ class H_translator:
     def _add_function_overrides(self, parent_node, base_class_name):
         '''Get base class virtual functions to be overridden.'''
         base_class = os.path.join(os.path.dirname(__file__), 'src', f'{base_class_name}.h')
-        with open(base_class) as b:
-            for line in b:
-                if base_class_name not in line:
-                    m = re.match(r'\s*virtual\s(.*)\s(.*)\((.*)\)', line)
-                    if m:
-                        f_ret_type = m.group(1)
-                        f_name = m.group(2)
-                        f_args = f'({m.group(3)})'
-                        Member_function_override(f_ret_type, f_name, f_args, '', parent_node)
+        try:
+            with open(base_class) as b:
+                for line in b:
+                    if base_class_name not in line:
+                        m = re.match(r'\s*virtual\s(.*)\s(.*)\((.*)\)', line)
+                        if m:
+                            f_ret_type = m.group(1)
+                            f_name = m.group(2)
+                            f_args = f'({m.group(3)})'
+                            Member_function_override(f_ret_type, f_name, f_args, '', parent_node)
+        except:
+            pass
+        
+    # .............................................................................................
+    def _search_nodes_for_datatype(self, data_element):
+        for listing in self._contents:
+            if 'Data Elements' in self._contents[listing]:
+                for element in self._contents[listing]['Data Elements']:
+                    if (element == data_element 
+                        and 'Data Type' in self._contents[listing]['Data Elements'][element]):
+                        return self._contents[listing]['Data Elements'][element]['Data Type']

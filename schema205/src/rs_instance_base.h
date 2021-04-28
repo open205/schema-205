@@ -11,13 +11,6 @@
 /// @note  If you are seeing this class in your build directory, it has been copied there from
 ///        a source location. Changes will not be saved!
 
-namespace ASHRAE205_NS {
-
-	inline void A205_json_catch(nlohmann::json::out_of_range & ex)
-	{
-    	Show_message(msg_severity::WARN, ex.what());
-	}
-}
 
 namespace ASHRAE205_NS  {
 
