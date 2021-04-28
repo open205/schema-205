@@ -6,7 +6,7 @@ Schema:
     - "RS0004"
   Title: "Unitary Cooling Air-Conditioning Equipment"
   Description: "Schema for ASHRAE 205 annex RS0002: Unitary Cooling Air-Conditioning Equipment"
-  Version: "0.1.0"
+  Version: "0.2.0"
   Root Data Group: "RS0002"
 
 # Local Enumerations

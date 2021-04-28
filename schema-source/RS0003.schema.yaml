@@ -6,7 +6,7 @@ Schema:
     - "RS0007"
   Title: "Fan Assembly"
   Description: "Schema for ASHRAE 205 annex RS0003: Fan Assembly"
-  Version: "0.1.0"
+  Version: "0.2.0"
   Root Data Group: "RS0003"
 
 # Local Enumerations

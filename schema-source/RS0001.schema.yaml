@@ -9,7 +9,7 @@ Schema:
     - "ASHRAE205"
   Title: "Liquid-Cooled Chiller"
   Description: "Schema for ASHRAE 205 annex RS0001: Liquid-Cooled Chiller"
-  Version: "0.1.0"
+  Version: "0.2.0"
   Root Data Group: "RS0001"
 
 # Local Enumerations

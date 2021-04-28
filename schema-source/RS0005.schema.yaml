@@ -5,7 +5,7 @@ Schema:
     - "RS0006"
   Title: "Motor"
   Description: "Schema for ASHRAE 205 annex RS0005: Motor"
-  Version: "0.1.0"
+  Version: "0.2.0"
   Root Data Group: "RS0005"
 
 # Data Groups
