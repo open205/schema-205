@@ -6,7 +6,7 @@ Schema:
     - "RS0007"
   Title: "Fan Assembly"
   Description: "Schema for ASHRAE 205 annex RS0003: Fan Assembly"
-  Version: "0.1.0"
+  Version: "0.2.0"
   Root Data Group: "RS0003"
 
 # Local Enumerations
@@ -83,15 +83,15 @@ RS0003:
   Object Type: "Data Group"
   Data Elements:
     metadata:
-      Description: "Metadata *data group*"
+      Description: "Metadata data group"
       Data Type: "{Metadata}"
       Constraints: "schema=RS0003"
       Required: True
     description:
-      Description: "*Data group* describing product and rating information"
+      Description: "Data group describing product and rating information"
       Data Type: "{Description}"
     performance:
-      Description: "*Data group* containing performance information"
+      Description: "Data group containing performance information"
       Data Type: "{Performance}"
       Required: True
 
@@ -111,7 +111,7 @@ ProductInformation:
     model_number:
       Description: "Assembly/unit model number"
       Data Type: "Pattern"
-      Notes: "Pattern shall match all model numbers that can be represented by the *representation*"
+      Notes: "Pattern shall match all model numbers that can be represented by the representation"
     impeller_type:
       Description: "Type of impeller in fan assembly"
       Data Type: "<ImpellerType>"
@@ -123,7 +123,7 @@ Performance:
   Object Type: "Data Group"
   Data Elements:
     nominal_standard_air_volumetric_flow_rate:
-      Description: "Nominal or rated air flow rate at *standard air conditions*"
+      Description: "Nominal or rated air flow rate at standard air conditions"
       Data Type: "Numeric"
       Constraints: ">=0.0"
       Units: "m3/s"
@@ -161,7 +161,7 @@ Performance:
     stability_curve:
       Description: "The system curve defining the stability area for system selection"
       Data Type: "{SystemCurve}"
-      Notes: "***Informative note:*** *Application software* may use this curve to indicate to *application software users* when a selected fan is operating in an unstable region where surging or stalling is likely to occur"
+      Notes: "***Informative note:*** Application software may use this curve to indicate to application software users when a selected fan is operating in an unstable region where surging or stalling is likely to occur"
     operation_speed_control_type:
       Description: "Type of performance map"
       Data Type: "{OperationSpeedControlType}"
@@ -176,12 +176,12 @@ Performance:
               "If `operation_speed_control_type` is `CONTINUOUS` and `installation_speed_control_type` is `FIXED`, impeller speed shall be restricted to a single speed (which may be interpolated from `impeller_speed` values provided in the performance map)",
               "If `operation_speed_control_type` is `CONTINUOUS` and `installation_speed_control_type` is `VARIABLE`, impeller speed shall be unrestricted within operational limits"]
     motor_representation:
-      Description: "The corresponding Standard 205 motor *representation*"
-      Notes: "If the fan assembly is packaged with a motor, a motor *representation* shall be provided"
+      Description: "The corresponding Standard 205 motor representation"
+      Notes: "If the fan assembly is packaged with a motor, a motor representation shall be provided"
       Data Type: "{RS0005}"
     mechanical_drive_representation:
-      Description: "The corresponding Standard 205 mechanical drive *representation*"
-      Notes: "If the fan assembly is packaged with a mechanical drive, a mechanical drive *representation* shall be provided"
+      Description: "The corresponding Standard 205 mechanical drive representation"
+      Notes: "If the fan assembly is packaged with a mechanical drive, a mechanical drive representation shall be provided"
       Data Type: "{RS0007}"
     performance_map:
       Description: "Data group describing fan assembly performance when operating"
@@ -200,9 +200,9 @@ AssemblyComponent:
       Description: "Informative description of the component"
       Data Type: "String"
     component_id:
-      Description: "Identifier of the corresponding Standard 205 *representation*"
+      Description: "Identifier of the corresponding Standard 205 representation"
       Data Type: "UUID"
-      Notes: "Optionally provided if the component has a Standard 205 *representation*"
+      Notes: "Optionally provided if the component has a Standard 205 representation"
     wet_pressure_difference:
       Description: "Additional static pressure difference if the component is wet (e.g., because of condensate collection or wetting evaporative media)"
       Data Type: "Numeric"
@@ -216,7 +216,7 @@ SystemCurve:
   Object Type: "Data Group"
   Data Elements:
     standard_air_volumetric_flow_rate:
-      Description: "Volumetric air flow rate through an air distribution system at *standard air conditions*"
+      Description: "Volumetric air flow rate through an air distribution system at standard air conditions"
       Data Type: "[Numeric][2..]"
       Constraints: ">=0.0"
       Units: "m3/s"
@@ -244,7 +244,7 @@ GridVariablesContinuous:
   Object Type: "Grid Variables"
   Data Elements:
     standard_air_volumetric_flow_rate:
-      Description: "Volumetric air flow rate through fan assembly at *standard air conditions*"
+      Description: "Volumetric air flow rate through fan assembly at standard air conditions"
       Data Type: "[Numeric][1..]"
       Constraints: ">=0.0"
       Units: "m3/s"
@@ -271,7 +271,7 @@ LookupVariablesContinuous:
       Data Type: "[Numeric/Null][1..]"
       Constraints: ">=0.0"
       Units: "W"
-      Notes: "The mechanical efficiency of any belt drive used to modify rotational speed between the motor and impeller shall be implicit in this value"
+      Notes: "Does not include the mechanical efficiency of any mechanical drive used to modify rotational speed between the motor and impeller"
       Required: True
 
 PerformanceMapDiscrete:
@@ -308,7 +308,7 @@ LookupVariablesDiscrete:
   Object Type: "Lookup Variables"
   Data Elements:
     standard_air_volumetric_flow_rate:
-      Description: "Volumetric air flow rate through fan assembly at *standard air conditions*"
+      Description: "Volumetric air flow rate through fan assembly at standard air conditions"
       Data Type: "[Numeric/Null][1..]"
       Constraints: ">=0.0"
       Units: "m3/s"

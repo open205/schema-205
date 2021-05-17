@@ -1,14 +1,14 @@
 {
-  "standard_version": "PPR2",
-  "schema_version": "0.1.0",
-  "rs_id": "RS0001",
-  "id": "bcf8b859-67a3-42f4-8f8d-4e57af1ccf22",
-  "data_timestamp": "2019-09-10T00:00Z",
-  "data_version": 1,
-  "description": "After burner!",
-  "rs_instance": {
-    "performance": {
-      "after_bruner_power": 42
-    }
+  "metadata": {
+    "data_model": "ASHRAE_205",
+    "schema_version": "0.2.0",
+    "schema": "RS0001",
+    "id": "bcf8b859-67a3-42f4-8f8d-4e57af1ccf22",
+    "data_timestamp": "2019-09-10T00:00Z",
+    "data_version": 1,
+    "description": "Nothing to see here!"
+  },
+  "performance": {
+    "after_bruner_power": 42
   }
 }
