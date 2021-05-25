@@ -29,7 +29,7 @@ public:
        performance_map->Add_data_table(table);
        std::ostringstream oss;
        oss << "Adding grid table with size " << table.size();
-       ASHRAE205_NS::Show_message(ASHRAE205_NS::msg_severity::INFO, oss.str());
+       ASHRAE205_NS::Show_message(ASHRAE205_NS::msg_severity::INFO_205, oss.str());
     }
 };
 
