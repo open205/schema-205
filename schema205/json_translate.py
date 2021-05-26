@@ -9,6 +9,7 @@ def get_extension(file):
 
 
 def load(input_file_path):
+    ''' Load schema file based on extension and return resulting dictionary. '''
     ext = get_extension(input_file_path).lower()
     if (ext == '.json'):
         with open(input_file_path, 'r') as input_file:
@@ -21,6 +22,7 @@ def load(input_file_path):
 
 
 def dump(content, output_file_path):
+    ''' Save schema file of dictionary content. '''
     ext = get_extension(output_file_path).lower()
     if (ext == '.json'):
         with open(output_file_path,'w') as output_file:
@@ -41,6 +43,7 @@ def compare_dicts(original, modified, error_list):
 
 # https://stackoverflow.com/questions/4527942/comparing-two-dictionaries-and-checking-how-many-key-value-pairs-are-equal
 def dict_compare(d1, d2, errors, level=0, lineage=None, hide_value_mismatches=False, hide_key_mismatches=False):
+    ''' Compare two order-independent dictionaries, labeling added or deleted keys or mismatched values. '''
     if not lineage:
         lineage = list()
     if d1 == d2:
@@ -82,78 +85,150 @@ class DataGroup:
 
 
     def add_data_group(self, group_name, group_subdict):
+        '''
+        Process Data Group from the source schema into a properties node in json.
+
+        :param group_name:      Data Group name; this will become a schema definition key
+        :param group_subdict:   Dictionary of Data Elements where each element is a key
+        '''
         elements = {'type': 'object',
                     'properties' : dict()}
         required = list()
+        dependencies = dict()
         for e in group_subdict:
             element = group_subdict[e]
             if 'Description' in element:
                 elements['properties'][e] = {'description' : element['Description']}
             if 'Data Type' in element:
-                self._create_type_entry(group_subdict[e], elements['properties'][e])
+                self._create_type_entry(group_subdict[e], elements, e)
             if 'Units' in element:
                 elements['properties'][e]['units'] = element['Units']
             if 'Notes' in element:
                 elements['properties'][e]['notes'] = element['Notes']
             if 'Required' in element:
-                required.append(e)
+                #required.append(e)
+                req = element['Required']
+                if isinstance(req, bool) and req == True:
+                    required.append(e)
+                elif req.startswith('if'):
+                    if '!=' in req:
+                        self._construct_requirement_if_else(elements, req.split(' ')[1].split('!')[0],
+                                                            False, req.split('=')[1], e)
+                    elif '=' in req:
+                        self._construct_requirement_if_else(elements, req.split(' ')[1].split('=')[0],
+                                                            True, req.split('=')[1], e)
+                    else:
+                        dependency = req.split(' ')[1]
+                        dependencies[dependency] = [e]
         if required:
             elements['required'] = required
+        if dependencies:
+            elements['dependencies'] = dependencies
         elements['additionalProperties'] = False
-
         return {group_name : elements}
 
 
-    def _create_type_entry(self, parent_dict, target_dict):
-        '''Create type node and its nested nodes if necessary.'''
+    def _construct_requirement_if_else(self,
+                                       target_dict_to_append,
+                                       selector, is_equal, selector_state, requirement):
+        '''
+        Construct paired if-else json entries for conditional requirements.
+
+        :param target_dict_to_append:   This dictionary is modified in-situ with an if key and
+                                        an associated then key
+        :param selector:                see selector_state
+        :param is_equal:                see selector_state
+        :param selector_state:          Format the condition {selector} [is/isn't] {is_equal}
+                                        {selector_state}
+        :param requirement:             This item's presence is dependent on the above condition
+        '''
+        if 'true' in selector_state.lower():
+            selector_state = True
+        elif 'false' in selector_state.lower():
+            selector_state = False
+        selector_dict = ({'properties' : {selector : {'const' : selector_state} } } if is_equal
+                         else {'properties' : {selector : {'not' : {'const' : selector_state} } } })
+        if target_dict_to_append.get('if') == selector_dict: # condition already exists
+            target_dict_to_append['then']['required'].append(requirement)
+        else:
+            target_dict_to_append['if'] = selector_dict
+            target_dict_to_append['then'] = {'required' : [requirement]}
+
+
+    def _create_type_entry(self, parent_dict, target_dict, entry_name):
+        '''
+        Create json type node and its nested nodes if necessary.
+        :param parent_dict:     A Data Element's subdictionary, from source schema
+        :param target_dict:     The json definition node that will be populated
+        :param entry_name:      Data Element name
+        '''
         try:
             # If the type is an array, extract the surrounding [] first (using non-greedy qualifier "?")
             m = re.findall(r'\[(.*?)\]', parent_dict['Data Type'])
+            target_property_entry = target_dict['properties'][entry_name]
             if m:
                 # 1. 'type' entry
-                target_dict['type'] = 'array'
+                target_property_entry['type'] = 'array'
                 # 2. 'm[in/ax]Items' entry
                 if len(m) > 1:
                     # Parse ellipsis range-notation e.g. '[1..]'
                     mnmx = re.match(r'([0-9]*)(\.*\.*)([0-9]*)', m[1])
-                    target_dict['minItems'] = int(mnmx.group(1))
+                    target_property_entry['minItems'] = int(mnmx.group(1))
                     if (mnmx.group(2) and mnmx.group(3)):
-                        target_dict['maxItems'] = int(mnmx.group(3))
+                        target_property_entry['maxItems'] = int(mnmx.group(3))
                     elif not mnmx.group(2):
-                        target_dict['maxItems'] = int(mnmx.group(1))
-                else:
-                    target_dict['minItems'] = 1
+                        target_property_entry['maxItems'] = int(mnmx.group(1))
                 # 3. 'items' entry
-                target_dict['items'] = dict()
-                self._get_simple_type(m[0], target_dict['items'])
-                #target_dict['items'][k] = v
-                if 'Range' in parent_dict:
-                    self._get_simple_minmax(parent_dict['Range'], target_dict['items'])
+                target_property_entry['items'] = dict()
+                self._get_simple_type(m[0], target_property_entry['items'])
+                #target_property_entry['items'][k] = v
+                if 'Constraints' in parent_dict:
+                    self._get_simple_constraints(parent_dict['Constraints'], target_dict['items'])
             else:
                 # If the type is oneOf a set
-                m = re.findall(r'^\((.*)\)', parent_dict['Data Type'])
+                m = re.match(r'\((.*)\)', parent_dict['Data Type']) 
                 if m:
-                    target_dict['oneOf'] = list()
-                    choices = m[0].split(',')
-                    for c in choices:
-                        c = c.strip()
-                        target_dict['oneOf'].append(dict())
-                        self._get_simple_type(c, target_dict['oneOf'][-1])
+                    types = [t.strip() for t in m.group(1).split(',')]
+                    selection_key, selections = parent_dict['Constraints'].split('(')
+                    target_dict['allOf'] = list()
+                    for s, t in zip(selections.split(','), types):
+                        #c = c.strip()
+                        target_dict['allOf'].append(dict())
+                        self._construct_selection_if_then(target_dict['allOf'][-1], selection_key, s, entry_name)
+                        self._get_simple_type(t, target_dict['allOf'][-1]['then']['properties'][entry_name])
                 else:
                     # 1. 'type' entry
-                    self._get_simple_type(parent_dict['Data Type'], target_dict)
+                    self._get_simple_type(parent_dict['Data Type'], target_property_entry)
                     # 2. 'm[in/ax]imum' entry
-                    self._get_simple_minmax(parent_dict['Range'], target_dict)
+                    self._get_simple_constraints(parent_dict['Constraints'], target_property_entry)
         except KeyError as ke:
             #print('KeyError; no key exists called', ke)
             pass
 
 
+    def _construct_selection_if_then(self, target_dict_to_append, selector, selection, entry_name):
+        '''
+        Construct paired if-then json entries for allOf collections translated from source-schema
+        "choice" Constraints.
+
+        :param target_dict_to_append:   This dictionary is modified in-situ with an if key and
+                                        associated then key
+        :param selector:                Constraints key
+        :param selection:               Item from constraints values list. 
+        :param entry_name:              Data Element for which the Data Type must match the
+                                        Constraint
+        '''
+        target_dict_to_append['if'] = {'properties' : {selector : {'const' : ''.join(ch for ch in selection if ch.isalnum())} } }
+        target_dict_to_append['then'] = {'properties' : {entry_name : dict()}}
+
+
     def _get_simple_type(self, type_str, target_dict_to_append):
         ''' Return the internal type described by type_str, along with its json-appropriate key.
-
             First, attempt to capture enum, definition, or special string type as references;
             then default to fundamental types with simple key "type".
+
+            :param type_str:                Input string from source schema's Data Type key
+            :param target_dict_to_append:   The json "items" node
         '''
         enum_or_def = r'(\{|\<)(.*)(\}|\>)'
         internal_type = None
@@ -164,7 +239,7 @@ class DataGroup:
             # is a simple definition or enumeration.
             m_nested = re.match(r'.*?\((.*)\)', m.group(2))
             if m_nested:
-                # Rare case of a nested specification e.g. 'ASHRAE205(RS_ID=RS0005)'
+                # Rare case of a nested specification e.g. 'ASHRAE205(rs_id=RS0005)'
                 internal_type = m.group(2).split('(')[0]
                 nested_type = m_nested.group(1)
             else:
@@ -177,8 +252,8 @@ class DataGroup:
                 internal_type = key + '.schema.json#/definitions/' + internal_type
                 target_dict_to_append['$ref'] = internal_type
                 if nested_type:
-                    # Always in the form 'RS_ID=RSXXXX'
-                    target_dict_to_append['RS_ID'] = nested_type.split('=')[1]
+                    # Always in the form 'rs_id=RSXXXX'
+                    target_dict_to_append['rs_id'] = nested_type.split('=')[1]
                 return
 
         try:
@@ -193,26 +268,39 @@ class DataGroup:
         return
 
 
-    def _get_simple_minmax(self, range_str, target_dict):
-        '''Process Range into min and max fields.'''
-        if range_str is not None:
-            ranges = range_str.split(',')
+    def _get_simple_constraints(self, constraints_str, target_dict):
+        '''
+        Process numeric Constraints into fields.
+
+        :param constraints_str:     Raw numerical limits and/or multiple information
+        :param target_dict:         json property node
+        '''
+        if constraints_str is not None:
+            constraints = constraints_str if isinstance(constraints_str, list) else [constraints_str]
             minimum=None
             maximum=None
-            if 'type' not in target_dict:
-                target_dict['type'] = None
-            for r in ranges:
+            for c in constraints:
                 try:
-                    numerical_value = re.findall(r'\d+', r)[0]
-                    if '>' in r:
+                    numerical_value = re.findall(r'[+-]?\d*\.?\d+|\d+', c)[0]
+                    if '>' in c:
                         minimum = (float(numerical_value) if 'number' in target_dict['type'] else int(numerical_value))
-                        mn = 'exclusiveMinimum' if '=' not in r else 'minimum'
+                        mn = 'exclusiveMinimum' if '=' not in c else 'minimum'
                         target_dict[mn] = minimum
-                    elif '<' in r:
+                    elif '<' in c:
                         maximum = (float(numerical_value) if 'number' in target_dict['type']  else int(numerical_value))
-                        mx = 'exclusiveMaximum' if '=' not in r else 'maximum'
+                        mx = 'exclusiveMaximum' if '=' not in c else 'maximum'
                         target_dict[mx] = maximum
+                    elif '%' in c:
+                        target_dict['multipleOf'] = int(numerical_value)
+                    elif 'string' in target_dict['type']:  # String pattern match
+                        target_dict['pattern'] = c.replace('"','')  # TODO: Find better way to remove quotes.
+                except IndexError:
+                    # Constraint was non-numeric
+                    pass
                 except ValueError:
+                    pass
+                except KeyError:
+                    # 'type' not in dictionary
                     pass
 
 
@@ -232,8 +320,9 @@ class Enumeration:
         self._enumerants.append((value, description, display_text, notes))
 
     def create_dictionary_entry(self):
-        '''Convert information currently grouped per enumerant, into json groups for
-           the whole enumeration.
+        '''
+        Convert information currently grouped per enumerant, into json groups for
+        the whole enumeration.
         '''
         z = list(zip(*self._enumerants))
         enums = {'type': 'string',
@@ -301,10 +390,9 @@ class JSON_translator:
         if 'Root Data Group' in schema_section:
             self._schema['$ref'] = self._schema_name + '.schema.json#/definitions/' + schema_section['Root Data Group']
         # Create a dictionary of available external objects for reference
-        refs = list()
+        refs = [self._schema_name]
         if 'References' in schema_section:
-            refs = schema_section['References']
-        refs.append(self._schema_name)
+            refs += schema_section['References']
         for ref_file in refs:
             ext_dict = load(os.path.join(self._source_dir, ref_file + '.schema.yaml'))
             external_objects = list()

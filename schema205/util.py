@@ -1,24 +1,15 @@
 import itertools
 
-def get_rs_index(rs):
-    return int(rs[2:]) - 1
-
-def get_representation_node_and_rs_selections(representation, lineage):
-    selections = []
+def get_representation_node(representation, lineage):
     node = representation
     for name in lineage:
-        if name == 'RS_instance':
-            rs = node['RS_ID']
-            selections.append(get_rs_index(rs))
-        else:
-            selections.append(None)
         node = node[name]
-    return node, selections
+    return node
 
 def create_grid_set(grid_variables, order):
     lists = []
     if len(grid_variables) != len(order):
-        raise Exception(f"order: {order} must contain the keys of 'grid_variables'")
+        raise Exception(f"order: {order} must contain the keys of 'grid_variables': {grid_variables}")
 
     for var in order:
         if var not in grid_variables:
@@ -43,15 +34,18 @@ def process_grid_set(grid_set):
         grid_vars[var].sort()
     return grid_vars
 
-def unique_name_with_index(name, list_of_names):
-    if name not in list_of_names:
-        return name
+def unique_name_with_index(name, list_of_names, max_chars=31):
+    # 31 characters is max length for XLSX spreadsheet name
+    modified_name = name[:max_chars]
+    if modified_name not in list_of_names:
+        return modified_name
     else:
         i = 0
         searching = True
         while searching:
-            if f"{name}{i}" in list_of_names:
+            modified_name = modified_name[:max_chars - len(f"{i}")]
+            if f"{modified_name}{i}" in list_of_names:
                 i += 1
             else:
                 searching = False
-                return f"{name}{i}"
+                return f"{modified_name}{i}"

@@ -1,9 +1,9 @@
 {
     "metadata": {
         "data_model": "ASHRAE_205",
-        "schema_version": "0.2.0",
-        "schema": "RS0006",
-        "description": "Electronic Motor Drive with Constant Efficiency",
+        "schema_version": "0.1.0",
+        "schema": "RS0007",
+        "description": "Mechanical V-Belt Drive with Constant Efficiency",
         "id": "bcf8b859-67a3-42f4-8f8d-4e57af1ccf22",
         "data_timestamp": "2020-04-08T00:00Z",
         "data_version": 1,
@@ -13,29 +13,22 @@
     },
     "description": {
         "product_information": {
-            "manufacturer": "DrivesRUs",
-            "model_number": "5791"
+            "manufacturer": "BeltDrrrrrives!",
+            "model_number": "H6490",
+            "drive_type": "V_BELT"
         }
     },
     "performance": {
-        "maximum_power": 10000,
-        "standby_power": 10,
-        "cooling_method": "PASSIVE_COOLED",
+        "speed_ratio": 0.25,
         "performance_map": {
             "grid_variables": {
                 "output_power": [
                     4052,
                     8105
-                ],
-                "output_frequency": [
-                    3.2,
-                    114.6
                 ]
             },
             "lookup_variables": {
                 "efficiency": [
-                    0.985,
-                    0.985,
                     0.985,
                     0.985
                 ]

@@ -4,10 +4,18 @@ Schema:
     - "ASHRAE205"
   Title: "Air-to-Air Direct Expansion Refrigerant Coil System"
   Description: "Schema for ASHRAE 205 annex RS0004: Air-to-Air Direct Expansion Refrigerant Coil System"
+  Version: "0.2.0"
+  Root Data Group: "RS0004"
 
+# Data Groups
 RS0004:
   Object Type: "Data Group"
   Data Elements:
+    metadata:
+      Description: "Metadata data group"
+      Data Type: "{Metadata}"
+      Constraints: "schema=RS0004"
+      Required: True
     description:
       Description: "Data group describing product and rating information"
       Data Type: "{Description}"
@@ -15,16 +23,6 @@ RS0004:
       Description: "Data group containing performance information"
       Data Type: "{Performance}"
       Required: True
-
-CompressorControlMethod:
-  Object Type: "Enumeration"
-  Enumerators:
-    STAGED:
-      Description: "Compressor loading is controlled by cycling between discrete stages"
-      Display Text: "Staged"
-    DYNAMIC:
-      Description: "Compressor loading is controlled by continuously varying the speed of the compressor"
-      Display Text: "Dynamic"
 
 Description:
   Object Type: "Data Group"
@@ -37,24 +35,24 @@ ProductInformation:
   Object Type: "Data Group"
   Data Elements:
     outdoor_unit_manufacturer:
-      Description: "Name of the outdoor unit manufacturer"
+      Description: "Outdoor unit manufacturer name"
       Data Type: "String"
-      Required: True
     outdoor_unit_model_number:
-      Description: "Model number of the outdoor unit"
+      Description: "Outdoor unit model number"
       Data Type: "Pattern"
-      Notes: "Pattern shall match all model numbers that can be represented by the *representation*."
-      Required: True
+      Notes: "Pattern shall match all model numbers that can be represented by the representation"
     indoor_unit_manufacturer:
-      Description: "Name of the indoor unit manufacturer"
+      Description: "Indoor unit manufacturer name"
       Data Type: "String"
+      Notes: "May be omitted for packaged systems with a single manufacturer"
     indoor_unit_model_number:
-      Description: "Model number of the indoor unit"
+      Description: "Indoor unit model number"
       Data Type: "Pattern"
-      Notes: "Pattern shall match all model numbers that can be represented by the *representation*."
-    refrigerant_type:
-      Description: "Type of refrigerant used"
-      Data Type: "<RefrigerantType>"
+      Notes: "Pattern shall match all model numbers that can be represented by the representation"
+    refrigerant:
+      Description: "Refrigerant used"
+      Data Type: "String"
+      Notes: "The string shall start with 'R-' and then include the refrigerant number designation conforming to ANSI/ASHRAE Standard 34-2019[@ASHRAE34]"
     compressor_type:
       Description: "Type of compressor"
       Data Type: "<CompressorType>"
@@ -62,28 +60,30 @@ ProductInformation:
 Performance:
   Object Type: "Data Group"
   Data Elements:
-    compressor_control_method:
+    compressor_speed_control_type:
       Description: "Method used to control different speeds of the compressor"
-      Data Type: "<CompressorControlMethod>"
+      Data Type: "<CompressorSpeedControlType>"
       Required: True
     cooling_cycling_degradation_coefficient:
       Description: "Cooling cycling degradation coefficient (C_D_^c^) as described in AHRI 210/240"
       Data Type: "Numeric"
       Units: "-"
-      Range: ">=0.0,<1.0"
+      Constraints: [">=0.0","<1.0"]
       Required: True
-      Notes: "Used for the lowest stage where the unit cycles to meet a setpoint. *Informative note:* 340/360 specifies a fixed cycling degradation coefficient of approximately 0.12."
+      Notes: ["Used for the lowest stage when the unit cycles to meet load",
+              "***Informative note:*** 340/360 specifies a fixed cycling degradation coefficient of approximately 0.12"]
     heating_cycling_degradation_coefficient:
       Description: "Heating cycling degradation coefficient (C_D_^h^) as described in AHRI 210/240"
       Data Type: "Numeric"
       Units: "-"
-      Range: ">=0.0,<1.0"
-      Notes: "Used for the lowest stage where the unit cycles to meet a setpoint. *Informative note:* 340/360 specifies a fixed cycling degradation coefficient of approximately 0.12."
+      Constraints: [">=0.0","<1.0"]
+      Notes: ["Used for the lowest stage when the unit cycles to meet load",
+              "***Informative note:*** 340/360 specifies a fixed cycling degradation coefficient of approximately 0.12"]
     integrated_electric_resistance_heating_capacity:
       Description: "Pre-installed electric resistance heating capacity"
       Data Type: "Numeric"
       Units: "W"
-      Range: ">=0"
+      Constraints: ">=0"
       Notes: "Often used as auxilliary or backup heating source"
     performance_map_cooling:
       Description: "Data group describing cooling performance over a range of conditions"
@@ -116,67 +116,69 @@ GridVariablesCooling:
     outdoor_coil_entering_dry_bulb_temperature:
       Description: "Dry bulb temperature of the air entering the outdoor coil"
       Data Type: "[Numeric][1..]"
-      Range: ">=0"
+      Constraints: ">=0.0"
       Units: "K"
       Required: True
     indoor_coil_entering_relative_humidity:
       Description: "Relative humidity of the air entering the indoor coil"
       Data Type: "[Numeric][1..]"
-      Range: ">=0,<=1.0"
+      Constraints: [">=0.0","<=1.0"]
       Units: "-"
-      Notes: "As measured immediately before entering the coil (i.e., after the fan in a blow-through configuration)."
+      Notes: "As measured immediately before entering the coil (i.e., after the fan in a blow-through configuration)"
       Required: True
     indoor_coil_entering_dry_bulb_temperature:
       Description: "Dry bulb temperature of the air entering the indoor coil"
       Data Type: "[Numeric][1..]"
-      Range: ">=0"
+      Constraints: ">=0.0"
       Units: "K"
       Required: True
-      Notes: "As measured immediately before entering the coil (i.e., after the fan in a blow-through configuration)."
+      Notes: "As measured immediately before entering the coil (i.e., after the fan in a blow-through configuration)"
     indoor_coil_air_mass_flow_rate:
       Description: "Mass flow rate of air entering the indoor coil"
       Data Type: "[Numeric][1..]"
-      Range: ">0"
+      Constraints: ">0.0"
       Units: "kg/s"
       Required: True
     compressor_sequence_number:
-      Description: "Index indicating the relative order of the compressor speed/stage"
-      Data Type: "[Numeric][1..]"
-      Range: ">=0"
+      Description: "Index indicating the relative capacity order of the compressor speed/stage expressed in order from lowest capacity (starting at 1) to highest capacity"
+      Data Type: "[Integer][1..]"
+      Constraints: ">=0"
       Units: "-"
-      Notes: "Expressed in order from initial stage/speed to final stage/speed."
+      Notes: ["If `compressor_speed_control_type` is `DISCRETE`, sequence numbers shall be provided for each discrete stage of the compressor(s)",
+              "If `compressor_speed_control_type` is `CONTINUOUS`, sufficient sequence numbers shall be provided to capture the continuous operation of the compressor(s)"]
       Required: True
     ambient_absolute_air_pressure:
       Description: "Ambient absolute air pressure"
       Data Type: "[Numeric][1..]"
-      Range: ">=0"
+      Constraints: ">=0.0"
       Units: "Pa"
       Required: True
 
 LookupVariablesCooling:
   Object Type: "Lookup Variables"
   Data Elements:
-    gross_total_cooling_capacity:
+    gross_total_capacity:
       Description: "Total heat removed by the indoor coil"
       Data Type: "[Numeric/Null][1..]"
-      Range: ">0"
+      Constraints: ">=0.0"
       Units: "W"
       Required: True
-      Notes: "Does not account for heat added by the fan."
-    gross_sensible_cooling_capacity:
+      Notes: "Shall not include fan heat"
+    gross_sensible_capacity:
       Description: "Sensible heat removed by the indoor coil"
       Data Type: "[Numeric/Null][1..]"
-      Range: ">0"
+      Constraints: ">=0.0"
       Units: "W"
       Required: True
-      Notes: "Does not account for heat added by the fan."
-    gross_cooling_power:
+      Notes: "Shall not include fan heat"
+    gross_power:
       Description: "Gross power draw (of the outdoor unit)"
       Data Type: "[Numeric/Null][1..]"
-      Range: ">0"
+      Constraints: ">0.0"
       Units: "W"
       Required: True
-      Notes: "Does not include power drawn by the indoor fan. Includes compressor, outdoor fan, and any auxiliary power used by the unit's controls and any sump heater."
+      Notes: ["Includes compressor, outdoor fan, and any auxiliary power used by the unit's controls and any sump heater",
+              "Shall not include power drawn by the indoor fan"]
 
 PerformanceMapHeating:
   Object Type: "Performance Map"
@@ -196,32 +198,32 @@ GridVariablesHeating:
     outdoor_coil_entering_dry_bulb_temperature:
       Description: "Dry bulb temperature of the air entering the outdoor coil"
       Data Type: "[Numeric][1..]"
-      Range: ">=0"
+      Constraints: ">=0"
       Units: "K"
       Required: True
     outdoor_coil_entering_relative_humidity:
       Description: "Relative humidity of the air entering the outdoor coil"
       Data Type: "[Numeric][1..]"
-      Range: ">=0,<=1.0"
+      Constraints: [">=0","<=1.0"]
       Units: "-"
       Required: True
     indoor_coil_entering_dry_bulb_temperature:
       Description: "Dry bulb temperature of the air entering the indoor coil"
       Data Type: "[Numeric][1..]"
-      Range: ">=0"
+      Constraints: ">=0"
       Units: "K"
       Required: True
       Notes: "As measured immediately before entering the coil (i.e., after the fan in a blow-through configuration)."
     indoor_coil_air_mass_flow_rate:
       Description: "Mass flow rate of air entering the indoor coil"
       Data Type: "[Numeric][1..]"
-      Range: ">0"
+      Constraints: ">0"
       Units: "kg/s"
       Required: True
     compressor_sequence_number:
       Description: "Index indicating the relative order of the compressor speed/stage"
       Data Type: "[Numeric][1..]"
-      Range: ">=0"
+      Constraints: ">=0"
       Units: "-"
       Notes: "Expressed in order from initial stage/speed to final stage/speed."
       Required: True
@@ -232,35 +234,35 @@ LookupVariablesHeating:
     gross_steady_state_heating_capacity:
       Description: "Total heat added by the indoor coil under steady-state conditions (i.e., does not include the impact of defrost)"
       Data Type: "[Numeric/Null][1..]"
-      Range: ">0"
+      Constraints: ">0"
       Units: "W"
       Required: True
       Notes: "Does not account for heat added by the fan."
     gross_integrated_heating_capacity:
       Description: "Total heat added by the indoor coil integrated over a complete defrost cycle"
       Data Type: "[Numeric/Null][1..]"
-      Range: ">0"
+      Constraints: ">0"
       Units: "W"
       Required: True
       Notes: "Does not account for heat added by the fan."
     gross_steady_state_heating_power:
       Description: "Gross power draw of the outdoor unit under steady-state conditions (i.e., does not include defrost related power draws)"
       Data Type: "[Numeric/Null][1..]"
-      Range: ">0"
+      Constraints: ">0"
       Units: "W"
       Required: True
       Notes: "Does not include power drawn by the indoor fan. Includes compressor, outdoor fan, and any auxiliary power used by the unit's controls and any sump heater."
     gross_integrated_heating_power:
       Description: "Gross power draw of the outdoor unit integrated over a complete defrost cycle"
       Data Type: "[Numeric/Null][1..]"
-      Range: ">0"
+      Constraints: ">0"
       Units: "W"
       Required: True
       Notes: "Does not include power drawn by the indoor fan. Includes compressor, outdoor fan, and any auxiliary power used by the unit's defrost proces, controls, and any sump heater."
     defrost_time_fraction:
       Description: "Fraction of time throughout a defrost cycle that defrost process is engaged"
       Data Type: "[Numeric/Null][1..]"
-      Range: ">=0,<=1.0"
+      Constraints: [">=0","<=1.0"]
       Units: "-"
       Required: True
 
@@ -282,7 +284,7 @@ GridVariablesStandby:
     outdoor_coil_environment_dry_bulb_temperature:
       Description: "Dry bulb temperature of the air in the environment of the outdoor coil"
       Data Type: "[Numeric][1..]"
-      Range: ">=0"
+      Constraints: ">=0.0"
       Units: "K"
       Required: True
 
@@ -292,7 +294,7 @@ LookupVariablesStandby:
     gross_power:
       Description: "Gross power draw (of the outdoor unit)"
       Data Type: "[Numeric/Null][1..]"
-      Range: ">0"
+      Constraints: ">0.0"
       Units: "W"
       Required: True
-      Notes: "Does not account for power drawn from the indoor fan. Includes compressor, outdoor fan, and any auxiliary power used by the unit’s controls, and any sump heater."
+      Notes: "Includes any auxiliary power used by the unit's controls and any sump heater"
