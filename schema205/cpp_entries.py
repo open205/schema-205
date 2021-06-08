@@ -17,7 +17,7 @@ class Implementation_entry:
         self._access_specifier = ''
         self._closure = '}'
         self._parent_entry = parent
-        self._child_entries = list() # of Header_entry(s)
+        self._child_entries = list() # of Implementation_entry(s)
         self._value = None
 
         if parent:
@@ -103,11 +103,12 @@ class Struct_serialization(Implementation_entry):
 # -------------------------------------------------------------------------------------------------
 class Element_serialization(Implementation_entry):
 
-    def __init__(self, name, parent):
+    def __init__(self, name, type, parent, is_required):
         super().__init__(name, parent)
-        self._func = [
-            f'try {{ j.at("{name}").get_to({name}); }}',
-            'catch (nlohmann::json::out_of_range & ex) { A205_json_catch(ex); }']
+        # self._func = [
+        #     f'try {{ j.at("{name}").get_to({name}); }}',
+        #     'catch (nlohmann::json::out_of_range & ex) { A205_json_catch(ex); }']
+        self._func = [f'A205_json_get<{type}>(j, "{name}", {name}, {"true" if is_required else "false"});']
 
     # .............................................................................................
     @property
@@ -120,15 +121,16 @@ class Element_serialization(Implementation_entry):
 # -------------------------------------------------------------------------------------------------
 class Owned_element_serialization(Element_serialization):
 
-    def __init__(self, name, parent):
-        super().__init__(name, parent)
-        self._func[0] = f'try {{ j.at("{name}").get_to(x.{name}); }}'
+    def __init__(self, name, type, parent, is_required=False):
+        super().__init__(name, type, parent, is_required)
+        #self._func[0] = f'try {{ j.at("{name}").get_to(x.{name}); }}'
+        self._func = [f'A205_json_get<{type}>(j, "{name}", x.{name}, {"true" if is_required else "false"});']
 
 # -------------------------------------------------------------------------------------------------
 class Owned_element_creation(Element_serialization):
 
     def __init__(self, name, parent, selector_dict):
-        super().__init__(name, parent)
+        super().__init__(name, None, parent, False)
         self._func = []
         type_sel = list(selector_dict.keys())[0]
         for enum in selector_dict[type_sel]:
@@ -143,7 +145,7 @@ class Owned_element_creation(Element_serialization):
 class Class_factory_creation(Element_serialization):
 
     def __init__(self, name, parent, selector_dict):
-        super().__init__(name, parent)
+        super().__init__(name, None, parent, False)
         self._func = []
         type_sel = list(selector_dict.keys())[0]
         for enum in selector_dict[type_sel]:
@@ -158,7 +160,7 @@ class Class_factory_creation(Element_serialization):
 class Serialize_from_init_func(Element_serialization):
 
     def __init__(self, name, parent):
-        super().__init__(name, parent)
+        super().__init__(name, None, parent, False)
         self._func = 'x.Initialize(j);\n'
 
     # .............................................................................................
@@ -170,7 +172,7 @@ class Serialize_from_init_func(Element_serialization):
 class Performance_map_impl(Element_serialization):
 
     def __init__(self, name, parent, populates_self=False):
-        super().__init__(name, parent)
+        super().__init__(name, None, parent, False)
         if populates_self:
             self._func = f'{name}.Populate_performance_map(this);\n'
         else:
@@ -304,7 +306,7 @@ class CPP_translator:
                     if 'unique_ptr' in e._type:
                         Owned_element_creation(e._name, s, e._selector)
                     else:
-                        Owned_element_serialization(e._name, s)
+                        Owned_element_serialization(e._name, e._type, s, e._is_required)
                     # In the special case of a performance_map subclass, add calls to its 
                     # members' Populate_performance_map functions
                     if entry._superclass == 'performance_map_base':
@@ -315,17 +317,24 @@ class CPP_translator:
                 m = Member_function_definition(entry, self._namespace)
                 # Dirty hack workaround for Name() function
                 if 'Name' in entry._fname:
-                   Simple_return_property(entry.parent._name, m)
+                    Simple_return_property(entry.parent._name, m)
                 else:
-                  # In function body, choose element-wise ops based on the superclass
-                  for e in [c for c in entry.parent.child_entries if isinstance(c, Data_element)]:
-                     if 'unique_ptr' in e._type:
-                           Class_factory_creation(e._name, m, e._selector)
-                           self._preamble.append(f'#include <{e._name}_factory.h>\n')
-                     else:
-                           self._implementations[entry.parent._superclass](e._name, m)
-                     if entry.parent._superclass == 'performance_map_base':
-                           Performance_map_impl(e._name, m, populates_self=True)
+                    # In function body, choose element-wise ops based on the superclass
+                    for e in [c for c in entry.parent.child_entries if isinstance(c, Data_element)]:
+                        if 'unique_ptr' in e._type:
+                            Class_factory_creation(e._name, m, e._selector)
+                            self._preamble.append(f'#include <{e._name}_factory.h>\n')
+                        else:
+                            if entry.parent._superclass == 'grid_variables_base':
+                                Grid_axis_impl(e._name, m)
+                            elif entry.parent._superclass == 'lookup_variables_base':
+                                Data_table_impl(e._name, m)
+                            elif entry.parent._superclass == 'performance_map_base':
+                                Element_serialization(e._name, e._type, m, e._is_required)
+                            else:
+                                Element_serialization(e._name, e._type, m, e._is_required)
+                    if entry.parent._superclass == 'performance_map_base':
+                        Performance_map_impl(e._name, m, populates_self=True)
                   # Special case of grid_axis_base needs a finalize function after all grid axes 
                   # are added
                 if entry.parent._superclass == 'grid_variables_base':

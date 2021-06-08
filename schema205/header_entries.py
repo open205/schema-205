@@ -208,6 +208,7 @@ class Data_element(Header_entry):
         self._refs = references
         self._has_nested = False
         self._selector = dict()
+        self._is_required = element.get('Required', False)
 
         self._create_type_entry(element, find_func)
 
