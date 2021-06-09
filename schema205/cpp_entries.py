@@ -333,8 +333,8 @@ class CPP_translator:
                                 Element_serialization(e._name, e._type, m, e._is_required)
                             else:
                                 Element_serialization(e._name, e._type, m, e._is_required)
-                    if entry.parent._superclass == 'performance_map_base':
-                        Performance_map_impl(e._name, m, populates_self=True)
+                            if entry.parent._superclass == 'performance_map_base':
+                                Performance_map_impl(e._name, m, populates_self=True)
                   # Special case of grid_axis_base needs a finalize function after all grid axes 
                   # are added
                 if entry.parent._superclass == 'grid_variables_base':

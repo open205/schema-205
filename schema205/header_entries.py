@@ -364,6 +364,31 @@ class Initialize_function(Functional_header_entry):
         super().__init__('void', 'Initialize', '(const nlohmann::json& j)', name, parent)
 
 # -------------------------------------------------------------------------------------------------
+class Grid_var_counter_enum(Header_entry):
+
+    def __init__(self, name, parent, item_dict):
+        super().__init__(name, parent)
+        self._type = 'enum'
+        self._access_specifier = ''
+        self._closure = '};'
+        self._enumerants = list()
+
+        for key in item_dict:
+            self._enumerants.append(f'{key}_index')
+
+    # .............................................................................................
+    @property
+    def value(self):
+        enums = self._enumerants
+        entry = self.level*'\t' + self._type + ' ' + self._name + ' ' + self._opener + '\n'
+        for e in enums:
+            entry += (self.level + 1)*'\t'
+            entry += (e + ',\n')
+        entry += ((self.level + 1)*'\t' + 'index_count\n')
+        entry += (self.level*'\t' + self._closure)
+        return entry
+
+# -------------------------------------------------------------------------------------------------
 class H_translator:
 
     def __init__(self):
@@ -479,10 +504,12 @@ class H_translator:
                 s = Struct(base_level_tag, self._namespace, superclass='grid_variables_base')
                 self._add_member_headers(s)
                 self._add_function_overrides(s, 'grid_variables_base')
+                e = Grid_var_counter_enum('', s, self._contents[base_level_tag]['Data Elements'])
             elif self._contents[base_level_tag].get('Object Type') == 'Lookup Variables':
                 s = Struct(base_level_tag, self._namespace, superclass='lookup_variables_base')
                 self._add_member_headers(s)
                 self._add_function_overrides(s, 'lookup_variables_base')
+                e = Grid_var_counter_enum('', s, self._contents[base_level_tag]['Data Elements'])
             else:
                 s = Struct(base_level_tag, self._namespace)
             
