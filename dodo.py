@@ -104,19 +104,6 @@ def task_schema():
     'clean': True
   }
 
-def task_headers():
-  '''Generates CPP header files from common-schema'''
-  return {
-    'file_dep': collect_source_files(),
-    'targets': collect_lib_target_files(HEADER_PATH,'h'),
-    'task_dep': ['validate'],
-    'actions': [
-      (create_folder, [HEADER_PATH]),
-      (schema205.cpp_translate.translate_all_to_headers,[SOURCE_PATH, HEADER_PATH, "ASHRAE205"])
-      ],
-    'clean': True
-  }
-
 def task_cpp():
   '''Generates CPP source files from common-schema'''
   return {
@@ -125,7 +112,7 @@ def task_cpp():
     'task_dep': ['validate'],
     'actions': [
       (create_folder, [CPP_PATH]),
-      (schema205.cpp_translate.translate_all_to_source,[SOURCE_PATH, CPP_PATH, "ASHRAE205"])
+      (schema205.cpp_translate.translate_all_to_source,[SOURCE_PATH, HEADER_PATH, CPP_PATH, "ASHRAE205"])
       ],
     'clean': True
   }

@@ -1,0 +1,28 @@
+#ifndef LIBTK205_H_
+#define LIBTK205_H_
+#include <vector>
+#include <memory>
+#include "ASHRAE205.h"
+{% for rs in RS_list %}
+#include "{{rs}}.h"
+{% endfor %}
+#include "nlohmann/json.hpp"
+
+namespace libtk205_NS {
+
+    class A205_SDK 
+    {
+    public:
+        
+        static bool Validate_A205(const char* schema, const char* input_file);
+
+        {% for rs in RS_list %}
+        ASHRAE205_NS::{{rs}}_NS::{{rs}} Load_{{rs}}(const char* input_file);
+        {% endfor %}
+    private:
+        void Read_binary_file(const char* filename, std::vector<char> &bytes);
+        nlohmann::json Load_json(const char* input_file);
+    };
+}
+
+#endif

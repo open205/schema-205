@@ -23,5 +23,13 @@ def generate_factory_source(RS_subclass, base_class, RS_container):
                                 base_class_root_name=base_class_root_name,
                                 container=RS_container)
 
+def generate_library_files(RS_list):
+    lib_header_template = env.get_template('libtk205_header_template.txt')
+    lib_header = lib_header_template.render(RS_list = RS_list)
+    lib_impl_template = env.get_template('libtk205_impl_template.txt')
+    lib_impl = lib_impl_template.render(RS_list = RS_list)
+    return lib_header, lib_impl
+
+
 if __name__ == '__main__':
     print(generate_factory_headers(sys.argv[1]))
