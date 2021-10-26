@@ -124,7 +124,7 @@ class Enumeration(Header_entry):
         enums = item_dict
         for key in enums:
             descr = enums[key].get('Description')
-            displ = enums[key].get('Display Text')
+            displ = enums[key].get('Display Text', key)
             notes = enums[key].get('Notes')
             # Currently, CPP only cares about the key (enum name)
             self._enumerants.append((key, descr, displ, notes))
@@ -142,7 +142,7 @@ class Enumeration(Header_entry):
         entry += (self.level*'\t' + self._closure)
 
         # Incorporate an enum_info map into this object
-        map_type = f'static std::map<{self._name}, enum_info>'
+        map_type = f'static std::unordered_map<{self._name}, enum_info>'
         entry += '\n'
         entry += self.level*'\t' + map_type + ' ' + self._name + '_info ' + self._opener + '\n'
         for e in self._enumerants:
