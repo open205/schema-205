@@ -140,6 +140,16 @@ class Enumeration(Header_entry):
             entry += (e + ',\n')
         entry += ((self.level + 1)*'\t' + 'UNKNOWN\n')
         entry += (self.level*'\t' + self._closure)
+
+        # Incorporate an enum_info map into this object
+        map_type = f'static std::map<{self._name}, enum_info>'
+        entry += '\n'
+        entry += self.level*'\t' + map_type + ' ' + self._name + '_info ' + self._opener + '\n'
+        for e in self._enumerants:
+            entry += (self.level+1)*'\t' + f'{{{self._name}::{e[0]}, {{"{e[0]}", "{e[2]}", "{e[1]}"}}}},\n'
+        entry += ((self.level + 1)*'\t' + f'{{{self._name}::UNKNOWN, {{"UNKNOWN", "None","None"}}}}\n')
+        entry += (self.level*'\t' + self._closure)
+
         return entry
 
 
