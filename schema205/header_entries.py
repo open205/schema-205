@@ -336,6 +336,21 @@ class Data_element(Header_entry):
                     pass
 
 # -------------------------------------------------------------------------------------------------
+class Data_isset_element(Data_element):
+
+    def __init__(self, name, parent, element, data_types, references, find_func=None):
+        super().__init__(name, parent, element, data_types, references, find_func)
+
+    # .............................................................................................
+    @property
+    def value(self):
+        if self._has_nested:
+            return super().value
+        else:
+            return self.level*'\t' + 'bool ' + self._name + '_is_set;'
+
+
+# -------------------------------------------------------------------------------------------------
 class Functional_header_entry(Header_entry):
 
     def __init__(self, f_ret, f_name, f_args, name, parent):
@@ -532,6 +547,14 @@ class H_translator:
                                     self._search_nodes_for_datatype
                                     )
                 self._add_member_headers(d)
+            for data_element in self._contents[base_level_tag]['Data Elements']:
+                d = Data_isset_element(data_element, 
+                                    s, 
+                                    self._contents[base_level_tag]['Data Elements'][data_element],
+                                    self._fundamental_data_types,
+                                    self._references,
+                                    self._search_nodes_for_datatype
+                                    )
         H_translator.modified_insertion_sort(self._namespace.child_entries)
 
         # Final pass through dictionary in order to add elements related to serialization

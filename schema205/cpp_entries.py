@@ -1,6 +1,7 @@
 from schema205.header_entries import (Header_entry, 
                                       Struct, 
                                       Data_element, 
+                                      Data_isset_element,
                                       Member_function_override, 
                                       Initialize_function, 
                                       Object_serialization)
@@ -108,7 +109,7 @@ class Element_serialization(Implementation_entry):
         # self._func = [
         #     f'try {{ j.at("{name}").get_to({name}); }}',
         #     'catch (nlohmann::json::out_of_range & ex) { A205_json_catch(ex); }']
-        self._func = [f'A205_json_get<{type}>(j, "{name}", {name}, {"true" if is_required else "false"});']
+        self._func = [f'A205_json_get<{type}>(j, "{name}", {name}, {name}_is_set, {"true" if is_required else "false"});']
 
     # .............................................................................................
     @property
@@ -124,7 +125,7 @@ class Owned_element_serialization(Element_serialization):
     def __init__(self, name, type, parent, is_required=False):
         super().__init__(name, type, parent, is_required)
         #self._func[0] = f'try {{ j.at("{name}").get_to(x.{name}); }}'
-        self._func = [f'A205_json_get<{type}>(j, "{name}", x.{name}, {"true" if is_required else "false"});']
+        self._func = [f'A205_json_get<{type}>(j, "{name}", x.{name}, x.{name}_is_set, {"true" if is_required else "false"});']
 
 # -------------------------------------------------------------------------------------------------
 class Owned_element_creation(Element_serialization):
@@ -301,7 +302,7 @@ class CPP_translator:
             if isinstance(entry, Struct) and entry._name not in self._namespace._name:
                 # Create the "from_json" function definition (header)
                 s = Struct_serialization(entry._name, self._namespace)
-                for e in [c for c in entry.child_entries if isinstance(c, Data_element)]:
+                for e in [c for c in entry.child_entries if isinstance(c, Data_element) and not isinstance(c, Data_isset_element)]:
                     # In function body, create each "get_to" for individual data elements
                     if 'unique_ptr' in e._type:
                         Owned_element_creation(e._name, s, e._selector)
@@ -320,7 +321,7 @@ class CPP_translator:
                     Simple_return_property(entry.parent._name, m)
                 else:
                     # In function body, choose element-wise ops based on the superclass
-                    for e in [c for c in entry.parent.child_entries if isinstance(c, Data_element)]:
+                    for e in [c for c in entry.parent.child_entries if isinstance(c, Data_element) and not isinstance(c, Data_isset_element)]:
                         if 'unique_ptr' in e._type:
                             Class_factory_creation(e._name, m, e._selector)
                             self._preamble.append(f'#include <{e._name}_factory.h>\n')
