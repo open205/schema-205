@@ -351,4 +351,4 @@ class CPP_translator:
     # .............................................................................................
     def _add_included_headers(self, main_header):
         self._preamble.clear()
-        self._preamble.append(f'#include <{main_header}.h>\n')
+        self._preamble.append(f'#include <{main_header}.h>\n#include <loadobject_205.h>\n')

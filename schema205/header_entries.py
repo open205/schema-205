@@ -588,7 +588,7 @@ class H_translator:
                 includes += f'#include <{r}.h>'
                 includes += '\n'
             self._preamble.append(includes)
-        self._preamble.append('#include <string>\n#include <vector>\n#include <nlohmann/json.hpp>\n#include <error_handling_tk205.h>\n')
+        self._preamble.append('#include <string>\n#include <vector>\n#include <nlohmann/json.hpp>\n#include <typeinfo_205.h>\n')
 
     # .............................................................................................
     def _add_member_headers(self, data_element):

@@ -7,6 +7,7 @@
 #include <sstream>
 
 #include <performance_map_base.h>
+#include <error_handling_tk205.h>
 
 // ------------------------------------------------------------------------------------------------
 /// @class grid_variables_base grid_variables_base.h
