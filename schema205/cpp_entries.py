@@ -2,6 +2,7 @@ from schema205.header_entries import (Header_entry,
                                       Struct, 
                                       Data_element, 
                                       Data_isset_element,
+                                      Data_element_static_metainfo,
                                       Member_function_override, 
                                       Initialize_function, 
                                       Object_serialization)
@@ -54,11 +55,26 @@ class Implementation_entry:
         return entry
 
 # -------------------------------------------------------------------------------------------------
+class Data_element_static_initialization(Implementation_entry):
+
+    def __init__(self, header_entry, parent=None):
+        super().__init__(None, parent)
+        type_spec = header_entry._type_specifier.replace('static', '').strip(' ')
+        self._func = f'{type_spec} {header_entry.type} {header_entry.parent.name}::{header_entry.name} = "{header_entry.init_val}";'
+        self._func = ' '.join([type_spec, header_entry.type, f'{header_entry.parent.name}::{header_entry.name}', '=', f'"{header_entry.init_val}";'])
+
+    # .............................................................................................
+    @property
+    def value(self):
+        entry = self.level*'\t' + self._func + '\n'
+        return entry
+                  
+# -------------------------------------------------------------------------------------------------
 class Free_function_definition(Implementation_entry):
 
     def __init__(self, header_entry, parent=None):
         super().__init__(None, parent)
-        self._func = f'void {header_entry._fname}{header_entry._args}'
+        self._func = f'void {header_entry.fname}{header_entry.args}'
 
     # .............................................................................................
     @property
@@ -74,7 +90,7 @@ class Member_function_definition(Implementation_entry):
 
     def __init__(self, header_entry, parent=None):
         super().__init__(None, parent)
-        self._func = f'{header_entry._ret_type} {header_entry.parent._name}::{header_entry._fname}{header_entry._args}'
+        self._func = f'{header_entry.ret_type} {header_entry.parent.name}::{header_entry.fname}{header_entry.args}'
 
     # .............................................................................................
     @property
@@ -299,50 +315,53 @@ class CPP_translator:
             # Shortcut to avoid creating "from_json" entries for the main class, but create them
             # for all other classes. The main class relies on an "Initialize" function instead,
             # dealt-with in the next block with function overrides.
-            if isinstance(entry, Struct) and entry._name not in self._namespace._name:
+            if isinstance(entry, Struct) and entry.name not in self._namespace._name:
                 # Create the "from_json" function definition (header)
-                s = Struct_serialization(entry._name, self._namespace)
-                for e in [c for c in entry.child_entries if isinstance(c, Data_element) and not isinstance(c, Data_isset_element)]:
+                s = Struct_serialization(entry.name, self._namespace)
+                for e in [c for c in entry.child_entries if isinstance(c, Data_element)]:
                     # In function body, create each "get_to" for individual data elements
-                    if 'unique_ptr' in e._type:
-                        Owned_element_creation(e._name, s, e._selector)
+                    if 'unique_ptr' in e.type:
+                        Owned_element_creation(e.name, s, e._selector)
                     else:
-                        Owned_element_serialization(e._name, e._type, s, e._is_required)
+                        Owned_element_serialization(e.name, e.type, s, e._is_required)
                     # In the special case of a performance_map subclass, add calls to its 
                     # members' Populate_performance_map functions
-                    if entry._superclass == 'performance_map_base':
-                        Performance_map_impl(e._name, s)
+                    if entry.superclass == 'performance_map_base':
+                        Performance_map_impl(e.name, s)
+            # Initialize static members
+            if (isinstance(entry, Data_element_static_metainfo)):
+                Data_element_static_initialization(entry, self._namespace)
             # Initialize and Populate overrides
             if isinstance(entry, Member_function_override) or isinstance(entry, Initialize_function):
                 # Create the override function definition (header) using the declaration's signature
                 m = Member_function_definition(entry, self._namespace)
                 # Dirty hack workaround for Name() function
-                if 'Name' in entry._fname:
-                    Simple_return_property(entry.parent._name, m)
+                if 'Name' in entry.fname:
+                    Simple_return_property(entry.parent.name, m)
                 else:
                     # In function body, choose element-wise ops based on the superclass
-                    for e in [c for c in entry.parent.child_entries if isinstance(c, Data_element) and not isinstance(c, Data_isset_element)]:
-                        if 'unique_ptr' in e._type:
-                            Class_factory_creation(e._name, m, e._selector)
-                            self._preamble.append(f'#include <{e._name}_factory.h>\n')
+                    for e in [c for c in entry.parent.child_entries if isinstance(c, Data_element)]:
+                        if 'unique_ptr' in e.type:
+                            Class_factory_creation(e.name, m, e._selector)
+                            self._preamble.append(f'#include <{e.name}_factory.h>\n')
                         else:
-                            if entry.parent._superclass == 'grid_variables_base':
-                                Grid_axis_impl(e._name, m)
-                            elif entry.parent._superclass == 'lookup_variables_base':
-                                Data_table_impl(e._name, m)
-                            elif entry.parent._superclass == 'performance_map_base':
-                                Element_serialization(e._name, e._type, m, e._is_required)
+                            if entry.parent.superclass == 'grid_variables_base':
+                                Grid_axis_impl(e.name, m)
+                            elif entry.parent.superclass == 'lookup_variables_base':
+                                Data_table_impl(e.name, m)
+                            elif entry.parent.superclass == 'performance_map_base':
+                                Element_serialization(e.name, e.type, m, e._is_required)
                             else:
-                                Element_serialization(e._name, e._type, m, e._is_required)
-                            if entry.parent._superclass == 'performance_map_base':
-                                Performance_map_impl(e._name, m, populates_self=True)
+                                Element_serialization(e.name, e.type, m, e._is_required)
+                            if entry.parent.superclass == 'performance_map_base':
+                                Performance_map_impl(e.name, m, populates_self=True)
                   # Special case of grid_axis_base needs a finalize function after all grid axes 
                   # are added
-                if entry.parent._superclass == 'grid_variables_base':
+                if entry.parent.superclass == 'grid_variables_base':
                     Grid_axis_finalize('', m)
             # Lastly, handle the special case of objects that need both serialization 
             # and initialization (currently a bit of a hack specific to this project)
-            if isinstance(entry, Object_serialization) and entry._name in self._namespace._name:
+            if isinstance(entry, Object_serialization) and entry.name in self._namespace._name:
                 s = Free_function_definition(entry, self._namespace)
                 Serialize_from_init_func('', s)
             else:

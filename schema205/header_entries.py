@@ -6,22 +6,18 @@ from schema205.file_io import load
 class Header_entry:
 
     def __init__(self, name, parent=None):
-        self._type = 'namespace'
-        self._name = name
+        self.type = 'namespace'
+        self.name = name
         self._initlist = ''
         self._opener = '{'
         self._access_specifier = ''
         self._closure = '}'
         self._parent_entry = parent
         self._child_entries = list() # of Header_entry(s)
-        self._value = None
-        self._superclass = None
+        self.superclass = None
 
         if parent:
-            self._lineage = parent._lineage + [name]
             self._parent_entry._add_child_entry(self)
-        else:
-            self._lineage = [name]
 
     # .............................................................................................
     def __lt__(self, other):
@@ -36,13 +32,13 @@ class Header_entry:
     def _less_than(self, other):
         ''' '''
         lt = False
-        t = f'{other._type} {other._name}'
+        t = f'{other.type} {other.name}'
         # \b is a "boundary" character, or specifier for a whole word
-        if re.search(r'\b' + self._name + r'\b', t):
+        if re.search(r'\b' + self.name + r'\b', t):
             return True
         for c in other.child_entries:
-            t = f'{c._type} {c._name}'
-            if re.search(r'\b' + self._name + r'\b', t):
+            t = f'{c.type} {c.name}'
+            if re.search(r'\b' + self.name + r'\b', t):
                 # Shortcut around checking siblings; if one child matches, then self < other
                 return True
             else:
@@ -61,7 +57,7 @@ class Header_entry:
     # .............................................................................................
     @property
     def value(self):
-        entry = self.level*'\t' + self._type + ' ' + self._name + ' ' + self._initlist + ' ' + self._opener + '\n'
+        entry = self.level*'\t' + self.type + ' ' + self.name + ' ' + self._initlist + ' ' + self._opener + '\n'
         entry += (self.level)*'\t' + self._access_specifier + '\n'
         for c in self._child_entries:
             entry += (c.value + '\n')
@@ -90,33 +86,26 @@ class Header_entry:
     def level(self):
         return self._get_level()
 
-    # .............................................................................................
-    @property
-    def lineage(self):
-        return self._lineage
-
-
 # -------------------------------------------------------------------------------------------------
 class Typedef(Header_entry):
 
     def __init__(self, name, parent, typedef):
         super().__init__(name, parent)
-        self._type = 'typedef'
+        self.type = 'typedef'
         self._access_specifier = ''
         self._typedef = typedef
 
     # .............................................................................................
     @property
     def value(self):
-        return self.level*'\t' + self._type + ' ' + self._typedef + ' ' + self._name + ';'
-
+        return self.level*'\t' + self.type + ' ' + self._typedef + ' ' + self.name + ';'
 
 # -------------------------------------------------------------------------------------------------
 class Enumeration(Header_entry):
 
     def __init__(self, name, parent, item_dict):
         super().__init__(name, parent)
-        self._type = 'enum class'
+        self.type = 'enum class'
         self._access_specifier = ''
         self._closure = '};'
         self._enumerants = list() # list of tuple:[value, description, display_text, notes]
@@ -134,7 +123,7 @@ class Enumeration(Header_entry):
     def value(self):
         z = list(zip(*self._enumerants))
         enums = z[0]
-        entry = self.level*'\t' + self._type + ' ' + self._name + ' ' + self._opener + '\n'
+        entry = self.level*'\t' + self.type + ' ' + self.name + ' ' + self._opener + '\n'
         for e in enums:
             entry += (self.level + 1)*'\t'
             entry += (e + ',\n')
@@ -142,12 +131,12 @@ class Enumeration(Header_entry):
         entry += (self.level*'\t' + self._closure)
 
         # Incorporate an enum_info map into this object
-        map_type = f'static std::unordered_map<{self._name}, enum_info>'
+        map_type = f'static std::unordered_map<{self.name}, enum_info>'
         entry += '\n'
-        entry += self.level*'\t' + map_type + ' ' + self._name + '_info ' + self._opener + '\n'
+        entry += self.level*'\t' + map_type + ' ' + self.name + '_info ' + self._opener + '\n'
         for e in self._enumerants:
-            entry += (self.level+1)*'\t' + f'{{{self._name}::{e[0]}, {{"{e[0]}", "{e[2]}", "{e[1]}"}}}},\n'
-        entry += ((self.level + 1)*'\t' + f'{{{self._name}::UNKNOWN, {{"UNKNOWN", "None","None"}}}}\n')
+            entry += (self.level+1)*'\t' + f'{{{self.name}::{e[0]}, {{"{e[0]}", "{e[2]}", "{e[1]}"}}}},\n'
+        entry += ((self.level + 1)*'\t' + f'{{{self.name}::UNKNOWN, {{"UNKNOWN", "None","None"}}}}\n')
         entry += (self.level*'\t' + self._closure)
 
         return entry
@@ -158,7 +147,7 @@ class Enum_serialization(Header_entry):
 
     def __init__(self, name, parent, item_dict):
         super().__init__(name, parent)
-        self._type = "NLOHMANN_JSON_SERIALIZE_ENUM"
+        self.type = "NLOHMANN_JSON_SERIALIZE_ENUM"
         self._opener = '(' + name + ', {'
         self._closure = '})'
         self._enumerants = ['UNKNOWN'] + (list(item_dict.keys()))
@@ -166,10 +155,10 @@ class Enum_serialization(Header_entry):
     # .............................................................................................
     @property
     def value(self):
-        entry = self.level*'\t' + self._type + ' ' + self._opener + '\n'
+        entry = self.level*'\t' + self.type + ' ' + self._opener + '\n'
         for e in self._enumerants:
             entry += (self.level + 1)*'\t'
-            mapping = '{' + self._name + '::' + e + ', "' + e + '"}'
+            mapping = '{' + self.name + '::' + e + ', "' + e + '"}'
             entry += (mapping + ',\n')
         entry += (self.level*'\t' + self._closure)
         return entry
@@ -180,32 +169,12 @@ class Struct(Header_entry):
 
     def __init__(self, name, parent, superclass=''):
         super().__init__(name, parent)
-        self._type = 'class'
+        self.type = 'class'
         self._access_specifier = 'public:'
         self._closure = '};'
         if superclass:
-            self._superclass = superclass
+            self.superclass = superclass
             self._initlist = f' : public {superclass}'
-
-
-# -------------------------------------------------------------------------------------------------
-class Union(Header_entry):
-
-    def __init__(self, name, parent, selections):
-        super().__init__(name, parent)
-        self._type = 'union'
-        self._access_specifier = ''
-        self._selections = selections
-
-    # .............................................................................................
-    @property
-    def value(self):
-        entry = self.level*'\t' + self._type + ' ' + self._name + ' ' + self._opener + '\n'
-        for s in self._selections:
-            entry += (self.level + 1)*'\t'
-            entry += (s + ';\n')
-        entry += (self.level*'\t' + self._closure)
-        return entry
 
 
 # -------------------------------------------------------------------------------------------------
@@ -214,6 +183,7 @@ class Data_element(Header_entry):
     def __init__(self, name, parent, element, data_types, references, find_func=None):
         super().__init__(name, parent)
         self._access_specifier = ''
+        self._closure = ';'
         self._datatypes = data_types
         self._refs = references
         self._has_nested = False
@@ -228,7 +198,7 @@ class Data_element(Header_entry):
         if self._has_nested:
             return super().value
         else:
-            return self.level*'\t' + self._type + ' ' + self._name + ';'
+            return self.level*'\t' + self.type + ' ' + self.name + self._closure
 
     # .............................................................................................
     def _create_type_entry(self, parent_dict, type_finder=None):
@@ -237,7 +207,7 @@ class Data_element(Header_entry):
             # If the type is an array, extract the surrounding [] first (using non-greedy qualifier "?")
             m = re.findall(r'\[(.*?)\]', parent_dict['Data Type'])
             if m:
-                self._type = 'std::vector<' + self._get_simple_type(m[0]) + '>'
+                self.type = 'std::vector<' + self._get_simple_type(m[0]) + '>'
             else:
                 # If the type is oneOf a set
                 m = re.match(r'\((.*)\)', parent_dict['Data Type'])
@@ -258,10 +228,10 @@ class Data_element(Header_entry):
                     selectors = [(selection_key_type + s.strip()) for s in m_opt.group(1).split(',')]
 
                     self._selector[oneof_selection_key] = dict(zip(selectors, types))
-                    self._type = f'std::unique_ptr<{self._name}_base>'
+                    self.type = f'std::unique_ptr<{self.name}_base>'
                 else:
                     # 1. 'type' entry
-                    self._type = self._get_simple_type(parent_dict['Data Type'])
+                    self.type = self._get_simple_type(parent_dict['Data Type'])
         except KeyError as ke:
             pass
 
@@ -336,18 +306,32 @@ class Data_element(Header_entry):
                     pass
 
 # -------------------------------------------------------------------------------------------------
-class Data_isset_element(Data_element):
+class Data_isset_element(Header_entry):
 
-    def __init__(self, name, parent, element, data_types, references, find_func=None):
-        super().__init__(name, parent, element, data_types, references, find_func)
+    def __init__(self, name, parent):
+        super().__init__(name, parent)
 
     # .............................................................................................
     @property
     def value(self):
-        if self._has_nested:
-            return super().value
-        else:
-            return self.level*'\t' + 'bool ' + self._name + '_is_set;'
+        return self.level*'\t' + 'bool ' + self.name + '_is_set;'
+
+
+# -------------------------------------------------------------------------------------------------
+class Data_element_static_metainfo(Header_entry):
+
+    def __init__(self, name, parent, element, meta_key):
+        super().__init__(name, parent)
+        self.init_val = element.get(meta_key, '')
+        self._type_specifier = 'const static'
+        self.type = 'std::string_view'
+        self.name = self.name + '_' + meta_key.lower()
+        self._closure = ';'
+
+    # .............................................................................................
+    @property
+    def value(self):
+        return self.level*'\t' + self._type_specifier + ' ' + self.type + ' ' + self.name + self._closure
 
 
 # -------------------------------------------------------------------------------------------------
@@ -355,22 +339,22 @@ class Functional_header_entry(Header_entry):
 
     def __init__(self, f_ret, f_name, f_args, name, parent):
         super().__init__(name, parent)
-        self._fname = f_name
-        self._ret_type = f_ret
-        self._args = f_args
-        self._lend = ';'
+        self.fname = f_name
+        self.ret_type = f_ret
+        self.args = f_args
+        self._closure = ';'
 
     # .............................................................................................
     @property
     def value(self):
-        return self.level*'\t' + ' '.join([self._ret_type, self._fname, self._args]) + self._lend
+        return self.level*'\t' + ' '.join([self.ret_type, self.fname, self.args]) + self._closure
 
 # -------------------------------------------------------------------------------------------------
 class Member_function_override(Functional_header_entry):
 
     def __init__(self, f_ret, f_name, f_args, name, parent):
         super().__init__(f_ret, f_name, f_args, name, parent)
-        self._lend = ' override;'
+        self._closure = ' override;'
 
 # -------------------------------------------------------------------------------------------------
 class Object_serialization(Functional_header_entry):
@@ -393,7 +377,7 @@ class Grid_var_counter_enum(Header_entry):
 
     def __init__(self, name, parent, item_dict):
         super().__init__(name, parent)
-        self._type = 'enum'
+        self.type = 'enum'
         self._access_specifier = ''
         self._closure = '};'
         self._enumerants = list()
@@ -405,7 +389,7 @@ class Grid_var_counter_enum(Header_entry):
     @property
     def value(self):
         enums = self._enumerants
-        entry = self.level*'\t' + self._type + ' ' + self._name + ' ' + self._opener + '\n'
+        entry = self.level*'\t' + self.type + ' ' + self.name + ' ' + self._opener + '\n'
         for e in enums:
             entry += (self.level + 1)*'\t'
             entry += (e + ',\n')
@@ -548,13 +532,17 @@ class H_translator:
                                     )
                 self._add_member_headers(d)
             for data_element in self._contents[base_level_tag]['Data Elements']:
-                d = Data_isset_element(data_element, 
-                                    s, 
-                                    self._contents[base_level_tag]['Data Elements'][data_element],
-                                    self._fundamental_data_types,
-                                    self._references,
-                                    self._search_nodes_for_datatype
-                                    )
+                d = Data_isset_element(data_element, s)
+            for data_element in self._contents[base_level_tag]['Data Elements']:
+                d = Data_element_static_metainfo(data_element, 
+                                                 s, 
+                                                 self._contents[base_level_tag]['Data Elements'][data_element],
+                                                 'Units')
+            for data_element in self._contents[base_level_tag]['Data Elements']:
+                d = Data_element_static_metainfo(data_element, 
+                                                 s, 
+                                                 self._contents[base_level_tag]['Data Elements'][data_element],
+                                                 'Description')
         H_translator.modified_insertion_sort(self._namespace.child_entries)
 
         # Final pass through dictionary in order to add elements related to serialization
@@ -592,8 +580,8 @@ class H_translator:
 
     # .............................................................................................
     def _add_member_headers(self, data_element):
-        if 'unique_ptr' in data_element._type:
-            m = re.search(r'\<(.*)\>', data_element._type)
+        if 'unique_ptr' in data_element.type:
+            m = re.search(r'\<(.*)\>', data_element.type)
             if m:
                 include = f'#include <{m.group(1)}.h>\n'
                 if include not in self._preamble:
@@ -635,13 +623,6 @@ class H_translator:
                          'Boolean': 'bool'}
             for base_item in [name for name in ext_dict if ext_dict[name]['Object Type'] == 'Data Type']:
                 self._fundamental_data_types[base_item] = cpp_types.get(base_item)
-
-    # .............................................................................................
-    def _print_nodes(self, node):
-        if not node.child_entries:
-            print(node.lineage)
-        for child in node.child_entries:
-            self._print_nodes(child)
 
     # .............................................................................................
     def _add_function_overrides(self, parent_node, base_class_name):
