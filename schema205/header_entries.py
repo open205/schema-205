@@ -131,7 +131,7 @@ class Enumeration(Header_entry):
         entry += (self.level*'\t' + self._closure)
 
         # Incorporate an enum_info map into this object
-        map_type = f'static std::unordered_map<{self.name}, enum_info>'
+        map_type = f'const static std::unordered_map<{self.name}, enum_info>'
         entry += '\n'
         entry += self.level*'\t' + map_type + ' ' + self.name + '_info ' + self._opener + '\n'
         for e in self._enumerants:
