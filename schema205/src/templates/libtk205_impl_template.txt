@@ -65,7 +65,7 @@ namespace ASHRAE205_NS {
     using valijson::Validator;
     using valijson::adapters::NlohmannJsonAdapter;
 
-    bool A205_SDK::Validate_A205(const char* schema_file, const char* input_file)
+    bool Validate_A205(const char* schema_file, const char* input_file)
     {
         json schema_doc;
         if (!valijson::utils::loadDocument(schema_file, schema_doc))
@@ -94,7 +94,7 @@ namespace ASHRAE205_NS {
     }
 
     {% for rs in RS_list %}
-    {{rs}}_NS::{{rs}} A205_SDK::Load_{{rs}}(const char* input_file)
+    {{rs}}_NS::{{rs}} Load_{{rs}}(const char* input_file)
     {
         auto j = Load_json(input_file);
         return j.get<{{rs}}_NS::{{rs}}>();
