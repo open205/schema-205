@@ -2,6 +2,9 @@ import os
 import re
 from schema205.file_io import load
 
+def remove_prefix(text, prefix):
+    return text[len(prefix):] if text.startswith(prefix) else text
+        
 # -------------------------------------------------------------------------------------------------
 class Header_entry:
 
@@ -398,6 +401,21 @@ class Grid_var_counter_enum(Header_entry):
         return entry
 
 # -------------------------------------------------------------------------------------------------
+class Calculate_performance_overload(Functional_header_entry):
+
+    def __init__(self, f_args, name, parent):
+        super().__init__('std::vector<double>', 'Calculate_performance', '(' + ', '.join(f_args) + ')', name, parent)
+        self.args_as_list = f_args
+
+    # .............................................................................................
+    @property
+    def value(self):
+        complete_decl = self.level*'\t' + 'using performance_map_base::Calculate_performance;\n'
+        complete_decl += self.level*'\t' + ' '.join([self.ret_type, self.fname, self.args]) + self._closure
+        return complete_decl
+
+
+# -------------------------------------------------------------------------------------------------
 class H_translator:
 
     def __init__(self):
@@ -471,7 +489,7 @@ class H_translator:
         # If container_class_name is empty, I must be the top container. Also true if container_class_name is my name.
         self._is_top_container = not container_class_name or (container_class_name == self._schema_name)
 
-        self._fundamental_base_class = schema_base_class_name if schema_base_class_name else ''
+        self._fundamental_base_class = schema_base_class_name if schema_base_class_name else 'rs_instance_base'
 
         # Load meta info first (assuming that base level tag == Schema means object type == Meta)
         self._load_meta_info(self._contents['Schema'])
@@ -497,18 +515,15 @@ class H_translator:
         for base_level_tag in (
             [tag for tag in self._contents if self._contents[tag].get('Object Type') in self._data_group_types]):
             if base_level_tag == self._schema_name:
-                # if not self._is_top_container:
-                #     s = Struct(base_level_tag, self._namespace)
-                #     self._add_function_overrides(s, self._fundamental_base_class)
-                # else: 
-                s = Struct(base_level_tag, self._namespace)
-                # Manual insertion of Initialize function into top_container, since it 
-                # doesn't have a virtual parent
-                Initialize_function(base_level_tag, s)
-            elif self._contents[base_level_tag].get('Object Type') == 'Performance Map':
-                s = Struct(base_level_tag, self._namespace, superclass='performance_map_base')
-                self._add_member_headers(s)
-                self._add_function_overrides(s, 'performance_map_base')
+                if not self._is_top_container:
+                    s = Struct(base_level_tag, self._namespace, superclass=self._fundamental_base_class)
+                    self._add_member_headers(s)
+                    self._add_function_overrides(s, self._fundamental_base_class)
+                else: 
+                    s = Struct(base_level_tag, self._namespace)
+                    # Manual insertion of Initialize function into top_container, since it 
+                    # doesn't have a virtual parent
+                    Initialize_function(base_level_tag, s)
             elif self._contents[base_level_tag].get('Object Type') == 'Grid Variables':
                 s = Struct(base_level_tag, self._namespace, superclass='grid_variables_base')
                 self._add_member_headers(s)
@@ -519,6 +534,11 @@ class H_translator:
                 self._add_member_headers(s)
                 self._add_function_overrides(s, 'lookup_variables_base')
                 e = Grid_var_counter_enum('', s, self._contents[base_level_tag]['Data Elements'])
+            # performance_map_base object needs sibling grid/lookup vars to be created, so parse last
+            elif self._contents[base_level_tag].get('Object Type') == 'Performance Map':
+                s = Struct(base_level_tag, self._namespace, superclass='performance_map_base')
+                self._add_member_headers(s)
+                self._add_function_overrides(s, 'performance_map_base')
             else:
                 s = Struct(base_level_tag, self._namespace)
             
@@ -544,6 +564,7 @@ class H_translator:
                                                  self._contents[base_level_tag]['Data Elements'][data_element],
                                                  'Description')
         H_translator.modified_insertion_sort(self._namespace.child_entries)
+        self._add_performance_overloads()
 
         # Final pass through dictionary in order to add elements related to serialization
         for base_level_tag in (
@@ -642,6 +663,25 @@ class H_translator:
             pass
         
     # .............................................................................................
+    def _add_performance_overloads(self, parent_node=None):
+        ''' '''
+        if not parent_node:
+            parent_node = self.root
+        # if entry.superclass == performance_map_base, look for grid_variables_base sibling of entry that has a matching name
+        for entry in parent_node.child_entries:
+            if entry.parent and entry.superclass == 'performance_map_base':
+                for gridstruct in [gridv for gridv in entry.parent.child_entries 
+                                   if gridv.superclass == 'grid_variables_base'
+                                   and remove_prefix(gridv.name, 'GridVariables') == remove_prefix(entry.name, 'PerformanceMap')]:
+                    f_args = list()
+                    for ce in [c for c in gridstruct.child_entries if isinstance(c, Data_element)]:
+                        m = re.match(r'std::vector\<(.*)\>', ce.type)
+                        f_args.append(' '.join([m.group(1), ce.name]))
+                    Calculate_performance_overload(f_args, '', entry)
+            else:
+                self._add_performance_overloads(entry)
+
+    # .............................................................................................
     def _search_nodes_for_datatype(self, data_element):
         for listing in self._contents:
             if 'Data Elements' in self._contents[listing]:
@@ -649,3 +689,4 @@ class H_translator:
                     if (element == data_element 
                         and 'Data Type' in self._contents[listing]['Data Elements'][element]):
                         return self._contents[listing]['Data Elements'][element]['Data Type']
+

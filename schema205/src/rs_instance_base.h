@@ -3,7 +3,6 @@
 
 #include <nlohmann/json.hpp>
 #include <iostream>
-#include "error_handling_tk205.h"
 
 /// @class RS_instance_base RS_instance_base.h
 /// @brief This class isolates derived RS classes from their owner (ASHRAE205). It handles

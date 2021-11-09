@@ -5,7 +5,8 @@ from schema205.header_entries import (Header_entry,
                                       Data_element_static_metainfo,
                                       Member_function_override, 
                                       Initialize_function, 
-                                      Object_serialization)
+                                      Object_serialization,
+                                      Calculate_performance_overload)
 from collections import defaultdict
 
 # -------------------------------------------------------------------------------------------------
@@ -122,9 +123,6 @@ class Element_serialization(Implementation_entry):
 
     def __init__(self, name, type, parent, is_required):
         super().__init__(name, parent)
-        # self._func = [
-        #     f'try {{ j.at("{name}").get_to({name}); }}',
-        #     'catch (nlohmann::json::out_of_range & ex) { A205_json_catch(ex); }']
         self._func = [f'A205_json_get<{type}>(j, "{name}", {name}, {name}_is_set, {"true" if is_required else "false"});']
 
     # .............................................................................................
@@ -140,7 +138,6 @@ class Owned_element_serialization(Element_serialization):
 
     def __init__(self, name, type, parent, is_required=False):
         super().__init__(name, type, parent, is_required)
-        #self._func[0] = f'try {{ j.at("{name}").get_to(x.{name}); }}'
         self._func = [f'A205_json_get<{type}>(j, "{name}", x.{name}, x.{name}_is_set, {"true" if is_required else "false"});']
 
 # -------------------------------------------------------------------------------------------------
@@ -252,6 +249,16 @@ class Data_table_impl(Implementation_entry):
 
 
 # -------------------------------------------------------------------------------------------------
+class Performance_overload_impl(Element_serialization):
+    def __init__(self, header_entry, parent):
+        super().__init__(None, None, parent, None)
+        self._func = []
+        args = ', '.join([f'static_cast<double>({a[1]})' for a in [arg.split(' ') for arg in header_entry.args_as_list]])
+        self._func.append(f'std::vector<double> target {{{args}}};')
+        self._func.append('return performance_map_base::Calculate_performance(target);')
+
+
+# -------------------------------------------------------------------------------------------------
 class Simple_return_property(Implementation_entry):
 
     def __init__(self, name, parent):
@@ -331,7 +338,7 @@ class CPP_translator:
             # Initialize static members
             if (isinstance(entry, Data_element_static_metainfo)):
                 Data_element_static_initialization(entry, self._namespace)
-            # Initialize and Populate overrides
+            # Initialize and Populate overrides (Currently the only Member_function_override is the Initialize override)
             if isinstance(entry, Member_function_override) or isinstance(entry, Initialize_function):
                 # Create the override function definition (header) using the declaration's signature
                 m = Member_function_definition(entry, self._namespace)
@@ -359,6 +366,12 @@ class CPP_translator:
                   # are added
                 if entry.parent.superclass == 'grid_variables_base':
                     Grid_axis_finalize('', m)
+            if isinstance(entry, Calculate_performance_overload):
+                m = Member_function_definition(entry, self._namespace)
+                for e in [c for c in entry.parent.child_entries if isinstance(c, Data_element)]:
+                    # Build internals of Calculate_performance function
+                    if e.name == 'grid_variables':
+                        Performance_overload_impl(entry, m)
             # Lastly, handle the special case of objects that need both serialization 
             # and initialization (currently a bit of a hack specific to this project)
             if isinstance(entry, Object_serialization) and entry.name in self._namespace._name:
