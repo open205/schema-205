@@ -144,7 +144,6 @@ class Enumeration(Header_entry):
 
         return entry
 
-
 # -------------------------------------------------------------------------------------------------
 class Enum_serialization(Header_entry):
 
@@ -166,7 +165,6 @@ class Enum_serialization(Header_entry):
         entry += (self.level*'\t' + self._closure)
         return entry
 
-
 # -------------------------------------------------------------------------------------------------
 class Struct(Header_entry):
 
@@ -179,7 +177,6 @@ class Struct(Header_entry):
             self.superclass = superclass
             self._initlist = f' : public {superclass}'
 
-
 # -------------------------------------------------------------------------------------------------
 class Data_element(Header_entry):
 
@@ -189,7 +186,6 @@ class Data_element(Header_entry):
         self._closure = ';'
         self._datatypes = data_types
         self._refs = references
-        self._has_nested = False
         self._selector = dict()
         self._is_required = element.get('Required', False)
 
@@ -198,10 +194,7 @@ class Data_element(Header_entry):
     # .............................................................................................
     @property
     def value(self):
-        if self._has_nested:
-            return super().value
-        else:
-            return self.level*'\t' + self.type + ' ' + self.name + self._closure
+        return self.level*'\t' + self.type + ' ' + self.name + self._closure
 
     # .............................................................................................
     def _create_type_entry(self, parent_dict, type_finder=None):
@@ -309,6 +302,42 @@ class Data_element(Header_entry):
                     pass
 
 # -------------------------------------------------------------------------------------------------
+class Lookup_struct(Header_entry):
+    '''
+    Special case struct for Lookup Variables. Its value property adds a LookupStruct declaration.
+
+    This class could initialize correctly by simply deriving from Struct; however, the rich-
+    comparison between Header_entry(s) only works when items being compared are not a subclass and 
+    sub-subclass.
+    '''
+
+    def __init__(self, name, parent, superclass=''):
+        super().__init__(name, parent)
+        self.type = 'struct'
+        self._closure = '};'
+        if superclass:
+            self.superclass = superclass
+            self._initlist = f' : public {superclass}'
+
+    # .............................................................................................
+    @property
+    def value(self):
+        entry = self.level*'\t' + self.type + ' ' + self.name + ' ' + self._initlist + ' ' + self._opener + '\n'
+        entry += (self.level)*'\t' + self._access_specifier + '\n'
+        for c in self._child_entries:
+            entry += (c.value + '\n')
+        entry += (self.level*'\t' + self._closure)
+
+        # Add a LookupStruct that offers a SOA access rather than AOS
+        entry += '\n'
+        entry += self.level*'\t' + self.type + ' ' + f'{self.name}Struct' + ' ' + self._opener + '\n'
+        for c in [ch for ch in self._child_entries if isinstance(ch, Data_element)]:
+            m = re.match(r'std::vector\<(.*)\>', c.type)
+            entry += (self.level+1)*'\t' + m.group(1) + ' ' + c.name + ';\n'
+        entry += (self.level*'\t' + self._closure)
+        return entry
+
+# -------------------------------------------------------------------------------------------------
 class Data_isset_element(Header_entry):
 
     def __init__(self, name, parent):
@@ -403,9 +432,10 @@ class Grid_var_counter_enum(Header_entry):
 # -------------------------------------------------------------------------------------------------
 class Calculate_performance_overload(Functional_header_entry):
 
-    def __init__(self, f_args, name, parent):
-        super().__init__('std::vector<double>', 'Calculate_performance', '(' + ', '.join(f_args) + ')', name, parent)
+    def __init__(self, f_ret, f_args, name, parent, n_return_values):
+        super().__init__(f_ret, 'Calculate_performance', '(' + ', '.join(f_args) + ')', name, parent)
         self.args_as_list = f_args
+        self.n_return_values = n_return_values
 
     # .............................................................................................
     @property
@@ -530,11 +560,10 @@ class H_translator:
                 self._add_function_overrides(s, 'grid_variables_base')
                 e = Grid_var_counter_enum('', s, self._contents[base_level_tag]['Data Elements'])
             elif self._contents[base_level_tag].get('Object Type') == 'Lookup Variables':
-                s = Struct(base_level_tag, self._namespace, superclass='lookup_variables_base')
+                s = Lookup_struct(base_level_tag, self._namespace, superclass='lookup_variables_base')
                 self._add_member_headers(s)
                 self._add_function_overrides(s, 'lookup_variables_base')
                 e = Grid_var_counter_enum('', s, self._contents[base_level_tag]['Data Elements'])
-            # performance_map_base object needs sibling grid/lookup vars to be created, so parse last
             elif self._contents[base_level_tag].get('Object Type') == 'Performance Map':
                 s = Struct(base_level_tag, self._namespace, superclass='performance_map_base')
                 self._add_member_headers(s)
@@ -564,6 +593,7 @@ class H_translator:
                                                  self._contents[base_level_tag]['Data Elements'][data_element],
                                                  'Description')
         H_translator.modified_insertion_sort(self._namespace.child_entries)
+        # performance_map_base object needs sibling grid/lookup vars to be created, so parse last
         self._add_performance_overloads()
 
         # Final pass through dictionary in order to add elements related to serialization
@@ -667,17 +697,23 @@ class H_translator:
         ''' '''
         if not parent_node:
             parent_node = self.root
-        # if entry.superclass == performance_map_base, look for grid_variables_base sibling of entry that has a matching name
         for entry in parent_node.child_entries:
             if entry.parent and entry.superclass == 'performance_map_base':
-                for gridstruct in [gridv for gridv in entry.parent.child_entries 
-                                   if gridv.superclass == 'grid_variables_base'
-                                   and remove_prefix(gridv.name, 'GridVariables') == remove_prefix(entry.name, 'PerformanceMap')]:
-                    f_args = list()
-                    for ce in [c for c in gridstruct.child_entries if isinstance(c, Data_element)]:
-                        m = re.match(r'std::vector\<(.*)\>', ce.type)
-                        f_args.append(' '.join([m.group(1), ce.name]))
-                    Calculate_performance_overload(f_args, '', entry)
+                for lvstruct in [lv for lv in entry.parent.child_entries 
+                                   if lv.superclass == 'lookup_variables_base'
+                                   and remove_prefix(lv.name, 'LookupVariables') == remove_prefix(entry.name, 'PerformanceMap')]:
+                    f_ret = f'{lvstruct.name}Struct'
+                    n_ret = len([c for c in lvstruct.child_entries if isinstance(c, Data_element)])
+                    # for each performance map, find GridVariables sibling of PerformanceMap, that has a matching name
+                    for gridstruct in [gridv for gridv in entry.parent.child_entries 
+                                    if gridv.superclass == 'grid_variables_base'
+                                    and remove_prefix(gridv.name, 'GridVariables') == remove_prefix(entry.name, 'PerformanceMap')]:
+                        #f_ret = f'LookupVariables{remove_prefix(gridstruct.name, "GridVariables")}Struct'
+                        f_args = list()
+                        for ce in [c for c in gridstruct.child_entries if isinstance(c, Data_element)]:
+                            m = re.match(r'std::vector\<(.*)\>', ce.type)
+                            f_args.append(' '.join([m.group(1), ce.name]))
+                        Calculate_performance_overload(f_ret, f_args, '', entry, n_ret)
             else:
                 self._add_performance_overloads(entry)
 

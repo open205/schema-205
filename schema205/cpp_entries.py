@@ -1,5 +1,6 @@
 from schema205.header_entries import (Header_entry, 
                                       Struct, 
+                                      Lookup_struct,
                                       Data_element, 
                                       Data_isset_element,
                                       Data_element_static_metainfo,
@@ -255,7 +256,13 @@ class Performance_overload_impl(Element_serialization):
         self._func = []
         args = ', '.join([f'static_cast<double>({a[1]})' for a in [arg.split(' ') for arg in header_entry.args_as_list]])
         self._func.append(f'std::vector<double> target {{{args}}};')
-        self._func.append('return performance_map_base::Calculate_performance(target);')
+        self._func.append('auto v = performance_map_base::Calculate_performance(target);')
+        init_str = f'{header_entry.ret_type} s {{'
+        for i in range(header_entry.n_return_values):
+            init_str += f'v[{i}], '
+        init_str += '};'
+        self._func.append(init_str)
+        self._func.append('return s;')
 
 
 # -------------------------------------------------------------------------------------------------
@@ -322,7 +329,7 @@ class CPP_translator:
             # Shortcut to avoid creating "from_json" entries for the main class, but create them
             # for all other classes. The main class relies on an "Initialize" function instead,
             # dealt-with in the next block with function overrides.
-            if isinstance(entry, Struct) and entry.name not in self._namespace._name:
+            if (isinstance(entry, Struct) or isinstance(entry, Lookup_struct)) and entry.name not in self._namespace._name:
                 # Create the "from_json" function definition (header)
                 s = Struct_serialization(entry.name, self._namespace)
                 for e in [c for c in entry.child_entries if isinstance(c, Data_element)]:
