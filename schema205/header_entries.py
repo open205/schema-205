@@ -354,9 +354,9 @@ class Data_element_static_metainfo(Header_entry):
 
     def __init__(self, name, parent, element, meta_key):
         super().__init__(name, parent)
-        self.init_val = element.get(meta_key, '')
         self._type_specifier = 'const static'
         self.type = 'std::string_view'
+        self.init_val = element.get(meta_key, '') if meta_key is not 'Name' else name
         self.name = self.name + '_' + meta_key.lower()
         self._closure = ';'
 
@@ -592,6 +592,11 @@ class H_translator:
                                                  s, 
                                                  self._contents[base_level_tag]['Data Elements'][data_element],
                                                  'Description')
+            for data_element in self._contents[base_level_tag]['Data Elements']:
+                d = Data_element_static_metainfo(data_element, 
+                                                 s, 
+                                                 self._contents[base_level_tag]['Data Elements'][data_element],
+                                                 'Name')
         H_translator.modified_insertion_sort(self._namespace.child_entries)
         # performance_map_base object needs sibling grid/lookup vars to be created, so parse last
         self._add_performance_overloads()
