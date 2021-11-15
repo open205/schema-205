@@ -8,7 +8,7 @@
 {% endfor %}
 #include "nlohmann/json.hpp"
 
-namespace ASHRAE205_NS {
+namespace tk205 {
 
    bool Validate_A205(const char* schema, const char* input_file);
    {% for rs in RS_list -%}

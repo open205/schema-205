@@ -11,7 +11,7 @@
 ///        a source location. Changes will not be saved!
 
 
-namespace ASHRAE205_NS  {
+namespace tk205  {
 
     class rs_instance_base
     {

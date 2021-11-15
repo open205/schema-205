@@ -258,10 +258,11 @@ class Data_element(Header_entry):
         # schema name; its value will be a list of matchable data object names
         for key in self._refs:
             if internal_type in self._refs[key]:
-                simple_type = internal_type
-                #
-                if key == internal_type:
-                    simple_type = f'{key}_NS::{internal_type}'
+                simple_type = f'{key}_NS::{internal_type}'
+                # simple_type = internal_type
+                # #
+                # if key == internal_type:
+                #     simple_type = f'{key}_NS::{internal_type}'
                 if nested_type:
                     # e.g. 'ASHRAE205' from the composite 'ASHRAE205(RS_ID=RSXXXX)'
                     #simple_type = f'std::shared_ptr<{internal_type}>'
@@ -356,7 +357,7 @@ class Data_element_static_metainfo(Header_entry):
         super().__init__(name, parent)
         self._type_specifier = 'const static'
         self.type = 'std::string_view'
-        self.init_val = element.get(meta_key, '') if meta_key is not 'Name' else name
+        self.init_val = element.get(meta_key, '') if meta_key != 'Name' else name
         self.name = self.name + '_' + meta_key.lower()
         self._closure = ';'
 
@@ -400,6 +401,7 @@ class Object_serialization(Functional_header_entry):
 
 # -------------------------------------------------------------------------------------------------
 class Initialize_function(Functional_header_entry):
+    ''' Deprecated '''
 
     def __init__(self, name, parent):
         super().__init__('void', 'Initialize', '(const nlohmann::json& j)', name, parent)
@@ -469,10 +471,7 @@ class H_translator:
         s += '\n'
         s += self._doxynotes
         s += '\n'
-        if self._is_top_container:
-            s += self._namespace.value
-        else:
-            s += self._top_namespace.value
+        s += self.root.value
         s += '\n'
         for e in self._epilogue:
             s += e
@@ -480,10 +479,7 @@ class H_translator:
 
     @property
     def root(self):
-        if self._is_top_container:
-            return self._namespace
-        else:
-            return self._top_namespace
+        return self._top_namespace
 
     # .............................................................................................
     @staticmethod
@@ -516,9 +512,6 @@ class H_translator:
 
         self._contents = load(input_file_path)
 
-        # If container_class_name is empty, I must be the top container. Also true if container_class_name is my name.
-        self._is_top_container = not container_class_name or (container_class_name == self._schema_name)
-
         self._fundamental_base_class = schema_base_class_name if schema_base_class_name else 'rs_instance_base'
 
         # Load meta info first (assuming that base level tag == Schema means object type == Meta)
@@ -527,11 +520,8 @@ class H_translator:
         self._add_included_headers(self._contents['Schema'].get('References'))
 
         # Create "root" node(s)
-        if self._is_top_container:
-            self._namespace = Header_entry(f'{self._schema_name}_NS')
-        else:
-            self._top_namespace = Header_entry(f'{container_class_name}_NS')
-            self._namespace = Header_entry(f'{self._schema_name}_NS', parent=self._top_namespace)
+        self._top_namespace = Header_entry(f'{container_class_name}')
+        self._namespace = Header_entry(f'{self._schema_name}_NS', parent=self._top_namespace)
 
         # First, assemble typedefs
         for base_level_tag in (
@@ -544,16 +534,10 @@ class H_translator:
         # Collect member objects and their children
         for base_level_tag in (
             [tag for tag in self._contents if self._contents[tag].get('Object Type') in self._data_group_types]):
-            if base_level_tag == self._schema_name:
-                if not self._is_top_container:
-                    s = Struct(base_level_tag, self._namespace, superclass=self._fundamental_base_class)
-                    self._add_member_headers(s)
-                    self._add_function_overrides(s, self._fundamental_base_class)
-                else: 
-                    s = Struct(base_level_tag, self._namespace)
-                    # Manual insertion of Initialize function into top_container, since it 
-                    # doesn't have a virtual parent
-                    Initialize_function(base_level_tag, s)
+            if base_level_tag == self._schema_name: # possibly use Root Data Group instead
+                s = Struct(base_level_tag, self._namespace, superclass=self._fundamental_base_class)
+                self._add_member_headers(s)
+                self._add_function_overrides(s, self._fundamental_base_class)
             elif self._contents[base_level_tag].get('Object Type') == 'Grid Variables':
                 s = Struct(base_level_tag, self._namespace, superclass='grid_variables_base')
                 self._add_member_headers(s)
@@ -569,6 +553,7 @@ class H_translator:
                 self._add_member_headers(s)
                 self._add_function_overrides(s, 'performance_map_base')
             else:
+                # Catch-all for when a class of name _schema_name isn't present in the schema
                 s = Struct(base_level_tag, self._namespace)
             
             for data_element in self._contents[base_level_tag]['Data Elements']:
@@ -601,18 +586,17 @@ class H_translator:
         # performance_map_base object needs sibling grid/lookup vars to be created, so parse last
         self._add_performance_overloads()
 
-        # Final pass through dictionary in order to add elements related to serialization
+        # Final passes through dictionary in order to add elements related to serialization
         for base_level_tag in (
             [tag for tag in self._contents if self._contents[tag].get('Object Type') == 'Enumeration']):
             Enum_serialization(base_level_tag, 
                                self._namespace, 
                                self._contents[base_level_tag]['Enumerators'])
-        if True:#self._is_top_container:
-            for base_level_tag in ([tag for tag in self._contents 
-                if self._contents[tag].get('Object Type') in self._data_group_types]):
-                    # from_json declarations are necessary in top container, as the header-declared
-                    # objects might be included and used from elsewhere.
-                    Object_serialization(base_level_tag, self._namespace)
+        for base_level_tag in ([tag for tag in self._contents 
+            if self._contents[tag].get('Object Type') in self._data_group_types]):
+                # from_json declarations are necessary in top container, as the header-declared
+                # objects might be included and used from elsewhere.
+                Object_serialization(base_level_tag, self._namespace)
 
         return self._fundamental_base_class
 
@@ -626,7 +610,7 @@ class H_translator:
 
     # .............................................................................................
     def _add_included_headers(self, ref_list):
-        if ref_list and not self._is_top_container:
+        if ref_list:
             includes = ''
             for r in ref_list:
                 includes += f'#include <{r}.h>'
@@ -658,7 +642,8 @@ class H_translator:
         refs = list()
         if 'References' in schema_section:
             refs = schema_section['References'].copy()
-        refs.append(self._schema_name)
+        refs.insert(0,self._schema_name) # prepend the current file to references list so that 
+                                         # objects are found locally first
         for ref_file in refs:
             ext_dict = load(os.path.join(self._source_dir, ref_file + '.schema.yaml'))
             external_objects = list()

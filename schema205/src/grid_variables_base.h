@@ -29,14 +29,14 @@ public:
        performance_map->Add_grid_axis(axis);
        std::ostringstream oss;
        oss << "Adding grid axis with size " << axis.size();
-       ASHRAE205_NS::Show_message(ASHRAE205_NS::msg_severity::INFO_205, oss.str());
+       tk205::Show_message(tk205::msg_severity::INFO_205, oss.str());
     }
     inline void Add_grid_axis(performance_map_base* performance_map, std::vector<int>& axis)
     {
        performance_map->Add_grid_axis(axis);
        std::ostringstream oss;
        oss << "Adding (int) grid axis with size " << axis.size();
-       ASHRAE205_NS::Show_message(ASHRAE205_NS::msg_severity::INFO_205, oss.str());
+       tk205::Show_message(tk205::msg_severity::INFO_205, oss.str());
     }
 };
 

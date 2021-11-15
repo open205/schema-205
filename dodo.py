@@ -114,7 +114,7 @@ def task_cpp():
     'actions': [
       (create_folder, [HEADER_PATH]),
       (create_folder, [CPP_PATH]),
-      (schema205.cpp_translate.translate_all_to_source,[SOURCE_PATH, HEADER_PATH, CPP_PATH, "ASHRAE205"])
+      (schema205.cpp_translate.translate_all_to_source,[SOURCE_PATH, HEADER_PATH, CPP_PATH, "tk205"])
       ],
     'clean': True
   }

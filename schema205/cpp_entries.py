@@ -5,7 +5,6 @@ from schema205.header_entries import (Header_entry,
                                       Data_isset_element,
                                       Data_element_static_metainfo,
                                       Member_function_override, 
-                                      Initialize_function, 
                                       Object_serialization,
                                       Calculate_performance_overload)
 from collections import defaultdict
@@ -296,10 +295,7 @@ class CPP_translator:
         for p in self._preamble:
             s += p
         s += '\n'
-        if self._is_top_container:
-            s += self._namespace.value
-        else:
-            s += self._top_namespace.value
+        s += self._top_namespace.value
         s += '\n'
         return s
 
@@ -308,18 +304,10 @@ class CPP_translator:
         '''X'''
         self._add_included_headers(header_tree._schema_name)
 
-        # If container_class_name is empty, I must be the top container. 
-        # Also true if container_class_name is my name.
-        self._is_top_container = ( 
-            not container_class_name or (container_class_name == header_tree._schema_name))
-
         # Create "root" node(s)
-        if self._is_top_container:
-            self._namespace = Implementation_entry(f'{header_tree._schema_name}_NS')
-        else:
-            self._top_namespace = Implementation_entry(f'{container_class_name}_NS')
-            self._namespace = (
-                Implementation_entry(f'{header_tree._schema_name}_NS', parent=self._top_namespace))
+        self._top_namespace = Implementation_entry(f'{container_class_name}')
+        self._namespace = (
+            Implementation_entry(f'{header_tree._schema_name}_NS', parent=self._top_namespace))
 
         self._get_items_to_serialize(header_tree.root)
 
@@ -346,7 +334,7 @@ class CPP_translator:
             if (isinstance(entry, Data_element_static_metainfo)):
                 Data_element_static_initialization(entry, self._namespace)
             # Initialize and Populate overrides (Currently the only Member_function_override is the Initialize override)
-            if isinstance(entry, Member_function_override) or isinstance(entry, Initialize_function):
+            if isinstance(entry, Member_function_override):
                 # Create the override function definition (header) using the declaration's signature
                 m = Member_function_definition(entry, self._namespace)
                 # Dirty hack workaround for Name() function

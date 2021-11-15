@@ -58,7 +58,7 @@ namespace
    }
 }
 
-namespace ASHRAE205_NS {
+namespace tk205 {
 
     using valijson::Schema;
     using valijson::SchemaParser;
