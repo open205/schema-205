@@ -253,7 +253,7 @@ class Performance_overload_impl(Element_serialization):
     def __init__(self, header_entry, parent):
         super().__init__(None, None, parent, None)
         self._func = []
-        args = ', '.join([f'static_cast<double>({a[1]})' for a in [arg.split(' ') for arg in header_entry.args_as_list]])
+        args = ', '.join([f'{a[1]}' for a in [arg.split(' ') for arg in header_entry.args_as_list]])
         self._func.append(f'std::vector<double> target {{{args}}};')
         self._func.append('auto v = performance_map_base::Calculate_performance(target);')
         init_str = f'{header_entry.ret_type} s {{'

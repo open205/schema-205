@@ -701,8 +701,7 @@ class H_translator:
                         #f_ret = f'LookupVariables{remove_prefix(gridstruct.name, "GridVariables")}Struct'
                         f_args = list()
                         for ce in [c for c in gridstruct.child_entries if isinstance(c, Data_element)]:
-                            m = re.match(r'std::vector\<(.*)\>', ce.type)
-                            f_args.append(' '.join([m.group(1), ce.name]))
+                            f_args.append(' '.join(['double', ce.name]))
                         Calculate_performance_overload(f_ret, f_args, '', entry, n_ret)
             else:
                 self._add_performance_overloads(entry)
