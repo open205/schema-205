@@ -44,10 +44,7 @@ def translate_all_to_headers(input_dir_path, output_dir_path, container=''):
 
 # -------------------------------------------------------------------------------------------------
 def translate_all_to_source(input_dir_path, output_header_dir, output_src_dir, container=''):
-    # Sort input file so the container source is first
-    src_files = [src for src in sorted(os.listdir(input_dir_path),
-                                       key=lambda f:int(f.startswith(container)),
-                                       reverse=True) if '.schema.yaml' in src]
+    src_files = [src for src in sorted(os.listdir(input_dir_path)) if '.schema.yaml' in src]
     h = H_translator()
     c = CPP_translator()
     for file_name in src_files:
@@ -56,10 +53,6 @@ def translate_all_to_source(input_dir_path, output_header_dir, output_src_dir, c
         dump(str(h), os.path.join(output_header_dir, file_name_root + '.h'))
         c.translate(container, h)
         dump(str(c), os.path.join(output_src_dir, file_name_root + '.cpp'))
-        # factory use deprecated
-        # if file_name_root != container:
-        #     factory_src = generate_factory_source(file_name_root, 'rs_instance', container)
-        #     dump(factory_src, os.path.join(output_src_dir, file_name_root + '_factory.cpp'))
     lib_h, lib_cpp = generate_library_files(
         [os.path.splitext(os.path.splitext(f)[0])[0] for f in [s for s in  src_files if 'RS' in s]])
     dump(lib_h, os.path.join(output_header_dir, 'libtk205.h'))
