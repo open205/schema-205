@@ -26,9 +26,7 @@ def translate_all_to_headers(input_dir_path, output_dir_path, container=''):
     '''
     h = H_translator()
     # Sort input file so the container source is first
-    src_files = [src for src in sorted(os.listdir(input_dir_path),
-                                       key=lambda f:int(f.startswith(container)),
-                                       reverse=True) if '.schema.yaml' in src]
+    src_files = [src for src in sorted(os.listdir(input_dir_path)) if '.schema.yaml' in src]
     # Extract base class info from "container" src file first
     file_name_root = os.path.splitext(os.path.splitext(src_files[0])[0])[0]
     base_class = h.translate(os.path.join(input_dir_path, src_files[0]), container)
@@ -38,9 +36,6 @@ def translate_all_to_headers(input_dir_path, output_dir_path, container=''):
         file_name_root = os.path.splitext(os.path.splitext(file_name)[0])[0]
         h.translate(os.path.join(input_dir_path, file_name), container, base_class)
         dump(str(h), os.path.join(output_dir_path, file_name_root + '.h'))
-        # if file_name_root != container:
-        #     factory_header = generate_factory_headers(file_name_root, 'rs_instance', container) # Remove!!
-        #     dump(factory_header, os.path.join(output_dir_path, file_name_root + '_factory.h'))
 
 # -------------------------------------------------------------------------------------------------
 def translate_all_to_source(input_dir_path, output_header_dir, output_src_dir, container=''):
