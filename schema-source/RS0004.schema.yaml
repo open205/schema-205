@@ -2,8 +2,8 @@ Schema:
   Object Type: "Meta"
   References:
     - "ASHRAE205"
-  Title: "Air-to-Air Direct Expansion Refrigerant Coil System"
-  Description: "Schema for ASHRAE 205 annex RS0004: Air-to-Air Direct Expansion Refrigerant Coil System"
+  Title: "Air-to-Air Direct Expansion Refrigerant System"
+  Description: "Schema for ASHRAE 205 annex RS0004: Air-to-Air Direct Expansion Refrigerant System"
   Version: "0.2.0"
   Root Data Group: "RS0004"
 
@@ -62,7 +62,7 @@ Performance:
   Data Elements:
     compressor_speed_control_type:
       Description: "Method used to control different speeds of the compressor"
-      Data Type: "<CompressorSpeedControlType>"
+      Data Type: "<SpeedControlType>"
       Required: True
     cycling_degradation_coefficient:
       Description: "Cycling degradation coefficient (C<sub>D</sub>) as described in AHRI 210/240"
