@@ -114,8 +114,6 @@ class DataGroup:
                     # Conditional requirements are each a member of a list
                     if elements.get('allOf') == None:
                         elements['allOf'] = list()
-                    if isinstance(req, list): # assume AND operator for lists
-                        self._construct_requirement_if_then(elements['allOf'], str(req), e)
                     elif req.startswith('if'):
                         self._construct_requirement_if_then(elements['allOf'], req, e)
                     else:
@@ -135,16 +133,13 @@ class DataGroup:
         '''
         Construct paired if-then json entries for conditional requirements.
 
-        :param target_dict_to_append:   This dictionary is modified in-situ with an if key and
+        :param target_list_to_append:   List of dictionaries, modified in-situ with an if key and
                                         an associated then key
-        :param selector:                see selector_state
-        :param is_equal:                see selector_state
-        :param selector_state:          Format the condition {selector} [is/isn't] {is_equal}
-                                        {selector_state}
+        :paran requirement_str:         Raw requirement string using A205 syntax
         :param requirement:             This item's presence is dependent on the above condition
         '''
-        dependent_req = r'if\s(?P<selector>[0-9a-zA-Z_]*)(?P<is_equal>!?=)(?P<selector_state>[0-9a-zA-Z_]*)'
-        collector = 'allOf' if any(joiner in requirement_str for joiner in [' and ',' AND ',',']) else 'anyOf'
+        dependent_req = r'(?P<selector>[0-9a-zA-Z_]*)(?P<is_equal>!?=)(?P<selector_state>[0-9a-zA-Z_]*)'
+        collector = 'allOf'
         selector_dict = {'properties' : {collector : dict()}}
         m = re.finditer(dependent_req, requirement_str)
         if m:
