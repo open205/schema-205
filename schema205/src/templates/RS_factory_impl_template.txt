@@ -4,9 +4,15 @@
 
 /// @note  This class has been generated from a template. Local changes will not be saved!
 
-using namespace {{container}}_NS;
+using namespace {{container}};
 
-std::unique_ptr<{{ base_class_root_name }}_base> {{ factory_subclass }}::Create_instance() const
+std::unique_ptr<{{ base_class_root_name }}_base> {{ factory_subclass }}::Create_instance(const char* RS_instance_file) const
 {
-    return std::make_unique<{{container}}_NS::{{ subclass }}_NS::{{ subclass }}>();
+    auto p_rs = std::make_unique<{{ subclass }}_NS::{{ subclass }}>();
+    auto j = tk205::Load_json(RS_instance_file);
+    if (j["metadata"]["schema"] == "{{ subclass }}")
+    {
+        p_rs->Initialize(j);
+    }
+    return p_rs;
 }

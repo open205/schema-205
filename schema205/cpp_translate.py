@@ -48,10 +48,15 @@ def translate_all_to_source(input_dir_path, output_header_dir, output_src_dir, c
         dump(str(h), os.path.join(output_header_dir, file_name_root + '.h'))
         c.translate(container, h)
         dump(str(c), os.path.join(output_src_dir, file_name_root + '.cpp'))
-    lib_h, lib_cpp = generate_library_files(
-        [os.path.splitext(os.path.splitext(f)[0])[0] for f in [s for s in  src_files if 'RS' in s]])
-    dump(lib_h, os.path.join(output_header_dir, 'libtk205.h'))
-    dump(lib_cpp, os.path.join(output_src_dir, 'libtk205.cpp'))
+        if 'RS' in file_name_root:
+            factory_header = generate_factory_headers(file_name_root, 'rs_instance', container)
+            dump(factory_header, os.path.join(output_header_dir, file_name_root + '_factory.h'))
+            factory_src = generate_factory_source(file_name_root, 'rs_instance', container)
+            dump(factory_src, os.path.join(output_src_dir, file_name_root + '_factory.cpp'))
+    # lib_h, lib_cpp = generate_library_files(
+    #     [os.path.splitext(os.path.splitext(f)[0])[0] for f in [s for s in  src_files if 'RS' in s]])
+    # dump(lib_h, os.path.join(output_header_dir, 'libtk205.h'))
+    # dump(lib_cpp, os.path.join(output_src_dir, 'libtk205.cpp'))
 
 # -------------------------------------------------------------------------------------------------
 if __name__ == '__main__':

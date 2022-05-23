@@ -31,13 +31,12 @@ def collect_target_files(target_dir, extension):
   return file_list
 
 def collect_lib_target_files(target_dir, extension):
-  file_list = [os.path.join(target_dir,'libtk205.h'), 
-               os.path.join(target_dir,'libtk205.cpp')]
+  file_list = []
   for file_name in sorted(os.listdir('schema-source')):
     if '.schema.yaml' in file_name:
       file_name_root = os.path.splitext(os.path.splitext(file_name)[0])[0]
       file_list.append(os.path.join(target_dir,f'{file_name_root}.{extension}'))
-      #file_list.append(os.path.join(target_dir,f'{file_name_root}_factory.{extension}'))
+      file_list.append(os.path.join(target_dir,f'{file_name_root}_factory.{extension}'))
   return file_list
 
 def task_validate():

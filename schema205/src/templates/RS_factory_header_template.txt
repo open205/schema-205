@@ -5,12 +5,12 @@
 
 /// @note  This class has been generated from a template. Local changes will not be saved!
 
-namespace {{container}}_NS {
+namespace {{container}} {
 
    class {{factory_subclass}} : public {{base_class_root_name}}_factory
    {
       public:
-         std::unique_ptr<{{base_class_root_name}}_base> Create_instance() const override;
+         std::unique_ptr<{{base_class_root_name}}_base> Create_instance(const char* RS_instance_file) const override;
    };
 }
 
