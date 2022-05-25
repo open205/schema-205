@@ -11,6 +11,54 @@
 ///        a source location. Changes will not be saved!
 
 namespace tk205  {
+
+   inline void Read_binary_file(const char* filename, std::vector<char> &bytes)
+   {
+      std::ifstream is (filename, std::ifstream::binary);
+      if (is) 
+      {
+            // get length of file:
+            is.seekg(0, is.end);
+            size_t length = static_cast<size_t>(is.tellg());
+            is.seekg(0, is.beg);
+
+            bytes.resize(length);
+            // read data as a block:
+            is.read(bytes.data(), length);
+
+            is.close();
+      }
+   }
+
+   inline nlohmann::json Load_json(const char* input_file)
+   {
+      std::string filename(input_file);
+      std::string::size_type idx = filename.rfind('.');
+
+      using namespace nlohmann;
+      
+      json j;
+
+      if(idx != std::string::npos)
+      {
+            std::string extension = filename.substr(idx+1);
+
+            if (extension == "cbor")
+            {
+               std::vector<char> bytearray;
+               Read_binary_file(input_file, bytearray);
+               j = json::from_cbor(bytearray);
+            }
+            else if (extension == "json")
+            {
+               std::string schema(input_file);
+               std::ifstream in(schema);
+               in >> j;
+            }
+      }
+      return j;
+   }
+
    class rs_instance_factory
    {
    public: // Interface
