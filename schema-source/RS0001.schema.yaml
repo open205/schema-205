@@ -553,7 +553,7 @@ Performance:
               "May be different from the certification data supplied"]
     compressor_speed_control_type:
       Description: "Type of compressor speed control"
-      Data Type: "<CompressorSpeedControlType>"
+      Data Type: "<SpeedControlType>"
       Required: True
     maximum_power:
       Description: "Maximum input power at which the chiller operates reliably and continuously"

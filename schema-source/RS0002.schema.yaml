@@ -359,7 +359,7 @@ Performance:
     fan_position:
       Description: "Position of the fan relative to the cooling coil"
       Data Type: "<FanPosition>"
-      Required: "if fan_representation"
+      Required: "if indoor_fan_representation"
     dx_system_representation:
-      Description: "The corresponding Standard 205 direct expansion coil system representation"
+      Description: "The corresponding Standard 205 direct expansion system representation"
       Data Type: "{RS0004}"
