@@ -181,13 +181,13 @@ RatingAHRI210240:
       Data Type: "Numeric"
       Units: "Btu/h"
       Constraints: ">=0.0"
-      Required: ["if staging_type=VARIABLE_STAGE","if test_standard_year=IP_2023"]
+      Required: "if staging_type=VARIABLE_STAGE and test_standard_year=IP_2023"
     cooling_i_low_capacity:
       Description: "Low stage net total cooling capacity (at 'I' operating conditions)"
       Data Type: "Numeric"
       Units: "Btu/h"
       Constraints: ">=0.0"
-      Required: ["if staging_type=VARIABLE_STAGE","if test_standard_year=IP_2023"]
+      Required: "if staging_type=VARIABLE_STAGE and test_standard_year=IP_2023"
     cooling_a_full_power:
       Description: "Full stage net total cooling power (at 'A' operating conditions)"
       Data Type: "Numeric"
@@ -217,13 +217,13 @@ RatingAHRI210240:
       Data Type: "Numeric"
       Units: "W"
       Constraints: ">=0.0"
-      Required: ["if staging_type=VARIABLE_STAGE","if test_standard_year=IP_2023"]
+      Required: "if staging_type=VARIABLE_STAGE and test_standard_year=IP_2023"
     cooling_i_low_power:
       Description: "Low stage net total cooling power (at 'I' operating conditions)"
       Data Type: "Numeric"
       Units: "W"
       Constraints: ">=0.0"
-      Required: ["if staging_type=VARIABLE_STAGE","if test_standard_year=IP_2023"]
+      Required: "if staging_type=VARIABLE_STAGE and test_standard_year=IP_2023"
     cooling_full_fan_power:
       Description: "Power of the indoor fan at full load"
       Data Type: "Numeric"

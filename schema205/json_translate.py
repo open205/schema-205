@@ -106,20 +106,12 @@ class DataGroup:
             if 'Notes' in element:
                 elements['properties'][e]['notes'] = element['Notes']
             if 'Required' in element:
-                #required.append(e)
                 req = element['Required']
-                if isinstance(req, bool) and req == True:
-                    required.append(e)
+                if isinstance(req, bool):
+                    if req == True:
+                        required.append(e)
                 elif req.startswith('if'):
-                    if '!=' in req:
-                        self._construct_requirement_if_else(elements, req.split(' ')[1].split('!')[0],
-                                                            False, req.split('=')[1], e)
-                    elif '=' in req:
-                        self._construct_requirement_if_else(elements, req.split(' ')[1].split('=')[0],
-                                                            True, req.split('=')[1], e)
-                    else:
-                        dependency = req.split(' ')[1]
-                        dependencies[dependency] = [e]
+                    self._construct_requirement_if_then(elements, dependencies, req[3:], e)
         if required:
             elements['required'] = required
         if dependencies:
@@ -128,31 +120,55 @@ class DataGroup:
         return {group_name : elements}
 
 
-    def _construct_requirement_if_else(self,
-                                       target_dict_to_append,
-                                       selector, is_equal, selector_state, requirement):
+    def _construct_requirement_if_then(self,
+                                       conditionals_list : dict,
+                                       dependencies_list : dict,
+                                       requirement_str : str, 
+                                       requirement : str):
         '''
-        Construct paired if-else json entries for conditional requirements.
+        Construct paired if-then json entries for conditional requirements.
 
-        :param target_dict_to_append:   This dictionary is modified in-situ with an if key and
+        :param target_list_to_append:   List of dictionaries, modified in-situ with an if key and
                                         an associated then key
-        :param selector:                see selector_state
-        :param is_equal:                see selector_state
-        :param selector_state:          Format the condition {selector} [is/isn't] {is_equal}
-                                        {selector_state}
+        :param requirement_str:         Raw requirement string using A205 syntax
         :param requirement:             This item's presence is dependent on the above condition
         '''
-        if 'true' in selector_state.lower():
-            selector_state = True
-        elif 'false' in selector_state.lower():
-            selector_state = False
-        selector_dict = ({'properties' : {selector : {'const' : selector_state} } } if is_equal
-                         else {'properties' : {selector : {'not' : {'const' : selector_state} } } })
-        if target_dict_to_append.get('if') == selector_dict: # condition already exists
-            target_dict_to_append['then']['required'].append(requirement)
-        else:
-            target_dict_to_append['if'] = selector_dict
-            target_dict_to_append['then'] = {'required' : [requirement]}
+        separator = r'\sand\s'
+        collector = 'allOf'
+        selector_dict = {'properties' : {collector : dict()}}
+        requirement_list = re.split(separator, requirement_str)
+        dependent_req = r'(?P<selector>[0-9a-zA-Z_]*)((?P<is_equal>!?=)(?P<selector_state>[0-9a-zA-Z_]*))?'
+        
+        for req in requirement_list:
+            m = re.match(dependent_req, req)
+            if m:
+                selector = m.group('selector')
+                if m.group('is_equal'):
+                    is_equal = False if '!' in m.group('is_equal') else True
+                    selector_state = m.group('selector_state')
+                    if 'true' in selector_state.lower():
+                        selector_state = True
+                    elif 'false' in selector_state.lower():
+                        selector_state = False
+                    selector_dict['properties'][collector][selector] = {'const' : selector_state} if is_equal else {'not' : {'const' : selector_state} }
+                else: # prerequisite type
+                    if dependencies_list.get(selector):
+                        dependencies_list[selector].append(requirement)
+                    else:
+                        dependencies_list[selector] = [requirement]
+
+        if selector_dict['properties'][collector].keys():
+            # Conditional requirements are each a member of a list
+            if conditionals_list.get('allOf') == None:
+                conditionals_list['allOf'] = list()
+
+            for conditional_req in conditionals_list['allOf']:
+                if conditional_req.get('if') == selector_dict: # condition already exists
+                    conditional_req['then']['required'].append(requirement)
+                    return
+            conditionals_list['allOf'].append(dict())
+            conditionals_list['allOf'][-1]['if'] = selector_dict
+            conditionals_list['allOf'][-1]['then'] = {'required' : [requirement]}
 
 
     def _create_type_entry(self, parent_dict, target_dict, entry_name):
