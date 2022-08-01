@@ -5,14 +5,14 @@
 #include <memory>
 #include "rs_instance_base.h" // definition req'd for unique_ptr
 
-/// @class rs_instance_factory rs_instance_factory.h
+/// @class RSInstanceFactory rs_instance_factory.h
 /// @brief This class is an abstract interface to support RS factory sub-classes
 /// @note  If you are seeing this class in your build directory, it has been copied there from
 ///        a source location. Changes will not be saved!
 
 namespace tk205  {
 
-   inline void Read_binary_file(const char* filename, std::vector<char> &bytes)
+   inline void read_binary_file(const char* filename, std::vector<char> &bytes)
    {
       std::ifstream is (filename, std::ifstream::binary);
       if (is) 
@@ -30,7 +30,7 @@ namespace tk205  {
       }
    }
 
-   inline nlohmann::json Load_json(const char* input_file)
+   inline nlohmann::json load_json(const char* input_file)
    {
       std::string filename(input_file);
       std::string::size_type idx = filename.rfind('.');
@@ -46,7 +46,7 @@ namespace tk205  {
             if (extension == "cbor")
             {
                std::vector<char> bytearray;
-               Read_binary_file(input_file, bytearray);
+               read_binary_file(input_file, bytearray);
                j = json::from_cbor(bytearray);
             }
             else if (extension == "json")
@@ -59,29 +59,29 @@ namespace tk205  {
       return j;
    }
 
-   class rs_instance_factory
+   class RSInstanceFactory
    {
    public: // Interface
 
-      rs_instance_factory() = default;
-      virtual ~rs_instance_factory() = default;
+      RSInstanceFactory() = default;
+      virtual ~RSInstanceFactory() = default;
 
-      static bool Register_factory(std::string const &RS_ID,
-                                   std::shared_ptr<rs_instance_factory> factory);
+      static bool register_factory(std::string const &RS_ID,
+                                   std::shared_ptr<RSInstanceFactory> factory);
 
-      // Universal factory interface Create(). Factory::Create() will, through delegation,
+      // Universal factory interface create(). Factory::create() will, through delegation,
       // actually return the requested object.
-      static std::unique_ptr<rs_instance_base> Create(std::string const &RS_ID,
-                                                      const char* RS_instance_file);
+      static std::unique_ptr<RSInstanceBase> create(std::string const &RS_ID,
+                                                    const char* RS_instance_file);
 
-      // Derived factories override Create_instance() for actual resource creation
-      virtual std::unique_ptr<rs_instance_base> Create_instance(const char* RS_instance_file) const = 0;
+      // Derived factories override create_instance() for actual resource creation
+      virtual std::unique_ptr<RSInstanceBase> create_instance(const char* RS_instance_file) const = 0;
 
       // Rule of five
-      rs_instance_factory(const rs_instance_factory& other) = delete;
-      rs_instance_factory& operator=(const rs_instance_factory& other) = delete;
-      rs_instance_factory(rs_instance_factory&&) = delete;
-      rs_instance_factory& operator=(rs_instance_factory&&) = delete;
+      RSInstanceFactory(const RSInstanceFactory& other) = delete;
+      RSInstanceFactory& operator=(const RSInstanceFactory& other) = delete;
+      RSInstanceFactory(RSInstanceFactory&&) = delete;
+      RSInstanceFactory& operator=(RSInstanceFactory&&) = delete;
    };
 }
 

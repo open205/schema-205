@@ -8,29 +8,29 @@
 #include <btwxt.h>
 
 // ------------------------------------------------------------------------------------------------
-/// @class performance_map_base performance_map_base.h
+/// @class PerformanceMapBase performance_map_base.h
 /// @note  If you are seeing this class in your build directory, it has been copied there from
 ///        a source location. Changes will not be saved!
 
-class performance_map_base {
+class PerformanceMapBase {
 
 public:
-    performance_map_base() = default;
-    virtual ~performance_map_base() = default;
-    performance_map_base(const performance_map_base& other) = default;
-    performance_map_base& operator=(const performance_map_base& other) = default;
+    PerformanceMapBase() = default;
+    virtual ~PerformanceMapBase() = default;
+    PerformanceMapBase(const PerformanceMapBase& other) = default;
+    PerformanceMapBase& operator=(const PerformanceMapBase& other) = default;
 
   // ----------------------------------------------------------------------------------------------
   /// @brief	
   /// @param	j
   // ----------------------------------------------------------------------------------------------
-    virtual void Initialize(const nlohmann::json& j) = 0;
+    virtual void initialize(const nlohmann::json& j) = 0;
 
   // ----------------------------------------------------------------------------------------------
   /// @brief	
   /// @param	axis TBD
   // ----------------------------------------------------------------------------------------------
-    inline void Add_grid_axis(std::vector<double>& axis) {
+    inline void add_grid_axis(std::vector<double>& axis) {
         _grid_axes.emplace_back(Btwxt::GridAxis(axis));
     }
 
@@ -38,7 +38,7 @@ public:
   /// @brief	
   /// @param	axis TBD
   // ----------------------------------------------------------------------------------------------
-    inline void Add_grid_axis(std::vector<int>& axis) {
+    inline void add_grid_axis(std::vector<int>& axis) {
         _grid_axes.emplace_back(Btwxt::GridAxis(std::vector<double>(axis.begin(), axis.end())));
     }
 
@@ -46,14 +46,14 @@ public:
   /// @brief	
   /// @param	table TBD
   // ----------------------------------------------------------------------------------------------
-    inline void Add_data_table(std::vector<double>& table) {
+    inline void add_data_table(std::vector<double>& table) {
         _btwxt.add_value_table(table);
     }
     
   // ----------------------------------------------------------------------------------------------
   /// @brief	
   // ----------------------------------------------------------------------------------------------
-    inline void Finalize_grid() {
+    inline void finalize_grid() {
         auto gd = Btwxt::GriddedData(_grid_axes);
         _btwxt = Btwxt::RegularGridInterpolator(gd);
     }
@@ -62,7 +62,7 @@ public:
   /// @brief	
   /// @param	table_index TBD
   // ----------------------------------------------------------------------------------------------
-    inline double Calculate_performance(const std::vector<double> &target,
+    inline double calculate_performance(const std::vector<double> &target,
                                         std::size_t table_index) {
         return _btwxt.get_value_at_target(target, table_index);
     }
@@ -72,7 +72,7 @@ public:
   ///         results.
   /// @param	target 
   // ----------------------------------------------------------------------------------------------
-    inline std::vector<double> Calculate_performance(const std::vector<double> &target) {
+    inline std::vector<double> calculate_performance(const std::vector<double> &target) {
         return _btwxt.get_values_at_target(target);
     }
 

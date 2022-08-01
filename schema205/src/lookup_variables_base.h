@@ -7,29 +7,29 @@
 #include <sstream>
 #include "error_handling_tk205.h"
 
-class performance_map_base;
+class PerformanceMapBase;
 
 // ------------------------------------------------------------------------------------------------
-/// @class lookup_variables_base lookup_variables_base.h
+/// @class LookupVariablesBase lookup_variables_base.h
 /// @note  If you are seeing this class in your build directory, it has been copied there from
 ///        a source location. Changes will not be saved!
 
-class lookup_variables_base {
+class LookupVariablesBase {
 
 public:
-    lookup_variables_base() = default;
-    virtual ~lookup_variables_base() = default;
-    lookup_variables_base(const lookup_variables_base& other) = default;
-    lookup_variables_base& operator=(const lookup_variables_base& other) = default;
+    LookupVariablesBase() = default;
+    virtual ~LookupVariablesBase() = default;
+    LookupVariablesBase(const LookupVariablesBase& other) = default;
+    LookupVariablesBase& operator=(const LookupVariablesBase& other) = default;
 
-    virtual void Populate_performance_map(performance_map_base* performance_map) = 0;
+    virtual void populate_performance_map(PerformanceMapBase* performance_map) = 0;
 
-    inline void Add_data_table(performance_map_base* performance_map, std::vector<double>& table)
+    inline void add_data_table(PerformanceMapBase* performance_map, std::vector<double>& table)
     {
-       performance_map->Add_data_table(table);
+       performance_map->add_data_table(table);
        std::ostringstream oss;
        oss << "Adding grid table with size " << table.size();
-       tk205::Show_message(tk205::msg_severity::INFO_205, oss.str());
+       tk205::show_message(tk205::msg_severity::INFO_205, oss.str());
     }
 };
 

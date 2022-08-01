@@ -1,6 +1,7 @@
 import os
 import re
 from schema205.file_io import load
+from schema205.util import snake_style
 
 def remove_prefix(text, prefix):
     return text[len(prefix):] if text.startswith(prefix) else text
@@ -224,7 +225,8 @@ class Data_element(Header_entry):
                     selectors = [(selection_key_type + s.strip()) for s in m_opt.group(1).split(',')]
 
                     self._selector[oneof_selection_key] = dict(zip(selectors, types))
-                    self.type = f'std::unique_ptr<{self.name}_base>'
+                    classname_from_name = ''.join(word.title() for word in self.name.split('_')) # CamelCase it
+                    self.type = f'std::unique_ptr<{classname_from_name}Base>'
                 else:
                     # 1. 'type' entry
                     self.type = self._get_simple_type(parent_dict['Data Type'])
@@ -258,11 +260,11 @@ class Data_element(Header_entry):
         # schema name; its value will be a list of matchable data object names
         for key in self._refs:
             if internal_type in self._refs[key]:
-                simple_type = f'{key}_NS::{internal_type}'
+                simple_type = f'{snake_style(key)}_ns::{internal_type}'
                 # simple_type = internal_type
                 # #
                 # if key == internal_type:
-                #     simple_type = f'{key}_NS::{internal_type}'
+                #     simple_type = f'{key}_ns::{internal_type}'
                 if nested_type:
                     # e.g. 'ASHRAE205' from the composite 'ASHRAE205(RS_ID=RSXXXX)'
                     #simple_type = f'std::shared_ptr<{internal_type}>'
@@ -404,7 +406,7 @@ class Initialize_function(Functional_header_entry):
     ''' Deprecated '''
 
     def __init__(self, name, parent):
-        super().__init__('void', 'Initialize', '(const nlohmann::json& j)', name, parent)
+        super().__init__('void', 'initialize', '(const nlohmann::json& j)', name, parent)
 
 # -------------------------------------------------------------------------------------------------
 class Grid_var_counter_enum(Header_entry):
@@ -435,14 +437,14 @@ class Grid_var_counter_enum(Header_entry):
 class Calculate_performance_overload(Functional_header_entry):
 
     def __init__(self, f_ret, f_args, name, parent, n_return_values):
-        super().__init__(f_ret, 'Calculate_performance', '(' + ', '.join(f_args) + ')', name, parent)
+        super().__init__(f_ret, 'calculate_performance', '(' + ', '.join(f_args) + ')', name, parent)
         self.args_as_list = f_args
         self.n_return_values = n_return_values
 
     # .............................................................................................
     @property
     def value(self):
-        complete_decl = self.level*'\t' + 'using performance_map_base::Calculate_performance;\n'
+        complete_decl = self.level*'\t' + 'using PerformanceMapBase::calculate_performance;\n'
         complete_decl += self.level*'\t' + ' '.join([self.ret_type, self.fname, self.args]) + self._closure
         return complete_decl
 
@@ -512,16 +514,16 @@ class H_translator:
 
         self._contents = load(input_file_path)
 
-        self._fundamental_base_class = schema_base_class_name if schema_base_class_name else 'rs_instance_base'
+        self._fundamental_base_class = schema_base_class_name if schema_base_class_name else 'RSInstanceBase'
 
         # Load meta info first (assuming that base level tag == Schema means object type == Meta)
         self._load_meta_info(self._contents['Schema'])
-        self._add_include_guard(self._schema_name)
+        self._add_include_guard(snake_style(self._schema_name))
         self._add_included_headers(self._contents['Schema'].get('References'))
 
         # Create "root" node(s)
         self._top_namespace = Header_entry(f'{container_class_name}')
-        self._namespace = Header_entry(f'{self._schema_name}_NS', parent=self._top_namespace)
+        self._namespace = Header_entry(f'{snake_style(self._schema_name)}_ns', parent=self._top_namespace)
 
         # First, assemble typedefs
         for base_level_tag in (
@@ -539,19 +541,19 @@ class H_translator:
                 self._add_member_headers(s)
                 self._add_function_overrides(s, self._fundamental_base_class)
             elif self._contents[base_level_tag].get('Object Type') == 'Grid Variables':
-                s = Struct(base_level_tag, self._namespace, superclass='grid_variables_base')
+                s = Struct(base_level_tag, self._namespace, superclass='GridVariablesBase')
                 self._add_member_headers(s)
-                self._add_function_overrides(s, 'grid_variables_base')
+                self._add_function_overrides(s, 'GridVariablesBase')
                 e = Grid_var_counter_enum('', s, self._contents[base_level_tag]['Data Elements'])
             elif self._contents[base_level_tag].get('Object Type') == 'Lookup Variables':
-                s = Lookup_struct(base_level_tag, self._namespace, superclass='lookup_variables_base')
+                s = Lookup_struct(base_level_tag, self._namespace, superclass='LookupVariablesBase')
                 self._add_member_headers(s)
-                self._add_function_overrides(s, 'lookup_variables_base')
+                self._add_function_overrides(s, 'LookupVariablesBase')
                 e = Grid_var_counter_enum('', s, self._contents[base_level_tag]['Data Elements'])
             elif self._contents[base_level_tag].get('Object Type') == 'Performance Map':
-                s = Struct(base_level_tag, self._namespace, superclass='performance_map_base')
+                s = Struct(base_level_tag, self._namespace, superclass='PerformanceMapBase')
                 self._add_member_headers(s)
-                self._add_function_overrides(s, 'performance_map_base')
+                self._add_function_overrides(s, 'PerformanceMapBase')
             else:
                 # Catch-all for when a class of name _schema_name isn't present in the schema
                 s = Struct(base_level_tag, self._namespace)
@@ -583,7 +585,7 @@ class H_translator:
                                                  self._contents[base_level_tag]['Data Elements'][data_element],
                                                  'Name')
         H_translator.modified_insertion_sort(self._namespace.child_entries)
-        # performance_map_base object needs sibling grid/lookup vars to be created, so parse last
+        # PerformanceMapBase object needs sibling grid/lookup vars to be created, so parse last
         self._add_performance_overloads()
 
         # Final passes through dictionary in order to add elements related to serialization
@@ -613,7 +615,7 @@ class H_translator:
         if ref_list:
             includes = ''
             for r in ref_list:
-                includes += f'#include <{r}.h>'
+                includes += f'#include <{snake_style(r)}.h>'
                 includes += '\n'
             self._preamble.append(includes)
         self._preamble.append('#include <string>\n#include <vector>\n#include <nlohmann/json.hpp>\n#include <typeinfo_205.h>\n')
@@ -623,18 +625,18 @@ class H_translator:
         if 'unique_ptr' in data_element.type:
             m = re.search(r'\<(.*)\>', data_element.type)
             if m:
-                include = f'#include <{m.group(1)}.h>\n'
+                include = f'#include <{snake_style(m.group(1))}.h>\n'
                 if include not in self._preamble:
-                    self._preamble.append(f'#include <{m.group(1)}.h>\n')
+                    self._preamble.append(include)
                 # This is a perfect opportunity to cache the fundamental base class owned by the
                 # top-level container
                 self._fundamental_base_class = m.group(1)
         if data_element._initlist:
             l = data_element._initlist.split()
             if l:
-                include = f'#include <{l[-1]}.h>\n'
+                include = f'#include <{snake_style(l[-1])}.h>\n'
                 if include not in self._preamble:
-                    self._preamble.append(f'#include <{l[-1]}.h>\n')
+                    self._preamble.append(include)
 
     # .............................................................................................
     def _load_meta_info(self, schema_section):
@@ -668,7 +670,9 @@ class H_translator:
     # .............................................................................................
     def _add_function_overrides(self, parent_node, base_class_name):
         '''Get base class virtual functions to be overridden.'''
-        base_class = os.path.join(os.path.dirname(__file__), 'src', f'{base_class_name}.h')
+        base_class = os.path.join(os.path.dirname(__file__), 
+                                  'src', 
+                                  f'{snake_style(base_class_name)}.h')
         try:
             with open(base_class) as b:
                 for line in b:
@@ -688,15 +692,15 @@ class H_translator:
         if not parent_node:
             parent_node = self.root
         for entry in parent_node.child_entries:
-            if entry.parent and entry.superclass == 'performance_map_base':
+            if entry.parent and entry.superclass == 'PerformanceMapBase':
                 for lvstruct in [lv for lv in entry.parent.child_entries 
-                                   if lv.superclass == 'lookup_variables_base'
+                                   if lv.superclass == 'LookupVariablesBase'
                                    and remove_prefix(lv.name, 'LookupVariables') == remove_prefix(entry.name, 'PerformanceMap')]:
                     f_ret = f'{lvstruct.name}Struct'
                     n_ret = len([c for c in lvstruct.child_entries if isinstance(c, Data_element)])
                     # for each performance map, find GridVariables sibling of PerformanceMap, that has a matching name
                     for gridstruct in [gridv for gridv in entry.parent.child_entries 
-                                    if gridv.superclass == 'grid_variables_base'
+                                    if gridv.superclass == 'GridVariablesBase'
                                     and remove_prefix(gridv.name, 'GridVariables') == remove_prefix(entry.name, 'PerformanceMap')]:
                         #f_ret = f'LookupVariables{remove_prefix(gridstruct.name, "GridVariables")}Struct'
                         f_args = list()

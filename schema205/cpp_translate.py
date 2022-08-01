@@ -5,6 +5,7 @@ from schema205.cpp_entries import CPP_translator
 from schema205.generate_factory_templates import (generate_factory_headers, 
                                                   generate_factory_source, 
                                                   generate_library_files)
+from schema205.util import snake_style
 
 # -------------------------------------------------------------------------------------------------
 def translate_to_header(input_file_path, output_file_root, base_class='foo_base', container=''):
@@ -44,15 +45,15 @@ def translate_all_to_source(input_dir_path, output_header_dir, output_src_dir, c
     c = CPP_translator()
     for file_name in src_files:
         file_name_root = os.path.splitext(os.path.splitext(file_name)[0])[0]
-        h.translate(os.path.join(input_dir_path, file_name), container, 'rs_instance_base')
-        dump(str(h), os.path.join(output_header_dir, file_name_root + '.h'))
+        h.translate(os.path.join(input_dir_path, file_name), container, 'RSInstanceBase')
+        dump(str(h), os.path.join(output_header_dir, snake_style(file_name_root) + '.h'))
         c.translate(container, h)
-        dump(str(c), os.path.join(output_src_dir, file_name_root + '.cpp'))
+        dump(str(c), os.path.join(output_src_dir, snake_style(file_name_root) + '.cpp'))
         if 'RS' in file_name_root:
-            factory_header = generate_factory_headers(file_name_root, 'rs_instance', container)
-            dump(factory_header, os.path.join(output_header_dir, file_name_root + '_factory.h'))
-            factory_src = generate_factory_source(file_name_root, 'rs_instance', container)
-            dump(factory_src, os.path.join(output_src_dir, file_name_root + '_factory.cpp'))
+            factory_header = generate_factory_headers(file_name_root, 'RSInstance', container)
+            dump(factory_header, os.path.join(output_header_dir, snake_style(file_name_root) + '_factory.h'))
+            factory_src = generate_factory_source(file_name_root, 'RSInstance', container)
+            dump(factory_src, os.path.join(output_src_dir, snake_style(file_name_root) + '_factory.cpp'))
     # lib_h, lib_cpp = generate_library_files(
     #     [os.path.splitext(os.path.splitext(f)[0])[0] for f in [s for s in  src_files if 'RS' in s]])
     # dump(lib_h, os.path.join(output_header_dir, 'libtk205.h'))

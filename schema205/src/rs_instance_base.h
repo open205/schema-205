@@ -4,7 +4,7 @@
 #include <nlohmann/json.hpp>
 #include <fstream>
 
-/// @class RS_instance_base RS_instance_base.h
+/// @class RSInstanceBase RS_instance_base.h
 /// @brief This class isolates derived RS classes from their owner (ASHRAE205). It handles
 ///        no resources.
 /// @note  If you are seeing this class in your build directory, it has been copied there from
@@ -12,18 +12,18 @@
 
 namespace tk205  {
 
-    class rs_instance_base
+    class RSInstanceBase
     {
     public:
 
-        rs_instance_base() = default;
-        virtual ~rs_instance_base() = default;
-        rs_instance_base(const rs_instance_base& other) = default;
-        rs_instance_base& operator=(const rs_instance_base& other) = default;
-        rs_instance_base(rs_instance_base&&) = default;
-        rs_instance_base& operator=(rs_instance_base&&) = default;
+        RSInstanceBase() = default;
+        virtual ~RSInstanceBase() = default;
+        RSInstanceBase(const RSInstanceBase& other) = default;
+        RSInstanceBase& operator=(const RSInstanceBase& other) = default;
+        RSInstanceBase(RSInstanceBase&&) = default;
+        RSInstanceBase& operator=(RSInstanceBase&&) = default;
 
-        virtual void Initialize(const nlohmann::json& j) = 0;
+        virtual void initialize(const nlohmann::json& j) = 0;
     };
 }
 

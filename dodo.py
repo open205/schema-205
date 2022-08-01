@@ -5,6 +5,7 @@ import schema205.cpp_translate
 import schema205.render_template
 import os
 from doit.tools import create_folder
+from schema205.util import snake_style
 
 BUILD_PATH = os.path.join(os.path.dirname(__file__), 'build')
 SOURCE_PATH = os.path.join(os.path.dirname(__file__), 'schema-source')
@@ -34,7 +35,7 @@ def collect_lib_target_files(target_dir, extension):
   file_list = []
   for file_name in sorted(os.listdir('schema-source')):
     if '.schema.yaml' in file_name:
-      file_name_root = os.path.splitext(os.path.splitext(file_name)[0])[0]
+      file_name_root = snake_style(os.path.splitext(os.path.splitext(file_name)[0])[0])
       file_list.append(os.path.join(target_dir,f'{file_name_root}.{extension}'))
       file_list.append(os.path.join(target_dir,f'{file_name_root}_factory.{extension}'))
   return file_list
