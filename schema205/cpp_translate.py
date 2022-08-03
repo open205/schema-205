@@ -3,8 +3,7 @@ from schema205.header_entries import H_translator
 from schema205.file_io import dump
 from schema205.cpp_entries import CPP_translator
 from schema205.generate_factory_templates import (generate_factory_headers, 
-                                                  generate_factory_source, 
-                                                  generate_library_files)
+                                                  generate_factory_source)
 from schema205.util import snake_style
 
 # -------------------------------------------------------------------------------------------------

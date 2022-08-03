@@ -5,10 +5,7 @@
 #include <fstream>
 
 /// @class RSInstanceBase RS_instance_base.h
-/// @brief This class isolates derived RS classes from their owner (ASHRAE205). It handles
-///        no resources.
-/// @note  If you are seeing this class in your build directory, it has been copied there from
-///        a source location. Changes will not be saved!
+/// @brief This class is an abstract base for representation specification classes. It handles no resources.
 
 namespace tk205  {
 
