@@ -10,7 +10,7 @@ namespace {{container}} {
    class {{factory_subclass}} : public {{base_class_root_name}}Factory
    {
       public:
-         std::unique_ptr<{{base_class_root_name}}Base> create_instance(const char* RS_instance_file) const override;
+         std::shared_ptr<{{base_class_root_name}}Base> create_instance(const char* RS_instance_file) const override;
    };
 }
 

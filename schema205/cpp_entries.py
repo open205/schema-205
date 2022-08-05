@@ -124,7 +124,7 @@ class Element_serialization(Implementation_entry):
 
     def __init__(self, name, type, parent, is_required):
         super().__init__(name, parent)
-        self._func = [f'A205_json_get<{type}>(j, "{name}", {name}, {name}_is_set, {"true" if is_required else "false"});']
+        self._func = [f'a205_json_get<{type}>(j, "{name}", {name}, {name}_is_set, {"true" if is_required else "false"});']
 
     # .............................................................................................
     @property
@@ -139,7 +139,7 @@ class Owned_element_serialization(Element_serialization):
 
     def __init__(self, name, type, parent, is_required=False):
         super().__init__(name, type, parent, is_required)
-        self._func = [f'A205_json_get<{type}>(j, "{name}", x.{name}, x.{name}_is_set, {"true" if is_required else "false"});']
+        self._func = [f'a205_json_get<{type}>(j, "{name}", x.{name}, x.{name}_is_set, {"true" if is_required else "false"});']
 
 # -------------------------------------------------------------------------------------------------
 class Owned_element_creation(Element_serialization):

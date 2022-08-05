@@ -69,11 +69,11 @@ namespace tk205  {
 
       // Universal factory interface create(). Factory::create() will, through delegation,
       // actually return the requested object.
-      static std::unique_ptr<RSInstanceBase> create(std::string const &RS_ID,
+      static std::shared_ptr<RSInstanceBase> create(std::string const &RS_ID,
                                                     const char* RS_instance_file);
 
       // Derived factories override create_instance() for actual resource creation
-      virtual std::unique_ptr<RSInstanceBase> create_instance(const char* RS_instance_file) const = 0;
+      virtual std::shared_ptr<RSInstanceBase> create_instance(const char* RS_instance_file) const = 0;
 
       // Rule of five
       RSInstanceFactory(const RSInstanceFactory& other) = delete;

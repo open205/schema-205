@@ -6,9 +6,9 @@
 
 using namespace {{container}};
 
-std::unique_ptr<{{ base_class_root_name }}Base> {{ factory_subclass }}::create_instance(const char* RS_instance_file) const
+std::shared_ptr<{{ base_class_root_name }}Base> {{ factory_subclass }}::create_instance(const char* RS_instance_file) const
 {
-    auto p_rs = std::make_unique<{{ subclass_file }}_ns::{{ subclass }}>();
+    auto p_rs = std::make_shared<{{ subclass_file }}_ns::{{ subclass }}>();
     auto j = tk205::load_json(RS_instance_file);
     if (j["metadata"]["schema"] == "{{ subclass }}")
     {
