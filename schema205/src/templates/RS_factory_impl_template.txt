@@ -14,5 +14,9 @@ std::shared_ptr<{{ base_class_root_name }}Base> {{ factory_subclass }}::create_i
     {
         p_rs->initialize(j);
     }
+    else
+    {
+       p_rs = nullptr;
+    }
     return p_rs;
 }
