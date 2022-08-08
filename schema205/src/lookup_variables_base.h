@@ -27,7 +27,7 @@ public:
        performance_map->add_data_table(table);
        std::ostringstream oss;
        oss << "Adding grid table with size " << table.size();
-       tk205::show_message(tk205::msg_severity::INFO_205, oss.str());
+       tk205::show_message(tk205::MsgSeverity::INFO_205, oss.str());
     }
 };
 
