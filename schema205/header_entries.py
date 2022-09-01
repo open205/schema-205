@@ -536,7 +536,7 @@ class H_translator:
         # Collect member objects and their children
         for base_level_tag in (
             [tag for tag in self._contents if self._contents[tag].get('Object Type') in self._data_group_types]):
-            if base_level_tag == self._schema_name: # possibly use Root Data Group instead
+            if base_level_tag == self._root_data_group if self._root_data_group else self._schema_name:
                 s = Struct(base_level_tag, self._namespace, superclass=self._fundamental_base_class)
                 self._add_member_headers(s)
                 self._add_function_overrides(s, self._fundamental_base_class)
@@ -642,6 +642,7 @@ class H_translator:
     def _load_meta_info(self, schema_section):
         '''Store the global/common types and the types defined by any named references.'''
         refs = list()
+        self._root_data_group = schema_section.get('Root Data Group')
         if 'References' in schema_section:
             refs = schema_section['References'].copy()
         refs.insert(0,self._schema_name) # prepend the current file to references list so that 
