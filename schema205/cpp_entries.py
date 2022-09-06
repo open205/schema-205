@@ -92,7 +92,10 @@ class Member_function_definition(Implementation_entry):
 
     def __init__(self, header_entry, parent=None):
         super().__init__(None, parent)
-        self._func = f'{header_entry.ret_type} {header_entry.parent.name}::{header_entry.fname}{header_entry.args}'
+        args = header_entry.args
+        if hasattr(header_entry, 'args_as_list'):
+            args = '(' + ', '.join([a.split('=')[0] for a in header_entry.args_as_list]) + ')'
+        self._func = f'{header_entry.ret_type} {header_entry.parent.name}::{header_entry.fname}{args}'
 
     # .............................................................................................
     @property
@@ -254,9 +257,9 @@ class Performance_overload_impl(Element_serialization):
     def __init__(self, header_entry, parent):
         super().__init__(None, None, parent, None)
         self._func = []
-        args = ', '.join([f'{a[1]}' for a in [arg.split(' ') for arg in header_entry.args_as_list]])
+        args = ', '.join([f'{a[1]}' for a in [arg.split(' ') for arg in header_entry.args_as_list[:-1]]])
         self._func.append(f'std::vector<double> target {{{args}}};')
-        self._func.append('auto v = PerformanceMapBase::calculate_performance(target);')
+        self._func.append('auto v = PerformanceMapBase::calculate_performance(target, performance_interpolation_method);')
         init_str = f'{header_entry.ret_type} s {{'
         for i in range(header_entry.n_return_values):
             init_str += f'v[{i}], '

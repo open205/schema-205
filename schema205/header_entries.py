@@ -703,10 +703,10 @@ class H_translator:
                     for gridstruct in [gridv for gridv in entry.parent.child_entries 
                                     if gridv.superclass == 'GridVariablesBase'
                                     and remove_prefix(gridv.name, 'GridVariables') == remove_prefix(entry.name, 'PerformanceMap')]:
-                        #f_ret = f'LookupVariables{remove_prefix(gridstruct.name, "GridVariables")}Struct'
                         f_args = list()
                         for ce in [c for c in gridstruct.child_entries if isinstance(c, Data_element)]:
                             f_args.append(' '.join(['double', ce.name]))
+                        f_args.append('Btwxt::Method performance_interpolation_method = Btwxt::Method::LINEAR')
                         Calculate_performance_overload(f_ret, f_args, '', entry, n_ret)
             else:
                 self._add_performance_overloads(entry)
