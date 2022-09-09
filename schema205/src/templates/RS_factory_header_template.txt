@@ -7,11 +7,11 @@
 
 namespace {{container}} {
 
-   class {{factory_subclass}} : public {{base_class_root_name}}Factory
-   {
-      public:
-         std::shared_ptr<{{base_class_root_name}}Base> create_instance(const char* RS_instance_file) const override;
-   };
+    class {{factory_subclass}} : public {{base_class_root_name}}Factory
+    {
+    public:
+        std::shared_ptr<{{base_class_root_name}}Base> create_instance(const char* RS_instance_file) const override;
+    };
 }
 
 #endif
