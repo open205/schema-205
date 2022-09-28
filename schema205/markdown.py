@@ -9,32 +9,48 @@ import yaml
 
 import schema205.md.schema_table as schema_table
 
-def string_out_tables(instance,base_level=1):
+def string_out_tables(instance, make_headers=False, base_level=1):
   struct = schema_table.load_structure_from_object(instance)
   output = None
   with io.StringIO() as output_file:
     # Data Types
     if len(struct['data_types']) > 0:
-      output_file.writelines(schema_table.write_header("Data Types", base_level))
-      output_file.writelines(schema_table.data_types_table(struct['data_types']))
+      table_title = "Data Types"
+      if make_headers:
+        output_file.writelines(schema_table.write_header(table_title, base_level))
+        caption = None
+      else:
+        caption = table_title
+      output_file.writelines(schema_table.data_types_table(struct['data_types'], caption=caption))
     # String Types
     if len(struct['string_types']) > 0:
-      output_file.writelines(schema_table.write_header("String Types", base_level))
-      output_file.writelines(schema_table.string_types_table(struct['string_types']))
+      table_title = "String Types"
+      output_file.writelines(schema_table.write_header(table_title, base_level))
+      output_file.writelines(schema_table.string_types_table(struct['string_types'], caption=caption))
     # Enumerations
     output_file.writelines(schema_table.write_header("Enumerations", base_level))
     if len(struct['enumerations']) > 0:
       for enum, enumerators in struct['enumerations'].items():
-        output_file.writelines(schema_table.write_header(enum, base_level+1))
-        output_file.writelines(schema_table.enumerators_table(enumerators))
+        table_title = enum
+        if make_headers:
+          output_file.writelines(schema_table.write_header(table_title, base_level))
+          caption = None
+        else:
+          caption = table_title
+        output_file.writelines(schema_table.enumerators_table(enumerators, caption=caption))
     else:
       output_file.writelines(["None.","\n"*2])
     # Data Groups
     output_file.writelines(schema_table.write_header("Data Groups", base_level))
     if len(struct['data_groups']) > 0:
       for dg, data_elements in struct['data_groups'].items():
-        output_file.writelines(schema_table.write_header(dg, base_level+1))
-        output_file.writelines(schema_table.data_groups_table(data_elements))
+        table_title = dg
+        if make_headers:
+          output_file.writelines(schema_table.write_header(table_title, base_level))
+          caption = None
+        else:
+          caption = table_title
+        output_file.writelines(schema_table.data_groups_table(data_elements, caption=caption))
     else:
       output_file.writelines(["None.","\n"*2])
     output = output_file.getvalue()

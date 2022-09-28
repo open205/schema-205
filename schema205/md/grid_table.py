@@ -194,7 +194,7 @@ def remove_blank_columns(doa, columns, sizes):
     return new_columns, new_sizes
 
 
-def make_table_from_dict_of_arrays(doa, columns, preferred_sizes=None, drop_blank_columns=True):
+def make_table_from_dict_of_arrays(doa, columns, preferred_sizes=None, drop_blank_columns=False):
     """
     - doa: (Dict String (Array String)), dictionary with string keys to arrays of string
     - columns: (Array String), order of keys to write table out as
