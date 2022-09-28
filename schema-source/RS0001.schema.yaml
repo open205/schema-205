@@ -126,7 +126,7 @@ RatingAHRI550590:
     rating_source:
       Description: "Source of this rating data"
       Data Type: "String"
-      Notes: "Used by data publisher to document methods (e.g. software and version) used to generate rating data"
+      Notes: "Used by data publisher to document methods (e.g., software and version) used to generate rating data"
     net_refrigerating_capacity:
       Description: "Rated net refrigeration capacity"
       Data Type: "Numeric"
@@ -330,7 +330,7 @@ RatingAHRI551591:
     rating_source:
       Description: "Source of this rating data"
       Data Type: "String"
-      Notes: "Used by data publisher to document methods (e.g. software and version) used to generate rating data"
+      Notes: "Used by data publisher to document methods (e.g., software and version) used to generate rating data"
     net_refrigerating_capacity:
       Description: "Rated net refrigeration capacity"
       Data Type: "Numeric"

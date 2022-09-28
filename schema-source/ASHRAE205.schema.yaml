@@ -86,7 +86,7 @@ Version:
 
 Pattern:
   Object Type: "String Type"
-  Description: "A regular expression pattern as defined by ECMA-262[@RegEx]. Used for characterization (e.g. model numbers)."
+  Description: "A regular expression pattern as defined by ECMA-262[@RegEx]. Used for characterization (e.g., model numbers)."
   Is Regex: True
   Examples:
     - "CA225FB.[1-9]"
@@ -232,7 +232,7 @@ Metadata:
     data_source:
       Description: "Source(s) of the data"
       Data Type: "String"
-      Notes: ["Used by data publisher to document methods (e.g. software and version) used to generate data",
+      Notes: ["Used by data publisher to document methods (e.g., software and version) used to generate data",
               "***Informative note:*** `data_source` may be different from other data source(s) included elsewhere within the data"]
     disclaimer:
       Description: "Characterization of accuracy, limitations, and applicability of this data"

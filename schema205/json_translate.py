@@ -123,7 +123,7 @@ class DataGroup:
     def _construct_requirement_if_then(self,
                                        conditionals_list : dict,
                                        dependencies_list : dict,
-                                       requirement_str : str, 
+                                       requirement_str : str,
                                        requirement : str):
         '''
         Construct paired if-then json entries for conditional requirements.
@@ -138,7 +138,7 @@ class DataGroup:
         selector_dict = {'properties' : {collector : dict()}}
         requirement_list = re.split(separator, requirement_str)
         dependent_req = r'(?P<selector>[0-9a-zA-Z_]*)((?P<is_equal>!?=)(?P<selector_state>[0-9a-zA-Z_]*))?'
-        
+
         for req in requirement_list:
             m = re.match(dependent_req, req)
             if m:
@@ -187,7 +187,7 @@ class DataGroup:
                 target_property_entry['type'] = 'array'
                 # 2. 'm[in/ax]Items' entry
                 if len(m) > 1:
-                    # Parse ellipsis range-notation e.g. '[1..]'
+                    # Parse ellipsis range-notation e.g., '[1..]'
                     mnmx = re.match(r'([0-9]*)(\.*\.*)([0-9]*)', m[1])
                     target_property_entry['minItems'] = int(mnmx.group(1))
                     if (mnmx.group(2) and mnmx.group(3)):
@@ -202,7 +202,7 @@ class DataGroup:
                     self._get_simple_constraints(parent_dict['Constraints'], target_dict['items'])
             else:
                 # If the type is oneOf a set
-                m = re.match(r'\((.*)\)', parent_dict['Data Type']) 
+                m = re.match(r'\((.*)\)', parent_dict['Data Type'])
                 if m:
                     types = [t.strip() for t in m.group(1).split(',')]
                     selection_key, selections = parent_dict['Constraints'].split('(')
@@ -230,7 +230,7 @@ class DataGroup:
         :param target_dict_to_append:   This dictionary is modified in-situ with an if key and
                                         associated then key
         :param selector:                Constraints key
-        :param selection:               Item from constraints values list. 
+        :param selection:               Item from constraints values list.
         :param entry_name:              Data Element for which the Data Type must match the
                                         Constraint
         '''
@@ -255,7 +255,7 @@ class DataGroup:
             # is a simple definition or enumeration.
             m_nested = re.match(r'.*?\((.*)\)', m.group(2))
             if m_nested:
-                # Rare case of a nested specification e.g. 'ASHRAE205(rs_id=RS0005)'
+                # Rare case of a nested specification e.g., 'ASHRAE205(rs_id=RS0005)'
                 internal_type = m.group(2).split('(')[0]
                 nested_type = m_nested.group(1)
             else:
@@ -274,7 +274,7 @@ class DataGroup:
 
         try:
             if '/' in type_str:
-                # e.g. "Numeric/Null" becomes a list of 'type's
+                # e.g., "Numeric/Null" becomes a list of 'type's
                 #return ('type', [self._types[t] for t in type_str.split('/')])
                 target_dict_to_append['type'] = [self._types[t] for t in type_str.split('/')]
             else:
