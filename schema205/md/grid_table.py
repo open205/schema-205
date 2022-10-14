@@ -251,8 +251,8 @@ def make_table_from_dict_of_arrays(doa, columns, preferred_sizes=None, drop_blan
         rows.append(row)
         sizes = get_column_sizes(
                 row, is_bold=False, has_spacing=True, preferred_sizes=sizes, full_width=full_width)
-        if sum(sizes) > full_width*2.:
-            print(f"Columns size ({sum(sizes)}) exceeds total width ({full_width}): {row}")
+        #if sum(sizes) > full_width*2.:
+        #    print(f"Warning: Columns size ({sum(sizes)}) exceeds total width ({full_width}): {[s.encode('utf-8') for s in row]}")
     table = write_row(columns, sizes, True)
     for row in rows:
         table += write_row(row, sizes, False)
