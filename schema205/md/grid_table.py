@@ -106,22 +106,28 @@ def write_row(content, sizes, is_header=False):
     return table
 
 
-def get_column_sizes(content, is_bold=False, has_spacing=True, preferred_sizes=None):
+def get_column_sizes(content, is_bold=False, has_spacing=True, preferred_sizes=None, full_width=100):
     """
     - content: (Array string), the column content
     - is_bold: Bool, True if the column content must be surrounded with '**'
     - has_spacing: Bool, True if we keep at least one space padding between cell border
     - preferred_sizes: None or (Array int), the preferred sizes of the columns.
       Will be at least this size
+    - full_width: Should be same as --columns Pandoc argument
+      Pandoc default=72
     RETURN: (Array int), the actual sizes
     """
     if preferred_sizes is None:
         sizes = [0] * len(content)
     else:
         sizes = copy.deepcopy(preferred_sizes)
+    full_sizes = copy.deepcopy(sizes)
+    size_diff = [0] * len(sizes)
+    max_diff_col = 0
     assert len(content) == len(sizes), "len(content) must equal len(sizes)"
-    for col_num, col_name in enumerate(content):
-        atoms = col_name.replace('\n',' ').split(' ')
+    for col_num, col_content in enumerate(content):
+        full_size = len(col_content)
+        atoms = col_content.replace('\n',' ').split(' ')
         longest_atom = max([len(s) for s in atoms])
         if is_bold:
             num_atoms = len(atoms)
@@ -129,11 +135,37 @@ def get_column_sizes(content, is_bold=False, has_spacing=True, preferred_sizes=N
                 longest_atom += 4
             elif num_atoms > 1:
                 longest_atom += 2
+            full_size += 4
         if has_spacing:
             longest_atom += 2
+            full_size += 2
         if longest_atom > sizes[col_num]:
             sizes[col_num] = longest_atom
-    return sizes
+        if full_size > full_sizes[col_num]:
+            full_sizes[col_num] = full_size
+        size_diff[col_num] = full_sizes[col_num] - sizes[col_num]
+        if size_diff[col_num] > size_diff[max_diff_col]:
+            max_diff_col = col_num
+    if sum(full_sizes) < full_width:
+        # full text will fit on one line, no need to make anything smaller
+        return full_sizes
+    elif sum(sizes) >= full_width:
+        # Sizes are too big already...things will be too tight to make any changes
+        return sizes
+    else:
+        # Relax some sizes to fill in full width
+        # Weigh towards columns with more text
+        remaining_space = full_width - sum(sizes)
+        total_diff = sum(size_diff)
+        for col_num in range(len(sizes)):
+            sizes[col_num] += size_diff[col_num]*remaining_space//total_diff
+        # Check remaining size
+        remaining_space = full_width - sum(sizes)
+        if remaining_space > 0:
+            # Add remaining space to column with largest size diff
+            sizes[max_diff_col] += remaining_space
+
+        return sizes
 
 
 def check_dict_of_arrays(doa, columns):
@@ -208,16 +240,19 @@ def make_table_from_dict_of_arrays(doa, columns, preferred_sizes=None, drop_blan
     if drop_blank_columns:
         columns, preferred_sizes = remove_blank_columns(doa, columns, preferred_sizes)
     assert_doa_valid(doa, columns)
+    full_width = 100
     sizes = get_column_sizes(
             columns, is_bold=True, has_spacing=True,
-            preferred_sizes=preferred_sizes)
+            preferred_sizes=preferred_sizes,full_width=full_width)
     num_rows = len(doa[columns[0]])
     rows = []
     for row_num in range(num_rows):
         row = [doa[c][row_num] for c in columns]
         rows.append(row)
         sizes = get_column_sizes(
-                row, is_bold=False, has_spacing=True, preferred_sizes=sizes)
+                row, is_bold=False, has_spacing=True, preferred_sizes=sizes, full_width=full_width)
+        if sum(sizes) > full_width*2.:
+            print(f"Columns size ({sum(sizes)}) exceeds total width ({full_width}): {row}")
     table = write_row(columns, sizes, True)
     for row in rows:
         table += write_row(row, sizes, False)
