@@ -2,7 +2,7 @@
     "metadata": {
         "data_model": "ASHRAE_205",
         "schema": "RS0001",
-        "schema_version": "0.2.0",
+        "schema_version": "1.0.0",
         "description": "450.0 ton, 2.15 COP Liquid-cooled (Positive Displacement) Chiller based on ASHRAE 90.1-2019 Addendum 'bd' curve set 'F'",
         "id": "36ca1de8-5988-4ab9-b51b-2c923a5ef159",
         "data_timestamp": "2022-07-27T16:36Z",

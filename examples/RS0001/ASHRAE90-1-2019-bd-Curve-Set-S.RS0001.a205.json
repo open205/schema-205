@@ -2,7 +2,7 @@
     "metadata": {
         "data_model": "ASHRAE_205",
         "schema": "RS0001",
-        "schema_version": "0.2.0",
+        "schema_version": "1.0.0",
         "description": "225.0 ton, 2.23 COP Liquid-cooled (Centrifugal) Chiller based on ASHRAE 90.1-2019 Addendum 'bd' curve set 'S'",
         "id": "92f6c92e-ace6-42ee-8346-1723b6cbeb0e",
         "data_timestamp": "2022-07-27T16:36Z",
