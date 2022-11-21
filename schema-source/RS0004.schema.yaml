@@ -4,7 +4,7 @@ Schema:
     - "ASHRAE205"
   Title: "Air-to-Air Direct Expansion Refrigerant System"
   Description: "Schema for ASHRAE 205 annex RS0004: Air-to-Air Direct Expansion Refrigerant System"
-  Version: "0.2.0"
+  Version: "1.0.0"
   Root Data Group: "RS0004"
 
 # Data Groups
