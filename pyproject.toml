@@ -1,17 +1,17 @@
 [tool.poetry]
 name = "schema205"
-version = "0.2.0"
+version = "1.0.0"
 description = ""
 authors = ["Open205"]
 
 [tool.poetry.dependencies]
-python = "^3.6"
+python = "^3.7"
 jsonschema = "*"
 pyyaml = "*"
 Jinja2 = "*"
 
 [tool.poetry.dev-dependencies]
-pytest = "^5.2"
+pytest = "^7.1.3"
 doit = "*"
 pylint = "*"
 
