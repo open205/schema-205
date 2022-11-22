@@ -16,9 +16,9 @@ jobs:
     runs-on: ${{ matrix.os }}
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
       - name: Setup python ${{ matrix.python-version }}
-        uses: actions/setup-python@v2
+        uses: actions/setup-python@v4
         with:
           python-version: ${{ matrix.python-version }}
       - name: Install Poetry
@@ -41,7 +41,7 @@ jobs:
           source $VENV
           poetry run doit
       - name: Upload Build Content
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: build-content-${{ matrix.os }}-py${{ matrix.python-version }}
           path: build
