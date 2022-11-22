@@ -5,6 +5,7 @@ import schema205.cpp_translate
 import schema205.render_template
 import os
 from doit.tools import create_folder
+from schema205.util import snake_style
 
 BUILD_PATH = os.path.join(os.path.dirname(__file__), 'build')
 SOURCE_PATH = os.path.join(os.path.dirname(__file__), 'schema-source')
@@ -34,7 +35,7 @@ def collect_lib_target_files(target_dir, extension):
   file_list = []
   for file_name in sorted(os.listdir('schema-source')):
     if '.schema.yaml' in file_name:
-      file_name_root = os.path.splitext(os.path.splitext(file_name)[0])[0]
+      file_name_root = snake_style(os.path.splitext(os.path.splitext(file_name)[0])[0])
       file_list.append(os.path.join(target_dir,f'{file_name_root}.{extension}'))
       file_list.append(os.path.join(target_dir,f'{file_name_root}_factory.{extension}'))
   return file_list
@@ -104,28 +105,16 @@ def task_schema():
     'clean': True
   }
 
-def task_headers():
-  '''Generates CPP header files from common-schema'''
-  return {
-    'file_dep': collect_source_files(),
-    'targets': collect_lib_target_files(HEADER_PATH,'h'),
-    'task_dep': ['validate'],
-    'actions': [
-      (create_folder, [HEADER_PATH]),
-      (schema205.cpp_translate.translate_all_to_headers,[SOURCE_PATH, HEADER_PATH, "ASHRAE205"])
-      ],
-    'clean': True
-  }
-
 def task_cpp():
   '''Generates CPP source files from common-schema'''
   return {
     'file_dep': collect_source_files(),
-    'targets': collect_lib_target_files(CPP_PATH,'cpp'),
+    'targets': collect_lib_target_files(HEADER_PATH,'h') + collect_lib_target_files(CPP_PATH,'cpp'),
     'task_dep': ['validate'],
     'actions': [
+      (create_folder, [HEADER_PATH]),
       (create_folder, [CPP_PATH]),
-      (schema205.cpp_translate.translate_all_to_source,[SOURCE_PATH, CPP_PATH, "ASHRAE205"])
+      (schema205.cpp_translate.translate_all_to_source,[SOURCE_PATH, HEADER_PATH, CPP_PATH, "tk205"])
       ],
     'clean': True
   }

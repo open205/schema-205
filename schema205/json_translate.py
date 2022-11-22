@@ -297,7 +297,7 @@ class DataGroup:
             maximum=None
             for c in constraints:
                 try:
-                    numerical_value = re.findall(r'[+-]?\d*\.?\d+|\d+', c)[0]
+                    numerical_value = re.findall(r'[+-]?[0-9]*\.?[0-9]+|[0-9]+', c)[0]
                     if '>' in c:
                         minimum = (float(numerical_value) if 'number' in target_dict['type'] else int(numerical_value))
                         mn = 'exclusiveMinimum' if '=' not in c else 'minimum'
@@ -308,8 +308,8 @@ class DataGroup:
                         target_dict[mx] = maximum
                     elif '%' in c:
                         target_dict['multipleOf'] = int(numerical_value)
-                    elif 'string' in target_dict['type']:  # String pattern match
-                        target_dict['pattern'] = c.replace('"','')  # TODO: Find better way to remove quotes.
+                    # elif 'string' in target_dict['type']:  # String pattern match
+                    #     target_dict['pattern'] = c.replace('"','')  # TODO: Find better way to remove quotes.
                 except IndexError:
                     # Constraint was non-numeric
                     pass
