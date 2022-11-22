@@ -18,9 +18,9 @@ This repository ships with the [DoIt!](https://pydoit.org/) task automation tool
 
 The following DoIt! tasks are available:
 
-- `doc`: Generates Markdown tables from common-scema
+- `doc`: Generates Markdown tables from common-schema
 - `render_template`: Demonstrate how to render a template
-- `schema`: Generates JSON schema from common-scema
+- `schema`: Generates JSON schema from common-schema
 - `test`: Performs unit tests and example file validation tests
 - `validate`: Validates common-schema against meta-schema
 
@@ -39,7 +39,7 @@ The rendered result appears in `build/rendered_template/main.md`.
 Using Schema 205 for Rendering Tables
 -------------------------------------
 
-If you would like to use this repository as a library to assit with rendering your own files, this section will give you some tips on how to set that up and use the `add_schema_table` hook.
+If you would like to use this repository as a library to assist with rendering your own files, this section will give you some tips on how to set that up and use the `add_schema_table` hook.
 
 1. We recommend starting a new repository to hold your document and to use version control
 

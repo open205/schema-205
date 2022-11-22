@@ -6,22 +6,10 @@ Schema:
     - "RS0007"
   Title: "Fan Assembly"
   Description: "Schema for ASHRAE 205 annex RS0003: Fan Assembly"
-  Version: "0.2.0"
+  Version: "1.0.0"
   Root Data Group: "RS0003"
 
 # Local Enumerations
-OperationSpeedControlType:
-  Object Type: "Enumeration"
-  Enumerators:
-    DISCRETE:
-      Description: "Fan assemblies that operate at one or more defined speeds dictated by a tap or dip switch"
-      Display Text: "Discrete"
-      Notes: "Performance map data is provided at individual impeller speeds"
-    CONTINUOUS:
-      Description: "Fan assemblies that operate within a continuous range of speeds"
-      Display Text: "Continuous"
-      Notes: "Performance map data is provided over a range of impeller speeds"
-
 InstallationSpeedControlType:
   Object Type: "Enumeration"
   Enumerators:
@@ -164,9 +152,11 @@ Performance:
       Notes: "***Informative note:*** Application software may use this curve to indicate to application software users when a selected fan is operating in an unstable region where surging or stalling is likely to occur"
     operation_speed_control_type:
       Description: "Type of performance map"
-      Data Type: "{OperationSpeedControlType}"
+      Data Type: "{SpeedControlType}"
       Required: True
-      Notes: "Determines which performance map data group is used for `performance_map`"
+      Notes: ["Determines which performance map data group is used for `performance_map`",
+              "If `operation_speed_control_type` is `DISCRETE` performance map data is provided at individual impeller speeds",
+              "If `operation_speed_control_type` is `CONTINUOUS` performance map data is provided over a range of impeller speeds"]
     installation_speed_control_type:
       Description: "Type of fan impeller speed control"
       Data Type: "{InstallationSpeedControlType}"
