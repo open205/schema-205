@@ -215,7 +215,7 @@ class Data_element(Header_entry):
                     # They connect pairwise with Data Type of the form ({Type_1}, {Type_2}, {Type_3})
                     oneof_selection_key = parent_dict['Constraints'].split('(')[0]
                     if type_finder:
-                        selection_key_type = ''.join(ch for ch in type_finder(oneof_selection_key) if ch.isalnum()) + '::'
+                        selection_key_type = self._get_simple_type(''.join(ch for ch in type_finder(oneof_selection_key) if ch.isalnum())) + '::'
                     else:
                         selection_key_type = ''
                     types = [self._get_simple_type(t.strip()) for t in m.group(1).split(',')]
