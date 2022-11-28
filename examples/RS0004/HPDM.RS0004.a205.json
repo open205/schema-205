@@ -7,7 +7,7 @@
 		"id": "123e4567-e89b-12d3-a456-426614174000",
 		"data_timestamp": "2022-04-10T00:00Z",
 		"data_version": 1,
-		"data_source": "https://github.com/bigladder/resdx",
+		"data_source": "Heat Pump Design Model by Oak Ridge National Laboratory",
 		"disclaimer": "Example data not to be used for simulation",
 		"notes": "An example representation that applies a two-stage residential air conditioner having a SEER of 16.0. "
 	},
