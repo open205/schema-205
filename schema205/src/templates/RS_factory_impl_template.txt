@@ -12,7 +12,7 @@ std::shared_ptr<{{ base_class_root_name }}Base> {{ factory_subclass }}::create_i
     auto p_rs = std::make_shared<{{ subclass_file }}_ns::{{ subclass }}>();
     auto j = tk205::load_json(RS_instance_file);
     std::string schema_version = j["metadata"]["schema_version"];
-    if (SchemVer(schema_version.c_str()) > SchemVer("0.2.1"))
+    if (SchemVer(schema_version.c_str()) > SchemVer(std::string({{ subclass_file }}_ns::Schema::schema_version).c_str()))
     {
         p_rs = nullptr;
         std::ostringstream oss;

@@ -2,7 +2,7 @@
     "metadata": {
         "data_model": "ASHRAE_205",
         "schema": "RS0001",
-        "schema_version": "0.2.2",
+        "schema_version": "2.2.2",
         "description": "Water-Cooled Chiller with Constant Efficiency",
         "id": "123e4567-e89b-12d3-a456-426614174000",
         "data_timestamp": "2020-05-07T00:00Z",

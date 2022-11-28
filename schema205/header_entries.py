@@ -535,6 +535,21 @@ class H_translator:
             Enumeration(base_level_tag, self._namespace, self._contents[base_level_tag]['Enumerators'])
         # Collect member objects and their children
         for base_level_tag in (
+            [tag for tag in self._contents if self._contents[tag].get('Object Type') == 'Meta']):
+            s = Struct(base_level_tag, self._namespace)
+            d = Data_element_static_metainfo(base_level_tag.lower(), 
+                                             s, 
+                                             self._contents[base_level_tag],
+                                             'Title')
+            d = Data_element_static_metainfo(base_level_tag.lower(), 
+                                             s, 
+                                             self._contents[base_level_tag],
+                                             'Version')
+            d = Data_element_static_metainfo(base_level_tag.lower(), 
+                                             s, 
+                                             self._contents[base_level_tag],
+                                             'Description')
+        for base_level_tag in (
             [tag for tag in self._contents if self._contents[tag].get('Object Type') in self._data_group_types]):
             if base_level_tag == self._root_data_group if self._root_data_group else self._schema_name:
                 s = Struct(base_level_tag, self._namespace, superclass=self._fundamental_base_class)
