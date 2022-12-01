@@ -1,14 +1,18 @@
 import schema205.validate
 import schema205.markdown
 import schema205.json_translate
+import schema205.cpp_translate
 import schema205.render_template
 import os
 from doit.tools import create_folder
+from schema205.util import snake_style
 
-BUILD_PATH = "build"
-SOURCE_PATH = 'schema-source'
+BUILD_PATH = os.path.join(os.path.dirname(__file__), 'build')
+SOURCE_PATH = os.path.join(os.path.dirname(__file__), 'schema-source')
 DOCS_PATH = os.path.join(BUILD_PATH,"docs")
 SCHEMA_PATH = os.path.join(BUILD_PATH,"schema")
+HEADER_PATH = os.path.join(BUILD_PATH, "include")
+CPP_PATH = os.path.join(BUILD_PATH, "cpp")
 RENDERED_TEMPLATE_PATH = os.path.realpath(
         os.path.join(BUILD_PATH,"rendered_template"))
 
@@ -25,6 +29,15 @@ def collect_target_files(target_dir, extension):
     if '.schema.yaml' in file_name:
       file_name_root = os.path.splitext(os.path.splitext(file_name)[0])[0]
       file_list.append(os.path.join(target_dir,f'{file_name_root}.schema.{extension}'))
+  return file_list
+
+def collect_lib_target_files(target_dir, extension):
+  file_list = []
+  for file_name in sorted(os.listdir('schema-source')):
+    if '.schema.yaml' in file_name:
+      file_name_root = snake_style(os.path.splitext(os.path.splitext(file_name)[0])[0])
+      file_list.append(os.path.join(target_dir,f'{file_name_root}.{extension}'))
+      file_list.append(os.path.join(target_dir,f'{file_name_root}_factory.{extension}'))
   return file_list
 
 def task_validate():
@@ -88,6 +101,20 @@ def task_schema():
     'actions': [
       (create_folder, [SCHEMA_PATH]),
       (schema205.json_translate.translate_dir,[SOURCE_PATH, SCHEMA_PATH])
+      ],
+    'clean': True
+  }
+
+def task_cpp():
+  '''Generates CPP source files from common-schema'''
+  return {
+    'file_dep': collect_source_files(),
+    'targets': collect_lib_target_files(HEADER_PATH,'h') + collect_lib_target_files(CPP_PATH,'cpp'),
+    'task_dep': ['validate'],
+    'actions': [
+      (create_folder, [HEADER_PATH]),
+      (create_folder, [CPP_PATH]),
+      (schema205.cpp_translate.translate_all_to_source,[SOURCE_PATH, HEADER_PATH, CPP_PATH, "tk205"])
       ],
     'clean': True
   }

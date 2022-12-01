@@ -10,13 +10,13 @@ Schema:
   Object Type: "Meta"
   Title: "ASHRAE 205"
   Description: "Base schema for ASHRAE 205 representations"
-  Version: "0.2.0"
+  Version: "1.0.0"
 
 # Data Types
 
 Integer:
   Object Type: "Data Type"
-  Description: "A positive or negative whole number (i.e., a number that can be written without a fractional part)."
+  Description: "A positive or negative base 10 whole number (i.e., a number that can be written without a fractional part)."
   JSON Schema Type: integer
   Examples:
     - "3"
@@ -25,7 +25,7 @@ Integer:
 
 Numeric:
   Object Type: "Data Type"
-  Description: "A number that may include a fractional part with optional leading sign and optional exponent (engineering notation).  Numeric values are conveyed in CBOR files in IEEE 754[@IEEE754] binary64 format without rounding."
+  Description: "A base 10 number that may include a fractional part with optional leading sign and optional exponent (engineering notation).  Numeric values are conveyed in CBOR files in IEEE 754[@IEEE754] binary64 format without rounding."
   JSON Schema Type: number
   Examples:
     - "3.43"
@@ -86,7 +86,7 @@ Version:
 
 Pattern:
   Object Type: "String Type"
-  Description: "A regular expression pattern as defined by ECMA-262[@RegEx]. Used for characterization (e.g. model numbers)."
+  Description: "A regular expression pattern as defined by ECMA-262[@RegEx]. Used for characterization (e.g., model numbers)."
   Is Regex: True
   Examples:
     - "CA225FB.[1-9]"
@@ -103,7 +103,7 @@ SchemaType:
     RS0003:
       Description: "Fan Assembly"
     RS0004:
-      Description: "Air-to-Air Direct Expansion Refrigerant Coil System"
+      Description: "Air-to-Air Direct Expansion Refrigerant System"
     RS0005:
       Description: "Motor"
     RS0006:
@@ -130,14 +130,14 @@ CompressorType:
       Description: "Scroll compressor"
       Display Text: "Scroll"
 
-CompressorSpeedControlType:
+SpeedControlType:
   Object Type: "Enumeration"
   Enumerators:
     DISCRETE:
-      Description: "Compressor loading is controlled by cycling between one or more discrete stages"
+      Description: "Loading is controlled by cycling between one or more discrete stages"
       Display Text: "Discrete"
     CONTINUOUS:
-      Description: "Compressor loading is controlled by continuously varying the speed of the compressor"
+      Description: "Loading is controlled by continuously varying the speed"
       Display Text: "Continuous"
 
 CondenserType:
@@ -232,7 +232,7 @@ Metadata:
     data_source:
       Description: "Source(s) of the data"
       Data Type: "String"
-      Notes: ["Used by data publisher to document methods (e.g. software and version) used to generate data",
+      Notes: ["Used by data publisher to document methods (e.g., software and version) used to generate data",
               "***Informative note:*** `data_source` may be different from other data source(s) included elsewhere within the data"]
     disclaimer:
       Description: "Characterization of accuracy, limitations, and applicability of this data"

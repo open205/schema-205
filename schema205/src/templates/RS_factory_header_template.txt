@@ -1,0 +1,17 @@
+#ifndef {{include_guard}}_H_
+#define {{include_guard}}_H_
+
+#include "{{base_class_file_name}}_factory.h"
+
+/// @note  This class has been generated from a template. Local changes will not be saved!
+
+namespace {{container}} {
+
+    class {{factory_subclass}} : public {{base_class_root_name}}Factory
+    {
+    public:
+        std::shared_ptr<{{base_class_root_name}}Base> create_instance(const char* RS_instance_file) const override;
+    };
+}
+
+#endif

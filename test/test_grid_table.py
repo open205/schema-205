@@ -168,6 +168,7 @@ def test_rendering_no_1():
             d,
             columns=['Name', 'Description', 'Data Type', 'Units', 'Range', 'Req', 'Notes'],
             preferred_sizes=[40] + [0]*6,
+            drop_blank_columns=True,
             ).strip()
     assert actual == EXPECTED_1
 

@@ -16,9 +16,9 @@ This repository ships with the [DoIt!](https://pydoit.org/) task automation tool
 
 The following DoIt! tasks are available:
 
-- `doc`: Generates Markdown tables from common-scema
+- `doc`: Generates Markdown tables from common-schema
 - `render_template`: Demonstrate how to render a template
-- `schema`: Generates JSON schema from common-scema
+- `schema`: Generates JSON schema from common-schema
 - `test`: Performs unit tests and example file validation tests
 - `validate`: Validates common-schema against meta-schema
 
@@ -37,7 +37,7 @@ The rendered result appears in `build/rendered_template/main.md`.
 Using Schema 205 for Rendering Tables
 -------------------------------------
 
-If you would like to use this repository as a library to assit with rendering your own files, this section will give you some tips on how to set that up and use the `add_schema_table` hook.
+If you would like to use this repository as a library to assist with rendering your own files, this section will give you some tips on how to set that up and use the `add_schema_table` hook.
 
 1. We recommend starting a new repository to hold your document and to use version control
 
@@ -53,7 +53,7 @@ If you would like to use this repository as a library to assit with rendering yo
 3. Edit `pyproject.toml` to add this repository as a dependency. You can do that by either installing this repository as a submodule. Note: set develop to `true` if you plan to develop on schema205 while building your documentation:
 
     [tool.poetry.dependencies]
-    python = "^3.6"
+    python = "^3.7"
     schema205 = { path = "./schema-205/", develop = false }
 
 4. Create a `src` directory containing your markdown as Jinja templates.
@@ -100,7 +100,7 @@ Following are some considerations you should go through to configure your enviro
 
 2. **Install Python and support multiple Python versions on one machine**
 
-    If you don't desire to support multiple versions of Python, then you need only ensure that you have at least one version of Python installed. This project requires Python 3.6 or higher. Please see the [Python Website](https://www.python.org/) for installation instructions for your operating system.
+    If you don't desire to support multiple versions of Python, then you need only ensure that you have at least one version of Python installed. This project requires Python 3.7 or higher. Please see the [Python Website](https://www.python.org/) for installation instructions for your operating system.
 
     If you wish to support multiple versions of Python during development, there are several options. One simple option is to just ensure you start up your command prompt (i.e., shell) with the Python version you wish to develop with.
 
@@ -112,24 +112,24 @@ Following are some considerations you should go through to configure your enviro
 
     c) Create an environment for the version of Python you would like to use with Poetry and this project by typing the following at the conda shell:
 
-    > (base) conda create -n py36 python=3.6
+    > (base) conda create -n py37 python=3.7
 
     Note: these environments persist between usage so you only need to create the environment once.
 
-    This will create a conda environment named "py36" that only has Python 3.6 (and its dependencies) installed.
+    This will create a conda environment named "py37" that only has Python 3.7 (and its dependencies) installed.
     If you want to use Python 3.9, you could type `conda create -n py39 python=3.9`, for example.
     The `-n` flag is short for the `--name` of the new conda environment.
     You have a lot of freedom for the names provided there are no spaces or exotic characters.
-    The `python=3.6` part specifies that the new conda environment will use Python version 3.6.
+    The `python=3.7` part specifies that the new conda environment will use Python version 3.7.
     You can create as many environments with differing versions of Python as you desire.
 
     Once the desired environments are created, you can activate an environment by typing:
 
-    > (base) conda activate py36
+    > (base) conda activate py37
 
     When you are done with the environment, type:
 
-    > (py36) conda deactivate
+    > (py37) conda deactivate
 
     ... or simply close your command shell when done.
 

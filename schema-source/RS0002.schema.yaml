@@ -6,7 +6,7 @@ Schema:
     - "RS0004"
   Title: "Unitary Cooling Air-Conditioning Equipment"
   Description: "Schema for ASHRAE 205 annex RS0002: Unitary Cooling Air-Conditioning Equipment"
-  Version: "0.2.0"
+  Version: "1.0.0"
   Root Data Group: "RS0002"
 
 # Local Enumerations
@@ -29,6 +29,9 @@ AHRI210240TestStandardYear:
     IP_2017:
       Description: "Rating is based on 2017 AHRI standard[@AHRI2102017]"
       Display Text: "2017"
+    IP_2023:
+      Description: "Rating is based on 2023 AHRI standard[@AHRI2102023]"
+      Display Text: "2023"
 
 AHRI210240CompressorStagingType:
   Object Type: "Enumeration"
@@ -124,7 +127,7 @@ RatingAHRI210240:
     rating_source:
       Description: "Source of this rating data"
       Data Type: "String"
-      Notes: "Used by data publisher to document methods (e.g. software and version) used to generate rating data"
+      Notes: "Used by data publisher to document methods (e.g., software and version) used to generate rating data"
     staging_type:
       Description: "Type of compressor staging"
       Data Type: "<AHRI210240CompressorStagingType>"
@@ -135,12 +138,14 @@ RatingAHRI210240:
       Units: "Btu/W-h"
       Constraints: ">0.0"
       Required: True
+      Notes: "Represents SEER2 for the 2023 version of test standard"
     eer_a_full:
       Description: "Full stage Energy Efficiency Ratio (at 'A' operating conditions)"
       Data Type: "Numeric"
       Units: "Btu/W-h"
       Constraints: ">0.0"
       Required: True
+      Notes: "Represents EER2<sub>A_Full</sub> for the 2023 version of test standard"
     eer_b_full:
       Description: "Full stage Energy Efficiency Ratio (at 'B' operating conditions)"
       Data Type: "Numeric"
@@ -171,6 +176,18 @@ RatingAHRI210240:
       Units: "Btu/h"
       Constraints: ">=0.0"
       Required: "if staging_type!=SINGLE_STAGE"
+    cooling_g_low_capacity:
+      Description: "Low stage net total cooling capacity (at 'G' operating conditions)"
+      Data Type: "Numeric"
+      Units: "Btu/h"
+      Constraints: ">=0.0"
+      Required: "if staging_type=VARIABLE_STAGE and test_standard_year=IP_2023"
+    cooling_i_low_capacity:
+      Description: "Low stage net total cooling capacity (at 'I' operating conditions)"
+      Data Type: "Numeric"
+      Units: "Btu/h"
+      Constraints: ">=0.0"
+      Required: "if staging_type=VARIABLE_STAGE and test_standard_year=IP_2023"
     cooling_a_full_power:
       Description: "Full stage net total cooling power (at 'A' operating conditions)"
       Data Type: "Numeric"
@@ -195,6 +212,18 @@ RatingAHRI210240:
       Units: "W"
       Constraints: ">=0.0"
       Required: "if staging_type!=SINGLE_STAGE"
+    cooling_g_low_power:
+      Description: "Low stage net total cooling power (at 'G' operating conditions)"
+      Data Type: "Numeric"
+      Units: "W"
+      Constraints: ">=0.0"
+      Required: "if staging_type=VARIABLE_STAGE and test_standard_year=IP_2023"
+    cooling_i_low_power:
+      Description: "Low stage net total cooling power (at 'I' operating conditions)"
+      Data Type: "Numeric"
+      Units: "W"
+      Constraints: ">=0.0"
+      Required: "if staging_type=VARIABLE_STAGE and test_standard_year=IP_2023"
     cooling_full_fan_power:
       Description: "Power of the indoor fan at full load"
       Data Type: "Numeric"
@@ -219,11 +248,15 @@ RatingAHRI210240:
       Units: "cfm"
       Constraints: ">0.0"
       Required: "if staging_type!=SINGLE_STAGE"
-    rating_reproducible_from_performance_data:
-      Description: "Whether this rating can be reproduced using the performance data in the representation"
+    rating_recalculatable_from_performance_data:
+      Description: "Whether this rating can be recalculated using the performance data in the representation"
       Data Type: "Boolean"
-      Notes: "True if the rating values in this table can be reproduced using the performance data in the representation within the tolerance of the rating standard"
+      Notes: "True if the rating values in this table can be recalculated using the performance data in the representation within the tolerance of the rating standard"
       Required: True
+    rating_recalculatable_explanation:
+      Description: "An explanation of the value for `rating_recalculatable_from_performance_data`"
+      Data Type: "String"
+      Required: False
 
 RatingAHRI340360:
   Object Type: "Rating Data Group"
@@ -239,7 +272,7 @@ RatingAHRI340360:
     rating_source:
       Description: "Source of this rating data"
       Data Type: "String"
-      Notes: "Used by data publisher to document methods (e.g. software and version) used to generate rating data"
+      Notes: "Used by data publisher to document methods (e.g., software and version) used to generate rating data"
     capacity_control_type:
       Description: "Type of capacity control"
       Data Type: "<AHRI340360CapacityControlType>"
@@ -265,11 +298,15 @@ RatingAHRI340360:
     part_load_points:
       Description: "Four part load rating points"
       Data Type: "[{RatingAHRI340360CoolingPartLoadPoint}][4]"
-    rating_reproducible_from_performance_data:
-      Description: "Whether this rating can be reproduced using the performance data in the representation"
+    rating_recalculatable_from_performance_data:
+      Description: "Whether this rating can be recalculated using the performance data in the representation"
       Data Type: "Boolean"
-      Notes: "True if the rating values in this table can be reproduced using the performance data in the representation within the tolerance of the rating standard"
+      Notes: "True if the rating values in this table can be recalculated using the performance data in the representation within the tolerance of the rating standard"
       Required: True
+    rating_recalculatable_explanation:
+      Description: "An explanation of the value for `rating_recalculatable_from_performance_data`"
+      Data Type: "String"
+      Required: False
 
 RatingAHRI340360CoolingPartLoadPoint:
   Object Type: "Rating Data Group"
@@ -291,7 +328,7 @@ RatingAHRI340360CoolingPartLoadPoint:
       Data Type: "Numeric"
       Units: "W"
       Constraints: ">0.0"
-      Required: True
+      Required: False
     auxiliary_power:
       Description: "Power of the control circuit and any other auxiliary loads"
       Data Type: "Numeric"
@@ -315,14 +352,14 @@ Performance:
       Constraints: ">=0.0"
       Notes: "Includes on-board controls and other power not included in the fan or dx system representations"
       Required: True
-    fan_representation:
+    indoor_fan_representation:
       Description: "The corresponding Standard 205 fan assembly representation"
       Data Type: "{RS0003}"
-      Notes: "Required if the fan is packaged with the unitary equipment"
+      Notes: "Required if the indoor fan is packaged with the unitary equipment"
     fan_position:
       Description: "Position of the fan relative to the cooling coil"
       Data Type: "<FanPosition>"
-      Required: "if fan_representation"
+      Required: "if indoor_fan_representation"
     dx_system_representation:
-      Description: "The corresponding Standard 205 direct expansion coil system representation"
+      Description: "The corresponding Standard 205 direct expansion system representation"
       Data Type: "{RS0004}"

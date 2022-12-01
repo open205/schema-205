@@ -25,7 +25,7 @@ def test_get_schema_node():
 
     # Node in nested RS
     schema = schema205.A205Schema(os.path.join(os.path.dirname(__file__),'..','build',"schema","RS0002.schema.json"))
-    node = schema.get_schema_node(['performance', 'fan_representation', 'description', 'product_information', 'impeller_type'])
+    node = schema.get_schema_node(['performance', 'indoor_fan_representation', 'description', 'product_information', 'impeller_type'])
     assert('enum' in node)
 
     # Array node
@@ -50,7 +50,7 @@ def test_get_schema_node():
 
     # Root node of nested RS
     schema = schema205.A205Schema(os.path.join(os.path.dirname(__file__),'..','build',"schema","RS0002.schema.json"))
-    node = schema.get_schema_node(['performance','fan_representation'])
+    node = schema.get_schema_node(['performance','indoor_fan_representation'])
     assert('ASHRAE 205' not in node['description'])
 
 def test_create_grid_set():
