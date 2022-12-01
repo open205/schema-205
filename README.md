@@ -9,8 +9,6 @@ This package is used to generate:
 2. Schema documentation, and
 3. Source code to read and process ASHRAE Standard 205 compliant representation data files.
 
-**Warning!**  As the proposed ASHRAE Standard 205P has not yet been published, the content in this repository is subject to change and should be considered unstable for application development.
-
 Using DOIT Tasks!
 -----------------
 
