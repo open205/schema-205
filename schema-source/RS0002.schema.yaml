@@ -145,7 +145,7 @@ RatingAHRI210240:
       Units: "Btu/W-h"
       Constraints: ">0.0"
       Required: True
-      Notes: "Represents EER2<sub>A_Full</sub> for the 2023 version of test standard"
+      Notes: "Represents EER2~A_Full~ for the 2023 version of test standard"
     eer_b_full:
       Description: "Full stage Energy Efficiency Ratio (at 'B' operating conditions)"
       Data Type: "Numeric"
