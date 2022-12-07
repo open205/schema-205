@@ -128,10 +128,10 @@ class DataGroup:
         '''
         Construct paired if-then json entries for conditional requirements.
 
-        :param target_list_to_append:   List of dictionaries, modified in-situ with an if key and
-                                        an associated then key
+        :param conditionals_list:
+        :param dependencies_list:
         :param requirement_str:         Raw requirement string using A205 syntax
-        :param requirement:             This item's presence is dependent on the above condition
+        :param requirement:             requirement is present if requirement_str indicates it
         '''
         separator = r'\sand\s'
         collector = 'allOf'
@@ -206,7 +206,9 @@ class DataGroup:
                 if m:
                     types = [t.strip() for t in m.group(1).split(',')]
                     selection_key, selections = parent_dict['Constraints'].split('(')
-                    target_dict['allOf'] = list()
+                    if target_dict.get('allOf') == None:
+                        target_dict['allOf'] = list()
+                    #target_dict['allOf'] = list()
                     for s, t in zip(selections.split(','), types):
                         #c = c.strip()
                         target_dict['allOf'].append(dict())
