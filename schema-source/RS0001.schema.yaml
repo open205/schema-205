@@ -561,7 +561,7 @@ Performance:
       Units: "W"
       Constraints: ">=0.0"
     cycling_degradation_coefficient:
-      Description: "Cycling degradation coefficient (C<sub>D</sub>) as described in AHRI 550/590 or AHRI 551/591"
+      Description: "Cycling degradation coefficient (C~D~) as described in AHRI 550/590 or AHRI 551/591"
       Data Type: "Numeric"
       Units: "-"
       Constraints: [">=0.0", "<=1.0"]

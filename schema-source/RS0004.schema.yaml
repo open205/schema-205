@@ -65,7 +65,7 @@ Performance:
       Data Type: "<SpeedControlType>"
       Required: True
     cycling_degradation_coefficient:
-      Description: "Cycling degradation coefficient (C<sub>D</sub>) as described in AHRI 210/240"
+      Description: "Cycling degradation coefficient (C~D~) as described in AHRI 210/240"
       Data Type: "Numeric"
       Units: "-"
       Constraints: [">=0.0","<1.0"]
