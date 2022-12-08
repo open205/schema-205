@@ -298,28 +298,30 @@ class DataGroup:
             minimum=None
             maximum=None
             for c in constraints:
-                try:
-                    numerical_value = re.findall(r'[+-]?[0-9]*\.?[0-9]+|[0-9]+', c)[0]
-                    if '>' in c:
-                        minimum = (float(numerical_value) if 'number' in target_dict['type'] else int(numerical_value))
-                        mn = 'exclusiveMinimum' if '=' not in c else 'minimum'
-                        target_dict[mn] = minimum
-                    elif '<' in c:
-                        maximum = (float(numerical_value) if 'number' in target_dict['type']  else int(numerical_value))
-                        mx = 'exclusiveMaximum' if '=' not in c else 'maximum'
-                        target_dict[mx] = maximum
-                    elif '%' in c:
-                        target_dict['multipleOf'] = int(numerical_value)
-                    # elif 'string' in target_dict['type']:  # String pattern match
-                    #     target_dict['pattern'] = c.replace('"','')  # TODO: Find better way to remove quotes.
-                except IndexError:
-                    # Constraint was non-numeric
-                    pass
-                except ValueError:
-                    pass
-                except KeyError:
-                    # 'type' not in dictionary
-                    pass
+                if 'string' in target_dict['type']:  # String pattern match
+                    target_dict['const'] = c.replace('"','')  # TODO: Find better way to remove quotes.
+                else:
+                    try:
+                        # TODO: any exotic constraint type with numerals in it, such as schmea=RS0001, will be processed here
+                        numerical_value = re.findall(r'[+-]?[0-9]*\.?[0-9]+|[0-9]+', c)[0]
+                        if '>' in c:
+                            minimum = (float(numerical_value) if 'number' in target_dict['type'] else int(numerical_value))
+                            mn = 'exclusiveMinimum' if '=' not in c else 'minimum'
+                            target_dict[mn] = minimum
+                        elif '<' in c:
+                            maximum = (float(numerical_value) if 'number' in target_dict['type']  else int(numerical_value))
+                            mx = 'exclusiveMaximum' if '=' not in c else 'maximum'
+                            target_dict[mx] = maximum
+                        elif '%' in c:
+                            target_dict['multipleOf'] = int(numerical_value)
+                    except IndexError:
+                        # Constraint was non-numeric
+                        pass
+                    except ValueError:
+                        pass
+                    except KeyError:
+                        # 'type' not in dictionary
+                        pass
 
 
 # -------------------------------------------------------------------------------------------------
