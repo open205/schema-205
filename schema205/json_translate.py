@@ -128,10 +128,10 @@ class DataGroup:
         '''
         Construct paired if-then json entries for conditional requirements.
 
-        :param target_list_to_append:   List of dictionaries, modified in-situ with an if key and
-                                        an associated then key
+        :param conditionals_list:
+        :param dependencies_list:
         :param requirement_str:         Raw requirement string using A205 syntax
-        :param requirement:             This item's presence is dependent on the above condition
+        :param requirement:             requirement is present if requirement_str indicates it
         '''
         separator = r'\sand\s'
         collector = 'allOf'
@@ -206,7 +206,9 @@ class DataGroup:
                 if m:
                     types = [t.strip() for t in m.group(1).split(',')]
                     selection_key, selections = parent_dict['Constraints'].split('(')
-                    target_dict['allOf'] = list()
+                    if target_dict.get('allOf') == None:
+                        target_dict['allOf'] = list()
+                    #target_dict['allOf'] = list()
                     for s, t in zip(selections.split(','), types):
                         #c = c.strip()
                         target_dict['allOf'].append(dict())
@@ -296,28 +298,30 @@ class DataGroup:
             minimum=None
             maximum=None
             for c in constraints:
-                try:
-                    numerical_value = re.findall(r'[+-]?[0-9]*\.?[0-9]+|[0-9]+', c)[0]
-                    if '>' in c:
-                        minimum = (float(numerical_value) if 'number' in target_dict['type'] else int(numerical_value))
-                        mn = 'exclusiveMinimum' if '=' not in c else 'minimum'
-                        target_dict[mn] = minimum
-                    elif '<' in c:
-                        maximum = (float(numerical_value) if 'number' in target_dict['type']  else int(numerical_value))
-                        mx = 'exclusiveMaximum' if '=' not in c else 'maximum'
-                        target_dict[mx] = maximum
-                    elif '%' in c:
-                        target_dict['multipleOf'] = int(numerical_value)
-                    # elif 'string' in target_dict['type']:  # String pattern match
-                    #     target_dict['pattern'] = c.replace('"','')  # TODO: Find better way to remove quotes.
-                except IndexError:
-                    # Constraint was non-numeric
-                    pass
-                except ValueError:
-                    pass
-                except KeyError:
-                    # 'type' not in dictionary
-                    pass
+                if 'string' in target_dict['type']:  # String pattern match
+                    target_dict['pattern'] = c.replace('"','')  # TODO: Find better way to remove quotes.
+                else:
+                    try:
+                        # TODO: any exotic constraint type with numerals in it, such as schmea=RS0001, will be processed here
+                        numerical_value = re.findall(r'[+-]?[0-9]*\.?[0-9]+|[0-9]+', c)[0]
+                        if '>' in c:
+                            minimum = (float(numerical_value) if 'number' in target_dict['type'] else int(numerical_value))
+                            mn = 'exclusiveMinimum' if '=' not in c else 'minimum'
+                            target_dict[mn] = minimum
+                        elif '<' in c:
+                            maximum = (float(numerical_value) if 'number' in target_dict['type']  else int(numerical_value))
+                            mx = 'exclusiveMaximum' if '=' not in c else 'maximum'
+                            target_dict[mx] = maximum
+                        elif '%' in c:
+                            target_dict['multipleOf'] = int(numerical_value)
+                    except IndexError:
+                        # Constraint was non-numeric
+                        pass
+                    except ValueError:
+                        pass
+                    except KeyError:
+                        # 'type' not in dictionary
+                        pass
 
 
 # -------------------------------------------------------------------------------------------------
