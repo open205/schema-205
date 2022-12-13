@@ -299,7 +299,7 @@ class DataGroup:
             maximum=None
             for c in constraints:
                 if 'string' in target_dict['type']:  # String pattern match
-                    target_dict['const'] = c.replace('"','')  # TODO: Find better way to remove quotes.
+                    target_dict['pattern'] = c.replace('"','')  # TODO: Find better way to remove quotes.
                 else:
                     try:
                         # TODO: any exotic constraint type with numerals in it, such as schmea=RS0001, will be processed here
