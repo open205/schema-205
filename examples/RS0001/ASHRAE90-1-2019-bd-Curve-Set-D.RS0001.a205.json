@@ -5,7 +5,7 @@
         "schema_version": "1.0.0",
         "description": "ASHRAE 90.1-2019 Addendum 'bd' curve set 'D': 112.5 ton, 2.53 COP liquid-cooled, positive displacement compressor chiller",
         "id": "40edea78-3bde-417d-b3d4-f4fda4cf54c2",
-        "data_timestamp": "2022-12-01T11:35Z",
+        "data_timestamp": "2022-12-20T09:13Z",
         "data_version": 1,
         "data_source": "https://github.com/bigladder/chiller",
         "disclaimer": "This data is synthetic and does not represent any physical products.",

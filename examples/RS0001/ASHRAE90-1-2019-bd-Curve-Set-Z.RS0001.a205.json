@@ -5,7 +5,7 @@
         "schema_version": "1.0.0",
         "description": "ASHRAE 90.1-2019 Addendum 'bd' curve set 'Z': 75.0 ton, 2.47 COP liquid-cooled, centrifugal compressor chiller",
         "id": "5e82d941-e4e3-445b-adb0-6c04830b87e6",
-        "data_timestamp": "2022-12-01T11:35Z",
+        "data_timestamp": "2022-12-20T09:13Z",
         "data_version": 1,
         "data_source": "https://github.com/bigladder/chiller",
         "disclaimer": "This data is synthetic and does not represent any physical products.",
