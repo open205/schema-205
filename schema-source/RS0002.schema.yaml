@@ -146,89 +146,11 @@ RatingAHRI210240:
       Constraints: ">0.0"
       Required: True
       Notes: "Represents EER2~A_Full~ for the 2023 version of test standard"
-    eer_b_full:
-      Description: "Full stage Energy Efficiency Ratio (at 'B' operating conditions)"
-      Data Type: "Numeric"
-      Units: "Btu/W-h"
-      Constraints: ">0.0"
-      Required: "if staging_type!=SINGLE_STAGE"
     cooling_a_full_capacity:
       Description: "Full stage net total cooling capacity (at 'A' operating conditions)"
       Data Type: "Numeric"
       Units: "Btu/h"
       Constraints: ">=0.0"
-      Required: True
-    cooling_b_full_capacity:
-      Description: "Full stage net total cooling capacity (at 'B' operating conditions)"
-      Data Type: "Numeric"
-      Units: "Btu/h"
-      Constraints: ">=0.0"
-      Required: "if staging_type!=SINGLE_STAGE"
-    cooling_b_low_capacity:
-      Description: "Low stage net total cooling capacity (at 'B' operating conditions)"
-      Data Type: "Numeric"
-      Units: "Btu/h"
-      Constraints: ">=0.0"
-      Required: "if staging_type!=SINGLE_STAGE"
-    cooling_f_low_capacity:
-      Description: "Low stage net total cooling capacity (at 'F' operating conditions)"
-      Data Type: "Numeric"
-      Units: "Btu/h"
-      Constraints: ">=0.0"
-      Required: "if staging_type!=SINGLE_STAGE"
-    cooling_g_low_capacity:
-      Description: "Low stage net total cooling capacity (at 'G' operating conditions)"
-      Data Type: "Numeric"
-      Units: "Btu/h"
-      Constraints: ">=0.0"
-      Required: "if staging_type=VARIABLE_STAGE and test_standard_year=IP_2023"
-    cooling_i_low_capacity:
-      Description: "Low stage net total cooling capacity (at 'I' operating conditions)"
-      Data Type: "Numeric"
-      Units: "Btu/h"
-      Constraints: ">=0.0"
-      Required: "if staging_type=VARIABLE_STAGE and test_standard_year=IP_2023"
-    cooling_a_full_power:
-      Description: "Full stage net total cooling power (at 'A' operating conditions)"
-      Data Type: "Numeric"
-      Units: "W"
-      Constraints: ">=0.0"
-      Required: "if staging_type!=SINGLE_STAGE"
-    cooling_b_full_power:
-      Description: "Full stage net total cooling power (at 'B' operating conditions)"
-      Data Type: "Numeric"
-      Units: "W"
-      Constraints: ">=0.0"
-      Required: "if staging_type!=SINGLE_STAGE"
-    cooling_b_low_power:
-      Description: "Low stage net total cooling power (at 'B' operating conditions)"
-      Data Type: "Numeric"
-      Units: "W"
-      Constraints: ">=0.0"
-      Required: "if staging_type!=SINGLE_STAGE"
-    cooling_f_low_power:
-      Description: "Low stage net total cooling power (at 'F' operating conditions)"
-      Data Type: "Numeric"
-      Units: "W"
-      Constraints: ">=0.0"
-      Required: "if staging_type!=SINGLE_STAGE"
-    cooling_g_low_power:
-      Description: "Low stage net total cooling power (at 'G' operating conditions)"
-      Data Type: "Numeric"
-      Units: "W"
-      Constraints: ">=0.0"
-      Required: "if staging_type=VARIABLE_STAGE and test_standard_year=IP_2023"
-    cooling_i_low_power:
-      Description: "Low stage net total cooling power (at 'I' operating conditions)"
-      Data Type: "Numeric"
-      Units: "W"
-      Constraints: ">=0.0"
-      Required: "if staging_type=VARIABLE_STAGE and test_standard_year=IP_2023"
-    cooling_full_fan_power:
-      Description: "Power of the indoor fan at full load"
-      Data Type: "Numeric"
-      Units: "W"
-      Constraints: ">0.0"
       Required: True
     cooling_full_air_volumetric_flow_rate:
       Description: "Standard air volumetric rate of the indoor fan at full load"
@@ -236,27 +158,6 @@ RatingAHRI210240:
       Units: "cfm"
       Constraints: ">0.0"
       Required: True
-    cooling_low_fan_power:
-      Description: "Power of the indoor fan at low stage"
-      Data Type: "Numeric"
-      Units: "W"
-      Constraints: ">0.0"
-      Required: "if staging_type!=SINGLE_STAGE"
-    cooling_low_air_volumetric_flow_rate:
-      Description: "Standard air volumetric rate of the indoor fan at low stage"
-      Data Type: "Numeric"
-      Units: "cfm"
-      Constraints: ">0.0"
-      Required: "if staging_type!=SINGLE_STAGE"
-    rating_recalculatable_from_performance_data:
-      Description: "Whether this rating can be recalculated using the performance data in the representation"
-      Data Type: "Boolean"
-      Notes: "True if the rating values in this table can be recalculated using the performance data in the representation within the tolerance of the rating standard"
-      Required: True
-    rating_recalculatable_explanation:
-      Description: "An explanation of the value for `rating_recalculatable_from_performance_data`"
-      Data Type: "String"
-      Required: False
 
 RatingAHRI340360:
   Object Type: "Rating Data Group"
@@ -294,52 +195,6 @@ RatingAHRI340360:
       Data Type: "Numeric"
       Units: "Btu/h"
       Constraints: ">=0.0"
-      Required: True
-    part_load_points:
-      Description: "Four part load rating points"
-      Data Type: "[{RatingAHRI340360CoolingPartLoadPoint}][4]"
-    rating_recalculatable_from_performance_data:
-      Description: "Whether this rating can be recalculated using the performance data in the representation"
-      Data Type: "Boolean"
-      Notes: "True if the rating values in this table can be recalculated using the performance data in the representation within the tolerance of the rating standard"
-      Required: True
-    rating_recalculatable_explanation:
-      Description: "An explanation of the value for `rating_recalculatable_from_performance_data`"
-      Data Type: "String"
-      Required: False
-
-RatingAHRI340360CoolingPartLoadPoint:
-  Object Type: "Rating Data Group"
-  Data Elements:
-    capacity:
-      Description: "Net total cooling capacity"
-      Data Type: "Numeric"
-      Units: "Btu/h"
-      Constraints: ">=0.0"
-      Required: True
-    net_power:
-      Description: "Net cooling power (including the indoor fan motor, controls, and other auxiliary loads)"
-      Data Type: "Numeric"
-      Units: "W"
-      Constraints: ">=0.0"
-      Required: True
-    indoor_fan_power:
-      Description: "Power of the indoor fan motor"
-      Data Type: "Numeric"
-      Units: "W"
-      Constraints: ">0.0"
-      Required: False
-    auxiliary_power:
-      Description: "Power of the control circuit and any other auxiliary loads"
-      Data Type: "Numeric"
-      Units: "W"
-      Constraints: ">0.0"
-      Required: True
-    air_volumetric_flow_rate:
-      Description: "Standard air volumetric rate of the indoor fan"
-      Data Type: "Numeric"
-      Units: "cfm"
-      Constraints: ">0.0"
       Required: True
 
 Performance:
