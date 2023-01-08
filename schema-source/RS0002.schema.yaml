@@ -58,6 +58,9 @@ AHRI340360TestStandardYear:
     IP_2019:
       Description: "Rating is based on 2019 AHRI standard[@AHRI3402019]"
       Display Text: "2019"
+    IP_2022:
+      Description: "Rating is based on 2022 AHRI standard[@AHRI3402022]"
+      Display Text: "2022"
 
 AHRI340360CapacityControlType:
   Object Type: "Enumeration"
