@@ -158,17 +158,20 @@ class A205Schema:
         if 'allOf' in parent_schema_node:
             # Alternate performance maps allowed. Make sure we get the right one
             for option in parent_schema_node['allOf']:
-                # allOf resolutions are 2-deep dictionaries; resolve twice
-                option = self.resolve(self.resolve(option)[lineage[-2]])
-                for var in grid_vars:
-                    option_grid_vars = self.resolve(option['grid_variables'])
-                    if var not in option_grid_vars:
-                        schema_node = None
+                # allOf resolutions are 2-deep dictionaries; resolve twice 
+                # first confirm that the option we're starting with is a performance map type
+                option = self.resolve(option).get(lineage[-2])
+                if option:
+                    option = self.resolve(option)
+                    for var in grid_vars:
+                        option_grid_vars = self.resolve(option['grid_variables'])
+                        if var not in option_grid_vars:
+                            schema_node = None
+                            break
+                        else:
+                            schema_node = option_grid_vars
+                    if schema_node:
                         break
-                    else:
-                        schema_node = option_grid_vars
-                if schema_node:
-                    break
         else:
             schema_node = self.get_schema_node(lineage)['properties']
         order = []

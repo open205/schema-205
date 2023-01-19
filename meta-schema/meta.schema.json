@@ -119,14 +119,27 @@
         }
       ]
     },
+    "ConditionallyRequiredPattern": {
+      "type": "string",
+      "pattern": "if (([a-z]+)(_([a-z]|[0-9])+)*)(!?=((([-+]?[0-9]*\\.?[0-9]+([eE][-+]?[0-9]+)?))|(\".*\")|(([A-Z]([A-Z]|[0-9])*)(_([A-Z]|[0-9])+)*)|(True|False)))?"
+    },
     "Required": {
       "oneOf": [
         {
           "type": "boolean"
         },
         {
-          "type": "string",
-          "pattern": "if (([a-z]+)(_([a-z]|[0-9])+)*)(!?=((([-+]?[0-9]*\\.?[0-9]+([eE][-+]?[0-9]+)?))|(\".*\")|(([A-Z]([A-Z]|[0-9])*)(_([A-Z]|[0-9])+)*)|(True|False)))?"
+          "oneOf": [
+            {
+              "$ref": "meta.schema.json#/definitions/ConditionallyRequiredPattern"
+            },
+            {
+              "type": "array",
+              "items": {
+                "$ref": "meta.schema.json#/definitions/ConditionallyRequiredPattern"
+              }
+            }
+          ]
         }
       ]
     },

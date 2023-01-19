@@ -106,20 +106,12 @@ class DataGroup:
             if 'Notes' in element:
                 elements['properties'][e]['notes'] = element['Notes']
             if 'Required' in element:
-                #required.append(e)
                 req = element['Required']
-                if isinstance(req, bool) and req == True:
-                    required.append(e)
+                if isinstance(req, bool):
+                    if req == True:
+                        required.append(e)
                 elif req.startswith('if'):
-                    if '!=' in req:
-                        self._construct_requirement_if_else(elements, req.split(' ')[1].split('!')[0],
-                                                            False, req.split('=')[1], e)
-                    elif '=' in req:
-                        self._construct_requirement_if_else(elements, req.split(' ')[1].split('=')[0],
-                                                            True, req.split('=')[1], e)
-                    else:
-                        dependency = req.split(' ')[1]
-                        dependencies[dependency] = [e]
+                    self._construct_requirement_if_then(elements, dependencies, req[3:], e)
         if required:
             elements['required'] = required
         if dependencies:
@@ -128,31 +120,55 @@ class DataGroup:
         return {group_name : elements}
 
 
-    def _construct_requirement_if_else(self,
-                                       target_dict_to_append,
-                                       selector, is_equal, selector_state, requirement):
+    def _construct_requirement_if_then(self,
+                                       conditionals_list : dict,
+                                       dependencies_list : dict,
+                                       requirement_str : str,
+                                       requirement : str):
         '''
-        Construct paired if-else json entries for conditional requirements.
+        Construct paired if-then json entries for conditional requirements.
 
-        :param target_dict_to_append:   This dictionary is modified in-situ with an if key and
-                                        an associated then key
-        :param selector:                see selector_state
-        :param is_equal:                see selector_state
-        :param selector_state:          Format the condition {selector} [is/isn't] {is_equal}
-                                        {selector_state}
-        :param requirement:             This item's presence is dependent on the above condition
+        :param conditionals_list:
+        :param dependencies_list:
+        :param requirement_str:         Raw requirement string using A205 syntax
+        :param requirement:             requirement is present if requirement_str indicates it
         '''
-        if 'true' in selector_state.lower():
-            selector_state = True
-        elif 'false' in selector_state.lower():
-            selector_state = False
-        selector_dict = ({'properties' : {selector : {'const' : selector_state} } } if is_equal
-                         else {'properties' : {selector : {'not' : {'const' : selector_state} } } })
-        if target_dict_to_append.get('if') == selector_dict: # condition already exists
-            target_dict_to_append['then']['required'].append(requirement)
-        else:
-            target_dict_to_append['if'] = selector_dict
-            target_dict_to_append['then'] = {'required' : [requirement]}
+        separator = r'\sand\s'
+        collector = 'allOf'
+        selector_dict = {'properties' : {collector : dict()}}
+        requirement_list = re.split(separator, requirement_str)
+        dependent_req = r'(?P<selector>[0-9a-zA-Z_]*)((?P<is_equal>!?=)(?P<selector_state>[0-9a-zA-Z_]*))?'
+
+        for req in requirement_list:
+            m = re.match(dependent_req, req)
+            if m:
+                selector = m.group('selector')
+                if m.group('is_equal'):
+                    is_equal = False if '!' in m.group('is_equal') else True
+                    selector_state = m.group('selector_state')
+                    if 'true' in selector_state.lower():
+                        selector_state = True
+                    elif 'false' in selector_state.lower():
+                        selector_state = False
+                    selector_dict['properties'][collector][selector] = {'const' : selector_state} if is_equal else {'not' : {'const' : selector_state} }
+                else: # prerequisite type
+                    if dependencies_list.get(selector):
+                        dependencies_list[selector].append(requirement)
+                    else:
+                        dependencies_list[selector] = [requirement]
+
+        if selector_dict['properties'][collector].keys():
+            # Conditional requirements are each a member of a list
+            if conditionals_list.get('allOf') == None:
+                conditionals_list['allOf'] = list()
+
+            for conditional_req in conditionals_list['allOf']:
+                if conditional_req.get('if') == selector_dict: # condition already exists
+                    conditional_req['then']['required'].append(requirement)
+                    return
+            conditionals_list['allOf'].append(dict())
+            conditionals_list['allOf'][-1]['if'] = selector_dict
+            conditionals_list['allOf'][-1]['then'] = {'required' : [requirement]}
 
 
     def _create_type_entry(self, parent_dict, target_dict, entry_name):
@@ -171,7 +187,7 @@ class DataGroup:
                 target_property_entry['type'] = 'array'
                 # 2. 'm[in/ax]Items' entry
                 if len(m) > 1:
-                    # Parse ellipsis range-notation e.g. '[1..]'
+                    # Parse ellipsis range-notation e.g., '[1..]'
                     mnmx = re.match(r'([0-9]*)(\.*\.*)([0-9]*)', m[1])
                     target_property_entry['minItems'] = int(mnmx.group(1))
                     if (mnmx.group(2) and mnmx.group(3)):
@@ -186,11 +202,13 @@ class DataGroup:
                     self._get_simple_constraints(parent_dict['Constraints'], target_dict['items'])
             else:
                 # If the type is oneOf a set
-                m = re.match(r'\((.*)\)', parent_dict['Data Type']) 
+                m = re.match(r'\((.*)\)', parent_dict['Data Type'])
                 if m:
                     types = [t.strip() for t in m.group(1).split(',')]
                     selection_key, selections = parent_dict['Constraints'].split('(')
-                    target_dict['allOf'] = list()
+                    if target_dict.get('allOf') == None:
+                        target_dict['allOf'] = list()
+                    #target_dict['allOf'] = list()
                     for s, t in zip(selections.split(','), types):
                         #c = c.strip()
                         target_dict['allOf'].append(dict())
@@ -214,7 +232,7 @@ class DataGroup:
         :param target_dict_to_append:   This dictionary is modified in-situ with an if key and
                                         associated then key
         :param selector:                Constraints key
-        :param selection:               Item from constraints values list. 
+        :param selection:               Item from constraints values list.
         :param entry_name:              Data Element for which the Data Type must match the
                                         Constraint
         '''
@@ -239,7 +257,7 @@ class DataGroup:
             # is a simple definition or enumeration.
             m_nested = re.match(r'.*?\((.*)\)', m.group(2))
             if m_nested:
-                # Rare case of a nested specification e.g. 'ASHRAE205(rs_id=RS0005)'
+                # Rare case of a nested specification e.g., 'ASHRAE205(rs_id=RS0005)'
                 internal_type = m.group(2).split('(')[0]
                 nested_type = m_nested.group(1)
             else:
@@ -258,7 +276,7 @@ class DataGroup:
 
         try:
             if '/' in type_str:
-                # e.g. "Numeric/Null" becomes a list of 'type's
+                # e.g., "Numeric/Null" becomes a list of 'type's
                 #return ('type', [self._types[t] for t in type_str.split('/')])
                 target_dict_to_append['type'] = [self._types[t] for t in type_str.split('/')]
             else:
@@ -280,28 +298,30 @@ class DataGroup:
             minimum=None
             maximum=None
             for c in constraints:
-                try:
-                    numerical_value = re.findall(r'[+-]?\d*\.?\d+|\d+', c)[0]
-                    if '>' in c:
-                        minimum = (float(numerical_value) if 'number' in target_dict['type'] else int(numerical_value))
-                        mn = 'exclusiveMinimum' if '=' not in c else 'minimum'
-                        target_dict[mn] = minimum
-                    elif '<' in c:
-                        maximum = (float(numerical_value) if 'number' in target_dict['type']  else int(numerical_value))
-                        mx = 'exclusiveMaximum' if '=' not in c else 'maximum'
-                        target_dict[mx] = maximum
-                    elif '%' in c:
-                        target_dict['multipleOf'] = int(numerical_value)
-                    elif 'string' in target_dict['type']:  # String pattern match
-                        target_dict['pattern'] = c.replace('"','')  # TODO: Find better way to remove quotes.
-                except IndexError:
-                    # Constraint was non-numeric
-                    pass
-                except ValueError:
-                    pass
-                except KeyError:
-                    # 'type' not in dictionary
-                    pass
+                if 'string' in target_dict['type']:  # String pattern match
+                    target_dict['pattern'] = c.replace('"','')  # TODO: Find better way to remove quotes.
+                else:
+                    try:
+                        # TODO: any exotic constraint type with numerals in it, such as schmea=RS0001, will be processed here
+                        numerical_value = re.findall(r'[+-]?[0-9]*\.?[0-9]+|[0-9]+', c)[0]
+                        if '>' in c:
+                            minimum = (float(numerical_value) if 'number' in target_dict['type'] else int(numerical_value))
+                            mn = 'exclusiveMinimum' if '=' not in c else 'minimum'
+                            target_dict[mn] = minimum
+                        elif '<' in c:
+                            maximum = (float(numerical_value) if 'number' in target_dict['type']  else int(numerical_value))
+                            mx = 'exclusiveMaximum' if '=' not in c else 'maximum'
+                            target_dict[mx] = maximum
+                        elif '%' in c:
+                            target_dict['multipleOf'] = int(numerical_value)
+                    except IndexError:
+                        # Constraint was non-numeric
+                        pass
+                    except ValueError:
+                        pass
+                    except KeyError:
+                        # 'type' not in dictionary
+                        pass
 
 
 # -------------------------------------------------------------------------------------------------

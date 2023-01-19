@@ -9,7 +9,7 @@ Schema:
     - "ASHRAE205"
   Title: "Liquid-Cooled Chiller"
   Description: "Schema for ASHRAE 205 annex RS0001: Liquid-Cooled Chiller"
-  Version: "0.2.0"
+  Version: "1.0.0"
   Root Data Group: "RS0001"
 
 # Local Enumerations
@@ -41,6 +41,9 @@ AHRI551591TestStandardYear:
     SI_2018:
       Description: "Ratings and design points defined using SI unit version of the standard, 2018 edition[@AHRI5512018]"
       Display Text: "AHRI 551/591 2018"
+    SI_2020:
+      Description: "Ratings and design points defined using SI unit version of the standard, 2020 edition[@AHRI5512020]"
+      Display Text: "AHRI 551/591 2020"
 
 # Data Groups
 RS0001:
@@ -123,7 +126,7 @@ RatingAHRI550590:
     rating_source:
       Description: "Source of this rating data"
       Data Type: "String"
-      Notes: "Used by data publisher to document methods (e.g. software and version) used to generate rating data"
+      Notes: "Used by data publisher to document methods (e.g., software and version) used to generate rating data"
     net_refrigerating_capacity:
       Description: "Rated net refrigeration capacity"
       Data Type: "Numeric"
@@ -219,11 +222,15 @@ RatingAHRI550590:
       Constraints: ">=0.0"
       Required: True
       Notes: "Condenser fouling factor at which the full load rating condition was measured"
-    rating_reproducible_from_performance_data:
-      Description: "Whether this rating can be reproduced using the performance data in the representation"
+    rating_recalculatable_from_performance_data:
+      Description: "Whether this rating can be recalculated using the performance data in the representation"
       Data Type: "Boolean"
       Required: True
-      Notes: "True if the rating values in this table can be reproduced using the performance data in the representation within the tolerance of the rating standard"
+      Notes: "True if the rating values in this table can be recalculated using the performance data in the representation within the tolerance of the rating standard"
+    rating_recalculatable_explanation:
+      Description: "An explanation of the value for `rating_recalculatable_from_performance_data`"
+      Data Type: "String"
+      Required: False
 
 RatingAHRI550590PartLoadPoint:
   Object Type: "Rating Data Group"
@@ -323,7 +330,7 @@ RatingAHRI551591:
     rating_source:
       Description: "Source of this rating data"
       Data Type: "String"
-      Notes: "Used by data publisher to document methods (e.g. software and version) used to generate rating data"
+      Notes: "Used by data publisher to document methods (e.g., software and version) used to generate rating data"
     net_refrigerating_capacity:
       Description: "Rated net refrigeration capacity"
       Data Type: "Numeric"
@@ -419,11 +426,15 @@ RatingAHRI551591:
       Constraints: ">=0.0"
       Required: True
       Notes: "Condenser fouling factor at which the full rating was measured"
-    rating_reproducible_from_performance_data:
-      Description: "Whether this rating can be reproduced using the performance data in the representation"
+    rating_recalculatable_from_performance_data:
+      Description: "Whether this rating can be recalculated using the performance data in the representation"
       Data Type: "Boolean"
       Required: True
-      Notes: "True if the rating values in this table can be reproduced using the performance data in the representation within the tolerance of the rating standard"
+      Notes: "True if the rating values in this table can be recalculated using the performance data in the representation within the tolerance of the rating standard"
+    rating_recalculatable_explanation:
+      Description: "An explanation of the value for `rating_recalculatable_from_performance_data`"
+      Data Type: "String"
+      Required: False
 
 RatingAHRI551591PartLoadPoint:
   Object Type: "Rating Data Group"
@@ -542,7 +553,7 @@ Performance:
               "May be different from the certification data supplied"]
     compressor_speed_control_type:
       Description: "Type of compressor speed control"
-      Data Type: "<CompressorSpeedControlType>"
+      Data Type: "<SpeedControlType>"
       Required: True
     maximum_power:
       Description: "Maximum input power at which the chiller operates reliably and continuously"
@@ -550,7 +561,7 @@ Performance:
       Units: "W"
       Constraints: ">=0.0"
     cycling_degradation_coefficient:
-      Description: "Cycling degradation coefficient (C<sub>D</sub>) as described in AHRI 550/590 or AHRI 551/591"
+      Description: "Cycling degradation coefficient (C~D~) as described in AHRI 550/590 or AHRI 551/591"
       Data Type: "Numeric"
       Units: "-"
       Constraints: [">=0.0", "<=1.0"]

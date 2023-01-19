@@ -1,4 +1,5 @@
 import itertools
+import re
 
 def get_representation_node(representation, lineage):
     node = representation
@@ -49,3 +50,8 @@ def unique_name_with_index(name, list_of_names, max_chars=31):
             else:
                 searching = False
                 return f"{modified_name}{i}"
+
+def snake_style(s):
+    #return ''.join(['_'+c.lower() if c.isupper() else c for c in s]).lstrip('_')
+    a = re.compile('((?<=[a-z0-9])[A-Z]|(?!^)[A-Z](?=[a-z]))')
+    return a.sub(r'_\1', s).lower()
