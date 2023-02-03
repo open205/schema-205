@@ -1,0 +1,94 @@
+Schema:
+  Object Type: "Meta"
+  References:
+    - "ASHRAE205"
+  Title: "Electric Heating Coil"
+  Description: "Schema for ASHRAE 205 annex RS0008: Electric Heating Coil"
+  Version: "1.0.0"
+  Root Data Group: "RS0008"
+
+# Data Groups
+RS000X:
+  Object Type: "Data Group"
+  Data Elements:
+    metadata:
+      Description: "Metadata data group"
+      Data Type: "{Metadata}"
+      Constraints: "schema=RS0008"
+      Required: True
+    description:
+      Description: "Data group describing product and rating information"
+      Data Type: "{Description}"
+    performance:
+      Description: "Data group containing performance information"
+      Data Type: "{Performance}"
+      Required: True
+
+Description:
+  Object Type: "Data Group"
+  Data Elements:
+    product_information:
+      Description: "Data group describing product information"
+      Data Type: "{ProductInformation}"
+
+ProductInformation:
+  Object Type: "Data Group"
+  Data Elements:
+    manufacturer:
+      Description: "Manufacturer name"
+      Data Type: "String"
+    model_number:
+      Description: "Model number"
+      Data Type: "Pattern"
+      Notes: "Pattern shall match all model numbers that can be represented by the representation"
+    nominal_voltage:
+      Description: "Nominal voltage"
+      Data Type: "Numeric"
+      Units: "V"
+      Constraints: ">=0.0"
+    nominal_frequency:
+      Description: "Nominal frequency"
+      Data Type: "Numeric"
+      Units: "Hz"
+      Constraints: ">=0.0"
+
+Performance:
+  Object Type: "Data Group"
+  Data Elements:
+    performance_map:
+      Description: "Data group describing drive performance when operating"
+      Data Type: "{PerformanceMap}"
+      Required: True
+
+PerformanceMap:
+  Object Type: "Performance Map"
+  Data Elements:
+    grid_variables:
+      Description: "Data group describing grid variables for drive performance"
+      Data Type: "{GridVariables}"
+      Required: True
+    lookup_variables:
+      Description: "Data group describing lookup variables for drive performance"
+      Data Type: "{LookupVariables}"
+      Required: True
+
+GridVariables:
+  Object Type: "Grid Variables"
+  Data Elements:
+    heating_stage_number:
+      Description: "Index indicating the relative order of the heating stage"
+      Data Type: "[Numeric][1..]"
+      Constraints: ">=0"
+      Units: "-"
+      Notes: "Expressed in order from initial stage to final stage."
+      Required: True
+
+LookupVariables:
+  Object Type: "Lookup Variables"
+  Data Elements:
+    heating_capacity:
+      Description: "Heating capacity"
+      Data Type: "[Numeric][1..]"
+      Constraints: ">=0.0"
+      Units: "W"
+      Required: True

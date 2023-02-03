@@ -79,12 +79,6 @@ Performance:
       Constraints: [">=0.0","<1.0"]
       Notes: ["Used for the lowest stage when the unit cycles to meet load",
               "***Informative note:*** 340/360 specifies a fixed cycling degradation coefficient of approximately 0.12"]
-    integrated_electric_resistance_heating_capacity:
-      Description: "Pre-installed electric resistance heating capacity"
-      Data Type: "Numeric"
-      Units: "W"
-      Constraints: ">=0"
-      Notes: "Often used as auxilliary or backup heating source"
     performance_map_cooling:
       Description: "Data group describing cooling performance over a range of conditions"
       Data Type: "{PerformanceMapCooling}"
