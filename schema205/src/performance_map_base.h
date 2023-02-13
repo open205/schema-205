@@ -29,7 +29,7 @@ public:
   /// @param	axis TBD
   // ----------------------------------------------------------------------------------------------
     inline void add_grid_axis(std::vector<double>& axis) {
-        _grid_axes.emplace_back(Btwxt::GridAxis(axis));
+        _grid_axes.emplace_back(axis);
     }
 
   // ----------------------------------------------------------------------------------------------
@@ -37,7 +37,7 @@ public:
   /// @param	axis TBD
   // ----------------------------------------------------------------------------------------------
     inline void add_grid_axis(std::vector<int>& axis) {
-        _grid_axes.emplace_back(Btwxt::GridAxis(std::vector<double>(axis.begin(), axis.end())));
+        _grid_axes.emplace_back(std::vector<double>(axis.begin(), axis.end()));
     }
 
   // ----------------------------------------------------------------------------------------------
@@ -52,8 +52,7 @@ public:
   /// @brief	
   // ----------------------------------------------------------------------------------------------
     inline void finalize_grid() {
-        auto gd = Btwxt::GriddedData(_grid_axes);
-        _btwxt = Btwxt::RegularGridInterpolator(gd);
+        _btwxt = Btwxt::RegularGridInterpolator(_grid_axes);
     }
 
   // ----------------------------------------------------------------------------------------------
@@ -88,7 +87,7 @@ public:
 
 private:
     Btwxt::RegularGridInterpolator _btwxt;
-    std::vector<Btwxt::GridAxis>   _grid_axes;
+    std::vector<std::vector<double>>   _grid_axes;
 
 };
 
