@@ -5,12 +5,15 @@
 #include <vector>
 #include <iostream>
 #include <nlohmann/json.hpp>
+#include <courierr/courierr.h>
 #include <btwxt.h>
 
 // ------------------------------------------------------------------------------------------------
 /// @class PerformanceMapBase performance_map_base.h
 
 class PerformanceMapBase {
+
+//namespace Courierr { class Courierr; };
 
 public:
     PerformanceMapBase() = default;
@@ -22,14 +25,14 @@ public:
   /// @brief	
   /// @param	j
   // ----------------------------------------------------------------------------------------------
-    virtual void initialize(const nlohmann::json& j) = 0;
+    virtual void initialize(const nlohmann::json& j, std::shared_ptr<::Courierr::Courierr> logger) = 0;
 
   // ----------------------------------------------------------------------------------------------
   /// @brief	
   /// @param	axis TBD
   // ----------------------------------------------------------------------------------------------
     inline void add_grid_axis(std::vector<double>& axis) {
-        _grid_axes.emplace_back(axis);
+        grid_axes.emplace_back(axis);
     }
 
   // ----------------------------------------------------------------------------------------------
@@ -37,7 +40,7 @@ public:
   /// @param	axis TBD
   // ----------------------------------------------------------------------------------------------
     inline void add_grid_axis(std::vector<int>& axis) {
-        _grid_axes.emplace_back(std::vector<double>(axis.begin(), axis.end()));
+        grid_axes.emplace_back(std::vector<double>(axis.begin(), axis.end()));
     }
 
   // ----------------------------------------------------------------------------------------------
@@ -45,14 +48,14 @@ public:
   /// @param	table TBD
   // ----------------------------------------------------------------------------------------------
     inline void add_data_table(std::vector<double>& table) {
-        _btwxt.add_value_table(table);
+        btwxt.add_grid_point_data_set(table);
     }
     
   // ----------------------------------------------------------------------------------------------
   /// @brief	
   // ----------------------------------------------------------------------------------------------
     inline void finalize_grid() {
-        _btwxt = Btwxt::RegularGridInterpolator(_grid_axes);
+        btwxt = Btwxt::RegularGridInterpolator(grid_axes);
     }
 
   // ----------------------------------------------------------------------------------------------
@@ -61,13 +64,13 @@ public:
   // ----------------------------------------------------------------------------------------------
     inline double calculate_performance(const std::vector<double> &target,
                                         std::size_t table_index,
-                                        Btwxt::Method performance_interpolation_method = Btwxt::Method::LINEAR)
+                                        Btwxt::Method performance_interpolation_method = Btwxt::Method::linear)
     {
-        for (auto i = 0u; i < _grid_axes.size(); i++)
+        for (auto i = 0u; i < grid_axes.size(); i++)
         {
-            _btwxt.set_axis_interp_method(i, performance_interpolation_method);
+            btwxt.set_axis_interpolation_method(i, performance_interpolation_method);
         }
-        return _btwxt.get_value_at_target(target, table_index);
+        return btwxt.get_value_at_target(target, table_index);
     }
 
   // ----------------------------------------------------------------------------------------------
@@ -76,19 +79,19 @@ public:
   /// @param	target 
   // ----------------------------------------------------------------------------------------------
     inline std::vector<double> calculate_performance(const std::vector<double> &target,
-                                                     Btwxt::Method performance_interpolation_method = Btwxt::Method::LINEAR)
+                                                     Btwxt::Method performance_interpolation_method = Btwxt::Method::linear)
     {
-        for (auto i = 0u; i < _grid_axes.size(); i++)
+        for (auto i = 0u; i < grid_axes.size(); i++)
         {
-            _btwxt.set_axis_interp_method(i, performance_interpolation_method);
+            btwxt.set_axis_interpolation_method(i, performance_interpolation_method);
         }
-        return _btwxt.get_values_at_target(target);
+        return btwxt.get_values_at_target(target);
     }
 
 private:
-    Btwxt::RegularGridInterpolator _btwxt;
-    std::vector<std::vector<double>>   _grid_axes;
-
+    Btwxt::RegularGridInterpolator btwxt;
+    std::vector<std::vector<double>> grid_axes;
+    std::shared_ptr<Courierr::Courierr> courier{std::make_shared<Courierr::SimpleCourierr>()};
 };
 
 #endif

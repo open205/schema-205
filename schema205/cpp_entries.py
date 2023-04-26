@@ -4,6 +4,7 @@ from schema205.header_entries import (Header_entry,
                                       Data_element, 
                                       Data_isset_element,
                                       Data_element_static_metainfo,
+                                      Data_stored_dependency,
                                       Member_function_override, 
                                       Object_serialization,
                                       Calculate_performance_overload)
@@ -62,8 +63,21 @@ class Data_element_static_initialization(Implementation_entry):
     def __init__(self, header_entry, parent=None):
         super().__init__(None, parent)
         type_spec = header_entry._type_specifier.replace('static', '').strip(' ')
-        self._func = f'{type_spec} {header_entry.type} {header_entry.parent.name}::{header_entry.name} = "{header_entry.init_val}";'
         self._func = ' '.join([type_spec, header_entry.type, f'{header_entry.parent.name}::{header_entry.name}', '=', f'"{header_entry.init_val}";'])
+
+    # .............................................................................................
+    @property
+    def value(self):
+        entry = self.level*'\t' + self._func + '\n'
+        return entry
+                  
+# -------------------------------------------------------------------------------------------------
+class Static_dependency_initialization(Implementation_entry):
+
+    def __init__(self, header_entry, parent=None):
+        super().__init__(None, parent)
+        type_spec = header_entry._type_specifier.replace('static', '').strip(' ')
+        self._func = ' '.join([type_spec, header_entry.type, f'{header_entry.parent.name}::{header_entry.name}', '{};'])
 
     # .............................................................................................
     @property
@@ -125,9 +139,9 @@ class Struct_serialization(Implementation_entry):
 # -------------------------------------------------------------------------------------------------
 class Element_serialization(Implementation_entry):
 
-    def __init__(self, name, type, parent, is_required):
+    def __init__(self, name, type, parent, is_required, root_data_group=None):
         super().__init__(name, parent)
-        self._func = [f'a205_json_get<{type}>(j, "{name}", {name}, {name}_is_set, {"true" if is_required else "false"});']
+        self._func = [f'a205_json_get<{type}>(j, *{root_data_group}::logger, "{name}", {name}, {name}_is_set, {"true" if is_required else "false"});']
 
     # .............................................................................................
     @property
@@ -140,37 +154,40 @@ class Element_serialization(Implementation_entry):
 # -------------------------------------------------------------------------------------------------
 class Owned_element_serialization(Element_serialization):
 
-    def __init__(self, name, type, parent, is_required=False):
-        super().__init__(name, type, parent, is_required)
-        self._func = [f'a205_json_get<{type}>(j, "{name}", x.{name}, x.{name}_is_set, {"true" if is_required else "false"});']
+    def __init__(self, name, type, parent, is_required, root_data_group):
+        super().__init__(name, type, parent, is_required, root_data_group)
+        if root_data_group:
+            self._func = [f'a205_json_get<{type}>(j, *{root_data_group}::logger, "{name}", x.{name}, x.{name}_is_set, {"true" if is_required else "false"});']
+        else:
+            self._func = [f'a205_json_get<{type}>(j, *logger, "{name}", x.{name}, x.{name}_is_set, {"true" if is_required else "false"});']
 
 # -------------------------------------------------------------------------------------------------
 class Owned_element_creation(Element_serialization):
 
-    def __init__(self, name, parent, selector_dict):
-        super().__init__(name, None, parent, False)
+    def __init__(self, name, parent, selector_dict, root_data_group):
+        super().__init__(name, None, parent, False, root_data_group)
         self._func = []
         type_sel = list(selector_dict.keys())[0]
         for enum in selector_dict[type_sel]:
             self._func += [f'if (x.{type_sel} == {enum}) {{',
                            f'\tx.{name} = std::make_unique<{selector_dict[type_sel][enum]}>();',
                            f'\tif (x.{name}) {{',
-                           f'\t\tx.{name}->initialize(j.at("{name}"));',
+                           f'\t\tx.{name}->initialize(j.at("{name}"), {root_data_group}::logger);',
                            '\t}',
                            '}']
 
 # -------------------------------------------------------------------------------------------------
 class Class_factory_creation(Element_serialization):
 
-    def __init__(self, name, parent, selector_dict):
-        super().__init__(name, None, parent, False)
+    def __init__(self, name, parent, selector_dict, root_data_group):
+        super().__init__(name, None, parent, False, root_data_group)
         self._func = []
         type_sel = list(selector_dict.keys())[0]
         for enum in selector_dict[type_sel]:
             self._func += [f'if ({type_sel} == {enum}) {{',
                            f'\t{name} = {name}Factory::create("{selector_dict[type_sel][enum]}");',
                            f'\tif ({name}) {{',
-                           f'\t\t{name}->initialize(j.at("{name}"));',
+                           f'\t\t{name}->initialize(j.at("{name}"), {root_data_group}::logger);',
                            '\t}',
                            '}']
 
@@ -304,19 +321,19 @@ class CPP_translator:
         return s
 
     # .............................................................................................
-    def translate(self, container_class_name, header_tree):
+    def translate(self, container_class_name, header_translator):
         '''X'''
-        self._add_included_headers(header_tree._schema_name)
+        self._add_included_headers(header_translator._schema_name)
 
         # Create "root" node(s)
         self._top_namespace = Implementation_entry(f'{container_class_name}')
         self._namespace = (
-            Implementation_entry(f'{snake_style(header_tree._schema_name)}_ns', parent=self._top_namespace))
+            Implementation_entry(f'{snake_style(header_translator._schema_name)}_ns', parent=self._top_namespace))
 
-        self._get_items_to_serialize(header_tree.root)
+        self._get_items_to_serialize(header_translator.root, header_translator._root_data_group)
 
     # .............................................................................................
-    def _get_items_to_serialize(self, header_tree):
+    def _get_items_to_serialize(self, header_tree: Header_entry, root_data_group: str):
         for entry in header_tree.child_entries:
             # Shortcut to avoid creating "from_json" entries for the main class, but create them
             # for all other classes. The main class relies on an "Initialize" function instead,
@@ -327,9 +344,9 @@ class CPP_translator:
                 for e in [c for c in entry.child_entries if isinstance(c, Data_element)]:
                     # In function body, create each "get_to" for individual data elements
                     if 'unique_ptr' in e.type:
-                        Owned_element_creation(e.name, s, e._selector)
+                        Owned_element_creation(e.name, s, e._selector, root_data_group)
                     else:
-                        Owned_element_serialization(e.name, e.type, s, e._is_required)
+                        Owned_element_serialization(e.name, e.type, s, e._is_required, root_data_group)
                     # In the special case of a performance_map subclass, add calls to its 
                     # members' Populate_performance_map functions
                     if entry.superclass == 'PerformanceMapBase':
@@ -337,6 +354,8 @@ class CPP_translator:
             # Initialize static members
             if (isinstance(entry, Data_element_static_metainfo)):
                 Data_element_static_initialization(entry, self._namespace)
+            if isinstance(entry, Data_stored_dependency) and '{}' not in entry.name:
+                Static_dependency_initialization(entry, self._namespace)
             # Initialize and Populate overrides (Currently the only Member_function_override is the Initialize override)
             if isinstance(entry, Member_function_override):
                 # Create the override function definition (header) using the declaration's signature
@@ -348,7 +367,7 @@ class CPP_translator:
                     # In function body, choose element-wise ops based on the superclass
                     for e in [c for c in entry.parent.child_entries if isinstance(c, Data_element)]:
                         if 'unique_ptr' in e.type:
-                            Class_factory_creation(e.name, m, e._selector)
+                            Class_factory_creation(e.name, m, e._selector, root_data_group)
                             self._preamble.append(f'#include <{e.name}_factory.h>\n')
                         else:
                             if entry.parent.superclass == 'GridVariablesBase':
@@ -356,9 +375,9 @@ class CPP_translator:
                             elif entry.parent.superclass == 'LookupVariablesBase':
                                 Data_table_impl(e.name, m)
                             elif entry.parent.superclass == 'PerformanceMapBase':
-                                Element_serialization(e.name, e.type, m, e._is_required)
+                                Element_serialization(e.name, e.type, m, e._is_required, root_data_group)
                             else:
-                                Element_serialization(e.name, e.type, m, e._is_required)
+                                Element_serialization(e.name, e.type, m, e._is_required, root_data_group)
                             if entry.parent.superclass == 'PerformanceMapBase':
                                 Performance_map_impl(e.name, m, populates_self=True)
                   # Special case of grid_axis_base needs a finalize function after all grid axes 
@@ -377,7 +396,7 @@ class CPP_translator:
                 s = Free_function_definition(entry, self._namespace)
                 Serialize_from_init_func('', s)
             else:
-                self._get_items_to_serialize(entry)
+                self._get_items_to_serialize(entry, root_data_group)
 
     # .............................................................................................
     def _add_included_headers(self, main_header):

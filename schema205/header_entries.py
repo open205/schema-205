@@ -370,6 +370,21 @@ class Data_element_static_metainfo(Header_entry):
 
 
 # -------------------------------------------------------------------------------------------------
+class Data_stored_dependency(Header_entry):
+
+    def __init__(self, name, parent, dependency_type):
+        super().__init__(name, parent)
+        self._type_specifier = 'static'
+        self.type = dependency_type
+        self._closure = ';'
+
+    # .............................................................................................
+    @property
+    def value(self):
+        return self.level*'\t' + self._type_specifier + ' ' + self.type + ' ' + self.name + self._closure
+
+
+# -------------------------------------------------------------------------------------------------
 class Functional_header_entry(Header_entry):
 
     def __init__(self, f_ret, f_name, f_args, name, parent):
@@ -503,6 +518,13 @@ class H_translator:
         return swapped
 
     # .............................................................................................
+    def _list_objects_of_type(self, object_type_or_list):
+        if isinstance(object_type_or_list, str):
+            return [tag for tag in self._contents if self._contents[tag]['Object Type'] == object_type_or_list]
+        elif isinstance(object_type_or_list, list):
+            return [tag for tag in self._contents if self._contents[tag]['Object Type'] in object_type_or_list]
+
+    # .............................................................................................
     def translate(self, input_file_path, container_class_name, schema_base_class_name=None):
         '''X'''
         self._source_dir = os.path.dirname(os.path.abspath(input_file_path))
@@ -526,16 +548,13 @@ class H_translator:
         self._namespace = Header_entry(f'{snake_style(self._schema_name)}_ns', parent=self._top_namespace)
 
         # First, assemble typedefs
-        for base_level_tag in (
-            [tag for tag in self._contents if self._contents[tag]['Object Type'] == 'String Type']):
+        for base_level_tag in self._list_objects_of_type('String Type'):
             Typedef(base_level_tag, self._namespace, 'std::string')
         # Second, enumerations
-        for base_level_tag in (
-            [tag for tag in self._contents if self._contents[tag].get('Object Type') == 'Enumeration']):
+        for base_level_tag in self._list_objects_of_type('Enumeration'):
             Enumeration(base_level_tag, self._namespace, self._contents[base_level_tag]['Enumerators'])
         # Collect member objects and their children
-        for base_level_tag in (
-            [tag for tag in self._contents if self._contents[tag].get('Object Type') == 'Meta']):
+        for base_level_tag in self._list_objects_of_type('Meta'):
             s = Struct(base_level_tag, self._namespace)
             d = Data_element_static_metainfo(base_level_tag.lower(), 
                                              s, 
@@ -549,12 +568,16 @@ class H_translator:
                                              s, 
                                              self._contents[base_level_tag],
                                              'Description')
-        for base_level_tag in (
-            [tag for tag in self._contents if self._contents[tag].get('Object Type') in self._data_group_types]):
-            if base_level_tag == self._root_data_group if self._root_data_group else self._schema_name:
+        # If there's no root data group, logger dependency is declared and initialized at namespace-level
+        if self._root_data_group not in self._list_objects_of_type(self._data_group_types):
+            d = Data_stored_dependency('logger {}', self._namespace, 'std::shared_ptr<Courierr::Courierr>')
+        # 205-specific classes
+        for base_level_tag in self._list_objects_of_type(self._data_group_types):
+            if base_level_tag == self._root_data_group:
                 s = Struct(base_level_tag, self._namespace, superclass=self._fundamental_base_class)
                 self._add_member_headers(s)
                 self._add_function_overrides(s, self._fundamental_base_class)
+                d = Data_stored_dependency('logger', s, 'std::shared_ptr<Courierr::Courierr>')
             elif self._contents[base_level_tag].get('Object Type') == 'Grid Variables':
                 s = Struct(base_level_tag, self._namespace, superclass='GridVariablesBase')
                 self._add_member_headers(s)
@@ -604,8 +627,7 @@ class H_translator:
         self._add_performance_overloads()
 
         # Final passes through dictionary in order to add elements related to serialization
-        for base_level_tag in (
-            [tag for tag in self._contents if self._contents[tag].get('Object Type') == 'Enumeration']):
+        for base_level_tag in self._list_objects_of_type('Enumeration'):
             Enum_serialization(base_level_tag, 
                                self._namespace, 
                                self._contents[base_level_tag]['Enumerators'])
@@ -633,7 +655,7 @@ class H_translator:
                 includes += f'#include <{snake_style(r)}.h>'
                 includes += '\n'
             self._preamble.append(includes)
-        self._preamble.append('#include <string>\n#include <vector>\n#include <nlohmann/json.hpp>\n#include <typeinfo_205.h>\n')
+        self._preamble.append('#include <string>\n#include <vector>\n#include <nlohmann/json.hpp>\n#include <typeinfo_205.h>\n#include <courierr/courierr.h>\n')
 
     # .............................................................................................
     def _add_member_headers(self, data_element):
@@ -721,7 +743,7 @@ class H_translator:
                         f_args = list()
                         for ce in [c for c in gridstruct.child_entries if isinstance(c, Data_element)]:
                             f_args.append(' '.join(['double', ce.name]))
-                        f_args.append('Btwxt::Method performance_interpolation_method = Btwxt::Method::LINEAR')
+                        f_args.append('Btwxt::Method performance_interpolation_method = Btwxt::Method::linear')
                         Calculate_performance_overload(f_ret, f_args, '', entry, n_ret)
             else:
                 self._add_performance_overloads(entry)
