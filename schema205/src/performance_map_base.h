@@ -18,8 +18,10 @@ class PerformanceMapBase {
 public:
     PerformanceMapBase() = default;
     virtual ~PerformanceMapBase() = default;
-    PerformanceMapBase(const PerformanceMapBase& other) = default;
-    PerformanceMapBase& operator=(const PerformanceMapBase& other) = default;
+    PerformanceMapBase(const PerformanceMapBase& other) = delete;
+    PerformanceMapBase& operator=(const PerformanceMapBase& other) = delete;
+    PerformanceMapBase(PerformanceMapBase&& other) = default;
+    PerformanceMapBase& operator=(PerformanceMapBase&& other) = default;
 
   // ----------------------------------------------------------------------------------------------
   /// @brief	
@@ -48,14 +50,14 @@ public:
   /// @param	table TBD
   // ----------------------------------------------------------------------------------------------
     inline void add_data_table(std::vector<double>& table) {
-        btwxt.add_grid_point_data_set(table);
+        btwxt->add_grid_point_data_set(table);
     }
     
   // ----------------------------------------------------------------------------------------------
   /// @brief	
   // ----------------------------------------------------------------------------------------------
     inline void finalize_grid() {
-        btwxt = Btwxt::RegularGridInterpolator(grid_axes);
+        btwxt = std::make_unique<Btwxt::RegularGridInterpolator>(grid_axes, courier);
     }
 
   // ----------------------------------------------------------------------------------------------
@@ -68,9 +70,9 @@ public:
     {
         for (auto i = 0u; i < grid_axes.size(); i++)
         {
-            btwxt.set_axis_interpolation_method(i, performance_interpolation_method);
+            btwxt->set_axis_interpolation_method(i, performance_interpolation_method);
         }
-        return btwxt.get_value_at_target(target, table_index);
+        return btwxt->get_value_at_target(target, table_index);
     }
 
   // ----------------------------------------------------------------------------------------------
@@ -83,13 +85,13 @@ public:
     {
         for (auto i = 0u; i < grid_axes.size(); i++)
         {
-            btwxt.set_axis_interpolation_method(i, performance_interpolation_method);
+            btwxt->set_axis_interpolation_method(i, performance_interpolation_method);
         }
-        return btwxt.get_values_at_target(target);
+        return btwxt->get_values_at_target(target);
     }
 
 private:
-    Btwxt::RegularGridInterpolator btwxt;
+    std::unique_ptr<Btwxt::RegularGridInterpolator> btwxt;
     std::vector<std::vector<double>> grid_axes;
     std::shared_ptr<Courierr::Courierr> courier{std::make_shared<Courierr::SimpleCourierr>()};
 };
