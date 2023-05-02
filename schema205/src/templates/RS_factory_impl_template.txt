@@ -17,7 +17,7 @@ std::shared_ptr<{{ base_class_root_name }}Base> {{ factory_subclass }}::create_i
         p_rs = nullptr;
         std::ostringstream oss;
         oss << "Schema version " << schema_version << " is not supported.";
-        tk205::show_message(tk205::MsgSeverity::ERR_205, oss.str());
+        logger->error(oss.str());
     }
     else if (j["metadata"]["schema"] == "{{ subclass }}")
     {
@@ -29,7 +29,7 @@ std::shared_ptr<{{ base_class_root_name }}Base> {{ factory_subclass }}::create_i
         p_rs = nullptr;
         std::ostringstream oss;
         oss << RS_instance_file << " is not a valid instance of {{ subclass }}; returning nullptr.";
-        tk205::show_message(tk205::MsgSeverity::ERR_205, oss.str());
+        logger->error(oss.str());
     }
     return p_rs;
 }

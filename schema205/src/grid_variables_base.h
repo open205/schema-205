@@ -7,7 +7,6 @@
 #include <sstream>
 
 #include <performance_map_base.h>
-#include <error_handling_tk205.h>
 #include "grid-axis.h"
 
 // ------------------------------------------------------------------------------------------------
