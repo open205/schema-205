@@ -13,8 +13,6 @@
 
 class PerformanceMapBase {
 
-//namespace Courierr { class Courierr; };
-
 public:
     PerformanceMapBase() = default;
     virtual ~PerformanceMapBase() = default;
