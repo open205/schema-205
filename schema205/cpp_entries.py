@@ -172,7 +172,7 @@ class Owned_element_creation(Element_serialization):
             self._func += [f'if (x.{type_sel} == {enum}) {{',
                            f'\tx.{name} = std::make_unique<{selector_dict[type_sel][enum]}>();',
                            f'\tif (x.{name}) {{',
-                           f'\t\tx.{name}->initialize(j.at("{name}"), {root_data_group}::logger);',
+                           f'\t\tx.{name}->initialize(j.at("{name}"));',
                            '\t}',
                            '}']
 
@@ -206,7 +206,7 @@ class Serialize_from_init_func(Element_serialization):
 # -------------------------------------------------------------------------------------------------
 class Performance_map_impl(Element_serialization):
 
-    def __init__(self, name, parent, populates_self=False):
+    def __init__(self, name, parent, root_data_group, populates_self=False):
         super().__init__(name, None, parent, False)
         if populates_self:
             self._func = f'{name}.populate_performance_map(this);\n'
@@ -238,10 +238,10 @@ class Grid_axis_impl(Implementation_entry):
 # -------------------------------------------------------------------------------------------------
 class Grid_axis_finalize(Implementation_entry):
 
-    def __init__(self, name, parent):
+    def __init__(self, name, parent, root_data_group):
         super().__init__(name, parent)
         self._func = [
-            f'performance_map->finalize_grid();\n']
+            f'performance_map->finalize_grid({root_data_group}::logger);\n']
 
     # .............................................................................................
     @property
@@ -350,7 +350,7 @@ class CPP_translator:
                     # In the special case of a performance_map subclass, add calls to its 
                     # members' Populate_performance_map functions
                     if entry.superclass == 'PerformanceMapBase':
-                        Performance_map_impl(e.name, s)
+                        Performance_map_impl(e.name, s, root_data_group)
             # Initialize static members
             if (isinstance(entry, Data_element_static_metainfo)):
                 Data_element_static_initialization(entry, self._namespace)
@@ -379,11 +379,11 @@ class CPP_translator:
                             else:
                                 Element_serialization(e.name, e.type, m, e._is_required, root_data_group)
                             if entry.parent.superclass == 'PerformanceMapBase':
-                                Performance_map_impl(e.name, m, populates_self=True)
+                                Performance_map_impl(e.name, m, root_data_group, populates_self=True)
                   # Special case of grid_axis_base needs a finalize function after all grid axes 
                   # are added
                 if entry.parent.superclass == 'GridVariablesBase':
-                    Grid_axis_finalize('', m)
+                    Grid_axis_finalize('', m, root_data_group)
             if isinstance(entry, Calculate_performance_overload):
                 m = Member_function_definition(entry, self._namespace)
                 for e in [c for c in entry.parent.child_entries if isinstance(c, Data_element)]:
