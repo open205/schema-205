@@ -91,7 +91,6 @@ public:
 private:
     std::unique_ptr<Btwxt::RegularGridInterpolator> btwxt;
     std::vector<std::vector<double>> grid_axes;
-    //std::shared_ptr<Courierr::Courierr> courier{std::make_shared<Courierr::SimpleCourierr>()};
 };
 
 #endif
