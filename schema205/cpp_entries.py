@@ -338,19 +338,21 @@ class CPP_translator:
             # Shortcut to avoid creating "from_json" entries for the main class, but create them
             # for all other classes. The main class relies on an "Initialize" function instead,
             # dealt-with in the next block with function overrides.
-            if (isinstance(entry, Struct) or isinstance(entry, Lookup_struct)) and entry.name not in self._namespace._name:
-                # Create the "from_json" function definition (header)
-                s = Struct_serialization(entry.name, self._namespace)
-                for e in [c for c in entry.child_entries if isinstance(c, Data_element)]:
-                    # In function body, create each "get_to" for individual data elements
-                    if 'unique_ptr' in e.type:
-                        Owned_element_creation(e.name, s, e._selector, root_data_group)
-                    else:
-                        Owned_element_serialization(e.name, e.type, s, e._is_required, root_data_group)
-                    # In the special case of a performance_map subclass, add calls to its 
-                    # members' Populate_performance_map functions
-                    if entry.superclass == 'PerformanceMapBase':
-                        Performance_map_impl(e.name, s, root_data_group)
+            if ((isinstance(entry, Struct) or isinstance(entry, Lookup_struct))
+               and entry.name not in self._namespace._name):
+                if any([isinstance(c, Data_element) for c in entry.child_entries]):
+                    # Create the "from_json" function definition (header)
+                    s = Struct_serialization(entry.name, self._namespace)
+                    for e in [c for c in entry.child_entries if isinstance(c, Data_element)]:
+                        # In function body, create each "get_to" for individual data elements
+                        if 'unique_ptr' in e.type:
+                            Owned_element_creation(e.name, s, e._selector, root_data_group)
+                        else:
+                            Owned_element_serialization(e.name, e.type, s, e._is_required, root_data_group)
+                        # In the special case of a performance_map subclass, add calls to its 
+                        # members' Populate_performance_map functions
+                        if entry.superclass == 'PerformanceMapBase':
+                            Performance_map_impl(e.name, s, root_data_group)
             # Initialize static members
             if (isinstance(entry, Data_element_static_metainfo)):
                 Data_element_static_initialization(entry, self._namespace)
