@@ -1,5 +1,6 @@
 import os
 import re
+from pathlib import Path
 from schema205.file_io import load
 from schema205.util import snake_style
 
@@ -527,8 +528,9 @@ class H_translator:
     # .............................................................................................
     def translate(self, input_file_path, container_class_name, schema_base_class_name=None):
         '''X'''
-        self._source_dir = os.path.dirname(os.path.abspath(input_file_path))
-        self._schema_name = os.path.splitext(os.path.splitext(os.path.basename(input_file_path))[0])[0]
+        abs_input_file_path = Path(input_file_path).resolve()
+        self._source_dir = abs_input_file_path.parent #os.path.dirname(os.path.abspath(input_file_path))
+        self._schema_name = Path(abs_input_file_path.stem).stem #os.path.splitext(os.path.splitext(os.path.basename(input_file_path))[0])[0]
         self._references.clear()
         self._fundamental_data_types.clear()
         self._preamble.clear()
@@ -685,7 +687,7 @@ class H_translator:
         refs.insert(0,self._schema_name) # prepend the current file to references list so that 
                                          # objects are found locally first
         for ref_file in refs:
-            ext_dict = load(os.path.join(self._source_dir, ref_file + '.schema.yaml'))
+            ext_dict = load(self._source_dir.joinpath(ref_file).with_suffix('.schema.yaml')) #load(os.path.join(self._source_dir, ref_file + '.schema.yaml'))
             external_objects = list()
             for base_item in [name for name in ext_dict if ext_dict[name]['Object Type'] in (
                 ['Enumeration',
@@ -708,7 +710,7 @@ class H_translator:
     # .............................................................................................
     def _add_function_overrides(self, parent_node, base_class_name):
         '''Get base class virtual functions to be overridden.'''
-        base_class = os.path.join(os.path.dirname(__file__), 
+        base_class = Path(__file__).parent.joinpath( 
                                   'libtk205_fixed_src',
                                   'include', 
                                   f'{snake_style(base_class_name)}.h')
