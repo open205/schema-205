@@ -9,48 +9,48 @@ import yaml
 
 import schema205.md.schema_table as schema_table
 
-def string_out_tables(instance, make_headers=False, base_level=1):
+def string_out_tables(instance, base_level=1, style="2 Columns"):
   struct = schema_table.load_structure_from_object(instance)
   output = None
   with io.StringIO() as output_file:
     # Data Types
     if len(struct['data_types']) > 0:
-      table_title = "Data Types"
-      if make_headers:
-        output_file.writelines(schema_table.write_header(table_title, base_level))
-        caption = None
-      else:
-        caption = table_title
-      output_file.writelines(schema_table.data_types_table(struct['data_types'], caption=caption))
+      output_file.writelines(schema_table.write_header("Data Types", base_level))
+      output_file.writelines(schema_table.create_table_from_list(
+        ["Data Type", "Description", "JSON Schema Type", "Examples"],
+        struct['data_types']),
+        level=base_level + 1,
+        style=style)
     # String Types
     if len(struct['string_types']) > 0:
-      table_title = "String Types"
-      output_file.writelines(schema_table.write_header(table_title, base_level))
-      output_file.writelines(schema_table.string_types_table(struct['string_types'], caption=caption))
+      output_file.writelines(schema_table.write_header("String Types", base_level))
+      output_file.writelines(schema_table.create_table_from_list(
+        ["String Type", "Description", "JSON Schema Pattern", "Examples"],
+        struct['string_types']),
+        level=base_level + 1,
+        style=style)
     # Enumerations
     output_file.writelines(schema_table.write_header("Enumerations", base_level))
     if len(struct['enumerations']) > 0:
       for enum, enumerators in struct['enumerations'].items():
-        table_title = enum
-        if make_headers:
-          output_file.writelines(schema_table.write_header(table_title, base_level))
-          caption = None
-        else:
-          caption = table_title
-        output_file.writelines(schema_table.enumerators_table(enumerators, caption=caption))
+          output_file.writelines(schema_table.create_table_from_list(
+            ["Enumerator", "Description", "Notes"],
+            enumerators,
+            description=enum,
+            level=base_level + 1,
+            style=style))
     else:
       output_file.writelines(["None.","\n"*2])
     # Data Groups
     output_file.writelines(schema_table.write_header("Data Groups", base_level))
     if len(struct['data_groups']) > 0:
       for dg, data_elements in struct['data_groups'].items():
-        table_title = dg
-        if make_headers:
-          output_file.writelines(schema_table.write_header(table_title, base_level))
-          caption = None
-        else:
-          caption = table_title
-        output_file.writelines(schema_table.data_groups_table(data_elements, caption=caption))
+          output_file.writelines(schema_table.create_table_from_list(
+            ["Name", "Description", "Data Type", "Units", "Constraints", "Req", "Notes"],
+            data_elements,
+            description=dg,
+            level=base_level + 1,
+            style=style))
     else:
       output_file.writelines(["None.","\n"*2])
     output = output_file.getvalue()

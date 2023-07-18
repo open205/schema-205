@@ -169,8 +169,11 @@ def make_add_schema_table(schema_dir=None, error_log=None):
     def add_schema_table(
             source,
             table_name,
-            caption=None,
-            header_level_and_content=None):
+            description=None,
+            level=1,
+            style="2 Columns"):
+        if description == None:
+            description = table_name
         args_str = make_args_string(locals())
         err, data = load_yaml_source(schema_dir, source, args_str)
         if err is not None:
@@ -183,25 +186,18 @@ def make_add_schema_table(schema_dir=None, error_log=None):
             return log_error(
                     make_error_string(err, args_str),
                     error_log)
-        table_type_to_fn = {
-                'data_types': schema_table.data_types_table,
-                'string_types': schema_table.string_types_table,
-                'enumerations': schema_table.enumerators_table,
-                'data_groups': schema_table.data_groups_table,
+        columns = {
+                'data_types': ["Data Type", "Description", "JSON Schema Type", "Examples"],
+                'string_types': ["String Type", "Description", "JSON Schema Pattern", "Examples"],
+                'enumerations': ["Enumerator", "Description", "Notes"],
+                'data_groups': ["Name", "Description", "Data Type", "Units", "Constraints", "Req", "Notes"],
                 }
-        gen_table = table_type_to_fn.get(table_type, None)
-        if gen_table is None:
-            return log_error(
-                    make_error_string(
-                        f"Unhandled table type \"{table_name}\"!",
-                        args_str),
-                    error_log)
-        if caption is None:
-            caption = table_name
-        return render_header(header_level_and_content) + gen_table(
+        return schema_table.create_table_from_list(
+                columns[table_type],
                 target,
-                caption=caption,
-                add_training_ws=False)
+                description=description,
+                level=level,
+                style=style)
     return add_schema_table
 
 def make_add_yaml_table():
@@ -236,12 +232,12 @@ def make_add_data_model(schema_dir, error_log):
         RETURN: string, returns a string representation of the given data models
     """
     schema_dir = determine_schema_dir(schema_dir)
-    def add_data_model(source, make_headers=False, base_level=1):
+    def add_data_model(source, base_level=1, style="2 Columns"):
         args_str = make_args_string(locals())
         err, data = load_yaml_source(schema_dir, source, args_str)
         if err is not None:
             return log_error(err, error_log)
-        return markdown.string_out_tables(data, make_headers, base_level)
+        return markdown.string_out_tables(data, base_level, style=style)
     return add_data_model
 
 
