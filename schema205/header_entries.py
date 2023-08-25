@@ -746,7 +746,7 @@ class H_translator:
                         f_args = list()
                         for ce in [c for c in gridstruct.child_entries if isinstance(c, Data_element)]:
                             f_args.append(' '.join(['double', ce.name]))
-                        f_args.append('Btwxt::Method performance_interpolation_method = Btwxt::Method::linear')
+                        f_args.append('Btwxt::InterpolationMethod performance_interpolation_method = Btwxt::InterpolationMethod::linear')
                         Calculate_performance_overload(f_ret, f_args, '', entry, n_ret)
             else:
                 self._add_performance_overloads(entry)
