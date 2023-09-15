@@ -3,7 +3,7 @@ import os
 import sys
 from .util import snake_style
 
-file_loader = FileSystemLoader(os.path.join(os.path.dirname(__file__), 'src', 'templates'))
+file_loader = FileSystemLoader(os.path.join(os.path.dirname(__file__), 'generation_templates'))
 env = Environment(loader=file_loader)
 
 def generate_factory_headers(RS_subclass, base_class, RS_container):
