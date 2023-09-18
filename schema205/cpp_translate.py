@@ -51,7 +51,7 @@ def translate_all_to_source(input_dir_path, output_header_dir, output_src_dir, c
         if 'RS' in file_name_root:
             factory_header = generate_factory_headers(file_name_root, 'RSInstance', container)
             dump(factory_header, os.path.join(output_header_dir, snake_style(file_name_root) + '_factory.h'))
-            factory_src = generate_factory_source(file_name_root, 'RSInstance', container)
+            factory_src = generate_factory_source(file_name_root, 'RSInstance', container, 'Ashrae205')
             dump(factory_src, os.path.join(output_src_dir, snake_style(file_name_root) + '_factory.cpp'))
     # lib_h, lib_cpp = generate_library_files(
     #     [os.path.splitext(os.path.splitext(f)[0])[0] for f in [s for s in  src_files if 'RS' in s]])
