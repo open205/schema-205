@@ -572,7 +572,7 @@ class H_translator:
                                              'Description')
         # If there's no root data group, create a class to hold the shared_ptr so it can be initialized later
         if self._root_data_group not in self._list_objects_of_type(self._data_group_types):
-            self._root_data_group = self._schema_name.title() # simple CamelCase assuming no separators
+            self._root_data_group = self._schema_name # assuming schema file name is CamelCase
             s = Struct(self._root_data_group, self._namespace)
             d = Data_stored_dependency('logger', s, 'std::shared_ptr<Courierr::Courierr>')
         # 205-specific classes
