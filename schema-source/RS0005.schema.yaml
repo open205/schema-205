@@ -116,14 +116,19 @@ LookupVariables:
   Data Elements:
     efficiency:
       Description: "Efficiency of motor"
-      Data Type: "[Numeric/Null][1..]"
+      Data Type: "[Numeric][1..]"
       Constraints: [">=0.0", "<=1.0"]
       Units: "-"
       Notes: "Defined as the ratio of mechanical shaft power to electrical input power of the motor"
       Required: True
     power_factor:
       Description: "Power factor of the motor"
-      Data Type: "[Numeric/Null][1..]"
+      Data Type: "[Numeric][1..]"
       Constraints: [">=0.0", "<=1.0"]
+      Units: "-"
+      Required: True
+    operation_state:
+      Description: "The operation state at the operating conditions"
+      Data Type: "[<OperationState>]"
       Units: "-"
       Required: True
