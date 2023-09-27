@@ -52,7 +52,7 @@ ProductInformation:
     refrigerant:
       Description: "Refrigerant used"
       Data Type: "String"
-      Notes: "The string shall start with 'R-' and then include the refrigerant number designation conforming to ANSI/ASHRAE Standard 34-2019[@ASHRAE34]"
+      Notes: "The string shall start with 'R-' and then include the refrigerant number designation conforming to ANSI/ASHRAE Standard 34[@ASHRAE34]"
     compressor_type:
       Description: "Type of compressor"
       Data Type: "<CompressorType>"
@@ -125,7 +125,7 @@ GridVariablesCooling:
     compressor_sequence_number:
       Description: "Index indicating the relative capacity order of the compressor speed/stage expressed in order from lowest capacity (starting at 1) to highest capacity"
       Data Type: "[Integer][1..]"
-      Constraints: ">=0"
+      Constraints: ">=1"
       Units: "-"
       Notes: ["If `compressor_speed_control_type` is `DISCRETE`, sequence numbers shall be provided for each discrete stage of the compressor(s)",
               "If `compressor_speed_control_type` is `CONTINUOUS`, sufficient sequence numbers shall be provided to capture the continuous operation of the compressor(s)"]
@@ -142,26 +142,31 @@ LookupVariablesCooling:
   Data Elements:
     gross_total_capacity:
       Description: "Total heat removed by the indoor coil"
-      Data Type: "[Numeric/Null][1..]"
+      Data Type: "[Numeric][1..]"
       Constraints: ">=0.0"
       Units: "W"
       Required: True
       Notes: "Shall not include fan heat"
     gross_sensible_capacity:
       Description: "Sensible heat removed by the indoor coil"
-      Data Type: "[Numeric/Null][1..]"
+      Data Type: "[Numeric][1..]"
       Constraints: ">=0.0"
       Units: "W"
       Required: True
       Notes: "Shall not include fan heat"
     gross_power:
       Description: "Gross power draw (of the outdoor unit)"
-      Data Type: "[Numeric/Null][1..]"
+      Data Type: "[Numeric][1..]"
       Constraints: ">0.0"
       Units: "W"
       Required: True
       Notes: ["Includes compressor, outdoor fan, and any auxiliary power used by the unit's controls and any sump heater",
               "Shall not include power drawn by the indoor fan"]
+    operation_state:
+      Description: "The operation state at the operating conditions"
+      Data Type: "[<OperationState>]"
+      Units: "-"
+      Required: True
 
 PerformanceMapStandby:
   Object Type: "Performance Map"
@@ -190,7 +195,7 @@ LookupVariablesStandby:
   Data Elements:
     gross_power:
       Description: "Gross power draw (of the outdoor unit)"
-      Data Type: "[Numeric/Null][1..]"
+      Data Type: "[Numeric][1..]"
       Constraints: ">0.0"
       Units: "W"
       Required: True
