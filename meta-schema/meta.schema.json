@@ -248,7 +248,7 @@
     },
     "DataTypePattern": {
       "type": "string",
-      "pattern": "((Numeric|String|Integer|Boolean|Null){1}(\\/(Numeric|String|Integer|Boolean|Null))*|(UUID|Date|Timestamp|Version|Pattern)|\\{[A-Z]([A-Z]|[a-z]|[0-9])*\\}|<[A-Z]([A-Z]|[a-z]|[0-9])*>)|\\(((Numeric|String|Integer|Boolean|Null){1}(\\/(Numeric|String|Integer|Boolean|Null))*|(UUID|Date|Timestamp|Version|Pattern)|\\{[A-Z]([A-Z]|[a-z]|[0-9])*\\}|<[A-Z]([A-Z]|[a-z]|[0-9])*>)(,\\s*((Numeric|String|Integer|Boolean|Null){1}(\\/(Numeric|String|Integer|Boolean|Null))*|(UUID|Date|Timestamp|Version|Pattern)|\\{[A-Z]([A-Z]|[a-z]|[0-9])*\\}|<[A-Z]([A-Z]|[a-z]|[0-9])*>))+\\)|\\[((Numeric|String|Integer|Boolean|Null){1}(\\/(Numeric|String|Integer|Boolean|Null))*|(UUID|Date|Timestamp|Version|Pattern)|\\{[A-Z]([A-Z]|[a-z]|[0-9])*\\}|<[A-Z]([A-Z]|[a-z]|[0-9])*>)\\]"
+      "pattern": "((Numeric|String|Integer|Boolean){1}(\\/(Numeric|String|Integer|Boolean))*|(UUID|Date|Timestamp|Version|Pattern)|\\{[A-Z]([A-Z]|[a-z]|[0-9])*\\}|<[A-Z]([A-Z]|[a-z]|[0-9])*>)|\\(((Numeric|String|Integer|Boolean){1}(\\/(Numeric|String|Integer|Boolean))*|(UUID|Date|Timestamp|Version|Pattern)|\\{[A-Z]([A-Z]|[a-z]|[0-9])*\\}|<[A-Z]([A-Z]|[a-z]|[0-9])*>)(,\\s*((Numeric|String|Integer|Boolean){1}(\\/(Numeric|String|Integer|Boolean))*|(UUID|Date|Timestamp|Version|Pattern)|\\{[A-Z]([A-Z]|[a-z]|[0-9])*\\}|<[A-Z]([A-Z]|[a-z]|[0-9])*>))+\\)|\\[((Numeric|String|Integer|Boolean){1}(\\/(Numeric|String|Integer|Boolean))*|(UUID|Date|Timestamp|Version|Pattern)|\\{[A-Z]([A-Z]|[a-z]|[0-9])*\\}|<[A-Z]([A-Z]|[a-z]|[0-9])*>)\\]"
     },
     "DataElementAttributes": {
       "type": "object",
@@ -353,8 +353,8 @@
         "Data Type": {
           "type": "string",
           "enum": [
-            "[Numeric/Null][1..]",
-            "[Integer/Null][1..]"
+            "[Numeric][1..]",
+            "[Integer][1..]"
           ]
         },
         "Units": {
