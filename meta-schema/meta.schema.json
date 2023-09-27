@@ -354,7 +354,8 @@
           "type": "string",
           "enum": [
             "[Numeric][1..]",
-            "[Integer][1..]"
+            "[Integer][1..]",
+            "[<OperationState>]"
           ]
         },
         "Units": {
