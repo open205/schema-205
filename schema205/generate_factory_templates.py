@@ -10,17 +10,19 @@ def generate_factory_headers(RS_subclass, base_class, RS_container):
     h_template = env.get_template('RS_factory_header_template.txt')
     factory_subclass = f'{RS_subclass}Factory'
     base_class_root_name = base_class[:-4] if base_class.endswith('Base') else base_class
-    return h_template.render(include_guard=snake_style(factory_subclass).upper(), 
+    return h_template.render(include_guard=snake_style(factory_subclass).upper(),
                              base_class_file_name=snake_style(base_class_root_name),
                              base_class_root_name=base_class_root_name,
                              factory_subclass=factory_subclass,
                              container=RS_container)
 
-def generate_factory_source(RS_subclass, base_class, RS_container):
+def generate_factory_source(RS_subclass, base_class, RS_container, support_class):
     factory_subclass = f'{RS_subclass}Factory'
     impl_template = env.get_template('RS_factory_impl_template.txt')
     base_class_root_name = base_class[:-4] if base_class.endswith('Base') else base_class
     return impl_template.render(factory_subclass=factory_subclass,
+                                support_structures_file=snake_style(support_class),
+                                support_structure_class=support_class,
                                 subclass=RS_subclass,
                                 subclass_file=snake_style(RS_subclass),
                                 base_class_root_name=base_class_root_name,

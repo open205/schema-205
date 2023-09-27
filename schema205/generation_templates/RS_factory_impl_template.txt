@@ -21,6 +21,9 @@ std::shared_ptr<{{ base_class_root_name }}Base> {{ factory_subclass }}::create_i
     }
     else if (j["metadata"]["schema"] == "{{ subclass }}")
     {
+        if ({{ support_structures_file }}_ns::{{ support_structure_class }}::logger == nullptr) {
+            {{ support_structures_file }}_ns::{{ support_structure_class }}::logger = logger;
+        }
         {{ subclass_file }}_ns::{{ subclass }}::logger = logger;
         p_rs->initialize(j);
     }

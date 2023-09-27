@@ -558,21 +558,23 @@ class H_translator:
         # Collect member objects and their children
         for base_level_tag in self._list_objects_of_type('Meta'):
             s = Struct(base_level_tag, self._namespace)
-            d = Data_element_static_metainfo(base_level_tag.lower(), 
-                                             s, 
+            d = Data_element_static_metainfo(base_level_tag.lower(),
+                                             s,
                                              self._contents[base_level_tag],
                                              'Title')
-            d = Data_element_static_metainfo(base_level_tag.lower(), 
-                                             s, 
+            d = Data_element_static_metainfo(base_level_tag.lower(),
+                                             s,
                                              self._contents[base_level_tag],
                                              'Version')
-            d = Data_element_static_metainfo(base_level_tag.lower(), 
-                                             s, 
+            d = Data_element_static_metainfo(base_level_tag.lower(),
+                                             s,
                                              self._contents[base_level_tag],
                                              'Description')
-        # If there's no root data group, logger dependency is declared and initialized at namespace-level
+        # If there's no root data group, create a class to hold the shared_ptr so it can be initialized later
         if self._root_data_group not in self._list_objects_of_type(self._data_group_types):
-            d = Data_stored_dependency('logger {}', self._namespace, 'std::shared_ptr<Courierr::Courierr>')
+            self._root_data_group = self._schema_name # assuming schema file name is CamelCase
+            s = Struct(self._root_data_group, self._namespace)
+            d = Data_stored_dependency('logger', s, 'std::shared_ptr<Courierr::Courierr>')
         # 205-specific classes
         for base_level_tag in self._list_objects_of_type(self._data_group_types):
             if base_level_tag == self._root_data_group:
