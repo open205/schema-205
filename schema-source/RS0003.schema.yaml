@@ -252,16 +252,21 @@ LookupVariablesContinuous:
   Data Elements:
     impeller_rotational_speed:
       Description: "Rotational speed of fan impeller"
-      Data Type: "[Numeric/Null][1..]"
+      Data Type: "[Numeric][1..]"
       Constraints: ">=0.0"
       Units: "rev/s"
       Required: True
     shaft_power:
       Description: "Mechanical shaft power input to fan assembly"
-      Data Type: "[Numeric/Null][1..]"
+      Data Type: "[Numeric][1..]"
       Constraints: ">=0.0"
       Units: "W"
       Notes: "Does not include the mechanical efficiency of any mechanical drive used to modify rotational speed between the motor and impeller"
+      Required: True
+    operation_state:
+      Description: "The operation state at the operating conditions"
+      Data Type: "[<OperationState>]"
+      Units: "-"
       Required: True
 
 PerformanceMapDiscrete:
@@ -299,20 +304,25 @@ LookupVariablesDiscrete:
   Data Elements:
     standard_air_volumetric_flow_rate:
       Description: "Volumetric air flow rate through fan assembly at standard air conditions"
-      Data Type: "[Numeric/Null][1..]"
+      Data Type: "[Numeric][1..]"
       Constraints: ">=0.0"
       Units: "m3/s"
       Required: True
     shaft_power:
       Description: "Mechanical shaft power input to fan assembly"
-      Data Type: "[Numeric/Null][1..]"
+      Data Type: "[Numeric][1..]"
       Constraints: ">=0.0"
       Units: "W"
       Notes: "Does not include the mechanical efficiency of any mechanical drive used to modify rotational speed between the motor and impeller"
       Required: True
     impeller_rotational_speed:
       Description: "Rotational speed of fan impeller"
-      Data Type: "[Numeric/Null][1..]"
+      Data Type: "[Numeric][1..]"
       Constraints: ">=0.0"
       Units: "rev/s"
+      Required: True
+    operation_state:
+      Description: "The operation state at the operating conditions"
+      Data Type: "[<OperationState>]"
+      Units: "-"
       Required: True
