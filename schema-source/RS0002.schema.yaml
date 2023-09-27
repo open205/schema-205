@@ -24,13 +24,13 @@ AHRI210240TestStandardYear:
   Object Type: "Enumeration"
   Enumerators:
     IP_2008:
-      Description: "Rating is based on 2008 AHRI standard[@AHRI2102008]"
+      Description: "Ratings defined using IP unit version of the standard, 2008 edition.[@AHRI2102008]"
       Display Text: "2008"
     IP_2017:
-      Description: "Rating is based on 2017 AHRI standard[@AHRI2102017]"
+      Description: "Ratings defined using IP unit version of the standard, 2017 edition.[@AHRI2102017]"
       Display Text: "2017"
     IP_2023:
-      Description: "Rating is based on 2023 AHRI standard[@AHRI2102023]"
+      Description: "Ratings defined using IP unit version of the standard, 2023 edition.[@AHRI2102023]"
       Display Text: "2023"
 
 AHRI210240CompressorStagingType:
@@ -50,14 +50,17 @@ AHRI340360TestStandardYear:
   Object Type: "Enumeration"
   Enumerators:
     IP_2007:
-      Description: "Rating is based on 2007 AHRI standard[@AHRI3402007]"
+      Description: "Ratings defined using IP unit version of the standard, 2007 edition.[@AHRI3402007]"
       Display Text: "2007"
     IP_2015:
-      Description: "Rating is based on 2015 AHRI standard[@AHRI3402015]"
+      Description: "Ratings defined using IP unit version of the standard, 2015 edition.[@AHRI3402015]"
       Display Text: "2015"
     IP_2019:
-      Description: "Rating is based on 2019 AHRI standard[@AHRI3402019]"
+      Description: "Ratings defined using IP unit version of the standard, 2019 edition.[@AHRI3402019]"
       Display Text: "2019"
+    IP_2022:
+      Description: "Ratings defined using IP unit version of the standard, 2022 edition.[@AHRI3402022]"
+      Display Text: "2022"
 
 AHRI340360CapacityControlType:
   Object Type: "Enumeration"
@@ -363,3 +366,4 @@ Performance:
     dx_system_representation:
       Description: "The corresponding Standard 205 direct expansion system representation"
       Data Type: "{RS0004}"
+      Required: True
