@@ -118,9 +118,14 @@ LookupVariables:
   Data Elements:
     efficiency:
       Description: "Efficiency of drive"
-      Data Type: "[Numeric/Null][1..]"
+      Data Type: "[Numeric][1..]"
       Constraints: [">=0.0","<=1.0"]
       Units: "-"
       Notes: ["Defined as the ratio of electrical output power (to the motor) to electrical input power (to the drive)",
               "Input power shall include any power required to provide active air cooling for the drive"]
+      Required: True
+    operation_state:
+      Description: "The operation state at the operating conditions"
+      Data Type: "[<OperationState>]"
+      Units: "-"
       Required: True
