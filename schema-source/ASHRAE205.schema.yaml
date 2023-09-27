@@ -48,13 +48,6 @@ String:
   Examples:
     - "Indirect evaporative cooler"
 
-"Null":
-  Object Type: "Data Type"
-  Description: "Used to represent a missing value. Shall only be used in combination with other data types, e.g., `Numeric/Null`."
-  JSON Schema Type: "null"
-  Examples:
-    - "null"
-
 UUID:
   Object Type: "String Type"
   Description: "An effectively unique character string conforming to ITU-T X.667[@ITUUUID]."
@@ -187,6 +180,16 @@ ConcentrationType:
     BY_MASS:
       Description: "Concentration is defined as a fraction of total liquid mixture mass"
       Display Text: "By Mass"
+
+OperationState:
+  Object Type: "Enumeration"
+  Enumerators:
+    NORMAL:
+      Description: "Indicates that the equipment is in normal operating state"
+      Display Text: "Normal"
+    STANDBY:
+      Description: "Indicates that the equipment is in standby operating state"
+      Display Text: "Standby"
 
 #Common Data Groups
 Metadata:
