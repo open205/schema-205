@@ -63,12 +63,14 @@ Performance:
       Constraints: ">=0.0"
       Notes: "Operational limit set to prevent overheating or overcurrent, not the rated name plate power"
       Required: True
+      Scalable: True
     standby_power:
       Description: "Power draw when motor is not operating"
       Data Type: "Numeric"
       Units: "W"
       Constraints: ">=0.0"
       Required: True
+      Scalable: True
     number_of_poles:
       Description: "Number of poles"
       Data Type: "Integer"
@@ -77,6 +79,10 @@ Performance:
     drive_representation:
       Description: "The corresponding Standard 205 drive representation"
       Data Type: "{RS0006}"
+    scaling:
+      Description: "Specifies the range the performance data can be scaled to represent different capacity equipment"
+      Data Type: "{Scaling}"
+      Notes: "If not present, scaling of the performance data is not allowed"
     performance_map:
       Description: "Data group describing motor performance when operating"
       Data Type: "{PerformanceMap}"
@@ -104,6 +110,7 @@ GridVariables:
       Constraints: ">=0.0"
       Units: "W"
       Required: True
+      Scalable: True
     shaft_rotational_speed:
       Description: "Rotational speed of shaft"
       Data Type: "[Numeric][1..]"
