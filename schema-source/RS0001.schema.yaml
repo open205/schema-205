@@ -242,6 +242,10 @@ Performance:
       Constraints: [">=0.0", "<=1.0"]
       Required: True
       Notes: "Used when the unit cycles to meet a setpoint"
+    scaling:
+      Description: "Specifies the range the performance data can be scaled to represent different capacity equipment"
+      Data Type: "{Scaling}"
+      Notes: "If not present, scaling of the performance data is not allowed"
     performance_map_cooling:
       Description: "Data group describing cooling performance over a range of conditions"
       Data Type: "{PerformanceMapCooling}"
