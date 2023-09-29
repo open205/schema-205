@@ -218,3 +218,7 @@ Performance:
       Description: "The corresponding Standard 205 direct expansion system representation"
       Data Type: "{RS0004}"
       Required: True
+    scaling:
+      Description: "Specifies the range the performance data can be scaled to represent different capacity equipment"
+      Data Type: "{Scaling}"
+      Notes: "If not present, scaling of the performance data is not allowed"
