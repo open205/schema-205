@@ -117,6 +117,7 @@ Performance:
       Units: "m3/s"
       Notes: "Used for calculating component wet pressure difference"
       Required: True
+      Scalable: True
     is_enclosed:
       Description: "Fan assembly is enclosed"
       Data Type: "Boolean"
@@ -201,6 +202,7 @@ AssemblyComponent:
       Notes: ["Corresponds to additional pressure difference at `nominal_standard_air_volumetric_flow_rate`",
               "If unknown, a value of 75 Pa shall be used"]
       Required: True
+      Scalable: True
 
 SystemCurve:
   Object Type: "Data Group"
@@ -211,12 +213,14 @@ SystemCurve:
       Constraints: ">=0.0"
       Units: "m3/s"
       Required: True
+      Scalable: True
     static_pressure_difference:
       Description: "Static pressure difference of an air distribution system"
       Data Type: "[Numeric][2..]"
       Constraints: ">=0.0"
       Units: "Pa"
       Required: True
+      Scalable: True
 
 PerformanceMapContinuous:
   Object Type: "Performance Map"
@@ -239,6 +243,7 @@ GridVariablesContinuous:
       Constraints: ">=0.0"
       Units: "m3/s"
       Required: True
+      Scalable: True
     static_pressure_difference:
       Description: "External static pressure across fan assembly at dry coil conditions"
       Data Type: "[Numeric][1..]"
@@ -263,6 +268,7 @@ LookupVariablesContinuous:
       Units: "W"
       Notes: "Does not include the mechanical efficiency of any mechanical drive used to modify rotational speed between the motor and impeller"
       Required: True
+      Scalable: True
     operation_state:
       Description: "The operation state at the operating conditions"
       Data Type: "[<OperationState>]"
@@ -308,6 +314,7 @@ LookupVariablesDiscrete:
       Constraints: ">=0.0"
       Units: "m3/s"
       Required: True
+      Scalable: True
     shaft_power:
       Description: "Mechanical shaft power input to fan assembly"
       Data Type: "[Numeric][1..]"
@@ -315,6 +322,7 @@ LookupVariablesDiscrete:
       Units: "W"
       Notes: "Does not include the mechanical efficiency of any mechanical drive used to modify rotational speed between the motor and impeller"
       Required: True
+      Scalable: True
     impeller_rotational_speed:
       Description: "Rotational speed of fan impeller"
       Data Type: "[Numeric][1..]"
