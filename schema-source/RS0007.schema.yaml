@@ -74,6 +74,10 @@ Performance:
       Units: "-"
       Constraints: ">0.0"
       Required: True
+    scaling:
+      Description: "Specifies the range the performance data can be scaled to represent different capacity equipment"
+      Data Type: "{Scaling}"
+      Notes: "If not present, scaling of the performance data is not allowed"
     performance_map:
       Description: "Data group describing drive performance when operating"
       Data Type: "{PerformanceMap}"
@@ -100,6 +104,7 @@ GridVariables:
       Constraints: ">=0.0"
       Units: "W"
       Required: True
+      Scalable: True
 
 LookupVariables:
   Object Type: "Lookup Variables"
