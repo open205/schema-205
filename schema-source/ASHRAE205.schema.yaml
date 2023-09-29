@@ -271,4 +271,18 @@ LiquidComponent:
       Constraints: [">=0.0", "<=1.0"]
       Notes: "If omitted, assume equal distribution with any other component with no defined concentration (e.g., can be left blank for the primary component)"
 
-
+Scaling:
+  Object Type: "Data Group"
+  Data Elements:
+    minimum:
+      Description: "Minimum scaling factor"
+      Data Type: "Numeric"
+      Units: "-"
+      Constraints: [">0.0", "<=1.0"]
+      Notes: "If not specified, may be scaled down to any value greater than zero"
+    maximum:
+      Description: "Maximum scaling factor"
+      Data Type: "Numeric"
+      Units: "-"
+      Constraints: [">=1.0"]
+      Notes: "If not specified, unlimited"
