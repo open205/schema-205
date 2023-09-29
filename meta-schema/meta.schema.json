@@ -143,6 +143,9 @@
         }
       ]
     },
+    "Scalable":{
+      "type": "boolean"
+    },
     "Notes": {
       "oneOf": [
         {
@@ -268,6 +271,9 @@
         "Required": {
           "$ref": "meta.schema.json#/definitions/Required"
         },
+        "Scalable": {
+          "$ref": "meta.schema.json#/definitions/Scalable"
+        },        
         "Notes": {
           "$ref": "meta.schema.json#/definitions/Notes"
         },
@@ -368,6 +374,9 @@
           "$ref": "meta.schema.json#/definitions/Required",
           "const": true
         },
+        "Scalable": {
+          "$ref": "meta.schema.json#/definitions/Scalable"
+        },   
         "Notes": {
           "$ref": "meta.schema.json#/definitions/Notes"
         }

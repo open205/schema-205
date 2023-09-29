@@ -280,6 +280,7 @@ GridVariablesCooling:
       Units: "m3/s"
       Constraints: ">0.0"
       Required: True
+      Scalable: True
     evaporator_liquid_leaving_temperature:
       Description: "Leaving evaporator liquid temperature"
       Data Type: "[Numeric][1..]"
@@ -292,6 +293,7 @@ GridVariablesCooling:
       Units: "m3/s"
       Constraints: ">0.0"
       Required: True
+      Scalable: True
     condenser_liquid_entering_temperature:
       Description: "Entering condenser liquid temperature"
       Data Type: "[Numeric][1..]"
@@ -316,6 +318,7 @@ LookupVariablesCooling:
       Units: "W"
       Constraints: ">=0.0"
       Required: True
+      Scalable: True
       Notes: "All power consumed by the chiller, including controls, motors, variable speed drives, purge units, sump heaters, fans, etc."
     net_evaporator_capacity:
       Description: "Refrigeration capacity"
@@ -323,6 +326,7 @@ LookupVariablesCooling:
       Units: "W"
       Constraints: ">=0.0"
       Required: True
+      Scalable: True
       Notes: "The available cooling capacity of the evaporator to the thermal load calculated using only the sensible heat transfer"
     net_condenser_capacity:
       Description: "Condenser heat rejection"
@@ -330,6 +334,7 @@ LookupVariablesCooling:
       Units: "W"
       Constraints: ">=0.0"
       Required: True
+      Scalable: True
       Notes: "The capacity of the condenser transferred to the condenser cooling stream using only the sensible heat transfer"
     oil_cooler_heat:
       Description: "Heat transferred to another liquid crossing the control volume boundary from the chiller oil cooler."
@@ -337,6 +342,7 @@ LookupVariablesCooling:
       Units: "W"
       Constraints: ">=0.0"
       Required: True
+      Scalable: True
       Notes: "Set as 0 if not present or if heat rejection is met by condenser"
     auxiliary_heat:
       Description: "Heat transferred to another liquid crossing the control volume boundary from the chiller auxiliaries (motor, motor controller, inverter drive, starter, etc)."
@@ -344,6 +350,7 @@ LookupVariablesCooling:
       Units: "W"
       Constraints: ">=0.0"
       Required: True
+      Scalable: True
       Notes: "Set as 0 if not present or if heat rejection is met by condenser"
     operation_state:
       Description: "The operation state at the operating conditions"
@@ -382,6 +389,7 @@ LookupVariablesStandby:
       Units: "W"
       Constraints: ">=0.0"
       Required: True
+      Scalable: True
       Notes: ["Includes devices that cycle on and off (e.g., purge units and sump units) and devices that draw continuous power (e.g., fans and controls)",
               "Expressed as a time averaged power consumption"]
 
