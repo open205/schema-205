@@ -338,6 +338,9 @@
           "$ref": "meta.schema.json#/definitions/Required",
           "const": true
         },
+        "Scalable": {
+          "$ref": "meta.schema.json#/definitions/Scalable"
+        },   
         "Notes": {
           "$ref": "meta.schema.json#/definitions/Notes"
         }
