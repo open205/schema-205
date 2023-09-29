@@ -205,6 +205,7 @@ Performance:
       Constraints: ">=0.0"
       Notes: "Includes on-board controls and other power not included in the fan or dx system representations"
       Required: True
+      Scalable: True
     indoor_fan_representation:
       Description: "The corresponding Standard 205 fan assembly representation"
       Data Type: "{RS0003}"
