@@ -70,16 +70,22 @@ Performance:
       Units: "W"
       Constraints: ">=0.0"
       Required: True
+      Scalable: True
     standby_power:
       Description: "Power draw when the motor is not operating"
       Data Type: "Numeric"
       Units: "W"
       Constraints: ">=0.0"
       Required: True
+      Scalable: True
     cooling_method:
       Description: "Method used to cool the drive"
       Data Type: "<CoolingMethod>"
       Required: True
+    scaling:
+      Description: "Specifies the range the performance data can be scaled to represent different capacity equipment"
+      Data Type: "{Scaling}"
+      Notes: "If not present, scaling of the performance data is not allowed"
     performance_map:
       Description: "Data group describing drive performance when operating"
       Data Type: "{PerformanceMap}"
@@ -106,6 +112,7 @@ GridVariables:
       Constraints: ">=0.0"
       Units: "W"
       Required: True
+      Scalable: True
     output_frequency:
       Description: "Frequency delivered to the motor"
       Data Type: "[Numeric][1..]"
