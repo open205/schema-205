@@ -662,6 +662,72 @@
                     0.0,
                     0.0,
                     0.0
+                ],
+                "operation_state": [
+                   "NORMAL",
+                   "NORMAL",
+                   "NORMAL",
+                   "NORMAL",
+                   "NORMAL",
+                   "NORMAL",
+                   "NORMAL",
+                   "NORMAL",
+                   "NORMAL",
+                   "NORMAL",
+                   "NORMAL",
+                   "NORMAL",
+                   "NORMAL",
+                   "NORMAL",
+                   "NORMAL",
+                   "NORMAL",
+                   "NORMAL",
+                   "NORMAL",
+                   "NORMAL",
+                   "NORMAL",
+                   "NORMAL",
+                   "NORMAL",
+                   "NORMAL",
+                   "NORMAL",
+                   "NORMAL",
+                   "NORMAL",
+                   "NORMAL",
+                   "NORMAL",
+                   "NORMAL",
+                   "NORMAL",
+                   "NORMAL",
+                   "NORMAL",
+                   "NORMAL",
+                   "NORMAL",
+                   "NORMAL",
+                   "NORMAL",
+                   "NORMAL",
+                   "NORMAL",
+                   "NORMAL",
+                   "NORMAL",
+                   "NORMAL",
+                   "NORMAL",
+                   "NORMAL",
+                   "NORMAL",
+                   "NORMAL",
+                   "NORMAL",
+                   "NORMAL",
+                   "NORMAL",
+                   "NORMAL",
+                   "NORMAL",
+                   "NORMAL",
+                   "NORMAL",
+                   "NORMAL",
+                   "NORMAL",
+                   "NORMAL",
+                   "NORMAL",
+                   "NORMAL",
+                   "NORMAL",
+                   "NORMAL",
+                   "NORMAL",
+                   "NORMAL",
+                   "NORMAL",
+                   "NORMAL",
+                   "NORMAL"
                 ]
             }
         },
@@ -676,6 +742,40 @@
                     0.0
                 ]
             }
+        },
+        "performance_map_evaporator_liquid_pressure_differential":{
+            "grid_variables": {
+                "evaporator_liquid_volumetric_flow_rate": [
+                    0.09794664995915807
+                ],
+                "evaporator_liquid_leaving_temperature":[
+                    277.0388888888889,
+                    288.7055555555556
+                ]
+            },
+            "lookup_variables": {
+                "evaporator_liquid_differential_pressure": [
+                    15000.0,
+                    15000.0
+                ]
+            }            
+        },
+        "performance_map_condenser_liquid_pressure_differential":{
+            "grid_variables": {
+                "condenser_liquid_volumetric_flow_rate": [
+                    0.1602656905352974
+                ],
+                "condenser_liquid_entering_temperature":[
+                    285.9277777777778,
+                    313.15000000000003
+                ]
+            },
+            "lookup_variables": {
+                "condenser_liquid_differential_pressure": [
+                    15000.0,
+                    15000.0
+                ]
+            }            
         }
     }
 }
