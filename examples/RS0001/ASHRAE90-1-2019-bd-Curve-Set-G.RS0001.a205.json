@@ -40,7 +40,6 @@
         "evaporator_fouling_factor": 0.0,
         "condenser_fouling_factor": 0.0,
         "compressor_speed_control_type": "CONTINUOUS",
-        "maximum_power": 1219036.8567386542,
         "cycling_degradation_coefficient": 0.0,
         "performance_map_cooling": {
             "grid_variables": {
