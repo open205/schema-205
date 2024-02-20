@@ -59,11 +59,7 @@ AHRI340360TestStandardYear:
       Description: "Ratings defined using IP unit version of the standard, 2019 edition.[@AHRI3402019]"
       Display Text: "2019"
     IP_2022:
-<<<<<<< HEAD
       Description: "Ratings defined using IP unit version of the standard, 2022 edition.[@AHRI3402022]"
-=======
-      Description: "Rating is based on 2022 AHRI standard[@AHRI3402022]"
->>>>>>> origin/add_340360_year
       Display Text: "2022"
 
 AHRI340360CapacityControlType:
