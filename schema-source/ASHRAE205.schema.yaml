@@ -10,7 +10,7 @@ Schema:
   Object Type: "Meta"
   Title: "ASHRAE 205"
   Description: "Base schema for ASHRAE 205 representations"
-  Version: "1.0.0"
+  Version: "2.0.0"
 
 # Data Types
 

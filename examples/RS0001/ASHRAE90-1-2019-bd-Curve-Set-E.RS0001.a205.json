@@ -2,7 +2,7 @@
     "metadata": {
         "data_model": "ASHRAE_205",
         "schema": "RS0001",
-        "schema_version": "1.0.0",
+        "schema_version": "2.0.0",
         "description": "ASHRAE 90.1-2019 Addendum 'bd' curve set 'E': 225.0 ton, 2.32 COP liquid-cooled, positive displacement compressor chiller",
         "id": "0b2012ae-a354-4a6f-bf9a-81de03d39030",
         "data_timestamp": "2022-12-20T09:13Z",
@@ -494,7 +494,7 @@
                     15000.0,
                     15000.0
                 ]
-            }            
+            }
         },
         "performance_map_condenser_liquid_pressure_differential":{
             "grid_variables": {
@@ -511,7 +511,7 @@
                     15000.0,
                     15000.0
                 ]
-            }            
+            }
         }
     }
 }

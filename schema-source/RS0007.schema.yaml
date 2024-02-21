@@ -4,7 +4,7 @@ Schema:
     - "ASHRAE205"
   Title: "Mechanical Drive"
   Description: "Schema for ASHRAE 205 annex RS0007: Mechanical Drive" # TODO: Scope includes power transmission couplings. Allow chaining of drives?
-  Version: "1.0.0"
+  Version: "2.0.0"
   Root Data Group: "RS0007"
 
 # Local Enumerations
