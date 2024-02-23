@@ -451,7 +451,7 @@ GridVariablesCondenserLiquidPressureDifferential:
   Object Type: "Grid Variables"
   Data Elements:
     condenser_liquid_volumetric_flow_rate:
-      Description: "Chilled liquid flow"
+      Description: "Condenser liquid flow"
       Data Type: "[Numeric][1..]"
       Units: "m3/s"
       Constraints: ">0.0"
