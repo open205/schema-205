@@ -336,8 +336,8 @@ class Lookup_struct(Header_entry):
         entry += '\n'
         entry += self.level*'\t' + self.type + ' ' + f'{self.name}Struct' + ' ' + self._opener + '\n'
         for c in [ch for ch in self._child_entries if isinstance(ch, Data_element)]:
-            m = re.match(r'std::vector\<(.*)\>', c.type)
-            entry += (self.level+1)*'\t' + m.group(1) + ' ' + c.name + ';\n'
+            # m = re.match(r'std::vector\<(.*)\>', c.type)
+            entry += (self.level+1)*'\t' + 'double' + ' ' + c.name + ';\n'
         entry += (self.level*'\t' + self._closure)
         return entry
 
