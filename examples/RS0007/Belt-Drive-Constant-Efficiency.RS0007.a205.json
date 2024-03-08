@@ -31,6 +31,10 @@
                 "efficiency": [
                     0.985,
                     0.985
+                ],
+                "operation_state":[
+                    "NORMAL",
+                    "NORMAL"
                 ]
             }
         }

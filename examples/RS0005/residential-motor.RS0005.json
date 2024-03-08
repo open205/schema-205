@@ -2,11 +2,11 @@
     "metadata": {
         "data_model": "ASHRAE_205",
         "schema": "RS0005",
-        "schema_version": "1.0.0",
+        "schema_version": "2.0.0",
         "description": "Placeholder motor representation (performance characterized in parent RS0003 fan assembly)",
-        "id": "48511b7d-9a5b-4dcc-b021-16ae6bf99d87",
-        "data_timestamp": "2022-11-23T11:45Z",
-        "data_version": 1,
+        "id": "819caeda-28c6-4266-aaab-7a19e3802f1a",
+        "data_timestamp": "2024-02-22T15:25Z",
+        "data_version": 2,
         "data_source": "https://github.com/bigladder/resdx",
         "disclaimer": "This data is synthetic and does not represent any physical products."
     },

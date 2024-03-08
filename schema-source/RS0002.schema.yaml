@@ -6,7 +6,7 @@ Schema:
     - "RS0004"
   Title: "Unitary Cooling Air-Conditioning Equipment"
   Description: "Schema for ASHRAE 205 annex RS0002: Unitary Cooling Air-Conditioning Equipment"
-  Version: "1.0.0"
+  Version: "2.0.0"
   Root Data Group: "RS0002"
 
 # Local Enumerations
@@ -24,13 +24,13 @@ AHRI210240TestStandardYear:
   Object Type: "Enumeration"
   Enumerators:
     IP_2008:
-      Description: "Rating is based on 2008 AHRI standard[@AHRI2102008]"
+      Description: "Ratings defined using IP unit version of the standard, 2008 edition.[@AHRI2102008]"
       Display Text: "2008"
     IP_2017:
-      Description: "Rating is based on 2017 AHRI standard[@AHRI2102017]"
+      Description: "Ratings defined using IP unit version of the standard, 2017 edition.[@AHRI2102017]"
       Display Text: "2017"
     IP_2023:
-      Description: "Rating is based on 2023 AHRI standard[@AHRI2102023]"
+      Description: "Ratings defined using IP unit version of the standard, 2023 edition.[@AHRI2102023]"
       Display Text: "2023"
 
 AHRI210240CompressorStagingType:
@@ -50,14 +50,17 @@ AHRI340360TestStandardYear:
   Object Type: "Enumeration"
   Enumerators:
     IP_2007:
-      Description: "Rating is based on 2007 AHRI standard[@AHRI3402007]"
+      Description: "Ratings defined using IP unit version of the standard, 2007 edition.[@AHRI3402007]"
       Display Text: "2007"
     IP_2015:
-      Description: "Rating is based on 2015 AHRI standard[@AHRI3402015]"
+      Description: "Ratings defined using IP unit version of the standard, 2015 edition.[@AHRI3402015]"
       Display Text: "2015"
     IP_2019:
-      Description: "Rating is based on 2019 AHRI standard[@AHRI3402019]"
+      Description: "Ratings defined using IP unit version of the standard, 2019 edition.[@AHRI3402019]"
       Display Text: "2019"
+    IP_2022:
+      Description: "Ratings defined using IP unit version of the standard, 2022 edition.[@AHRI3402022]"
+      Display Text: "2022"
 
 AHRI340360CapacityControlType:
   Object Type: "Enumeration"
@@ -119,11 +122,9 @@ RatingAHRI210240:
     certified_reference_number:
       Description: "AHRI certified reference number"
       Data Type: "String"
-      Required: True
     test_standard_year:
       Description: "Year of the AHRI test standard"
       Data Type: "<AHRI210240TestStandardYear>"
-      Required: True
     rating_source:
       Description: "Source of this rating data"
       Data Type: "String"
@@ -131,132 +132,36 @@ RatingAHRI210240:
     staging_type:
       Description: "Type of compressor staging"
       Data Type: "<AHRI210240CompressorStagingType>"
-      Required: True
     seer:
       Description: "Seasonal Energy Efficiency Ratio"
       Data Type: "Numeric"
       Units: "Btu/W-h"
       Constraints: ">0.0"
-      Required: True
-      Notes: "Represents SEER2 for the 2023 version of test standard"
-    eer_a_full:
+      Notes: "Used for versions of the test standard up through 2017"
+    seer2:
+      Description: "Seasonal Energy Efficiency Ratio"
+      Data Type: "Numeric"
+      Units: "Btu/W-h"
+      Constraints: ">0.0"
+      Notes: "Used for versions of the test standard from 2023"
+    eer:
       Description: "Full stage Energy Efficiency Ratio (at 'A' operating conditions)"
       Data Type: "Numeric"
       Units: "Btu/W-h"
       Constraints: ">0.0"
-      Required: True
-      Notes: "Represents EER2~A_Full~ for the 2023 version of test standard"
-    eer_b_full:
-      Description: "Full stage Energy Efficiency Ratio (at 'B' operating conditions)"
+      Notes: "Used for versions of the test standard up through 2017"
+    eer2:
+      Description: "Full stage Energy Efficiency Ratio (at 'A' operating conditions)"
       Data Type: "Numeric"
       Units: "Btu/W-h"
       Constraints: ">0.0"
-      Required: "if staging_type!=SINGLE_STAGE"
-    cooling_a_full_capacity:
+      Notes: "Used for versions of the test standard from 2023"
+    cooling_capacity:
       Description: "Full stage net total cooling capacity (at 'A' operating conditions)"
       Data Type: "Numeric"
       Units: "Btu/h"
       Constraints: ">=0.0"
-      Required: True
-    cooling_b_full_capacity:
-      Description: "Full stage net total cooling capacity (at 'B' operating conditions)"
-      Data Type: "Numeric"
-      Units: "Btu/h"
-      Constraints: ">=0.0"
-      Required: "if staging_type!=SINGLE_STAGE"
-    cooling_b_low_capacity:
-      Description: "Low stage net total cooling capacity (at 'B' operating conditions)"
-      Data Type: "Numeric"
-      Units: "Btu/h"
-      Constraints: ">=0.0"
-      Required: "if staging_type!=SINGLE_STAGE"
-    cooling_f_low_capacity:
-      Description: "Low stage net total cooling capacity (at 'F' operating conditions)"
-      Data Type: "Numeric"
-      Units: "Btu/h"
-      Constraints: ">=0.0"
-      Required: "if staging_type!=SINGLE_STAGE"
-    cooling_g_low_capacity:
-      Description: "Low stage net total cooling capacity (at 'G' operating conditions)"
-      Data Type: "Numeric"
-      Units: "Btu/h"
-      Constraints: ">=0.0"
-      Required: "if staging_type=VARIABLE_STAGE and test_standard_year=IP_2023"
-    cooling_i_low_capacity:
-      Description: "Low stage net total cooling capacity (at 'I' operating conditions)"
-      Data Type: "Numeric"
-      Units: "Btu/h"
-      Constraints: ">=0.0"
-      Required: "if staging_type=VARIABLE_STAGE and test_standard_year=IP_2023"
-    cooling_a_full_power:
-      Description: "Full stage net total cooling power (at 'A' operating conditions)"
-      Data Type: "Numeric"
-      Units: "W"
-      Constraints: ">=0.0"
-      Required: "if staging_type!=SINGLE_STAGE"
-    cooling_b_full_power:
-      Description: "Full stage net total cooling power (at 'B' operating conditions)"
-      Data Type: "Numeric"
-      Units: "W"
-      Constraints: ">=0.0"
-      Required: "if staging_type!=SINGLE_STAGE"
-    cooling_b_low_power:
-      Description: "Low stage net total cooling power (at 'B' operating conditions)"
-      Data Type: "Numeric"
-      Units: "W"
-      Constraints: ">=0.0"
-      Required: "if staging_type!=SINGLE_STAGE"
-    cooling_f_low_power:
-      Description: "Low stage net total cooling power (at 'F' operating conditions)"
-      Data Type: "Numeric"
-      Units: "W"
-      Constraints: ">=0.0"
-      Required: "if staging_type!=SINGLE_STAGE"
-    cooling_g_low_power:
-      Description: "Low stage net total cooling power (at 'G' operating conditions)"
-      Data Type: "Numeric"
-      Units: "W"
-      Constraints: ">=0.0"
-      Required: "if staging_type=VARIABLE_STAGE and test_standard_year=IP_2023"
-    cooling_i_low_power:
-      Description: "Low stage net total cooling power (at 'I' operating conditions)"
-      Data Type: "Numeric"
-      Units: "W"
-      Constraints: ">=0.0"
-      Required: "if staging_type=VARIABLE_STAGE and test_standard_year=IP_2023"
-    cooling_full_fan_power:
-      Description: "Power of the indoor fan at full load"
-      Data Type: "Numeric"
-      Units: "W"
-      Constraints: ">0.0"
-      Required: True
-    cooling_full_air_volumetric_flow_rate:
-      Description: "Standard air volumetric rate of the indoor fan at full load"
-      Data Type: "Numeric"
-      Units: "cfm"
-      Constraints: ">0.0"
-      Required: True
-    cooling_low_fan_power:
-      Description: "Power of the indoor fan at low stage"
-      Data Type: "Numeric"
-      Units: "W"
-      Constraints: ">0.0"
-      Required: "if staging_type!=SINGLE_STAGE"
-    cooling_low_air_volumetric_flow_rate:
-      Description: "Standard air volumetric rate of the indoor fan at low stage"
-      Data Type: "Numeric"
-      Units: "cfm"
-      Constraints: ">0.0"
-      Required: "if staging_type!=SINGLE_STAGE"
-    rating_recalculatable_from_performance_data:
-      Description: "Whether this rating can be recalculated using the performance data in the representation"
-      Data Type: "Boolean"
-      Notes: "True if the rating values in this table can be recalculated using the performance data in the representation within the tolerance of the rating standard"
-      Required: True
-    rating_recalculatable_explanation:
-      Description: "An explanation of the value for `rating_recalculatable_from_performance_data`"
-      Data Type: "String"
-      Required: False
+      Notes: "At high stage for multi-stage equipment"
 
 RatingAHRI340360:
   Object Type: "Rating Data Group"
@@ -264,11 +169,9 @@ RatingAHRI340360:
     certified_reference_number:
       Description: "AHRI Certified Reference Number"
       Data Type: "String"
-      Required: True
     test_standard_year:
       Description: "Name and version of the AHRI test standard"
       Data Type: "<AHRI340360TestStandardYear>"
-      Required: True
     rating_source:
       Description: "Source of this rating data"
       Data Type: "String"
@@ -276,71 +179,21 @@ RatingAHRI340360:
     capacity_control_type:
       Description: "Type of capacity control"
       Data Type: "<AHRI340360CapacityControlType>"
-      Required: True
     ieer:
       Description: "Integrated Energy Efficiency Ratio"
       Data Type: "Numeric"
       Units: "Btu/W-h"
       Constraints: ">0.0"
-      Required: True
     eer:
       Description: "Energy Efficiency Ratio at Standard Rating Conditions"
       Data Type: "Numeric"
       Units: "Btu/W-h"
       Constraints: ">0.0"
-      Required: True
     cooling_capacity:
       Description: "Net total cooling capacity at Standard Rating Conditions"
       Data Type: "Numeric"
       Units: "Btu/h"
       Constraints: ">=0.0"
-      Required: True
-    part_load_points:
-      Description: "Four part load rating points"
-      Data Type: "[{RatingAHRI340360CoolingPartLoadPoint}][4]"
-    rating_recalculatable_from_performance_data:
-      Description: "Whether this rating can be recalculated using the performance data in the representation"
-      Data Type: "Boolean"
-      Notes: "True if the rating values in this table can be recalculated using the performance data in the representation within the tolerance of the rating standard"
-      Required: True
-    rating_recalculatable_explanation:
-      Description: "An explanation of the value for `rating_recalculatable_from_performance_data`"
-      Data Type: "String"
-      Required: False
-
-RatingAHRI340360CoolingPartLoadPoint:
-  Object Type: "Rating Data Group"
-  Data Elements:
-    capacity:
-      Description: "Net total cooling capacity"
-      Data Type: "Numeric"
-      Units: "Btu/h"
-      Constraints: ">=0.0"
-      Required: True
-    net_power:
-      Description: "Net cooling power (including the indoor fan motor, controls, and other auxiliary loads)"
-      Data Type: "Numeric"
-      Units: "W"
-      Constraints: ">=0.0"
-      Required: True
-    indoor_fan_power:
-      Description: "Power of the indoor fan motor"
-      Data Type: "Numeric"
-      Units: "W"
-      Constraints: ">0.0"
-      Required: False
-    auxiliary_power:
-      Description: "Power of the control circuit and any other auxiliary loads"
-      Data Type: "Numeric"
-      Units: "W"
-      Constraints: ">0.0"
-      Required: True
-    air_volumetric_flow_rate:
-      Description: "Standard air volumetric rate of the indoor fan"
-      Data Type: "Numeric"
-      Units: "cfm"
-      Constraints: ">0.0"
-      Required: True
 
 Performance:
   Object Type: "Data Group"
@@ -352,6 +205,7 @@ Performance:
       Constraints: ">=0.0"
       Notes: "Includes on-board controls and other power not included in the fan or dx system representations"
       Required: True
+      Scalable: True
     indoor_fan_representation:
       Description: "The corresponding Standard 205 fan assembly representation"
       Data Type: "{RS0003}"
@@ -363,3 +217,8 @@ Performance:
     dx_system_representation:
       Description: "The corresponding Standard 205 direct expansion system representation"
       Data Type: "{RS0004}"
+      Required: True
+    scaling:
+      Description: "Specifies the range the performance data can be scaled to represent different capacity equipment"
+      Data Type: "{Scaling}"
+      Notes: "If not present, scaling of the performance data is not allowed"

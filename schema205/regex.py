@@ -7,7 +7,7 @@ def print_regex(regex_str, title=None):
 
 # Data types
 
-base_types = "(Numeric|String|Integer|Boolean|Null)"
+base_types = "(Numeric|String|Integer|Boolean)"
 string_types = "(UUID|Date|Timestamp|Version|Pattern)"
 type_names = "[A-Z]([A-Z]|[a-z]|[0-9])*"
 element_names = "([a-z]+)(_([a-z]|[0-9])+)*"

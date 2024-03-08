@@ -6,7 +6,7 @@ Schema:
     - "RS0007"
   Title: "Fan Assembly"
   Description: "Schema for ASHRAE 205 annex RS0003: Fan Assembly"
-  Version: "1.0.0"
+  Version: "2.0.0"
   Root Data Group: "RS0003"
 
 # Local Enumerations
@@ -117,6 +117,7 @@ Performance:
       Units: "m3/s"
       Notes: "Used for calculating component wet pressure difference"
       Required: True
+      Scalable: True
     is_enclosed:
       Description: "Fan assembly is enclosed"
       Data Type: "Boolean"
@@ -173,6 +174,10 @@ Performance:
       Description: "The corresponding Standard 205 mechanical drive representation"
       Notes: "If the fan assembly is packaged with a mechanical drive, a mechanical drive representation shall be provided"
       Data Type: "{RS0007}"
+    scaling:
+      Description: "Specifies the range the performance data can be scaled to represent different capacity equipment"
+      Data Type: "{Scaling}"
+      Notes: "If not present, scaling of the performance data is not allowed"
     performance_map:
       Description: "Data group describing fan assembly performance when operating"
       Data Type: "({PerformanceMapContinuous}, {PerformanceMapDiscrete})"
@@ -201,6 +206,7 @@ AssemblyComponent:
       Notes: ["Corresponds to additional pressure difference at `nominal_standard_air_volumetric_flow_rate`",
               "If unknown, a value of 75 Pa shall be used"]
       Required: True
+      Scalable: True
 
 SystemCurve:
   Object Type: "Data Group"
@@ -211,12 +217,14 @@ SystemCurve:
       Constraints: ">=0.0"
       Units: "m3/s"
       Required: True
+      Scalable: True
     static_pressure_difference:
       Description: "Static pressure difference of an air distribution system"
       Data Type: "[Numeric][2..]"
       Constraints: ">=0.0"
       Units: "Pa"
       Required: True
+      Scalable: True
 
 PerformanceMapContinuous:
   Object Type: "Performance Map"
@@ -239,6 +247,7 @@ GridVariablesContinuous:
       Constraints: ">=0.0"
       Units: "m3/s"
       Required: True
+      Scalable: True
     static_pressure_difference:
       Description: "External static pressure across fan assembly at dry coil conditions"
       Data Type: "[Numeric][1..]"
@@ -252,16 +261,22 @@ LookupVariablesContinuous:
   Data Elements:
     impeller_rotational_speed:
       Description: "Rotational speed of fan impeller"
-      Data Type: "[Numeric/Null][1..]"
+      Data Type: "[Numeric][1..]"
       Constraints: ">=0.0"
       Units: "rev/s"
       Required: True
     shaft_power:
       Description: "Mechanical shaft power input to fan assembly"
-      Data Type: "[Numeric/Null][1..]"
+      Data Type: "[Numeric][1..]"
       Constraints: ">=0.0"
       Units: "W"
       Notes: "Does not include the mechanical efficiency of any mechanical drive used to modify rotational speed between the motor and impeller"
+      Required: True
+      Scalable: True
+    operation_state:
+      Description: "The operation state at the operating conditions"
+      Data Type: "[<OperationState>]"
+      Units: "-"
       Required: True
 
 PerformanceMapDiscrete:
@@ -299,20 +314,27 @@ LookupVariablesDiscrete:
   Data Elements:
     standard_air_volumetric_flow_rate:
       Description: "Volumetric air flow rate through fan assembly at standard air conditions"
-      Data Type: "[Numeric/Null][1..]"
+      Data Type: "[Numeric][1..]"
       Constraints: ">=0.0"
       Units: "m3/s"
       Required: True
+      Scalable: True
     shaft_power:
       Description: "Mechanical shaft power input to fan assembly"
-      Data Type: "[Numeric/Null][1..]"
+      Data Type: "[Numeric][1..]"
       Constraints: ">=0.0"
       Units: "W"
       Notes: "Does not include the mechanical efficiency of any mechanical drive used to modify rotational speed between the motor and impeller"
       Required: True
+      Scalable: True
     impeller_rotational_speed:
       Description: "Rotational speed of fan impeller"
-      Data Type: "[Numeric/Null][1..]"
+      Data Type: "[Numeric][1..]"
       Constraints: ">=0.0"
       Units: "rev/s"
+      Required: True
+    operation_state:
+      Description: "The operation state at the operating conditions"
+      Data Type: "[<OperationState>]"
+      Units: "-"
       Required: True
