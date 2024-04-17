@@ -13,15 +13,15 @@ See how easy it is!
 
 To add a caption automatically to a table, just specify it in the call:
 
-{{ add_schema_table('ASHRAE205', 'data_types', caption='The Data Types Table') }}
+{{ add_schema_table('ASHRAE205', 'data_types', description='The Data Types Table') }}
 
 If you would also like to have the `add_schema_table` hook render a header for you, you can do that as well:
 
 {{ add_schema_table(
     'ASHRAE205',
     'data_types',
-    caption='The Data Types Table',
-    header_level_and_content=(3, "Data Types"))
+    description='The Data Types Table',
+    level=3)
 }}
 
 Note that there is some flexibility in how the table name is interpreted.
@@ -55,8 +55,8 @@ Here we run through the remaining table types with all options:
 {{ add_schema_table(
     'ASHRAE205',
     'string_types',
-    caption='The String Types Table',
-    header_level_and_content=(3, "String Types"))
+    description='The String Types Table',
+    level=3)
 }}
 
 For an Enumeration or Data Group, just specify the object name to render the correct table.
@@ -64,8 +64,8 @@ For an Enumeration or Data Group, just specify the object name to render the cor
 {{ add_schema_table(
     'ASHRAE205',
     'ASHRAE205Version',
-    caption='ASHRAE 205 Versions',
-    header_level_and_content=(3, "ASHRAE 205 Version"))
+    description='ASHRAE 205 Versions',
+    level=3)
 }}
 
 The `table_name` value is used to pull out the correct table from all of the potential enumerations or data group objects.
@@ -74,8 +74,8 @@ If we don't specify it or specify it wrong, we get a helpful error message listi
 {{ add_schema_table(
     'ASHRAE205',
     "we_do_not_know",
-    caption="When we don't know the item type...",
-    header_level_and_content=(3, "We Don't Know What Item Type to Choose..."))
+    description="When we don't know the item type...",
+    level=3)
 }}
 
 The `data_groups` table operates similar to enumerations:
@@ -83,8 +83,8 @@ The `data_groups` table operates similar to enumerations:
 {{ add_schema_table(
     'ASHRAE205',
     'LiquidMixture',
-    caption='Liquid mixtures',
-    header_level_and_content=(3, "Available Liquid Mixture Options"))
+    description='Liquid mixtures',
+    level=3)
 }}
 
 And similarly, if we don't know what `table_name` value to choose, we can leave it blank and let the system respond with all of the options in an error message:

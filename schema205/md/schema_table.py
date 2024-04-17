@@ -81,7 +81,12 @@ def data_elements_dict_from_data_groups(data_groups):
                 else:
                     new_obj['Units'] = new_obj['Units'].replace('-',r'·')
                     new_obj['Units'] = re.sub(r'(\d+)',r'^\1^',new_obj['Units'])
-
+            if 'Scalable' in new_obj:
+                if new_obj["Scalable"] == True:
+                    check = u'\N{check mark}'
+                    new_obj["Scalable"] = f"${check}$"
+                else:
+                    new_obj["Scalable"] = ''
             compress_notes(new_obj)
             data_elements.append(new_obj)
         output[dat_gr] = data_elements

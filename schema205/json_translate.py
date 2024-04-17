@@ -103,6 +103,8 @@ class DataGroup:
                 self._create_type_entry(group_subdict[e], elements, e)
             if 'Units' in element:
                 elements['properties'][e]['units'] = element['Units']
+            if 'Scalable' in element:
+                elements['properties'][e]['scalable'] = element['Scalable']
             if 'Notes' in element:
                 elements['properties'][e]['notes'] = element['Notes']
             if 'Required' in element:
@@ -112,6 +114,11 @@ class DataGroup:
                         required.append(e)
                 elif req.startswith('if'):
                     self._construct_requirement_if_then(elements, dependencies, req[3:], e)
+                # Include required text (even if it is translated into enforceable JSON schema syntax)
+                elements['properties'][e]['requiredText'] = str(element['Required'])
+            if 'Constraints' in element:
+                # Include constraints text (even if it is translated into enforceable JSON schema syntax)
+                elements['properties'][e]['constraintsText'] = element['Constraints']
         if required:
             elements['required'] = required
         if dependencies:

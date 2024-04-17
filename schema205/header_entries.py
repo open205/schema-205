@@ -1,5 +1,6 @@
 import os
 import re
+from pathlib import Path
 from schema205.file_io import load
 from schema205.util import snake_style
 
@@ -335,8 +336,8 @@ class Lookup_struct(Header_entry):
         entry += '\n'
         entry += self.level*'\t' + self.type + ' ' + f'{self.name}Struct' + ' ' + self._opener + '\n'
         for c in [ch for ch in self._child_entries if isinstance(ch, Data_element)]:
-            m = re.match(r'std::vector\<(.*)\>', c.type)
-            entry += (self.level+1)*'\t' + m.group(1) + ' ' + c.name + ';\n'
+            # m = re.match(r'std::vector\<(.*)\>', c.type)
+            entry += (self.level+1)*'\t' + 'double' + ' ' + c.name + ';\n'
         entry += (self.level*'\t' + self._closure)
         return entry
 
@@ -361,6 +362,21 @@ class Data_element_static_metainfo(Header_entry):
         self.type = 'std::string_view'
         self.init_val = element.get(meta_key, '') if meta_key != 'Name' else name
         self.name = self.name + '_' + meta_key.lower()
+        self._closure = ';'
+
+    # .............................................................................................
+    @property
+    def value(self):
+        return self.level*'\t' + self._type_specifier + ' ' + self.type + ' ' + self.name + self._closure
+
+
+# -------------------------------------------------------------------------------------------------
+class Data_stored_dependency(Header_entry):
+
+    def __init__(self, name, parent, dependency_type):
+        super().__init__(name, parent)
+        self._type_specifier = 'static'
+        self.type = dependency_type
         self._closure = ';'
 
     # .............................................................................................
@@ -503,10 +519,18 @@ class H_translator:
         return swapped
 
     # .............................................................................................
+    def _list_objects_of_type(self, object_type_or_list):
+        if isinstance(object_type_or_list, str):
+            return [tag for tag in self._contents if self._contents[tag]['Object Type'] == object_type_or_list]
+        elif isinstance(object_type_or_list, list):
+            return [tag for tag in self._contents if self._contents[tag]['Object Type'] in object_type_or_list]
+
+    # .............................................................................................
     def translate(self, input_file_path, container_class_name, schema_base_class_name=None):
         '''X'''
-        self._source_dir = os.path.dirname(os.path.abspath(input_file_path))
-        self._schema_name = os.path.splitext(os.path.splitext(os.path.basename(input_file_path))[0])[0]
+        abs_input_file_path = Path(input_file_path).resolve()
+        self._source_dir = abs_input_file_path.parent #os.path.dirname(os.path.abspath(input_file_path))
+        self._schema_name = Path(abs_input_file_path.stem).stem #os.path.splitext(os.path.splitext(os.path.basename(input_file_path))[0])[0]
         self._references.clear()
         self._fundamental_data_types.clear()
         self._preamble.clear()
@@ -526,35 +550,38 @@ class H_translator:
         self._namespace = Header_entry(f'{snake_style(self._schema_name)}_ns', parent=self._top_namespace)
 
         # First, assemble typedefs
-        for base_level_tag in (
-            [tag for tag in self._contents if self._contents[tag]['Object Type'] == 'String Type']):
+        for base_level_tag in self._list_objects_of_type('String Type'):
             Typedef(base_level_tag, self._namespace, 'std::string')
         # Second, enumerations
-        for base_level_tag in (
-            [tag for tag in self._contents if self._contents[tag].get('Object Type') == 'Enumeration']):
+        for base_level_tag in self._list_objects_of_type('Enumeration'):
             Enumeration(base_level_tag, self._namespace, self._contents[base_level_tag]['Enumerators'])
         # Collect member objects and their children
-        for base_level_tag in (
-            [tag for tag in self._contents if self._contents[tag].get('Object Type') == 'Meta']):
+        for base_level_tag in self._list_objects_of_type('Meta'):
             s = Struct(base_level_tag, self._namespace)
-            d = Data_element_static_metainfo(base_level_tag.lower(), 
-                                             s, 
+            d = Data_element_static_metainfo(base_level_tag.lower(),
+                                             s,
                                              self._contents[base_level_tag],
                                              'Title')
-            d = Data_element_static_metainfo(base_level_tag.lower(), 
-                                             s, 
+            d = Data_element_static_metainfo(base_level_tag.lower(),
+                                             s,
                                              self._contents[base_level_tag],
                                              'Version')
-            d = Data_element_static_metainfo(base_level_tag.lower(), 
-                                             s, 
+            d = Data_element_static_metainfo(base_level_tag.lower(),
+                                             s,
                                              self._contents[base_level_tag],
                                              'Description')
-        for base_level_tag in (
-            [tag for tag in self._contents if self._contents[tag].get('Object Type') in self._data_group_types]):
-            if base_level_tag == self._root_data_group if self._root_data_group else self._schema_name:
+        # If there's no root data group, create a class to hold the shared_ptr so it can be initialized later
+        if self._root_data_group not in self._list_objects_of_type(self._data_group_types):
+            self._root_data_group = self._schema_name # assuming schema file name is CamelCase
+            s = Struct(self._root_data_group, self._namespace)
+            d = Data_stored_dependency('logger', s, 'std::shared_ptr<Courierr::Courierr>')
+        # 205-specific classes
+        for base_level_tag in self._list_objects_of_type(self._data_group_types):
+            if base_level_tag == self._root_data_group:
                 s = Struct(base_level_tag, self._namespace, superclass=self._fundamental_base_class)
                 self._add_member_headers(s)
                 self._add_function_overrides(s, self._fundamental_base_class)
+                d = Data_stored_dependency('logger', s, 'std::shared_ptr<Courierr::Courierr>')
             elif self._contents[base_level_tag].get('Object Type') == 'Grid Variables':
                 s = Struct(base_level_tag, self._namespace, superclass='GridVariablesBase')
                 self._add_member_headers(s)
@@ -604,8 +631,7 @@ class H_translator:
         self._add_performance_overloads()
 
         # Final passes through dictionary in order to add elements related to serialization
-        for base_level_tag in (
-            [tag for tag in self._contents if self._contents[tag].get('Object Type') == 'Enumeration']):
+        for base_level_tag in self._list_objects_of_type('Enumeration'):
             Enum_serialization(base_level_tag, 
                                self._namespace, 
                                self._contents[base_level_tag]['Enumerators'])
@@ -633,7 +659,7 @@ class H_translator:
                 includes += f'#include <{snake_style(r)}.h>'
                 includes += '\n'
             self._preamble.append(includes)
-        self._preamble.append('#include <string>\n#include <vector>\n#include <nlohmann/json.hpp>\n#include <typeinfo_205.h>\n')
+        self._preamble.append('#include <string>\n#include <vector>\n#include <nlohmann/json.hpp>\n#include <typeinfo_205.h>\n#include <courierr/courierr.h>\n')
 
     # .............................................................................................
     def _add_member_headers(self, data_element):
@@ -663,7 +689,7 @@ class H_translator:
         refs.insert(0,self._schema_name) # prepend the current file to references list so that 
                                          # objects are found locally first
         for ref_file in refs:
-            ext_dict = load(os.path.join(self._source_dir, ref_file + '.schema.yaml'))
+            ext_dict = load(self._source_dir.joinpath(ref_file).with_suffix('.schema.yaml')) #load(os.path.join(self._source_dir, ref_file + '.schema.yaml'))
             external_objects = list()
             for base_item in [name for name in ext_dict if ext_dict[name]['Object Type'] in (
                 ['Enumeration',
@@ -686,8 +712,9 @@ class H_translator:
     # .............................................................................................
     def _add_function_overrides(self, parent_node, base_class_name):
         '''Get base class virtual functions to be overridden.'''
-        base_class = os.path.join(os.path.dirname(__file__), 
-                                  'src', 
+        base_class = Path(__file__).parent.joinpath( 
+                                  'libtk205_fixed_src',
+                                  'include', 
                                   f'{snake_style(base_class_name)}.h')
         try:
             with open(base_class) as b:
@@ -721,7 +748,7 @@ class H_translator:
                         f_args = list()
                         for ce in [c for c in gridstruct.child_entries if isinstance(c, Data_element)]:
                             f_args.append(' '.join(['double', ce.name]))
-                        f_args.append('Btwxt::Method performance_interpolation_method = Btwxt::Method::LINEAR')
+                        f_args.append('Btwxt::InterpolationMethod performance_interpolation_method = Btwxt::InterpolationMethod::linear')
                         Calculate_performance_overload(f_ret, f_args, '', entry, n_ret)
             else:
                 self._add_performance_overloads(entry)

@@ -18,17 +18,17 @@ def string_out_tables(instance, base_level=1, style="2 Columns"):
       output_file.writelines(schema_table.write_header("Data Types", base_level))
       output_file.writelines(schema_table.create_table_from_list(
         ["Data Type", "Description", "JSON Schema Type", "Examples"],
-        struct['data_types']),
+        struct['data_types'],
         level=base_level + 1,
-        style=style)
+        style=style))
     # String Types
     if len(struct['string_types']) > 0:
       output_file.writelines(schema_table.write_header("String Types", base_level))
       output_file.writelines(schema_table.create_table_from_list(
         ["String Type", "Description", "JSON Schema Pattern", "Examples"],
-        struct['string_types']),
+        struct['string_types'],
         level=base_level + 1,
-        style=style)
+        style=style))
     # Enumerations
     output_file.writelines(schema_table.write_header("Enumerations", base_level))
     if len(struct['enumerations']) > 0:
@@ -46,7 +46,7 @@ def string_out_tables(instance, base_level=1, style="2 Columns"):
     if len(struct['data_groups']) > 0:
       for dg, data_elements in struct['data_groups'].items():
           output_file.writelines(schema_table.create_table_from_list(
-            ["Name", "Description", "Data Type", "Units", "Constraints", "Req", "Notes"],
+            ["Name", "Description", "Data Type", "Units", "Constraints", "Req", "Scalable", "Notes"],
             data_elements,
             description=dg,
             level=base_level + 1,
