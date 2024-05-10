@@ -54,17 +54,20 @@ Description:
 ProductInformation:
   Object Type: "Data Group"
   Data Elements:
-      manufacturer:
-        Description: "Manufacturer name"
-        Data Type: "String"
-      model_number:
-        Description: "Model number"
-        Data Type: "Pattern"
-        Notes: "Pattern shall match all model numbers that can be represented by the representation"
+    manufacturer:
+      Description: "Manufacturer name"
+      Data Type: "String"
+    model_number:
+      Description: "Model number"
+      Data Type: "Pattern"
+      Notes: "Pattern shall match all model numbers that can be represented by the representation"
 
 RatingNFRC:
   Object Type: "Rating Data Group"
   Data Elements:
+    nfrc_id:
+      Description: "ID used by NFRC Rating"
+      Data Type: "String"
     nfrc_100_test_standard_year:
       Description: "Year of the AHRI test standard"
       Data Type: "<NRFC100TestStandardYear>"
@@ -98,7 +101,16 @@ RatingNFRC:
 Performance:
   Object Type: "Data Group"
   Data Elements:
-    scaling:
-      Description: "Specifies the range the performance data can be scaled to represent different capacity equipment"
-      Data Type: "{Scaling}"
-      Notes: "If not present, scaling of the performance data is not allowed"
+    thickness:
+      Description: "The total thickness of the glazing."
+      Data Type: "Numeric"
+      Units: "m"
+    conductivity:
+      Description: "Overall conductivity of the glazing."
+      Data Type: "Numeric"
+      Units: "W/m-K"
+    u_value_center_of_glass:
+      Description: "Center of glass U-Value"
+      Data Type: "Numeric"
+      Units: "W/m2-K"
+      Constraints: ">=0.0"

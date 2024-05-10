@@ -215,7 +215,9 @@
         "m2-K/W",
         "Hz",
         "V",
-        "rev/s"
+        "rev/s",
+        "W/m-K",
+        "W/m2-K"
       ]
     },
     "RatingUnits": {
