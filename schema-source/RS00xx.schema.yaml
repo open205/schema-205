@@ -4,7 +4,7 @@ Schema:
     - "ASHRAE205"
   Title: "Fenestration"
   Description: "Schema for ASHRAE 205 annex RS00xx: Fenestration" 
-  Version: "1.0.0"
+  Version: "2.0.0"
   Root Data Group: "RS00xx"
 
 # Local Enumerations
@@ -98,56 +98,7 @@ RatingNFRC:
 Performance:
   Object Type: "Data Group"
   Data Elements:
-    speed_ratio:
-      Description: "Ratio of input shaft speed to output shaft speed"
-      Data Type: "Numeric" # TODO: Should this be a list or a range of options?
-      Units: "-"
-      Constraints: ">0.0"
-      Required: True
     scaling:
       Description: "Specifies the range the performance data can be scaled to represent different capacity equipment"
       Data Type: "{Scaling}"
       Notes: "If not present, scaling of the performance data is not allowed"
-    performance_map:
-      Description: "Data group describing drive performance when operating"
-      Data Type: "{PerformanceMap}"
-      Required: True
-
-PerformanceMap:
-  Object Type: "Performance Map"
-  Data Elements:
-    grid_variables:
-      Description: "Data group describing grid variables for drive performance"
-      Data Type: "{GridVariables}"
-      Required: True
-    lookup_variables:
-      Description: "Data group describing lookup variables for drive performance"
-      Data Type: "{LookupVariables}"
-      Required: True
-
-GridVariables:
-  Object Type: "Grid Variables"
-  Data Elements:
-    output_power:
-      Description: "Output shaft power"
-      Data Type: "[Numeric][1..]"
-      Constraints: ">=0.0"
-      Units: "W"
-      Required: True
-      Scalable: True
-
-LookupVariables:
-  Object Type: "Lookup Variables"
-  Data Elements:
-    efficiency:
-      Description: "Efficiency of drive"
-      Data Type: "[Numeric][1..]"
-      Constraints: [">=0.0","<=1.0"]
-      Units: "-"
-      Notes: "Defined as the ratio of output shaft power to input shaft power"
-      Required: True
-    operation_state:
-      Description: "The operation state at the operating conditions"
-      Data Type: "[<OperationState>]"
-      Units: "-"
-      Required: True
