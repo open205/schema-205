@@ -23,6 +23,16 @@ NRFC200TestStandardYear:
       Description: "Ratings of the standard, 2023 edition"
       Display Text: "NFRC 200 2023"
 
+LayerType:
+  Object Type: "Enumeration"
+  Enumerators:
+    GLAZING:
+      Display Text: "Glazing"
+      Description: "Glass or plastic transparent panel "
+    GAP:
+      Display Text: "Gap"
+      Description: "Space between glass or plastic panels often filled with a gas"
+
 
 # Data Groups
 RS00xx:
@@ -114,3 +124,26 @@ Performance:
       Data Type: "Numeric"
       Units: "W/m2-K"
       Constraints: ">=0.0"
+    layer_components:
+      Description: "An array of layers associated with the transparent portion of the fenestration such as glass layers and gas layers"
+      Data Type: "[{LayerComponent}]"
+      
+LayerComponent:
+  Object Type: "Data Group"
+  Data Elements:
+    type:
+      Description: "Type of lauer"
+      Data Type: "<LayerType>"
+      Required: True
+    description:
+      Description: "Informative description of the component"
+      Data Type: "String"
+    thickness:
+      Description: "Thickness"
+      Data Type: "Numeric"
+      Units: "m"
+    thermal_conductivity:
+      Description: "Thickness"
+      Data Type: "Numeric"
+      Units: "W/m-K"
+
