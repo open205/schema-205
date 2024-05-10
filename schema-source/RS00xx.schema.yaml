@@ -8,26 +8,6 @@ Schema:
   Root Data Group: "RS00xx"
 
 # Local Enumerations
-DriveType:
-  Object Type: "Enumeration"
-  Enumerators:
-    V_BELT:
-      Description: "V-Belt"
-      Display Text: "V-Belt"
-    COGGED_BELT:
-      Description: "Cogged Belt"
-      Display Text: "Cogged Belt"
-    SYNCHRONOUS_BELT:
-      Description: "Synchronous Belt"
-      Display Text: "Synchronous Belt"
-    GEAR:
-      Description: "Gear"
-      Display Text: "Gear"
-    CHAIN:
-      Description: "Chain"
-      Display Text: "Chain"
-
-# Local Enumerations
 NRFC100TestStandardYear:
   Object Type: "Enumeration"
   Enumerators:
@@ -81,9 +61,6 @@ ProductInformation:
         Description: "Model number"
         Data Type: "Pattern"
         Notes: "Pattern shall match all model numbers that can be represented by the representation"
-      drive_type:
-        Description: "Type of mechanical drive"
-        Data Type: "<DriveType>"
 
 RatingNFRC:
   Object Type: "Rating Data Group"
@@ -98,7 +75,7 @@ RatingNFRC:
       Description: "Source of this rating data"
       Data Type: "String"
       Notes: "Used by data publisher to document methods (e.g., software and version) used to generate rating data"
-    u-factor:
+    u_factor:
       Description: "Rated U-Factor"
       Data Type: "Numeric"
       Units: "Btu/h-ft2-F"
@@ -117,7 +94,6 @@ RatingNFRC:
       Description: "The Integrated Part-Load Value efficiency of merit calculated at the standard rating conditions"
       Data Type: "Numeric"
       Units: "ft3/min-ft2"
-
 
 Performance:
   Object Type: "Data Group"

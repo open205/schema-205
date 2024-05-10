@@ -246,7 +246,9 @@
         "kW",
         "m2-K/kW",
         "kPa",
-        "l/s"
+        "l/s", 
+        "ft3/min-ft2",
+        "Btu/h-ft2-F"
       ]
     },
     "DataTypePattern": {
