@@ -176,18 +176,24 @@ def make_add_schema_table(schema_dir=None, error_log=None):
         err, data = load_yaml_source(schema_dir, source, args_str)
         if err is not None:
             return log_error(err, error_log)
-        return write_schema_table(data, table_name, description, level, style)
+        return write_schema_table(
+            data, table_name, description, level, style, error_log
+        )
 
     return add_schema_table
 
 
 def write_schema_table(
-    table_dict, table_name, description=None, level=1, style="2 Columns"
+    table_dict, table_name, description=None, level=1, style="2 Columns", error_log=None
 ):
     if description is None:
         description = table_name
     struct = schema_table.load_structure_from_object(table_dict)
-    _, target, table_type = extract_target_data(struct, canonicalize_string(table_name))
+    err, target, table_type = extract_target_data(
+        struct, canonicalize_string(table_name)
+    )
+    if err is not None:
+        return log_error(err, error_log)
     columns = {
         "data_types": ["Data Type", "Description", "JSON Schema Type", "Examples"],
         "string_types": [
@@ -216,14 +222,16 @@ def write_schema_table(
     )
 
 
-def make_add_schema_table_from_string():
+def make_add_schema_table_from_string(error_log=None):
     def add_schema_table_from_string(
         yaml_string, table_name=None, description=None, level=1, style="2 Columns"
     ):
         data = yaml.safe_load(yaml_string)
         if table_name is None:
             table_name = [name for name in data][0]
-        return write_schema_table(data, table_name, description, level, style)
+        return write_schema_table(
+            data, table_name, description, level, style, error_log
+        )
 
     return add_schema_table_from_string
 
