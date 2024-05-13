@@ -98,6 +98,12 @@ RatingNFRC:
       Data Type: "Numeric"
       Units: "-"
       Constraints: ">=0.0"
+    g_factor:
+      Description: "Solar Factor"
+      Data Type: "Numeric"
+      Units: "-"
+      Constraints: ">=0.0"
+      Notes: "Used in Europe and sometimes called the Total Solar Energy Transmittance"
     vt:
       Description: "Visible Transmittance"
       Data Type: "Numeric"
@@ -146,4 +152,73 @@ LayerComponent:
       Description: "Thickness"
       Data Type: "Numeric"
       Units: "W/m-K"
-
+    density:
+      Description: "Density"
+      Data Type: "Numeric"
+      Units: "kg/m3"
+      Constraints: ">=0.0"
+    refractive_index:
+      Description: "Refactive index
+      Data Type: "Numeric"
+      Units: "-"
+      Constraints: ">=0.0"
+    specific_heat:
+      Description: "Specific heat"
+      Data Type: "Numeric"
+      Units: "J/kg-K"
+      Constraints: ">=0.0"
+    vapour_resistivity:
+      Description: "Vapour reistivity"
+      Data Type: "Numeric"
+      Units: "N-s/kg-m"
+      Constraints: ">=0.0"
+    youngs_modulus:
+      Description: "Young's modulus"
+      Data Type: "Numeric"
+      Units: "Pa"
+      Notes: "Material stiffness"
+    poissons_ratio:
+      Description: "Poisson's ratio"
+      Data Type: "Numeric"
+      Units: "-"
+      Notes: "Traverse contraction during stretching"
+    solar_index_of_refraction:
+      Description: "Solar index of refraction"
+      Data Type: "Numeric"
+      Units: "-"
+      Notes: "Used in software using the refraction extinction algorithm"
+    solar_extinction_coefficient:
+      Description: "Solar extinction coefficient"
+      Data Type: "Numeric"
+      Units: "1/m"
+      Notes: "Used in software using the refraction extinction algorithm"
+    visible_index_of_refraction:
+      Description: "Visible index of refraction"
+      Data Type: "Numeric"
+      Units: "-"
+      Notes: "Used in software using the refraction extinction algorithm"
+    visible_extinction_coefficient:
+      Description: "Visible extinction coefficient"
+      Data Type: "Numeric"
+      Units: "1/m"
+      Notes: "Used in software using the refraction extinction algorithm"
+    transmittance_solar_outside:
+      Description: "Solar transmittance from outside"
+      Data Type: "Numeric"
+      Units: "-"
+      Constraints: [">=0.0", "<=1.0"]
+    reflectance_solar_outside:
+      Description: "Solar Reflectance from outside"
+      Data Type: "Numeric"
+      Units: "-"
+      Constraints: [">=0.0", "<=1.0"]
+    emissivity_outward_hemispherical
+      Description: "Hemispherical emissivity outward"
+      Data Type: "Numeric"
+      Units: "-"
+      Constraints: [">=0.0", "<=1.0"]
+    emissivity_inward_hemispherical
+      Description: "Hemispherical emissivity inward"
+      Data Type: "Numeric"
+      Units: "-"
+      Constraints: [">=0.0", "<=1.0"]
