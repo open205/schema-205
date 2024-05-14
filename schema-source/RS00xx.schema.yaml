@@ -202,23 +202,108 @@ LayerComponent:
       Data Type: "Numeric"
       Units: "1/m"
       Notes: "Used in software using the refraction extinction algorithm"
-    transmittance_solar_outside:
-      Description: "Solar transmittance from outside"
+    front_side_beam_beam_solar_transmittance:      
       Data Type: "Numeric"
       Units: "-"
       Constraints: [">=0.0", "<=1.0"]
-    reflectance_solar_outside:
-      Description: "Solar Reflectance from outside"
+      Notes: "This and the following data elements are based on the ASHWAT inputs"
+    back_side_beam_beam_solar_transmittance:
       Data Type: "Numeric"
       Units: "-"
       Constraints: [">=0.0", "<=1.0"]
-    emissivity_outward_hemispherical
-      Description: "Hemispherical emissivity outward"
+    front_side_beam_beam_solar_reflectance:
       Data Type: "Numeric"
       Units: "-"
       Constraints: [">=0.0", "<=1.0"]
-    emissivity_inward_hemispherical
-      Description: "Hemispherical emissivity inward"
+    back_side_beam_beam_solar_reflectance:
+      Data Type: "Numeric"
+      Units: "-"
+      Constraints: [">=0.0", "<=1.0"]
+    front_side_beam_beam_visible_solar_transmittance:
+      Data Type: "Numeric"
+      Units: "-"
+      Constraints: [">=0.0", "<=1.0"]
+    back_side_beam_beam_visible_solar_transmittance:
+      Data Type: "Numeric"
+      Units: "-"
+      Constraints: [">=0.0", "<=1.0"]
+    front_side_beam_beam_visible_solar_reflectance:
+      Data Type: "Numeric"
+      Units: "-"
+      Constraints: [">=0.0", "<=1.0"]
+    back_side_beam_beam_visible_solar_reflectance:
+      Data Type: "Numeric"
+      Units: "-"
+      Constraints: [">=0.0", "<=1.0"]
+    front_side_beam_diffuse_solar_transmittance:
+      Data Type: "Numeric"
+      Units: "-"
+      Constraints: [">=0.0", "<=1.0"]
+    back_side_beam_diffuse_solar_transmittance:
+      Data Type: "Numeric"
+      Units: "-"
+      Constraints: [">=0.0", "<=1.0"]
+    front_side_beam_diffuse_solar_reflectance:
+      Data Type: "Numeric"
+      Units: "-"
+      Constraints: [">=0.0", "<=1.0"]
+    back_side_beam_diffuse_solar_reflectance:
+      Data Type: "Numeric"
+      Units: "-"
+      Constraints: [">=0.0", "<=1.0"]
+    front_side_beam_diffuse_visible_solar_transmittance:
+      Data Type: "Numeric"
+      Units: "-"
+      Constraints: [">=0.0", "<=1.0"]
+    back_side_beam_diffuse_visible_solar_transmittance:
+      Data Type: "Numeric"
+      Units: "-"
+      Constraints: [">=0.0", "<=1.0"]
+    front_side_beam_diffuse_visible_solar_reflectance:
+      Data Type: "Numeric"
+      Units: "-"
+      Constraints: [">=0.0", "<=1.0"]
+    back_side_beam_diffuse_visible_solar_reflectance:
+      Data Type: "Numeric"
+      Units: "-"
+      Constraints: [">=0.0", "<=1.0"]
+    diffuse_diffuse_solar_transmittance:
+      Data Type: "Numeric"
+      Units: "-"
+      Constraints: [">=0.0", "<=1.0"]
+    front_side_diffuse_diffuse_solar_reflectance:
+      Data Type: "Numeric"
+      Units: "-"
+      Constraints: [">=0.0", "<=1.0"]
+    back_side_diffuse_diffuse_solar_reflectance:
+      Data Type: "Numeric"
+      Units: "-"
+      Constraints: [">=0.0", "<=1.0"]
+    diffuse_diffuse_visible_solar_transmittance:
+      Data Type: "Numeric"
+      Units: "-"
+      Constraints: [">=0.0", "<=1.0"]
+    front_side_diffuse_diffuse_visible_solar_reflectance:
+      Data Type: "Numeric"
+      Units: "-"
+      Constraints: [">=0.0", "<=1.0"]
+    back_side_diffuse_diffuse_visible_solar_reflectance:
+      Data Type: "Numeric"
+      Units: "-"
+      Constraints: [">=0.0", "<=1.0"]
+    front_side_infrared_transmittance:
+      Data Type: "Numeric"
+      Units: "-"
+      Constraints: [">=0.0", "<=1.0"]
+    back_side_infrared_transmittance:
+      Data Type: "Numeric"
+      Units: "-"
+      Constraints: [">=0.0", "<=1.0"]
+    front_side_infrared_emissivity:
+      Data Type: "Numeric"
+      Units: "-"
+      Constraints: [">=0.0", "<=1.0"]
+    back_side_infrared_emissivity:
       Data Type: "Numeric"
       Units: "-"
       Constraints: [">=0.0", "<=1.0"]
