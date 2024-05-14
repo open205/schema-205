@@ -157,6 +157,14 @@ LayerComponent:
       Data Type: "Numeric"
       Units: "kg/m3"
       Constraints: ">=0.0"
+    gap_gas_components:
+      Description: "An array of gas components for gap"
+      Data Type: "[{GapGasComponent}]"
+    gap_gas_pressure:
+      Description: "Refactive index"
+      Data Type: "Numeric"
+      Units: "Pa"
+      Constraints: ">=0.0"
     refractive_index:
       Description: "Refactive index"
       Data Type: "Numeric"
@@ -468,6 +476,20 @@ SpectralCharacteristic:
       Constraints: [">=0.0", "<=1.0"]
     back_side_reflectance:
       Description: "Back Side Reflectance"
+      Data Type: "Numeric"
+      Units: "-"
+      Constraints: [">=0.0", "<=1.0"]
+
+
+GapGasComponent:
+  Object Type: "Data Group"
+  Data Elements:
+    type:
+      Description: "Type of gas"
+      Data Type: "String"
+      Required: True
+    fraction:
+      Description: "Wavelength"
       Data Type: "Numeric"
       Units: "-"
       Constraints: [">=0.0", "<=1.0"]
