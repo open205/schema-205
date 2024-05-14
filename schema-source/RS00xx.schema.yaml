@@ -182,6 +182,9 @@ LayerComponent:
       Data Type: "Numeric"
       Units: "-"
       Notes: "Traverse contraction during stretching"
+    spectral_characteristics:
+      Description: "An array of spectral characteristics"
+      Data Type: "[{SpectralCharacteristic}]"
     solar_index_of_refraction:
       Description: "Solar index of refraction"
       Data Type: "Numeric"
@@ -330,6 +333,141 @@ LayerComponent:
       Constraints: [">=0.0", "<=1.0"]
     back_side_infrared_emissivity:
       Description: "Back Side Infrared Emissivity"
+      Data Type: "Numeric"
+      Units: "-"
+      Constraints: [">=0.0", "<=1.0"]
+    transmittance_damage_weighted:
+      Description: "Transmittance damage weighted"
+      Data Type: "Numeric"
+      Units: "-"
+      Constraints: [">=0.0", "<=1.0"]
+    transmittance_ultra_violet:
+      Description: "Transmittance ultra violet"
+      Data Type: "Numeric"
+      Units: "-"
+      Constraints: [">=0.0", "<=1.0"]
+    transmittance_solar_protection_factor:
+      Description: "Transmittance solar protection factor"
+      Data Type: "Numeric"
+      Units: "-"
+      Constraints: [">=0.0", "<=1.0"]
+    transmittance_krochman_damage:
+      Description: "Transmittance krochman damage"
+      Data Type: "Numeric"
+      Units: "-"
+      Constraints: [">=0.0", "<=1.0"]
+    transmittance_cie_x:
+      Description: "Transmittance CIE x"
+      Data Type: "Numeric"
+      Units: "-"
+      Constraints: [">=0.0", "<=1.0"]
+    transmittance_cie_y:
+      Description: "Transmittance CIE y"
+      Data Type: "Numeric"
+      Units: "-"
+      Constraints: [">=0.0", "<=1.0"]
+    transmittance_cie_z:
+      Description: "Transmittance CIE z"
+      Data Type: "Numeric"
+      Units: "-"
+      Constraints: [">=0.0", "<=1.0"]
+    transmittance_front_red:
+      Description: "Transmittance Front Red"
+      Data Type: "Numeric"
+      Units: "-"
+      Constraints: [">=0.0", "<=1.0"]
+    transmittance_front_green:
+      Description: "Transmittance Front Green"
+      Data Type: "Numeric"
+      Units: "-"
+      Constraints: [">=0.0", "<=1.0"]
+    transmittance_front_blue:
+      Description: "Transmittance Front Blue"
+      Data Type: "Numeric"
+      Units: "-"
+      Constraints: [">=0.0", "<=1.0"]
+    reflectance_front_cie_x:
+      Description: "Reflectance Front CIE x"
+      Data Type: "Numeric"
+      Units: "-"
+      Constraints: [">=0.0", "<=1.0"]
+    reflectance_front_cie_y:
+      Description: "Reflectance Front CIE y"
+      Data Type: "Numeric"
+      Units: "-"
+      Constraints: [">=0.0", "<=1.0"]
+    reflectance_front_cie_z:
+      Description: "Reflectance Front CIE z"
+      Data Type: "Numeric"
+      Units: "-"
+      Constraints: [">=0.0", "<=1.0"]
+    reflectance_back_cie_x:
+      Description: "Reflectance Back CIE x"
+      Data Type: "Numeric"
+      Units: "-"
+      Constraints: [">=0.0", "<=1.0"]
+    reflectance_back_cie_y:
+      Description: "Reflectance Back CIE y"
+      Data Type: "Numeric"
+      Units: "-"
+      Constraints: [">=0.0", "<=1.0"]
+    reflectance_back_cie_z:
+      Description: "Reflectance Back CIE z"
+      Data Type: "Numeric"
+      Units: "-"
+      Constraints: [">=0.0", "<=1.0"]
+    reflectance_front_red:
+      Description: "Reflectance Front Red"
+      Data Type: "Numeric"
+      Units: "-"
+      Constraints: [">=0.0", "<=1.0"]
+    reflectance_front_green:
+      Description: "Reflectance Front Green"
+      Data Type: "Numeric"
+      Units: "-"
+      Constraints: [">=0.0", "<=1.0"]
+    reflectance_front_bblue:
+      Description: "Reflectance Front Blue"
+      Data Type: "Numeric"
+      Units: "-"
+      Constraints: [">=0.0", "<=1.0"]
+    reflectance_back_red:
+      Description: "Reflectance Back Red"
+      Data Type: "Numeric"
+      Units: "-"
+      Constraints: [">=0.0", "<=1.0"]
+    reflectance_back_green:
+      Description: "Reflectance Back Green"
+      Data Type: "Numeric"
+      Units: "-"
+      Constraints: [">=0.0", "<=1.0"]
+    reflectance_back_bblue:
+      Description: "Reflectance Back Blue"
+      Data Type: "Numeric"
+      Units: "-"
+      Constraints: [">=0.0", "<=1.0"]
+    
+
+SpectralCharacteristic:
+  Object Type: "Data Group"
+  Data Elements:
+    wavelength:
+      Description: "Wavelength"
+      Data Type: "Numeric"
+      Units: "m"
+      Constraints: ">0.0"
+    transmittance:
+      Description: "Transmittance"
+      Data Type: "Numeric"
+      Units: "-"
+      Constraints: [">=0.0", "<=1.0"]
+    front_side_reflectance:
+      Description: "Front Side Reflectance"
+      Data Type: "Numeric"
+      Units: "-"
+      Constraints: [">=0.0", "<=1.0"]
+    back_side_reflectance:
+      Description: "Back Side Reflectance"
       Data Type: "Numeric"
       Units: "-"
       Constraints: [">=0.0", "<=1.0"]
