@@ -217,7 +217,11 @@
         "V",
         "rev/s",
         "W/m-K",
-        "W/m2-K"
+        "W/m2-K",
+        "kg/m3",
+        "1/m",
+        "J/kg-K",
+        "N-s/kg-m"
       ]
     },
     "RatingUnits": {

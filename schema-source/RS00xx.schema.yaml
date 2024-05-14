@@ -158,7 +158,7 @@ LayerComponent:
       Units: "kg/m3"
       Constraints: ">=0.0"
     refractive_index:
-      Description: "Refactive index
+      Description: "Refactive index"
       Data Type: "Numeric"
       Units: "-"
       Constraints: ">=0.0"
@@ -203,107 +203,133 @@ LayerComponent:
       Units: "1/m"
       Notes: "Used in software using the refraction extinction algorithm"
     front_side_beam_beam_solar_transmittance:      
+      Description: "Front Side Beam-Beam Solar Transmittance"
       Data Type: "Numeric"
       Units: "-"
       Constraints: [">=0.0", "<=1.0"]
       Notes: "This and the following data elements are based on the ASHWAT inputs"
     back_side_beam_beam_solar_transmittance:
+      Description: "Back Side Beam-Beam Solar Transmittance"
       Data Type: "Numeric"
       Units: "-"
       Constraints: [">=0.0", "<=1.0"]
     front_side_beam_beam_solar_reflectance:
+      Description: "Front Side Beam-Beam Solar Reflectance"
       Data Type: "Numeric"
       Units: "-"
       Constraints: [">=0.0", "<=1.0"]
     back_side_beam_beam_solar_reflectance:
+      Description: "Back Side Beam-Beam Solar Reflectance"
       Data Type: "Numeric"
       Units: "-"
       Constraints: [">=0.0", "<=1.0"]
     front_side_beam_beam_visible_solar_transmittance:
+      Description: "Front Side Beam-Beam Visible Solar Transmittance"
       Data Type: "Numeric"
       Units: "-"
       Constraints: [">=0.0", "<=1.0"]
     back_side_beam_beam_visible_solar_transmittance:
+      Description: "Back Side Beam-Beam Visible Solar Transmittance"
       Data Type: "Numeric"
       Units: "-"
       Constraints: [">=0.0", "<=1.0"]
     front_side_beam_beam_visible_solar_reflectance:
+      Description: "Front Side Beam-Beam Visible Solar Reflectance"
       Data Type: "Numeric"
       Units: "-"
       Constraints: [">=0.0", "<=1.0"]
     back_side_beam_beam_visible_solar_reflectance:
+      Description: "Back Side Beam-Beam Visible Solar Reflectance"
       Data Type: "Numeric"
       Units: "-"
       Constraints: [">=0.0", "<=1.0"]
     front_side_beam_diffuse_solar_transmittance:
+      Description: "Front Side Beam-Diffuse Solar Transmittance"
       Data Type: "Numeric"
       Units: "-"
       Constraints: [">=0.0", "<=1.0"]
     back_side_beam_diffuse_solar_transmittance:
+      Description: "Back Side Beam-Diffuse Solar Transmittance"
       Data Type: "Numeric"
       Units: "-"
       Constraints: [">=0.0", "<=1.0"]
     front_side_beam_diffuse_solar_reflectance:
+      Description: "Front Side Beam-Diffuse Solar Reflectance"
       Data Type: "Numeric"
       Units: "-"
       Constraints: [">=0.0", "<=1.0"]
     back_side_beam_diffuse_solar_reflectance:
+      Description: "Back Side Beam-Diffuse Solar Reflectance"
       Data Type: "Numeric"
       Units: "-"
       Constraints: [">=0.0", "<=1.0"]
     front_side_beam_diffuse_visible_solar_transmittance:
+      Description: "Front Side Beam-Diffuse Visible Solar Transmittance"
       Data Type: "Numeric"
       Units: "-"
       Constraints: [">=0.0", "<=1.0"]
     back_side_beam_diffuse_visible_solar_transmittance:
+      Description: "Back Side Beam-Diffuse Visible Solar Transmittance"
       Data Type: "Numeric"
       Units: "-"
       Constraints: [">=0.0", "<=1.0"]
     front_side_beam_diffuse_visible_solar_reflectance:
+      Description: "Front Side Beam-Diffuse Visible Solar Reflectance"
       Data Type: "Numeric"
       Units: "-"
       Constraints: [">=0.0", "<=1.0"]
     back_side_beam_diffuse_visible_solar_reflectance:
+      Description: "Back Side Beam-Diffuse Visible Solar Reflectance"
       Data Type: "Numeric"
       Units: "-"
       Constraints: [">=0.0", "<=1.0"]
     diffuse_diffuse_solar_transmittance:
+      Description: "Diffuse-Diffuse Solar Transmittance"
       Data Type: "Numeric"
       Units: "-"
       Constraints: [">=0.0", "<=1.0"]
     front_side_diffuse_diffuse_solar_reflectance:
+      Description: "Front Side Diffuse-Diffuse Solar Reflectance"
       Data Type: "Numeric"
       Units: "-"
       Constraints: [">=0.0", "<=1.0"]
     back_side_diffuse_diffuse_solar_reflectance:
+      Description: "Back Side Diffuse-Diffuse Solar Reflectance"
       Data Type: "Numeric"
       Units: "-"
       Constraints: [">=0.0", "<=1.0"]
     diffuse_diffuse_visible_solar_transmittance:
+      Description: "Diffuse-Diffuse Visible Solar Transmittance"
       Data Type: "Numeric"
       Units: "-"
       Constraints: [">=0.0", "<=1.0"]
     front_side_diffuse_diffuse_visible_solar_reflectance:
+      Description: "Front Side Diffuse-Diffuse Visible Solar Reflectance"
       Data Type: "Numeric"
       Units: "-"
       Constraints: [">=0.0", "<=1.0"]
     back_side_diffuse_diffuse_visible_solar_reflectance:
+      Description: "Back Side Diffuse-Diffuse Visible Solar Reflectance"
       Data Type: "Numeric"
       Units: "-"
       Constraints: [">=0.0", "<=1.0"]
     front_side_infrared_transmittance:
+      Description: "Front Side Infrared Transmittance"
       Data Type: "Numeric"
       Units: "-"
       Constraints: [">=0.0", "<=1.0"]
     back_side_infrared_transmittance:
+      Description: "Back Side Infrared Transmittance"
       Data Type: "Numeric"
       Units: "-"
       Constraints: [">=0.0", "<=1.0"]
     front_side_infrared_emissivity:
+      Description: "Front Side Infrared Emissivity"
       Data Type: "Numeric"
       Units: "-"
       Constraints: [">=0.0", "<=1.0"]
     back_side_infrared_emissivity:
+      Description: "Back Side Infrared Emissivity"
       Data Type: "Numeric"
       Units: "-"
       Constraints: [">=0.0", "<=1.0"]
