@@ -217,11 +217,23 @@
         "V",
         "rev/s",
         "W/m-K",
+        "W/m-K2",
+        "W/m-K3",
         "W/m2-K",
         "kg/m3",
         "1/m",
         "J/kg-K",
-        "N-s/kg-m"
+        "J/kg-K2",
+        "J/kg-K3",
+        "N-s/kg-m",
+        "kg/m3-K",
+        "kg/m3-K2",
+        "g/mol",
+        "1/K",
+        "1/K2",
+        "kg/m-s",
+        "kg/m-s-K",
+        "kg/m-s-K2"
       ]
     },
     "RatingUnits": {

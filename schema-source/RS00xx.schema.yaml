@@ -149,18 +149,33 @@ LayerComponent:
       Data Type: "Numeric"
       Units: "m"
     thermal_conductivity:
-      Description: "Thickness"
+      Description: "Thermal conductivity"
       Data Type: "Numeric"
       Units: "W/m-K"
+    thermal_conductivity_temperature_coefficent:
+      Description: "Thermal conductivity temperature coefficient"
+      Data Type: "Numeric"
+      Units: "W/m-K2"
+    thermal_conductivity_temperature_squared_coefficent:
+      Description: "Thermal conductivity temperature squared coefficient"
+      Data Type: "Numeric"
+      Units: "W/m-K3"
     density:
       Description: "Density"
       Data Type: "Numeric"
       Units: "kg/m3"
-      Constraints: ">=0.0"
-    gap_gas_components:
+    density_temperature_coefficent:
+      Description: "Density temperature coefficient"
+      Data Type: "Numeric"
+      Units: "kg/m3-K"
+    density_temperature_squared_coefficent:
+      Description: "Density temperature squared coefficient"
+      Data Type: "Numeric"
+      Units: "kg/m3-K2"
+    gas_components:
       Description: "An array of gas components for gap"
-      Data Type: "[{GapGasComponent}]"
-    gap_gas_pressure:
+      Data Type: "[{GasComponent}]"
+    gas_pressure:
       Description: "Refactive index"
       Data Type: "Numeric"
       Units: "Pa"
@@ -174,11 +189,52 @@ LayerComponent:
       Description: "Specific heat"
       Data Type: "Numeric"
       Units: "J/kg-K"
-      Constraints: ">=0.0"
+    specific_heat_temperature_coefficent:
+      Description: "Specific heat temperature coefficient"
+      Data Type: "Numeric"
+      Units: "J/kg-K2"
+    specific_heat_temperature_squared_coefficent:
+      Description: "Specific heat temperature squared coefficient"
+      Data Type: "Numeric"
+      Units: "J/kg-K3"
+    specific_heat_ratio:
+      Description: "Specific heat ratio"
+      Data Type: "Numeric"
+      Units: "J/kg-K"
+      Notes: "The ratio of the specific heat at constant pressure to the specific heat at constant volume"
+    viscosity:
+      Description: "Viscosity"
+      Data Type: "Numeric"
+      Units: "kg/m-s"
+    viscosity_temperature_coefficent:
+      Description: "Viscosity temperature coefficient"
+      Data Type: "Numeric"
+      Units: "kg/m-s-K"
+    viscosity_temperature_squared_coefficent:
+      Description: "Viscosity temperature squared coefficient"
+      Data Type: "Numeric"
+      Units: "kg/m-s-K2"
+    prandtl_number:
+      Description: "Prandtl number"
+      Data Type: "Numeric"
+      Units: "-"
+    prandtl_number_temperature_coefficent:
+      Description: "Prandtl number temperature coefficient"
+      Data Type: "Numeric"
+      Units: "1/K"
+    prandtl_number_temperature_squared_coefficent:
+      Description: "Prandtl number temperature squared coefficient"
+      Data Type: "Numeric"
+      Units: "1/K2"
     vapour_resistivity:
       Description: "Vapour reistivity"
       Data Type: "Numeric"
       Units: "N-s/kg-m"
+      Constraints: ">=0.0"
+    molecular_weight:
+      Description: "Molecular weight"
+      Data Type: "Numeric"
+      Units: "g/mol"
       Constraints: ">=0.0"
     youngs_modulus:
       Description: "Young's modulus"
@@ -454,7 +510,6 @@ LayerComponent:
       Data Type: "Numeric"
       Units: "-"
       Constraints: [">=0.0", "<=1.0"]
-    
 
 SpectralCharacteristic:
   Object Type: "Data Group"
@@ -480,8 +535,7 @@ SpectralCharacteristic:
       Units: "-"
       Constraints: [">=0.0", "<=1.0"]
 
-
-GapGasComponent:
+GasComponent:
   Object Type: "Data Group"
   Data Elements:
     type:
@@ -489,7 +543,8 @@ GapGasComponent:
       Data Type: "String"
       Required: True
     fraction:
-      Description: "Wavelength"
+      Description: "Fraction"
       Data Type: "Numeric"
       Units: "-"
       Constraints: [">=0.0", "<=1.0"]
+    
