@@ -4,7 +4,7 @@ Schema:
     - "ASHRAE205"
   Title: "Air-to-Air Direct Expansion Refrigerant System"
   Description: "Schema for ASHRAE 205 annex RS0004: Air-to-Air Direct Expansion Refrigerant System"
-  Version: "1.0.0"
+  Version: "2.0.0"
   Root Data Group: "RS0004"
 
 # Data Groups
@@ -52,7 +52,7 @@ ProductInformation:
     refrigerant:
       Description: "Refrigerant used"
       Data Type: "String"
-      Notes: "The string shall start with 'R-' and then include the refrigerant number designation conforming to ANSI/ASHRAE Standard 34-2019[@ASHRAE34]"
+      Notes: "The string shall start with 'R-' and then include the refrigerant number designation conforming to ANSI/ASHRAE Standard 34[@ASHRAE34]"
     compressor_type:
       Description: "Type of compressor"
       Data Type: "<CompressorType>"
@@ -79,6 +79,10 @@ Performance:
       Constraints: [">=0.0","<1.0"]
       Notes: ["Used for the lowest stage when the unit cycles to meet load",
               "***Informative note:*** 340/360 specifies a fixed cycling degradation coefficient of approximately 0.12"]
+    scaling:
+      Description: "Specifies the range the performance data can be scaled to represent different capacity equipment"
+      Data Type: "{Scaling}"
+      Notes: "If not present, scaling of the performance data is not allowed"
     performance_map_cooling:
       Description: "Data group describing cooling performance over a range of conditions"
       Data Type: "{PerformanceMapCooling}"
@@ -133,10 +137,11 @@ GridVariablesCooling:
       Constraints: ">0.0"
       Units: "kg/s"
       Required: True
+      Scalable: True
     compressor_sequence_number:
       Description: "Index indicating the relative capacity order of the compressor speed/stage expressed in order from lowest capacity (starting at 1) to highest capacity"
       Data Type: "[Integer][1..]"
-      Constraints: ">=0"
+      Constraints: ">=1"
       Units: "-"
       Notes: ["If `compressor_speed_control_type` is `DISCRETE`, sequence numbers shall be provided for each discrete stage of the compressor(s)",
               "If `compressor_speed_control_type` is `CONTINUOUS`, sufficient sequence numbers shall be provided to capture the continuous operation of the compressor(s)"]
@@ -153,26 +158,34 @@ LookupVariablesCooling:
   Data Elements:
     gross_total_capacity:
       Description: "Total heat removed by the indoor coil"
-      Data Type: "[Numeric/Null][1..]"
+      Data Type: "[Numeric][1..]"
       Constraints: ">=0.0"
       Units: "W"
       Required: True
+      Scalable: True
       Notes: "Shall not include fan heat"
     gross_sensible_capacity:
       Description: "Sensible heat removed by the indoor coil"
-      Data Type: "[Numeric/Null][1..]"
+      Data Type: "[Numeric][1..]"
       Constraints: ">=0.0"
       Units: "W"
       Required: True
+      Scalable: True
       Notes: "Shall not include fan heat"
     gross_power:
       Description: "Gross power draw (of the outdoor unit)"
-      Data Type: "[Numeric/Null][1..]"
+      Data Type: "[Numeric][1..]"
       Constraints: ">0.0"
       Units: "W"
       Required: True
+      Scalable: True
       Notes: ["Includes compressor, outdoor fan, and any auxiliary power used by the unit's controls and any sump heater",
               "Shall not include power drawn by the indoor fan"]
+    operation_state:
+      Description: "The operation state at the operating conditions"
+      Data Type: "[<OperationState>]"
+      Units: "-"
+      Required: True
 
 PerformanceMapHeating:
   Object Type: "Performance Map"
@@ -214,6 +227,7 @@ GridVariablesHeating:
       Constraints: ">0"
       Units: "kg/s"
       Required: True
+      Scalable: True
     compressor_sequence_number:
       Description: "Index indicating the relative order of the compressor speed/stage"
       Data Type: "[Numeric][1..]"
@@ -227,35 +241,39 @@ LookupVariablesHeating:
   Data Elements:
     gross_steady_state_heating_capacity:
       Description: "Total heat added by the indoor coil under steady-state conditions (i.e., does not include the impact of defrost)"
-      Data Type: "[Numeric/Null][1..]"
+      Data Type: "[Numeric][1..]"
       Constraints: ">0"
       Units: "W"
       Required: True
+      Scalable: True
       Notes: "Does not account for heat added by the fan."
     gross_integrated_heating_capacity:
       Description: "Total heat added by the indoor coil integrated over a complete defrost cycle"
-      Data Type: "[Numeric/Null][1..]"
+      Data Type: "[Numeric][1..]"
       Constraints: ">0"
       Units: "W"
       Required: True
+      Scalable: True
       Notes: "Does not account for heat added by the fan."
     gross_steady_state_heating_power:
       Description: "Gross power draw of the outdoor unit under steady-state conditions (i.e., does not include defrost related power draws)"
-      Data Type: "[Numeric/Null][1..]"
+      Data Type: "[Numeric][1..]"
       Constraints: ">0"
       Units: "W"
       Required: True
+      Scalable: True
       Notes: "Does not include power drawn by the indoor fan. Includes compressor, outdoor fan, and any auxiliary power used by the unit's controls and any sump heater."
     gross_integrated_heating_power:
       Description: "Gross power draw of the outdoor unit integrated over a complete defrost cycle"
-      Data Type: "[Numeric/Null][1..]"
+      Data Type: "[Numeric][1..]"
       Constraints: ">0"
       Units: "W"
       Required: True
-      Notes: "Does not include power drawn by the indoor fan. Includes compressor, outdoor fan, and any auxiliary power used by the unit's defrost proces, controls, and any sump heater."
+      Scalable: True
+      Notes: "Does not include power drawn by the indoor fan. Includes compressor, outdoor fan, and any auxiliary power used by the unit's defrost process, controls, and any sump heater."
     defrost_time_fraction:
       Description: "Fraction of time throughout a defrost cycle that defrost process is engaged"
-      Data Type: "[Numeric/Null][1..]"
+      Data Type: "[Numeric][1..]"
       Constraints: [">=0","<=1.0"]
       Units: "-"
       Required: True
@@ -287,8 +305,9 @@ LookupVariablesStandby:
   Data Elements:
     gross_power:
       Description: "Gross power draw (of the outdoor unit)"
-      Data Type: "[Numeric/Null][1..]"
+      Data Type: "[Numeric][1..]"
       Constraints: ">0.0"
       Units: "W"
       Required: True
+      Scalable: True
       Notes: "Includes any auxiliary power used by the unit's controls and any sump heater"

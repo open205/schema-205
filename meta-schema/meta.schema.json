@@ -121,7 +121,7 @@
     },
     "ConditionallyRequiredPattern": {
       "type": "string",
-      "pattern": "if (([a-z]+)(_([a-z]|[0-9])+)*)(!?=((([-+]?[0-9]*\\.?[0-9]+([eE][-+]?[0-9]+)?))|(\".*\")|(([A-Z]([A-Z]|[0-9])*)(_([A-Z]|[0-9])+)*)|(True|False)))?"
+      "pattern": "if (\\.\\.)?(([a-z]+)(_([a-z]|[0-9])+)*)(!?=((([-+]?[0-9]*\\.?[0-9]+([eE][-+]?[0-9]+)?))|(\".*\")|(([A-Z]([A-Z]|[0-9])*)(_([A-Z]|[0-9])+)*)|(True|False)))?"
     },
     "Required": {
       "oneOf": [
@@ -142,6 +142,9 @@
           ]
         }
       ]
+    },
+    "Scalable":{
+      "type": "boolean"
     },
     "Notes": {
       "oneOf": [
@@ -248,7 +251,7 @@
     },
     "DataTypePattern": {
       "type": "string",
-      "pattern": "((Numeric|String|Integer|Boolean|Null){1}(\\/(Numeric|String|Integer|Boolean|Null))*|(UUID|Date|Timestamp|Version|Pattern)|\\{[A-Z]([A-Z]|[a-z]|[0-9])*\\}|<[A-Z]([A-Z]|[a-z]|[0-9])*>)|\\(((Numeric|String|Integer|Boolean|Null){1}(\\/(Numeric|String|Integer|Boolean|Null))*|(UUID|Date|Timestamp|Version|Pattern)|\\{[A-Z]([A-Z]|[a-z]|[0-9])*\\}|<[A-Z]([A-Z]|[a-z]|[0-9])*>)(,\\s*((Numeric|String|Integer|Boolean|Null){1}(\\/(Numeric|String|Integer|Boolean|Null))*|(UUID|Date|Timestamp|Version|Pattern)|\\{[A-Z]([A-Z]|[a-z]|[0-9])*\\}|<[A-Z]([A-Z]|[a-z]|[0-9])*>))+\\)|\\[((Numeric|String|Integer|Boolean|Null){1}(\\/(Numeric|String|Integer|Boolean|Null))*|(UUID|Date|Timestamp|Version|Pattern)|\\{[A-Z]([A-Z]|[a-z]|[0-9])*\\}|<[A-Z]([A-Z]|[a-z]|[0-9])*>)\\]"
+      "pattern": "((Numeric|String|Integer|Boolean){1}(\\/(Numeric|String|Integer|Boolean))*|(UUID|Date|Timestamp|Version|Pattern)|\\{[A-Z]([A-Z]|[a-z]|[0-9])*\\}|<[A-Z]([A-Z]|[a-z]|[0-9])*>)|\\(((Numeric|String|Integer|Boolean){1}(\\/(Numeric|String|Integer|Boolean))*|(UUID|Date|Timestamp|Version|Pattern)|\\{[A-Z]([A-Z]|[a-z]|[0-9])*\\}|<[A-Z]([A-Z]|[a-z]|[0-9])*>)(,\\s*((Numeric|String|Integer|Boolean){1}(\\/(Numeric|String|Integer|Boolean))*|(UUID|Date|Timestamp|Version|Pattern)|\\{[A-Z]([A-Z]|[a-z]|[0-9])*\\}|<[A-Z]([A-Z]|[a-z]|[0-9])*>))+\\)|\\[((Numeric|String|Integer|Boolean){1}(\\/(Numeric|String|Integer|Boolean))*|(UUID|Date|Timestamp|Version|Pattern)|\\{[A-Z]([A-Z]|[a-z]|[0-9])*\\}|<[A-Z]([A-Z]|[a-z]|[0-9])*>)\\]"
     },
     "DataElementAttributes": {
       "type": "object",
@@ -267,6 +270,9 @@
         },
         "Required": {
           "$ref": "meta.schema.json#/definitions/Required"
+        },
+        "Scalable": {
+          "$ref": "meta.schema.json#/definitions/Scalable"
         },
         "Notes": {
           "$ref": "meta.schema.json#/definitions/Notes"
@@ -332,6 +338,9 @@
           "$ref": "meta.schema.json#/definitions/Required",
           "const": true
         },
+        "Scalable": {
+          "$ref": "meta.schema.json#/definitions/Scalable"
+        },
         "Notes": {
           "$ref": "meta.schema.json#/definitions/Notes"
         }
@@ -353,8 +362,9 @@
         "Data Type": {
           "type": "string",
           "enum": [
-            "[Numeric/Null][1..]",
-            "[Integer/Null][1..]"
+            "[Numeric][1..]",
+            "[Integer][1..]",
+            "[<OperationState>]"
           ]
         },
         "Units": {
@@ -366,6 +376,9 @@
         "Required": {
           "$ref": "meta.schema.json#/definitions/Required",
           "const": true
+        },
+        "Scalable": {
+          "$ref": "meta.schema.json#/definitions/Scalable"
         },
         "Notes": {
           "$ref": "meta.schema.json#/definitions/Notes"
@@ -391,7 +404,7 @@
     "RatingDataElement": {
       "type": "object",
       "patternProperties": {
-        "(^([a-z]+)(_([a-z]|[0-9])+)*$)": {
+        "(^([a-z0-9]+)(_([a-z]|[0-9])+)*$)": {
           "$ref": "meta.schema.json#/definitions/RatingDataElementAttributes"
         }
       },

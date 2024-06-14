@@ -10,7 +10,7 @@ Schema:
   Object Type: "Meta"
   Title: "ASHRAE 205"
   Description: "Base schema for ASHRAE 205 representations"
-  Version: "1.0.0"
+  Version: "2.0.0"
 
 # Data Types
 
@@ -47,13 +47,6 @@ String:
   JSON Schema Type: string
   Examples:
     - "Indirect evaporative cooler"
-
-"Null":
-  Object Type: "Data Type"
-  Description: "Used to represent a missing value. Shall only be used in combination with other data types, e.g., `Numeric/Null`."
-  JSON Schema Type: "null"
-  Examples:
-    - "null"
 
 UUID:
   Object Type: "String Type"
@@ -188,6 +181,16 @@ ConcentrationType:
       Description: "Concentration is defined as a fraction of total liquid mixture mass"
       Display Text: "By Mass"
 
+OperationState:
+  Object Type: "Enumeration"
+  Enumerators:
+    NORMAL:
+      Description: "Indicates that the equipment is in normal operating state"
+      Display Text: "Normal"
+    STANDBY:
+      Description: "Indicates that the equipment is in standby operating state"
+      Display Text: "Standby"
+
 #Common Data Groups
 Metadata:
   Object Type: "Data Group"
@@ -268,4 +271,18 @@ LiquidComponent:
       Constraints: [">=0.0", "<=1.0"]
       Notes: "If omitted, assume equal distribution with any other component with no defined concentration (e.g., can be left blank for the primary component)"
 
-
+Scaling:
+  Object Type: "Data Group"
+  Data Elements:
+    minimum:
+      Description: "Minimum scaling factor"
+      Data Type: "Numeric"
+      Units: "-"
+      Constraints: [">0.0", "<=1.0"]
+      Notes: "If not specified, may be scaled down to any value greater than zero"
+    maximum:
+      Description: "Maximum scaling factor"
+      Data Type: "Numeric"
+      Units: "-"
+      Constraints: [">=1.0"]
+      Notes: "If not specified, unlimited"

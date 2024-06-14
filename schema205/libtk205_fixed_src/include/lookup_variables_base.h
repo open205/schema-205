@@ -5,9 +5,12 @@
 #include <vector>
 #include <iostream>
 #include <sstream>
-#include "error_handling_tk205.h"
 
 class PerformanceMapBase;
+
+template <class T>
+using is_scoped_enum = std::integral_constant<bool, !std::is_convertible<T,int>{}
+                                                  && std::is_enum<T>{}>;
 
 // ------------------------------------------------------------------------------------------------
 /// @class LookupVariablesBase lookup_variables_base.h
@@ -25,6 +28,15 @@ public:
     inline void add_data_table(PerformanceMapBase* performance_map, std::vector<double>& table)
     {
        performance_map->add_data_table(table);
+    }
+
+    template < class T, typename = std::enable_if<is_scoped_enum<T>::value> >
+    void add_data_table(PerformanceMapBase* performance_map, std::vector<T>& table)
+    {
+        std::vector<double> converted_enums;
+        std::transform(table.begin(), table.end(), std::back_inserter(converted_enums),
+                 [](T n) { return static_cast<double>(n); });
+        performance_map->add_data_table(converted_enums);
     }
 };
 

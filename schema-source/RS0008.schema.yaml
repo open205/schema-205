@@ -8,7 +8,7 @@ Schema:
   Root Data Group: "RS0008"
 
 # Data Groups
-RS000X:
+RS0008:
   Object Type: "Data Group"
   Data Elements:
     metadata:

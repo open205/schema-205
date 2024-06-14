@@ -23,6 +23,9 @@ def collect_source_files():
       file_list.append(os.path.join(SOURCE_PATH,file_name))
   return file_list
 
+def collect_cpp_generators():
+  return [os.path.join('schema205', generator_py) for generator_py in ['cpp_entries.py', 'header_entries.py', 'cpp_translate.py']]
+
 def collect_target_files(target_dir, extension):
   file_list = []
   for file_name in sorted(os.listdir('schema-source')):
@@ -108,7 +111,7 @@ def task_schema():
 def task_cpp():
   '''Generates CPP source files from common-schema'''
   return {
-    'file_dep': collect_source_files(),
+    'file_dep': collect_source_files() + collect_cpp_generators(),
     'targets': collect_lib_target_files(HEADER_PATH,'h') + collect_lib_target_files(CPP_PATH,'cpp'),
     'task_dep': ['validate'],
     'actions': [
