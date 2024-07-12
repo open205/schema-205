@@ -7,9 +7,9 @@ Schema:
   Object Type: "Meta"
   References:
     - "ASHRAE205"
-  Title: "Liquid-Cooled Chiller"
-  Description: "Schema for ASHRAE 205 annex RS0001: Liquid-Cooled Chiller"
-  Version: "2.0.0"
+  Title: "Chiller"
+  Description: "Schema for ASHRAE 205 annex RS0001: Chiller"
+  Version: "3.0.0"
   Root Data Group: "RS0001"
 
 # Local Enumerations
@@ -203,6 +203,10 @@ RatingAHRI551591:
 Performance:
   Object Type: "Data Group"
   Data Elements:
+    condenser_type:
+      Description: "Heat rejection method of the condenser"
+      Data Type: "<CondenserType>"
+      Required: True
     evaporator_liquid_type:
       Description: "Type of liquid in evaporator"
       Data Type: "{LiquidMixture}"
@@ -212,7 +216,7 @@ Performance:
     condenser_liquid_type:
       Description: "Type of liquid in condenser"
       Data Type: "{LiquidMixture}"
-      Required: True
+      Required: "if condenser_cooling_type = LiquidCooled"
       Notes: ["`LiquidMixture` specifies liquid constituents and their concentrations",
               "Density shall be evaluated at the condenser inlet liquid temperature"]
     evaporator_fouling_factor:
@@ -228,7 +232,7 @@ Performance:
       Data Type: "Numeric"
       Units: "m2-K/W"
       Constraints: ">=0.0"
-      Required: True
+      Required: "if condenser_cooling_type = LiquidCooled"
       Notes: ["Condenser fouling factor at which the performance map was created",
               "May be different from the certification data supplied"]
     compressor_speed_control_type:
@@ -261,7 +265,7 @@ Performance:
     performance_map_condenser_liquid_pressure_differential:
       Description: "Data group describing the liquid pressure differential through the condenser"
       Data Type: "{PerformanceMapCondenserLiquidPressureDifferential}"
-      Required: True
+      Required: "if condenser_cooling_type = LiquidCooled"
 
 PerformanceMapCooling:
   Object Type: "Performance Map"
@@ -296,14 +300,33 @@ GridVariablesCooling:
       Data Type: "[Numeric][1..]"
       Units: "m3/s"
       Constraints: ">0.0"
-      Required: True
+      Required: "if condenser_cooling_type = LiquidCooled"
       Scalable: True
     condenser_liquid_entering_temperature:
       Description: "Entering condenser liquid temperature"
       Data Type: "[Numeric][1..]"
       Units: "K"
       Constraints: ">0.0"
-      Required: True
+      Required: "if condenser_cooling_type = LiquidCooled"
+    condenser_air_entering_drybulb_temperature:
+      Description: "Entering condenser air drybulb temperature"
+      Data Type: "[Numeric][1..]"
+      Units: "K"
+      Constraints: ">0.0"
+      Required: "if condenser_cooling_type = AirCooled or condenser_cooling_type = EvaporativeCooled"
+    condenser_air_entering_relative_humidity:
+      Description: "Entering condenser air relative humidity"
+      Data Type: "[Numeric][1..]"
+      Units: "-"
+      Constraints: ">0.0, <1.0"
+      Required: "if condenser_cooling_type = AirCooled or condenser_cooling_type = EvaporativeCooled"
+    ambient_pressure:
+      Description: "Ambient pressure used to calculate the performance"
+      Data Type: "[Numeric][1..]"
+      Units: "Pa"
+      Constraints: ">0.0"
+      Required: "if condenser_cooling_type = AirCooled or condenser_cooling_type = EvaporativeCooled"
+      Notes: "Informative Note: the intent of the ambient pressure is to capture the pressure at the installation and not changes in the ambient pressure due to weather effects"
     compressor_sequence_number:
       Description: "Index indicating the relative capacity order of the compressor speed/stage expressed in order from lowest capacity (starting at 1) to highest capacity"
       Data Type: "[Integer][1..]"
@@ -340,14 +363,29 @@ LookupVariablesCooling:
       Required: True
       Scalable: True
       Notes: "The capacity of the condenser transferred to the condenser cooling stream using only the sensible heat transfer"
+    condenser_air_volumetric_flow_rate:
+      Description: "Condenser air flow"
+      Data Type: "[Numeric][1..]"
+      Units: "m3/s"
+      Constraints: ">0.0"
+      Required: "if condenser_cooling_type = AirCooled or condenser_cooling_type = EvaporativeCooled"
+      Scalable: True
     oil_cooler_heat:
       Description: "Heat transferred to another liquid crossing the control volume boundary from the chiller oil cooler."
       Data Type: "[Numeric][1..]"
       Units: "W"
       Constraints: ">=0.0"
-      Required: True
+      Required: "if condenser_cooling_type = LiquidCooled"
       Scalable: True
       Notes: "Set as 0 if not present or if heat rejection is met by condenser"
+    evaporation_rate:
+      Description: "Rate at which water evaporates from the condenser."
+      Data Type: "[Numeric][1..]"
+      Units: "m3/s"
+      Constraints: ">=0.0"
+      Required: "if condenser_cooling_type = EvaporativeCooled"
+      Scalable: True
+      Notes: "Does not include blow down or drift losses."
     auxiliary_heat:
       Description: "Heat transferred to another liquid crossing the control volume boundary from the chiller auxiliaries (motor, motor controller, inverter drive, starter, etc)."
       Data Type: "[Numeric][1..]"
