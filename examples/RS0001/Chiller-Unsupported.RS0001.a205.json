@@ -23,7 +23,7 @@
         }
     },
     "performance": {
-        "condenser_type": "LiquidCooled",
+        "condenser_type": "LIQUID",
         "evaporator_liquid_type": {
             "liquid_components": [
                 {
