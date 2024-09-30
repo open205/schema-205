@@ -4,7 +4,6 @@ Schema:
     - "ASHRAE205"
     - "RS0003"
     - "RS0004"
-    - "RS0008"
   Title: "Unitary Cooling Air-Conditioning Equipment"
   Description: "Schema for ASHRAE 205 annex RS0002: Unitary Cooling Air-Conditioning Equipment"
   Version: "2.0.0"
@@ -219,41 +218,7 @@ Performance:
       Description: "The corresponding Standard 205 direct expansion system representation"
       Data Type: "{RS0004}"
       Required: True
-    supplemental_heat_source_representation:
-      Description: "The corresponding Standard 205 representation for a supplemental heat source."
-      Data Type: "{RS0008}"
-      Notes: [
-        "TODO: May be electric resistance or fuel burner (RSs to be developed). Need to handle field installed supplemental heat sources? Position (move to flexible list)?",
-        "***Informative note:*** Also referred to as auxiliary, or backup heat source."
-        ]
-    compressor_and_fan_control_sequence:
-      Description: "A control sequence mapping fan speeds to compressor speeds."
-      Data Type: "{CompressorAndFanControlSequence}"
     scaling:
       Description: "Specifies the range the performance data can be scaled to represent different capacity equipment"
       Data Type: "{Scaling}"
       Notes: "If not present, scaling of the performance data is not allowed"
-
-CompressorAndFanControlSequence:
-  Object Type: "Data Group"
-  Data Elements:
-    compressor_sequence_number:
-      Description: "Index indicating the relative order of the compressor speed/stage"
-      Data Type: "[Numeric][1..]"
-      Constraints: ">=0"
-      Units: "-"
-      Notes: "Expressed in order from initial stage/speed to final stage/speed."
-      Required: True
-    fan_speed_number:
-      Description: "Corresponding discrete speed."
-      Data Type: "[Integer][1..]"
-      Constraints: ">=0"
-      Units: "-"
-      Required: "if ..indoor_fan_representation.operation_speed_control_type = DISCRETE"
-    air_volumetric_flow_rate:
-      Description: "Volumetric air flow rate through fan assembly at standard air conditions"
-      Data Type: "[Numeric][1..]"
-      Constraints: ">=0.0"
-      Units: "m3/s"
-      Required: "if ..indoor_fan_representation.operation_speed_control_type = CONTINUOUS"
-      Scalable: True
