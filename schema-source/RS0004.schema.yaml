@@ -220,7 +220,7 @@ GridVariablesHeating:
       Constraints: ">=0"
       Units: "K"
       Required: True
-      Notes: "As measured immediately before entering the coil (i.e., after the fan in a blow-through configuration)."
+      Notes: "As measured immediately before entering the coil (i.e., after the fan in a blow-through configuration)"
     indoor_coil_air_mass_flow_rate:
       Description: "Mass flow rate of air entering the indoor coil"
       Data Type: "[Numeric][1..]"
@@ -233,46 +233,62 @@ GridVariablesHeating:
       Data Type: "[Numeric][1..]"
       Constraints: ">=0"
       Units: "-"
-      Notes: "Expressed in order from initial stage/speed to final stage/speed."
+      Notes: "Expressed in order from initial stage/speed to final stage/speed"
       Required: True
 
 LookupVariablesHeating:
   Object Type: "Lookup Variables"
   Data Elements:
-    gross_steady_state_heating_capacity:
-      Description: "Total heat added by the indoor coil under steady-state conditions (i.e., does not include the impact of defrost)"
+    gross_steady_state_capacity:
+      Description: "Total heat added by the indoor coil under steady-state conditions (i.e., does not include the impact of frost accumulation or defrost operation)"
       Data Type: "[Numeric][1..]"
       Constraints: ">0"
       Units: "W"
       Required: True
       Scalable: True
-      Notes: "Does not account for heat added by the fan."
-    gross_integrated_heating_capacity:
-      Description: "Total heat added by the indoor coil integrated over a complete defrost cycle"
+      Notes:
+        - "Sometimes also referred to as \"instantaneous\" capacity"
+        - "Does not account for heat added by the fan"
+    gross_integrated_capacity:
+      Description: "Total heat added by the indoor coil integrated over the time between defrost terminations"
       Data Type: "[Numeric][1..]"
       Constraints: ">0"
       Units: "W"
       Required: True
       Scalable: True
-      Notes: "Does not account for heat added by the fan."
-    gross_steady_state_heating_power:
-      Description: "Gross power draw of the outdoor unit under steady-state conditions (i.e., does not include defrost related power draws)"
+      Notes:
+        - "Sometimes referred to as \"frost accumulation\" capacity"
+        - "Does not account for heat added by the fan"
+    gross_steady_state_power:
+      Description: "Gross power draw of the outdoor unit under steady-state conditions (i.e., does not include the impact of frost accumulation or defrost operation)"
       Data Type: "[Numeric][1..]"
       Constraints: ">0"
       Units: "W"
       Required: True
       Scalable: True
-      Notes: "Does not include power drawn by the indoor fan. Includes compressor, outdoor fan, and any auxiliary power used by the unit's controls and any sump heater."
-    gross_integrated_heating_power:
-      Description: "Gross power draw of the outdoor unit integrated over a complete defrost cycle"
+      Notes:
+        - "Sometimes also referred to as \"instantaneous\" power"
+        - "Does not include power drawn by the indoor fan"
+        - "Includes compressor, outdoor fan, and any auxiliary power used by the unit's controls and any sump heater"
+    gross_integrated_power:
+      Description: "Gross power draw of the outdoor unit integrated over the time between defrost terminations"
       Data Type: "[Numeric][1..]"
       Constraints: ">0"
       Units: "W"
       Required: True
       Scalable: True
-      Notes: "Does not include power drawn by the indoor fan. Includes compressor, outdoor fan, and any auxiliary power used by the unit's defrost process, controls, and any sump heater."
+      Notes:
+        - "Sometimes referred to as \"frost accumulation\" power"
+        - "Does not include power drawn by the indoor fan"
+        - "Includes compressor, outdoor fan, and any auxiliary power used by the unit's defrost process, controls, and any sump heater"
+    defrost_cycle_frequency:
+      Description: "Frequency of defrost terminations under the current operating conditions"
+      Data Type: "[Numeric][1..]"
+      Units: "Hz"
+      Required: True
+      Note: "This is the inverse of the duration between defrost terminations, a value of zero implies defrost is not occurring"
     defrost_time_fraction:
-      Description: "Fraction of time throughout a defrost cycle that defrost process is engaged"
+      Description: "Fraction of time between defrost terminations that the defrost process is engaged"
       Data Type: "[Numeric][1..]"
       Constraints: [">=0","<=1.0"]
       Units: "-"
