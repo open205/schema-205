@@ -22,6 +22,7 @@
 		}
 	},
 	"performance": {
+		"operating_modes": ["COOLING"],
 		"compressor_speed_control_type": "DISCRETE",
 		"cooling_cycling_degradation_coefficient": 0.1,
 		"performance_map_cooling": {

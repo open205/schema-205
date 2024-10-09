@@ -191,6 +191,23 @@ OperationState:
       Description: "Indicates that the equipment is in standby operating state"
       Display Text: "Standby"
 
+OperatingMode:
+  Object Type: "Enumeration"
+  Enumerators:
+    COOLING:
+      Description: "Indicates that the equipment is capable of meeting a sensible cooling load"
+      Display Text: "Cooling"
+    HEATING:
+      Description: "Indicates that the equipment is capable of meeting a sensible heating load"
+      Display Text: "Heating"
+    DEHUMIDIFYING:
+      Description: "Indicates that the equipment is capable of meeting a dehumidification load"
+      Display Text: "Dehumidifying"
+    HUMIDIFYING:
+      Description: "Indicates that the equipment is capable of meeting a humidification load"
+      Display Text: "Humidifying"
+
+
 #Common Data Groups
 Metadata:
   Object Type: "Data Group"

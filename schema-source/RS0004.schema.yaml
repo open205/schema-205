@@ -60,6 +60,11 @@ ProductInformation:
 Performance:
   Object Type: "Data Group"
   Data Elements:
+    operating_modes:
+      Description: "An array of unique operating modes that indicate the capabilities of the equipment"
+      Data Type: "[<OperatingMode>]"
+      # TODO: Constraints: unique https://json-schema.org/understanding-json-schema/reference/array#uniqueItems
+      Required: True
     compressor_speed_control_type:
       Description: "Method used to control different speeds of the compressor"
       Data Type: "<SpeedControlType>"
@@ -86,11 +91,11 @@ Performance:
     performance_map_cooling:
       Description: "Data group describing cooling performance over a range of conditions"
       Data Type: "{PerformanceMapCooling}"
-      Required: True
+      Required: "if operating_modes contains(COOLING)"
     performance_map_heating:
       Description: "Data group describing heating performance over a range of conditions"
       Data Type: "{PerformanceMapHeating}"
-      Notes: "Required for heat pump capable systems"
+      Required: "if operating_modes contains(HEATING)"
     performance_map_standby:
       Description: "Data group describing standby performance"
       Data Type: "{PerformanceMapStandby}"
@@ -286,7 +291,7 @@ LookupVariablesHeating:
       Data Type: "[Numeric][1..]"
       Units: "Hz"
       Required: True
-      Note: "This is the inverse of the duration between defrost terminations, a value of zero implies defrost is not occurring"
+      Notes: "This is the inverse of the duration between defrost terminations, a value of zero implies defrost is not occurring"
     defrost_time_fraction:
       Description: "Fraction of time between defrost terminations that the defrost process is engaged"
       Data Type: "[Numeric][1..]"

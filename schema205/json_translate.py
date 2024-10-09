@@ -173,6 +173,8 @@ class DataGroup:
         for req in requirement_list:
             m = re.match(dependent_req, req)
             if m:
+                if "contains" in req:
+                    break  # TODO: Skip for now. Implement in lattice.
                 selector = m.group("selector")
                 if m.group("is_equal"):
                     is_equal = False if "!" in m.group("is_equal") else True
