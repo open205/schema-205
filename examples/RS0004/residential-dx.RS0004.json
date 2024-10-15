@@ -11,7 +11,7 @@
         "disclaimer": "This data is synthetic and does not represent any physical products."
     },
     "performance": {
-        "operating_modes": ["COOLING"],
+        "performance_capabilities": ["COOLING"],
         "compressor_speed_control_type": "DISCRETE",
         "cycling_degradation_coefficient": 0.1,
         "performance_map_cooling": {
