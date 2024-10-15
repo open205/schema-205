@@ -60,9 +60,9 @@ ProductInformation:
 Performance:
   Object Type: "Data Group"
   Data Elements:
-    operating_modes:
+    performance_capabilities:
       Description: "An array of unique operating modes that indicate the capabilities of the equipment"
-      Data Type: "[<OperatingMode>]"
+      Data Type: "[<PerformanceCapabilities>]"
       # TODO: Constraints: unique https://json-schema.org/understanding-json-schema/reference/array#uniqueItems
       Required: True
     compressor_speed_control_type:
@@ -74,7 +74,7 @@ Performance:
       Data Type: "Numeric"
       Units: "-"
       Constraints: [">=0.0","<1.0"]
-      Required: True
+      Required: "if performance_capabilities contains(COOLING)"
       Notes: ["Used for the lowest stage when the unit cycles to meet load",
               "***Informative note:*** 340/360 specifies a fixed cycling degradation coefficient of approximately 0.12"]
     heating_cycling_degradation_coefficient:
@@ -82,6 +82,7 @@ Performance:
       Data Type: "Numeric"
       Units: "-"
       Constraints: [">=0.0","<1.0"]
+      Required: "if performance_capabilities contains(HEATING)"
       Notes: ["Used for the lowest stage when the unit cycles to meet load",
               "***Informative note:*** 340/360 specifies a fixed cycling degradation coefficient of approximately 0.12"]
     scaling:
@@ -91,11 +92,11 @@ Performance:
     performance_map_cooling:
       Description: "Data group describing cooling performance over a range of conditions"
       Data Type: "{PerformanceMapCooling}"
-      Required: "if operating_modes contains(COOLING)"
+      Required: "if performance_capabilities contains(COOLING)"
     performance_map_heating:
       Description: "Data group describing heating performance over a range of conditions"
       Data Type: "{PerformanceMapHeating}"
-      Required: "if operating_modes contains(HEATING)"
+      Required: "if performance_capabilities contains(HEATING)"
     performance_map_standby:
       Description: "Data group describing standby performance"
       Data Type: "{PerformanceMapStandby}"
