@@ -195,16 +195,16 @@ PerformanceCapabilities:
   Object Type: "Enumeration"
   Enumerators:
     COOLING:
-      Description: "Indicates that the equipment provides controlled cooling and the representation contains cooling-related performance data"
+      Description: "Indicates that the equipment provides explicitly controlled cooling and the representation contains cooling-related performance data"
       Display Text: "Cooling"
     HEATING:
-      Description: "Indicates that the equipment provides controlled heating and the representation contains heating-related performance data"
+      Description: "Indicates that the equipment provides explicitly controlled heating and the representation contains heating-related performance data"
       Display Text: "Heating"
     DEHUMIDIFICATION:
-      Description: "Indicates that the equipment provides controlled dehumidification and the representation contains dehumidification-related performance data"
+      Description: "Indicates that the equipment provides explicitly controlled dehumidification and the representation contains dehumidification-related performance data"
       Display Text: "Dehumidification"
     HUMIDIFICATION:
-      Description: "Indicates that the equipment provides controlled humidification and the representation contains humidification-related performance data"
+      Description: "Indicates that the equipment provides explicitly controlled humidification and the representation contains humidification-related performance data"
       Display Text: "Humidification"
 
 
