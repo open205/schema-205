@@ -1,0 +1,160 @@
+Schema:
+  Object Type: "Meta"
+  References:
+    - "ASHRAE205"
+  Title: "Fenestration - Glazing Substrate"
+  Description: "Schema for ASHRAE 205 annex RSxxSub: Fenestration - Glazing Substrate" 
+  Version: "2.0.0"
+  Root Data Group: "RSxxSub"
+
+# Data Groups
+RSxxSub:
+  Object Type: "Data Group"
+  Data Elements:
+    metadata:
+      Description: "Metadata data group"
+      Data Type: "{Metadata}"
+      Constraints: "schema=RSxxSub"
+      Required: True
+    description:
+      Description: "Data group describing product and rating information"
+      Data Type: "{Description}"
+    performance:
+      Description: "Data group containing performance information"
+      Data Type: "{Performance}"
+      Required: True
+
+Description:
+  Object Type: "Data Group"
+  Data Elements:
+    product_information:
+      Description: "Data group describing product information"
+      Data Type: "{ProductInformation}"
+
+ProductInformation:
+  Object Type: "Data Group"
+  Data Elements:
+    manufacturer:
+      Description: "Manufacturer name"
+      Data Type: "String"
+    model_number:
+      Description: "Model number"
+      Data Type: "Pattern"
+      Notes: "Pattern shall match all model numbers that can be represented by the representation"
+
+Performance:
+  Object Type: "Data Group"
+  Data Elements:
+    thickness:
+      Description: "The total thickness of the glazing."
+      Data Type: "Numeric"
+      Units: "m"
+    conductivity:
+      Description: "Overall conductivity of the glazing."
+      Data Type: "Numeric"
+      Units: "W/m-K"
+    front_side_infrared_emissivity:
+      Description: "Front Side Infrared Emissivity"
+      Data Type: "Numeric"
+      Units: "-"
+      Constraints: [">=0.0", "<=1.0"]
+    back_side_infrared_emissivity:
+      Description: "Back Side Infrared Emissivity"
+      Data Type: "Numeric"
+      Units: "-"
+      Constraints: [">=0.0", "<=1.0"]
+    performance_map_optical:
+      Description: "Data group describing optical performance over a range of conditions"
+      Data Type: "{PerformanceMapOptical}"
+      Required: True
+
+PerformanceMapOptical:
+  Object Type: "Performance Map"
+  Data Elements:
+    grid_variables:
+      Description: "Data group defining the grid variables for optical performance"
+      Data Type: "{GridVariablesOptical}"
+      Required: True
+    lookup_variables:
+      Description: "Data group defining the lookup variables for optical performance"
+      Data Type: "{LookupVariablesOptical}"
+      Required: True
+
+GridVariablesOptical:
+  Object Type: "Grid Variables"
+  Data Elements:
+    wavelength:
+      Description: "Wavelength"
+      Data Type: "[Numeric][1..]"
+      Units: "m"
+      Constraints: ">0.0"
+      Required: True
+    incidence_angle_polar:
+      Description: "Incidence angle polar"
+      Data Type: "[Numeric][1..]"
+      Required: False
+      Units: "degrees"
+      Constraints: ">=0.0, <=90.0"
+      Notes: "The polar angle is the angle between the direction of incidence and an axis which is perpendicular to the surface of the sample. It can have values between 0° and 90°. A polar angle of 0° means that the direction of incidence is perpendicular to the sample. A polar angle of 90° means that the direction of incidence is parallel to the sample."
+    incidence_angle_azimuth:
+      Description: "Incidence angle azimuth"
+      Data Type: "[Numeric][1..]"
+      Required: False
+      Units: "degrees"
+      Constraints: ">=0.0, <=360.0"
+      Notes: "The direction of incidence is projected onto the plane of the surface of the sample. The azimuth is the angle between this projection and the prime direction. It can have values between 0° and 360°. If we look at the sample as if it was a clock, the prime direction being 12 o'clock and the projection 11 o'clock, then the azimuth equals 30° because of the right-handed coordinate system of [ISO 80000-2:2019, Quantities and units - Part 2: Mathematics](https://www.iso.org/standard/64973.html)."
+    emergence_angle_polar:
+      Description: "Emergence angle polar"
+      Data Type: "[Numeric][1..]"
+      Required: False
+      Units: "degrees"
+      Constraints: ">=0.0, <=90.0"
+      Notes: "The polar angle is the angle between the direction of emergence and an axis which is perpendicular to the surface of the sample. It can have values between 0° and 90°. A polar angle of 0° means that the direction of emergence is perpendicular to the sample. A polar angle of 90° means that the direction of emergence is parallel to the sample. "
+    emergence_angle_azimuth:
+      Description: "Emergence angle azimuth"
+      Data Type: "[Numeric][1..]"
+      Required: False
+      Units: "degrees"
+      Constraints: ">=0.0, <=360.0"
+      Notes: "The direction of emergence is projected to the plane of the surface of the sample. The azimuth is the angle between this projection and the prime direction. It can have values between 0° and 360°. If we look at the sample as if it was a clock, the prime direction being 12 o'clock and the projection 11 o'clock, then the azimuth equals 30° because of the right-handed coordinate system of [ISO 80000-2:2019, Quantities and units - Part 2: Mathematics](https://www.iso.org/standard/64973.html)."
+    thermochromic_temperature:
+      Description: "Temperature used for modulating thermochromic glazing substrates"
+      Data Type: "[Numeric][1..]"
+      Units: "K"
+      Constraints: ">=0.0"
+      Required: False
+    photochromic_illuminance:
+      Description: "Illuminance used for modulating photochromic glazing substrates"
+      Data Type: "[Numeric][1..]"
+      Units: "lux"
+      Constraints: ">=0.0"
+      Required: False
+    electrochromic_voltage:
+      Description: "Voltage used for modulating electrochromic glazing substrates"
+      Data Type: "[Numeric][1..]"
+      Units: "V"
+      Constraints: ">=0.0"
+      Required: False
+
+LookupVariablesOptical:
+  Object Type: "Lookup Variables"
+  Data Elements:
+    transmittance:
+      Description: "Transmittance"
+      Data Type: "[Numeric][1..]"
+      Units: "-"
+      Constraints: [">=0.0", "<=1.0"]
+      Required: True
+    front_side_reflectance:
+      Description: "Front Side Reflectance"
+      Data Type: "[Numeric][1..]"
+      Units: "-"
+      Constraints: [">=0.0", "<=1.0"]
+      Required: True
+    back_side_reflectance:
+      Description: "Back Side Reflectance"
+      Data Type: "[Numeric][1..]"
+      Units: "-"
+      Constraints: [">=0.0", "<=1.0"]
+      Required: True
+
