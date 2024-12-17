@@ -90,7 +90,7 @@ SchemaType:
   Object Type: "Enumeration"
   Enumerators:
     RS0001:
-      Description: "Liquid-Cooled Chiller"
+      Description: "Chiller"
     RS0002:
       Description: "Unitary Cooling Air-Conditioning Equipment"
     RS0003:
@@ -145,6 +145,7 @@ CondenserType:
     EVAPORATIVE:
       Description: "Evaporative condenser"
       Display Text: "Evaporative"
+      Notes: "Evaporative condensers include adiabatically-cooled condensers"
 
 LiquidConstituent:
   Object Type: "Enumeration"
