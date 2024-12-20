@@ -141,8 +141,7 @@ class DataGroup:
         :param requirement:             requirement is present if requirement_str indicates it
         '''
         separator = r'\sand\s'
-        collector = 'allOf'
-        selector_dict = {'properties' : {collector : dict()}}
+        selector_dict = {'properties' : {}}
         requirement_list = re.split(separator, requirement_str)
         dependent_req = r'(?P<selector>[0-9a-zA-Z_]*)((?P<is_equal>!?=)(?P<selector_state>[0-9a-zA-Z_]*))?'
 
@@ -157,14 +156,14 @@ class DataGroup:
                         selector_state = True
                     elif 'false' in selector_state.lower():
                         selector_state = False
-                    selector_dict['properties'][collector][selector] = {'const' : selector_state} if is_equal else {'not' : {'const' : selector_state} }
+                    selector_dict['properties'][selector] = {'const' : selector_state} if is_equal else {'not' : {'const' : selector_state} }
                 else: # prerequisite type
                     if dependencies_list.get(selector):
                         dependencies_list[selector].append(requirement)
                     else:
                         dependencies_list[selector] = [requirement]
 
-        if selector_dict['properties'][collector].keys():
+        if selector_dict['properties'].keys():
             # Conditional requirements are each a member of a list
             if conditionals_list.get('allOf') == None:
                 conditionals_list['allOf'] = list()
