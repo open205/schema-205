@@ -99,4 +99,4 @@ def test_get_schema_rs_title():
     schema = schema205.A205Schema(os.path.join(os.path.dirname(__file__),'..','build',"schema","ASHRAE205.schema.json"))
 
     title = schema.get_rs_title('RS0001')
-    assert(title == "Liquid-Cooled Chiller")
+    assert(title == "Chiller")

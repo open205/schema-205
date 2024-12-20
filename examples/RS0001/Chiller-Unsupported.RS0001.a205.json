@@ -23,6 +23,7 @@
         }
     },
     "performance": {
+        "condenser_type": "LIQUID",
         "evaporator_liquid_type": {
             "liquid_components": [
                 {
