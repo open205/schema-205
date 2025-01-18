@@ -252,7 +252,8 @@ Performance:
       Notes: "If not present, scaling of the performance data is not allowed"
     performance_map_cooling:
       Description: "Data group describing cooling performance over a range of conditions"
-      Data Type: "{PerformanceMapCooling}"
+      Data Type: "({PerformanceMapCoolingLiquid}, {PerformanceMapCoolingAir}, {PerformanceMapCoolingEvaporative}"
+      Constraints: condenser_type(LIQUID, AIR, EVAPORATIVE)
       Required: True
     performance_map_standby:
       Description: "Data group describing standby performance"
@@ -267,53 +268,174 @@ Performance:
       Data Type: "{PerformanceMapCondenserLiquidPressureDifferential}"
       Required: "if condenser_type=LIQUID"
 
-PerformanceMapCooling:
+PerformanceMapCoolingLiquid:
   Object Type: "Performance Map"
   Data Elements:
     grid_variables:
       Description: "Data group defining the grid variables for cooling performance"
-      Data Type: "{GridVariablesCooling}"
+      Data Type: "{GridVariablesCoolingLiquid}"
       Required: True
     lookup_variables:
       Description: "Data group defining the lookup variables for cooling performance"
-      Data Type: "{LookupVariablesCooling}"
+      Data Type: "{LookupVariablesCoolingLiquid}"
       Required: True
 
-GridVariablesCooling:
+GridVariablesCoolingLiquid:
   Object Type: "Grid Variables"
   Data Elements:
-    evaporator_liquid_volumetric_flow_rate:
+    evaporator_liquid_volumetric_flow_rate: &evaporator_liquid_volumetric_flow_rate
       Description: "Chilled liquid (evaporator) flow"
       Data Type: "[Numeric][1..]"
       Units: "m3/s"
       Constraints: ">0.0"
       Required: True
       Scalable: True
-    evaporator_liquid_leaving_temperature:
+    evaporator_liquid_leaving_temperature: &evaporator_liquid_leaving_temperature
       Description: "Leaving evaporator liquid temperature"
       Data Type: "[Numeric][1..]"
       Units: "K"
       Constraints: ">0.0"
       Required: True
-    condenser_liquid_volumetric_flow_rate:
+    condenser_liquid_volumetric_flow_rate: &condenser_liquid_volumetric_flow_rate
       Description: "Condenser liquid flow"
       Data Type: "[Numeric][1..]"
       Units: "m3/s"
       Constraints: ">0.0"
       Required: False
       Scalable: True
-    condenser_liquid_entering_temperature:
+    condenser_liquid_entering_temperature: &condenser_liquid_entering_temperature
       Description: "Entering condenser liquid temperature"
       Data Type: "[Numeric][1..]"
       Units: "K"
       Constraints: ">0.0"
       Required: False
-    condenser_air_entering_drybulb_temperature:
+    compressor_sequence_number: &compressor_sequence_number
+      Description: "Index indicating the relative capacity order of the compressor speed/stage expressed in order from lowest capacity (starting at 1) to highest capacity"
+      Data Type: "[Integer][1..]"
+      Constraints: ">=1"
+      Units: "-"
+      Notes: ["If `compressor_speed_control_type` is `DISCRETE`, sequence numbers shall be provided for each discrete stage of the compressor(s)",
+              "If `compressor_speed_control_type` is `CONTINUOUS`, sufficient sequence numbers shall be provided to capture the continuous operation of the compressor(s)"]
+      Required: True
+
+LookupVariablesCoolingLiquid:
+  Object Type: "Lookup Variables"
+  Data Elements:
+    input_power: &input_power
+      Description: "Total power input"
+      Data Type: "[Numeric][1..]"
+      Units: "W"
+      Constraints: ">=0.0"
+      Required: True
+      Scalable: True
+      Notes: "All power consumed by the chiller, including controls, motors, variable speed drives, purge units, sump heaters, fans, etc."
+    net_evaporator_capacity: &net_evaporator_capacity
+      Description: "Refrigeration capacity"
+      Data Type: "[Numeric][1..]"
+      Units: "W"
+      Constraints: ">=0.0"
+      Required: True
+      Scalable: True
+      Notes: "The available cooling capacity of the evaporator to the thermal load calculated using only the sensible heat transfer"
+    net_condenser_capacity: &net_condenser_capacity
+      Description: "Condenser heat rejection"
+      Data Type: "[Numeric][1..]"
+      Units: "W"
+      Constraints: ">=0.0"
+      Required: True
+      Scalable: True
+      Notes: "The capacity of the condenser transferred to the condenser cooling stream using only the sensible heat transfer"
+    oil_cooler_heat: &oil_cooler_heat
+      Description: "Heat transferred to another liquid crossing the control volume boundary from the chiller oil cooler."
+      Data Type: "[Numeric][1..]"
+      Units: "W"
+      Constraints: ">=0.0"
+      Required: True
+      Scalable: True
+      Notes: "Set as 0 if not present or if heat rejection is met by condenser"
+    auxiliary_heat: &auxiliary_heat
+      Description: "Heat transferred to another liquid crossing the control volume boundary from the chiller auxiliaries (motor, motor controller, inverter drive, starter, etc)."
+      Data Type: "[Numeric][1..]"
+      Units: "W"
+      Constraints: ">=0.0"
+      Required: True
+      Scalable: True
+      Notes: "Set as 0 if not present or if heat rejection is met by condenser"
+    operation_state: &operation_state
+      Description: "The operation state at the operating conditions"
+      Data Type: "[<OperationState>]"
+      Units: "-"
+      Required: True
+
+PerformanceMapCoolingAir:
+  Object Type: "Performance Map"
+  Data Elements:
+    grid_variables:
+      Description: "Data group defining the grid variables for cooling performance"
+      Data Type: "{GridVariablesCoolingAir}"
+      Required: True
+    lookup_variables:
+      Description: "Data group defining the lookup variables for cooling performance"
+      Data Type: "{LookupVariablesCoolingAir}"
+      Required: True
+
+GridVariablesCoolingAir:
+  Object Type: "Grid Variables"
+  Data Elements:
+    evaporator_liquid_volumetric_flow_rate: *evaporator_liquid_volumetric_flow_rate
+    evaporator_liquid_leaving_temperature: *evaporator_liquid_leaving_temperature
+    condenser_air_entering_drybulb_temperature: &condenser_air_entering_drybulb_temperature
       Description: "Entering condenser air drybulb temperature"
       Data Type: "[Numeric][1..]"
       Units: "K"
       Constraints: ">0.0"
       Required: False
+    compressor_sequence_number: *compressor_sequence_number
+
+LookupVariablesCoolingAir:
+  Object Type: "Lookup Variables"
+  Data Elements:
+    input_power: *input_power
+    net_evaporator_capacity: *net_evaporator_capacity
+    net_condenser_capacity: *net_condenser_capacity
+    condenser_air_volumetric_flow_rate: &condenser_air_volumetric_flow_rate
+      Description: "Condenser air flow"
+      Data Type: "[Numeric][1..]"
+      Units: "m3/s"
+      Constraints: ">0.0"
+      Required: False
+      Scalable: True
+    evaporation_rate: &evaporation_rate
+      Description: "Rate at which water evaporates from the condenser."
+      Data Type: "[Numeric][1..]"
+      Units: "m3/s"
+      Constraints: ">=0.0"
+      Required: False
+      Scalable: True
+      Notes: "Does not include blow down or drift losses."
+    oil_cooler_heat: *oil_cooler_heat
+    auxiliary_heat: *auxiliary_heat
+    operation_state: *operation_state
+
+
+PerformanceMapCoolingEvaporative:
+  Object Type: "Performance Map"
+  Data Elements:
+    grid_variables:
+      Description: "Data group defining the grid variables for cooling performance"
+      Data Type: "{GridVariablesCoolingEvaporative}"
+      Required: True
+    lookup_variables:
+      Description: "Data group defining the lookup variables for cooling performance"
+      Data Type: "{LookupVariablesCoolingEvaporative}"
+      Required: True
+
+GridVariablesCoolingEvaporative:
+  Object Type: "Grid Variables"
+  Data Elements:
+    evaporator_liquid_volumetric_flow_rate: *evaporator_liquid_volumetric_flow_rate
+    evaporator_liquid_leaving_temperature: *evaporator_liquid_leaving_temperature
+    condenser_air_entering_drybulb_temperature: *condenser_air_entering_drybulb_temperature
     condenser_air_entering_relative_humidity:
       Description: "Entering condenser air relative humidity"
       Data Type: "[Numeric][1..]"
@@ -327,57 +449,15 @@ GridVariablesCooling:
       Constraints: ">0.0"
       Required: False
       Notes: "Informative Note: the intent of the ambient pressure is to capture the pressure at the installation and not changes in the ambient pressure due to weather effects"
-    compressor_sequence_number:
-      Description: "Index indicating the relative capacity order of the compressor speed/stage expressed in order from lowest capacity (starting at 1) to highest capacity"
-      Data Type: "[Integer][1..]"
-      Constraints: ">=1"
-      Units: "-"
-      Notes: ["If `compressor_speed_control_type` is `DISCRETE`, sequence numbers shall be provided for each discrete stage of the compressor(s)",
-              "If `compressor_speed_control_type` is `CONTINUOUS`, sufficient sequence numbers shall be provided to capture the continuous operation of the compressor(s)"]
-      Required: True
+    compressor_sequence_number: *compressor_sequence_number
 
-LookupVariablesCooling:
+LookupVariablesCoolingEvaporative:
   Object Type: "Lookup Variables"
   Data Elements:
-    input_power:
-      Description: "Total power input"
-      Data Type: "[Numeric][1..]"
-      Units: "W"
-      Constraints: ">=0.0"
-      Required: True
-      Scalable: True
-      Notes: "All power consumed by the chiller, including controls, motors, variable speed drives, purge units, sump heaters, fans, etc."
-    net_evaporator_capacity:
-      Description: "Refrigeration capacity"
-      Data Type: "[Numeric][1..]"
-      Units: "W"
-      Constraints: ">=0.0"
-      Required: True
-      Scalable: True
-      Notes: "The available cooling capacity of the evaporator to the thermal load calculated using only the sensible heat transfer"
-    net_condenser_capacity:
-      Description: "Condenser heat rejection"
-      Data Type: "[Numeric][1..]"
-      Units: "W"
-      Constraints: ">=0.0"
-      Required: True
-      Scalable: True
-      Notes: "The capacity of the condenser transferred to the condenser cooling stream using only the sensible heat transfer"
-    condenser_air_volumetric_flow_rate:
-      Description: "Condenser air flow"
-      Data Type: "[Numeric][1..]"
-      Units: "m3/s"
-      Constraints: ">0.0"
-      Required: False
-      Scalable: True
-    oil_cooler_heat:
-      Description: "Heat transferred to another liquid crossing the control volume boundary from the chiller oil cooler."
-      Data Type: "[Numeric][1..]"
-      Units: "W"
-      Constraints: ">=0.0"
-      Required: True
-      Scalable: True
-      Notes: "Set as 0 if not present or if heat rejection is met by condenser"
+    input_power: *input_power
+    net_evaporator_capacity: *net_evaporator_capacity
+    net_condenser_capacity: *net_condenser_capacity
+    condenser_air_volumetric_flow_rate: *condenser_air_volumetric_flow_rate
     evaporation_rate:
       Description: "Rate at which water evaporates from the condenser."
       Data Type: "[Numeric][1..]"
@@ -386,19 +466,9 @@ LookupVariablesCooling:
       Required: False
       Scalable: True
       Notes: "Does not include blow down or drift losses."
-    auxiliary_heat:
-      Description: "Heat transferred to another liquid crossing the control volume boundary from the chiller auxiliaries (motor, motor controller, inverter drive, starter, etc)."
-      Data Type: "[Numeric][1..]"
-      Units: "W"
-      Constraints: ">=0.0"
-      Required: True
-      Scalable: True
-      Notes: "Set as 0 if not present or if heat rejection is met by condenser"
-    operation_state:
-      Description: "The operation state at the operating conditions"
-      Data Type: "[<OperationState>]"
-      Units: "-"
-      Required: True
+    oil_cooler_heat: *oil_cooler_heat
+    auxiliary_heat: *auxiliary_heat
+    operation_state: *operation_state
 
 PerformanceMapStandby:
   Object Type: "Performance Map"
