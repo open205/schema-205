@@ -252,7 +252,7 @@ Performance:
       Notes: "If not present, scaling of the performance data is not allowed"
     performance_map_cooling:
       Description: "Data group describing cooling performance over a range of conditions"
-      Data Type: "({PerformanceMapCoolingLiquid}, {PerformanceMapCoolingAir}, {PerformanceMapCoolingEvaporative}"
+      Data Type: "({PerformanceMapCoolingLiquid}, {PerformanceMapCoolingAir}, {PerformanceMapCoolingEvaporative})"
       Constraints: condenser_type(LIQUID, AIR, EVAPORATIVE)
       Required: True
     performance_map_standby:
