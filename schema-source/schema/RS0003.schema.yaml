@@ -69,6 +69,7 @@ ComponentType:
 # Data Groups
 RS0003:
   Object Type: "Data Group"
+  Data Group Template: RepresentationSpecificationTemplate
   Data Elements:
     metadata:
       Description: "Metadata data group"
@@ -153,14 +154,14 @@ Performance:
       Notes: "***Informative note:*** Application software may use this curve to indicate to application software users when a selected fan is operating in an unstable region where surging or stalling is likely to occur"
     operation_speed_control_type:
       Description: "Type of performance map"
-      Data Type: "{SpeedControlType}"
+      Data Type: "<SpeedControlType>"
       Required: True
       Notes: ["Determines which performance map data group is used for `performance_map`",
               "If `operation_speed_control_type` is `DISCRETE` performance map data is provided at individual impeller speeds",
               "If `operation_speed_control_type` is `CONTINUOUS` performance map data is provided over a range of impeller speeds"]
     installation_speed_control_type:
       Description: "Type of fan impeller speed control"
-      Data Type: "{InstallationSpeedControlType}"
+      Data Type: "<InstallationSpeedControlType>"
       Required: True
       Notes: ["If `operation_speed_control_type` is `DISCRETE` and `installation_speed_control_type` is `FIXED`, impeller speed shall be restricted to a single discrete speed",
               "If `operation_speed_control_type` is `DISCRETE` and `installation_speed_control_type` is `VARIABLE`, impeller speed shall be restricted to a set of two or more discrete speeds",
@@ -227,7 +228,8 @@ SystemCurve:
       Scalable: True
 
 PerformanceMapContinuous:
-  Object Type: "Performance Map"
+  Object Type: "Data Group"
+  Data Group Template: PerformanceMapTemplate
   Data Elements:
     grid_variables:
       Description: "Data group describing grid variables for continuous fan performance"
@@ -239,7 +241,8 @@ PerformanceMapContinuous:
       Required: True
 
 GridVariablesContinuous:
-  Object Type: "Grid Variables"
+  Object Type: "Data Group"
+  Data Group Template: GridVariablesTemplate
   Data Elements:
     standard_air_volumetric_flow_rate:
       Description: "Volumetric air flow rate through fan assembly at standard air conditions"
@@ -257,7 +260,8 @@ GridVariablesContinuous:
       Required: True
 
 LookupVariablesContinuous:
-  Object Type: "Lookup Variables"
+  Object Type: "Data Group"
+  Data Group Template: LookupVariablesTemplate
   Data Elements:
     impeller_rotational_speed:
       Description: "Rotational speed of fan impeller"
@@ -280,7 +284,8 @@ LookupVariablesContinuous:
       Required: True
 
 PerformanceMapDiscrete:
-  Object Type: "Performance Map"
+  Object Type: "Data Group"
+  Data Group Template: PerformanceMapTemplate
   Data Elements:
     grid_variables:
       Description: "Data group describing grid variables for discrete fan performance"
@@ -292,7 +297,8 @@ PerformanceMapDiscrete:
       Required: True
 
 GridVariablesDiscrete:
-  Object Type: "Grid Variables"
+  Object Type: "Data Group"
+  Data Group Template: GridVariablesTemplate
   Data Elements:
     speed_number:
       Description: "Number indicating discrete speed of fan impeller in rank order (with 1 being the lowest speed)"
@@ -310,7 +316,8 @@ GridVariablesDiscrete:
       Required: True
 
 LookupVariablesDiscrete:
-  Object Type: "Lookup Variables"
+  Object Type: "Data Group"
+  Data Group Template: LookupVariablesTemplate
   Data Elements:
     standard_air_volumetric_flow_rate:
       Description: "Volumetric air flow rate through fan assembly at standard air conditions"

@@ -11,6 +11,7 @@ Schema:
 # Data Groups
 RS0005:
   Object Type: "Data Group"
+  Data Group Template: RepresentationSpecificationTemplate
   Data Elements:
     metadata:
       Description: "Metadata data group"
@@ -90,7 +91,8 @@ Performance:
               "***Informative note:*** This field may be omitted for motor-driven equipment where motor efficiencies are incorporated into their performance data"]
 
 PerformanceMap:
-  Object Type: "Performance Map"
+  Object Type: "Data Group"
+  Data Group Template: PerformanceMapTemplate
   Data Elements:
     grid_variables:
       Description: "Data group describing grid variables for motor performance"
@@ -102,7 +104,8 @@ PerformanceMap:
       Required: True
 
 GridVariables:
-  Object Type: "Grid Variables"
+  Object Type: "Data Group"
+  Data Group Template: GridVariablesTemplate
   Data Elements:
     shaft_power:
       Description: "Delivered rotational shaft power"
@@ -119,7 +122,8 @@ GridVariables:
       Required: True
 
 LookupVariables:
-  Object Type: "Lookup Variables"
+  Object Type: "Data Group"
+  Data Group Template: LookupVariablesTemplate
   Data Elements:
     efficiency:
       Description: "Efficiency of motor"

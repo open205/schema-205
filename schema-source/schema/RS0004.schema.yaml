@@ -10,6 +10,7 @@ Schema:
 # Data Groups
 RS0004:
   Object Type: "Data Group"
+  Data Group Template: RepresentationSpecificationTemplate
   Data Elements:
     metadata:
       Description: "Metadata data group"
@@ -86,7 +87,8 @@ Performance:
       Required: True
 
 PerformanceMapCooling:
-  Object Type: "Performance Map"
+  Object Type: "Data Group"
+  Data Group Template: PerformanceMapTemplate
   Data Elements:
     grid_variables:
       Description: "Data group defining the grid variables for cooling performance"
@@ -98,7 +100,8 @@ PerformanceMapCooling:
       Required: True
 
 GridVariablesCooling:
-  Object Type: "Grid Variables"
+  Object Type: "Data Group"
+  Data Group Template: GridVariablesTemplate
   Data Elements:
     outdoor_coil_entering_dry_bulb_temperature:
       Description: "Dry bulb temperature of the air entering the outdoor coil"
@@ -143,7 +146,8 @@ GridVariablesCooling:
       Required: True
 
 LookupVariablesCooling:
-  Object Type: "Lookup Variables"
+  Object Type: "Data Group"
+  Data Group Template: LookupVariablesTemplate
   Data Elements:
     gross_total_capacity:
       Description: "Total heat removed by the indoor coil"
@@ -177,7 +181,8 @@ LookupVariablesCooling:
       Required: True
 
 PerformanceMapStandby:
-  Object Type: "Performance Map"
+  Object Type: "Data Group"
+  Data Group Template: PerformanceMapTemplate
   Data Elements:
     grid_variables:
       Description: "Data group defining the grid variables for standby performance"
@@ -189,7 +194,8 @@ PerformanceMapStandby:
       Required: True
 
 GridVariablesStandby:
-  Object Type: "Grid Variables"
+  Object Type: "Data Group"
+  Data Group Template: GridVariablesTemplate
   Data Elements:
     outdoor_coil_environment_dry_bulb_temperature:
       Description: "Dry bulb temperature of the air in the environment of the outdoor coil"
@@ -199,7 +205,8 @@ GridVariablesStandby:
       Required: True
 
 LookupVariablesStandby:
-  Object Type: "Lookup Variables"
+  Object Type: "Data Group"
+  Data Group Template: LookupVariablesTemplate
   Data Elements:
     gross_power:
       Description: "Gross power draw (of the outdoor unit)"

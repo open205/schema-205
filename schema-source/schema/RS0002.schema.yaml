@@ -78,6 +78,7 @@ AHRI340360CapacityControlType:
 # Data Groups
 RS0002:
   Object Type: "Data Group"
+  Data Group Template: RepresentationSpecificationTemplate
   Data Elements:
     metadata:
       Description: "Metadata data group"
@@ -117,7 +118,8 @@ ProductInformation:
       Notes: "Pattern shall match all model numbers that can be represented by the representation"
 
 RatingAHRI210240:
-  Object Type: "Rating Data Group"
+  Object Type: "Data Group"
+  Data Group Template: "RatingTemplate"
   Data Elements:
     certified_reference_number:
       Description: "AHRI certified reference number"
@@ -164,7 +166,8 @@ RatingAHRI210240:
       Notes: "At high stage for multi-stage equipment"
 
 RatingAHRI340360:
-  Object Type: "Rating Data Group"
+  Object Type: "Data Group"
+  Data Group Template: "RatingTemplate"
   Data Elements:
     certified_reference_number:
       Description: "AHRI Certified Reference Number"
