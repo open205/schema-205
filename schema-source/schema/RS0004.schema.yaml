@@ -105,43 +105,56 @@ GridVariablesCooling:
   Data Elements:
     outdoor_coil_entering_dry_bulb_temperature:
       Description: "Dry bulb temperature of the air entering the outdoor coil"
-      Data Type: "[Numeric][1..]"
-      Constraints: ">=0.0"
+      Data Type: "[Numeric]"
+      Constraints:
+      - ">=0.0"
+      - "[1..]"
       Units: "K"
       Required: True
     indoor_coil_entering_relative_humidity:
       Description: "Relative humidity of the air entering the indoor coil"
-      Data Type: "[Numeric][1..]"
-      Constraints: [">=0.0","<=1.0"]
+      Data Type: "[Numeric]"
+      Constraints:
+      - ">=0.0"
+      - "<=1.0"
+      - "[1..]"
       Units: "-"
       Notes: "As measured immediately before entering the coil (i.e., after the fan in a blow-through configuration)"
       Required: True
     indoor_coil_entering_dry_bulb_temperature:
       Description: "Dry bulb temperature of the air entering the indoor coil"
-      Data Type: "[Numeric][1..]"
-      Constraints: ">=0.0"
+      Data Type: "[Numeric]"
+      Constraints:
+      - ">=0.0"
+      - "[1..]"
       Units: "K"
       Required: True
       Notes: "As measured immediately before entering the coil (i.e., after the fan in a blow-through configuration)"
     indoor_coil_air_mass_flow_rate:
       Description: "Mass flow rate of air entering the indoor coil"
-      Data Type: "[Numeric][1..]"
-      Constraints: ">0.0"
+      Data Type: "[Numeric]"
+      Constraints:
+      - ">0.0"
+      - "[1..]"
       Units: "kg/s"
       Required: True
       Scalable: True
     compressor_sequence_number:
       Description: "Index indicating the relative capacity order of the compressor speed/stage expressed in order from lowest capacity (starting at 1) to highest capacity"
-      Data Type: "[Integer][1..]"
-      Constraints: ">=1"
+      Data Type: "[Integer]"
+      Constraints:
+      - ">=1"
+      - "[1..]"
       Units: "-"
       Notes: ["If `compressor_speed_control_type` is `DISCRETE`, sequence numbers shall be provided for each discrete stage of the compressor(s)",
               "If `compressor_speed_control_type` is `CONTINUOUS`, sufficient sequence numbers shall be provided to capture the continuous operation of the compressor(s)"]
       Required: True
     ambient_absolute_air_pressure:
       Description: "Ambient absolute air pressure"
-      Data Type: "[Numeric][1..]"
-      Constraints: ">=0.0"
+      Data Type: "[Numeric]"
+      Constraints:
+      - ">=0.0"
+      - "[1..]"
       Units: "Pa"
       Required: True
 
@@ -151,24 +164,30 @@ LookupVariablesCooling:
   Data Elements:
     gross_total_capacity:
       Description: "Total heat removed by the indoor coil"
-      Data Type: "[Numeric][1..]"
-      Constraints: ">=0.0"
+      Data Type: "[Numeric]"
+      Constraints:
+      - ">=0.0"
+      - "[1..]"
       Units: "W"
       Required: True
       Scalable: True
       Notes: "Shall not include fan heat"
     gross_sensible_capacity:
       Description: "Sensible heat removed by the indoor coil"
-      Data Type: "[Numeric][1..]"
-      Constraints: ">=0.0"
+      Data Type: "[Numeric]"
+      Constraints:
+      - ">=0.0"
+      - "[1..]"
       Units: "W"
       Required: True
       Scalable: True
       Notes: "Shall not include fan heat"
     gross_power:
       Description: "Gross power draw (of the outdoor unit)"
-      Data Type: "[Numeric][1..]"
-      Constraints: ">0.0"
+      Data Type: "[Numeric]"
+      Constraints:
+      - ">0.0"
+      - "[1..]"
       Units: "W"
       Required: True
       Scalable: True
@@ -199,8 +218,10 @@ GridVariablesStandby:
   Data Elements:
     outdoor_coil_environment_dry_bulb_temperature:
       Description: "Dry bulb temperature of the air in the environment of the outdoor coil"
-      Data Type: "[Numeric][1..]"
-      Constraints: ">=0.0"
+      Data Type: "[Numeric]"
+      Constraints:
+      - ">=0.0"
+      - "[1..]"
       Units: "K"
       Required: True
 
@@ -210,8 +231,10 @@ LookupVariablesStandby:
   Data Elements:
     gross_power:
       Description: "Gross power draw (of the outdoor unit)"
-      Data Type: "[Numeric][1..]"
-      Constraints: ">0.0"
+      Data Type: "[Numeric]"
+      Constraints:
+      - ">0.0"
+      - "[1..]"
       Units: "W"
       Required: True
       Scalable: True

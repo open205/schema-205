@@ -8,6 +8,13 @@ Schema:
   Description: "Schema for ASHRAE 205 annex RS0002: Unitary Cooling Air-Conditioning Equipment"
   Version: "2.0.0"
   Root Data Group: "RS0002"
+  Unit Systems:
+    IPUnits:
+      - "-"
+      - ft
+      - Btu/h
+      - kW
+      - Btu/W-h
 
 # Local Enumerations
 FanPosition:
@@ -121,6 +128,8 @@ RatingAHRI210240:
   Object Type: "Data Group"
   Data Group Template: "RatingTemplate"
   Data Elements:
+    rating_reproducible_from_data:
+      Data Type: "Boolean"
     certified_reference_number:
       Description: "AHRI certified reference number"
       Data Type: "String"
@@ -169,6 +178,8 @@ RatingAHRI340360:
   Object Type: "Data Group"
   Data Group Template: "RatingTemplate"
   Data Elements:
+    rating_reproducible_from_data:
+      Data Type: "Boolean"
     certified_reference_number:
       Description: "AHRI Certified Reference Number"
       Data Type: "String"

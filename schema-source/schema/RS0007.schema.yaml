@@ -103,8 +103,10 @@ GridVariables:
   Data Elements:
     output_power:
       Description: "Output shaft power"
-      Data Type: "[Numeric][1..]"
-      Constraints: ">=0.0"
+      Data Type: "[Numeric]"
+      Constraints:
+      - ">=0.0"
+      - "[1..]"
       Units: "W"
       Required: True
       Scalable: True
@@ -115,8 +117,11 @@ LookupVariables:
   Data Elements:
     efficiency:
       Description: "Efficiency of drive"
-      Data Type: "[Numeric][1..]"
-      Constraints: [">=0.0","<=1.0"]
+      Data Type: "[Numeric]"
+      Constraints:
+      - ">=0.0"
+      - "<=1.0"
+      - "[1..]"
       Units: "-"
       Notes: "Defined as the ratio of output shaft power to input shaft power"
       Required: True

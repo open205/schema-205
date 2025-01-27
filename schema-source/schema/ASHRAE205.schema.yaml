@@ -11,9 +11,6 @@ Schema:
   Title: "ASHRAE 205"
   Description: "Base schema for ASHRAE 205 representations"
   Version: "2.0.1"
-  Unit Systems:
-    IPUnits:
-      - ft
 
 
 #Data Group Templates
@@ -38,6 +35,7 @@ LookupVariablesTemplate:
   Required Data Types:
     - "[Numeric]"
     - "[Integer]"
+    - "[<OperationState>]"
   Data Elements Required: True
 
 RepresentationSpecificationTemplate:

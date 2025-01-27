@@ -111,15 +111,19 @@ GridVariables:
   Data Elements:
     output_power:
       Description: "Power delivered to the motor"
-      Data Type: "[Numeric][1..]"
-      Constraints: ">=0.0"
+      Data Type: "[Numeric]"
+      Constraints:
+      - ">=0.0"
+      - "[1..]"
       Units: "W"
       Required: True
       Scalable: True
     output_frequency:
       Description: "Frequency delivered to the motor"
-      Data Type: "[Numeric][1..]"
-      Constraints: ">=0.0"
+      Data Type: "[Numeric]"
+      Constraints:
+      - ">=0.0"
+      - "[1..]"
       Units: "Hz"
       Required: True
 
@@ -129,8 +133,11 @@ LookupVariables:
   Data Elements:
     efficiency:
       Description: "Efficiency of drive"
-      Data Type: "[Numeric][1..]"
-      Constraints: [">=0.0","<=1.0"]
+      Data Type: "[Numeric]"
+      Constraints:
+      - ">=0.0"
+      - "<=1.0"
+      - "[1..]"
       Units: "-"
       Notes: ["Defined as the ratio of electrical output power (to the motor) to electrical input power (to the drive)",
               "Input power shall include any power required to provide active air cooling for the drive"]

@@ -214,15 +214,19 @@ SystemCurve:
   Data Elements:
     standard_air_volumetric_flow_rate:
       Description: "Volumetric air flow rate through an air distribution system at standard air conditions"
-      Data Type: "[Numeric][2..]"
-      Constraints: ">=0.0"
+      Data Type: "[Numeric]"
+      Constraints:
+      - ">=0.0"
+      - "[2..]"
       Units: "m3/s"
       Required: True
       Scalable: True
     static_pressure_difference:
       Description: "Static pressure difference of an air distribution system"
-      Data Type: "[Numeric][2..]"
-      Constraints: ">=0.0"
+      Data Type: "[Numeric]"
+      Constraints:
+      - ">=0.0"
+      - "[2..]"
       Units: "Pa"
       Required: True
       Scalable: True
@@ -246,15 +250,19 @@ GridVariablesContinuous:
   Data Elements:
     standard_air_volumetric_flow_rate:
       Description: "Volumetric air flow rate through fan assembly at standard air conditions"
-      Data Type: "[Numeric][1..]"
-      Constraints: ">=0.0"
+      Data Type: "[Numeric]"
+      Constraints:
+      - ">=0.0"
+      - "[1..]"
       Units: "m3/s"
       Required: True
       Scalable: True
     static_pressure_difference:
       Description: "External static pressure across fan assembly at dry coil conditions"
-      Data Type: "[Numeric][1..]"
-      Constraints: ">=0.0"
+      Data Type: "[Numeric]"
+      Constraints:
+      - ">=0.0"
+      - "[1..]"
       Units: "Pa"
       Notes: "Any static pressure deduction (or addition) for wet coil is specified by `wet_pressure_difference` in 'assembly_components' data group"
       Required: True
@@ -265,14 +273,18 @@ LookupVariablesContinuous:
   Data Elements:
     impeller_rotational_speed:
       Description: "Rotational speed of fan impeller"
-      Data Type: "[Numeric][1..]"
-      Constraints: ">=0.0"
+      Data Type: "[Numeric]"
+      Constraints:
+      - ">=0.0"
+      - "[1..]"
       Units: "rev/s"
       Required: True
     shaft_power:
       Description: "Mechanical shaft power input to fan assembly"
-      Data Type: "[Numeric][1..]"
-      Constraints: ">=0.0"
+      Data Type: "[Numeric]"
+      Constraints:
+      - ">=0.0"
+      - "[1..]"
       Units: "W"
       Notes: "Does not include the mechanical efficiency of any mechanical drive used to modify rotational speed between the motor and impeller"
       Required: True
@@ -302,15 +314,19 @@ GridVariablesDiscrete:
   Data Elements:
     speed_number:
       Description: "Number indicating discrete speed of fan impeller in rank order (with 1 being the lowest speed)"
-      Data Type: "[Integer][1..]"
-      Constraints: ">=0"
+      Data Type: "[Integer]"
+      Constraints:
+      - ">=0"
+      - "[1..]"
       Units: "-"
       Notes: "Data shall be provided for all allowable discrete speeds or settings"
       Required: True
     static_pressure_difference:
       Description: "External static pressure across fan assembly at dry coil conditions"
-      Data Type: "[Numeric][1..]"
-      Constraints: ">=0.0"
+      Data Type: "[Numeric]"
+      Constraints:
+      - ">=0.0"
+      - "[1..]"
       Units: "Pa"
       Notes: "Any static pressure deduction (or addition) for wet coil is specified by `wet_pressure_difference` in 'assembly_components' data group"
       Required: True
@@ -321,23 +337,29 @@ LookupVariablesDiscrete:
   Data Elements:
     standard_air_volumetric_flow_rate:
       Description: "Volumetric air flow rate through fan assembly at standard air conditions"
-      Data Type: "[Numeric][1..]"
-      Constraints: ">=0.0"
+      Data Type: "[Numeric]"
+      Constraints:
+      - ">=0.0"
+      - "[1..]"
       Units: "m3/s"
       Required: True
       Scalable: True
     shaft_power:
       Description: "Mechanical shaft power input to fan assembly"
-      Data Type: "[Numeric][1..]"
-      Constraints: ">=0.0"
+      Data Type: "[Numeric]"
+      Constraints:
+      - ">=0.0"
+      - "[1..]"
       Units: "W"
       Notes: "Does not include the mechanical efficiency of any mechanical drive used to modify rotational speed between the motor and impeller"
       Required: True
       Scalable: True
     impeller_rotational_speed:
       Description: "Rotational speed of fan impeller"
-      Data Type: "[Numeric][1..]"
-      Constraints: ">=0.0"
+      Data Type: "[Numeric]"
+      Constraints:
+      - ">=0.0"
+      - "[1..]"
       Units: "rev/s"
       Required: True
     operation_state:
