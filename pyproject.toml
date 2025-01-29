@@ -9,8 +9,8 @@ python = "^3.10"
 jsonschema = "*"
 pyyaml = "*"
 Jinja2 = "^3.1.4"
-#lattice = {git = "https://github.com/bigladder/lattice.git", branch = "cpp-cleanup"}
-lattice = {path = "C:/Users/Tanaya Mankad/source/repos/lattice", develop = true}
+lattice = {git = "https://github.com/bigladder/lattice.git", branch = "cpp-cleanup"}
+#lattice = {path = "C:/Users/Tanaya Mankad/source/repos/lattice", develop = true}
 
 [tool.poetry.group.dev.dependencies]
 pytest = "^7.1.3"

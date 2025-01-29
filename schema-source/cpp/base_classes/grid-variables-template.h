@@ -9,7 +9,7 @@
 #include <performance-map-template.h>
 #include <btwxt/grid-axis.h>
 
-namespace fan_spec {
+namespace schema_source {
   namespace ashrae205 {
 
 

@@ -20,7 +20,7 @@ class PerformanceMapOverload(FunctionalHeaderEntry):
     """ """
     name: str = field(init=False, default="")
     _f_name: str = field(init=False)
-    n_lookup_values: int
+    lookup_types: list[str]
 
     def __post_init__(self):
         self._f_name = "calculate_performance"
@@ -44,7 +44,7 @@ class PerformanceOverloadPlugin(PluginInterface, base_class="PerformanceMapTempl
                     and remove_prefix(lv.name, "LookupVariables") == remove_prefix(entry.name, "PerformanceMap")
                 ]:
                     f_ret = f"{lvstruct.name}Struct"
-                    n_ret = len([c for c in lvstruct.child_entries if isinstance(c, DataElement)])
+                    ret_types = ["::".join(c.scoped_innertype) if c.scoped_innertype[0] else c.scoped_innertype[1] for c in lvstruct.child_entries if isinstance(c, DataElement)]
                     # for each performance map, find GridVariables sibling of PerformanceMap, that has a matching name
                     for gridstruct in [
                         gridv
@@ -56,7 +56,7 @@ class PerformanceOverloadPlugin(PluginInterface, base_class="PerformanceMapTempl
                         for ce in [c for c in gridstruct.child_entries if isinstance(c, DataElement)]:
                             f_args.append(" ".join(["double", ce.name]))
                         f_args.append("Btwxt::InterpolationMethod performance_interpolation_method = Btwxt::InterpolationMethod::linear")
-                        PerformanceMapOverload(entry, f_ret, f_args, n_ret)
+                        PerformanceMapOverload(entry, f_ret, f_args, ret_types)
             else:
                 self.process_data_group(entry)
 
@@ -119,8 +119,8 @@ class PerformanceOverloadImplementation(ImplementationEntry):
             "auto v = calculate_performance(target, performance_interpolation_method);"
         )
         init_str = f"{self._header_entry._f_ret} s {{"
-        for i in range(self._header_entry.n_lookup_values):
-            init_str += f"v[{i}], "
+        struct_item_index = list(range(len(self._header_entry.lookup_types)))
+        init_str += ", ".join([(f"v[{i}]" if self._header_entry.lookup_types[i] == "double" else f"static_cast<{self._header_entry.lookup_types[i]}>(v[{i}])") for i in struct_item_index])
         init_str += "};"
         self._funclines.append(init_str)
         self._funclines.append("return s;")

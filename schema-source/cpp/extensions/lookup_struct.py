@@ -37,6 +37,6 @@ class LookupStructPlugin(PluginInterface, base_class="LookupVariablesTemplate"):
             if isinstance(entry, Struct) and entry.superclass == "ashrae205::LookupVariablesTemplate":
                 ls = LookupStruct(entry.name, entry.parent)
                 for child in [ch for ch in entry.child_entries if isinstance(ch, DataElement)]:
-                    ls._add_child_entry(copy.deepcopy(child))
+                    ls._add_child_entry(copy.copy(child))
             else:
                 self.process_data_group(entry)

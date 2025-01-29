@@ -2,6 +2,7 @@ dependencies:
   - name: "nlohmann_json"
     url: "https://github.com/nlohmann/json.git"
   - name: "btwxt"
+    url: "https://github.com/bigladder/btwxt.git"
   - name: "courier"
     url: "https://github.com/bigladder/courier.git"
   - name: "fmt"

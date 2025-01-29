@@ -8,7 +8,7 @@
 #include <courier/courier.h>
 #include <btwxt/btwxt.h>
 
-namespace fan_spec {
+namespace schema_source {
   namespace ashrae205 {
 
 // ------------------------------------------------------------------------------------------------

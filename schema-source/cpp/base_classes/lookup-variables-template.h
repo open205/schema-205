@@ -7,7 +7,7 @@
 #include <sstream>
 #include "performance-map-template.h"
 
-namespace fan_spec {
+namespace schema_source {
   namespace ashrae205 {
 
 template <class T>

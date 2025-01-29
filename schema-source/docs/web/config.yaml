@@ -1,0 +1,12 @@
+title: "ASHRAE 205 Fan Representation Specification"
+author: "ASHRAE SPC 205"
+description: "A standardized modern data model for characterizing fan performance"
+specifications:
+  - ASHRAE205
+  - RS0003
+  - RS0005
+  - RS0006
+  - RS0007
+colors:
+  primary: deep orange
+  accent: blue grey
