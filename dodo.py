@@ -6,12 +6,9 @@ from lattice.cpp.header_entry_extension_loader import load_extensions
 
 DOIT_CONFIG = {'default_tasks': ['generate_meta_schemas', 'validate_schemas', 'generate_markdown']}
 
-BUILD_PATH = os.path.join(os.path.dirname(__file__), 'build')
+BUILD_PATH = Path(__file__).absolute().with_name("build")
 create_folder(BUILD_PATH)
-SOURCE_PATH = os.path.join(os.path.dirname(__file__), 'schema-source')
-SCHEMA_PATH = os.path.join(BUILD_PATH,"schema")
-RENDERED_TEMPLATE_PATH = os.path.realpath(
-        os.path.join(BUILD_PATH,"rendered_template"))
+SOURCE_PATH = Path(__file__).absolute().parent
 
 data_model_205 = Lattice(SOURCE_PATH, BUILD_PATH, build_output_directory_name=None, build_validation=False)
 
