@@ -65,7 +65,7 @@ def task_generate_markdown():
 
 
 def task_generate_web_docs():
-    """Generate markdown documentation from templates"""
+    """Generate web documentation from templates"""
     return {
         "task_dep": [f"validate_schemas", f"generate_json_schemas", f"validate_example_files"],
         "file_dep": [schema.file_path for schema in data_model_205.schemas]
