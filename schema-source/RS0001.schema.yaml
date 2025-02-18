@@ -384,19 +384,19 @@ GridVariablesCoolingAir: &GridVariablesCoolingAir
   Data Elements:
     evaporator_liquid_volumetric_flow_rate: *evaporator_liquid_volumetric_flow_rate
     evaporator_liquid_leaving_temperature: *evaporator_liquid_leaving_temperature
-    condenser_air_entering_drybulb_temperature: &condenser_air_entering_drybulb_temperature
+    condenser_air_entering_drybulb_temperature:
       Description: "Entering condenser air drybulb temperature"
       Data Type: "[Numeric][1..]"
       Units: "K"
       Constraints: ">0.0"
       Required: False
-    condenser_air_entering_relative_humidity: &condenser_air_entering_relative_humidity
+    condenser_air_entering_relative_humidity:
       Description: "Entering condenser air relative humidity"
       Data Type: "[Numeric][1..]"
       Units: "-"
       Constraints: ">=0.0, <=1.0"
       Required: False
-    ambient_pressure: &ambient_pressure
+    ambient_pressure:
       Description: "Ambient pressure used to calculate the performance"
       Data Type: "[Numeric][1..]"
       Units: "Pa"
