@@ -5,7 +5,7 @@
         "schema_version": "3.0.0",
         "description": "ASHRAE 90.1-2022 Appendix J curve set 'M': 0.0-75.0 ton, 4.51 COP, 7.03 IPLV liquid-cooled, positive displacement compressor chiller",
         "id": "55279f6c-9476-425e-8e77-0e57cc5f7dbf",
-        "data_timestamp": "2024-12-20T13:18Z",
+        "data_timestamp": "2025-02-18T13:40Z",
         "data_version": 3,
         "data_source": "https://github.com/bigladder/chiller",
         "disclaimer": "This data is synthetic and does not represent any physical products.",

@@ -5,7 +5,7 @@
         "schema_version": "3.0.0",
         "description": "ASHRAE 90.1-2022 Appendix J curve set 'AB': 300.0+ ton, 6.10 COP, 6.40 IPLV liquid-cooled, centrifugal compressor chiller",
         "id": "f2d6adcc-2224-4280-af0c-0895b9c01fe2",
-        "data_timestamp": "2024-12-20T13:18Z",
+        "data_timestamp": "2025-02-18T13:40Z",
         "data_version": 3,
         "data_source": "https://github.com/bigladder/chiller",
         "disclaimer": "This data is synthetic and does not represent any physical products.",
