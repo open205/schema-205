@@ -1,8 +1,7 @@
-import os
 from pathlib import Path
 from doit.tools import create_folder
 from lattice import Lattice
-from lattice.cpp.header_entry_extension_loader import load_extensions
+from lattice.cpp.extension_loader import load_extensions
 
 DOIT_CONFIG = {'default_tasks': ['generate_meta_schemas', 'validate_schemas', 'generate_markdown']}
 
@@ -34,7 +33,7 @@ def task_validate_schemas():
 def task_generate_json_schemas():
     """Generate JSON schemas"""
     return {
-        "task_dep": [f"validate_schemas"],
+        "task_dep": ["validate_schemas"],
         "file_dep": [schema.file_path for schema in data_model_205.schemas]
         + [schema.meta_schema_path for schema in data_model_205.schemas],
         "targets": [schema.json_schema_path for schema in data_model_205.schemas],
@@ -47,7 +46,7 @@ def task_validate_example_files():
     return {
         "file_dep": [schema.json_schema_path for schema in data_model_205.schemas]
         + data_model_205.examples,
-        "task_dep": [f"generate_json_schemas"],
+        "task_dep": ["generate_json_schemas"],
         "actions": [(data_model_205.validate_example_files, [])],
     }
 

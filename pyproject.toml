@@ -1,22 +1,26 @@
-[tool.poetry]
+# UV
+
+[project]
 name = "schema205"
 version = "2.0.0"
 description = ""
 authors = ["Open205"]
+requires-python = ">= 3.10"
 
-[tool.poetry.dependencies]
-python = "^3.10"
-jsonschema = "*"
-pyyaml = "*"
-Jinja2 = "^3.1.4"
+dependencies = [
+  "jsonschema",
+  "pyyaml",
+  "Jinja2 >= 3.1.4",
+  "lattice"
+]
+
+[tool.uv]
+dev-dependencies = [
+    "pytest >= 7.1.3",
+    "doit",
+    "pylint",
+    "tomli == 2.0.1"
+]
+
+[tool.uv.sources]
 lattice = {git = "https://github.com/bigladder/lattice.git"}
-
-[tool.poetry.group.dev.dependencies]
-pytest = "^7.1.3"
-doit = "*"
-pylint = "*"
-tomli = "2.0.1"
-
-[build-system]
-requires = ["poetry-core>=1.0.0"]
-build-backend = "poetry.core.masonry.api"

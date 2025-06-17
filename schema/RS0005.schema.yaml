@@ -16,7 +16,7 @@ RS0005:
     metadata:
       Description: "Metadata data group"
       Data Type: "{Metadata}"
-      Constraints: "schema=RS0005"
+      Constraints: schema_name="RS0005"
       Required: True
     description:
       Description: "Data group describing product and rating information"

@@ -90,7 +90,7 @@ RS0002:
     metadata:
       Description: "Metadata data group"
       Data Type: "{Metadata}"
-      Constraints: "schema=RS0002"
+      Constraints: schema_name="RS0002"
       Required: True
     description:
       Description: "Data group describing product and rating information"
