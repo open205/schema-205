@@ -417,7 +417,7 @@ PerformanceMapCoolingAir:
 
 GridVariablesCoolingAir: &GridVariablesCoolingAir
   Object Type: "Data Group"
-  Data Group Template: GridVariables
+  Data Group Template: GridVariablesTemplate
   Data Elements:
     evaporator_liquid_volumetric_flow_rate: *evaporator_liquid_volumetric_flow_rate
     evaporator_liquid_leaving_temperature: *evaporator_liquid_leaving_temperature
