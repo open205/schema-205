@@ -429,15 +429,19 @@ GridVariablesCoolingAir: &GridVariablesCoolingAir
       Required: True
     condenser_air_entering_relative_humidity:
       Description: "Entering condenser air relative humidity"
-      Data Type: "[Numeric][1..]"
+      Data Type: "[Numeric]"
       Units: "-"
-      Constraints: ">=0.0, <=1.0"
+      Constraints:
+        - ">=0.0, <=1.0"
+        - "[1..]"
       Required: True
     ambient_pressure:
       Description: "Ambient pressure used to calculate the performance"
-      Data Type: "[Numeric][1..]"
+      Data Type: "[Numeric]"
       Units: "Pa"
-      Constraints: ">0.0"
+      Constraints:
+        - ">0.0"
+        - "[1..]"
       Required: True
       Notes: "Informative Note: the intent of the ambient pressure is to capture the pressure at the installation and not changes in the ambient pressure due to weather effects"
     compressor_sequence_number: *compressor_sequence_number
