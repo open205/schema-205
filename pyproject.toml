@@ -4,12 +4,13 @@
 name = "schema205"
 version = "2.0.0"
 description = ""
-authors = ["Open205"]
+authors = [{name="Open205"}]
 requires-python = ">= 3.10"
 
 dependencies = [
   "jsonschema",
   "pyyaml",
+  "cbor2",
   "Jinja2 >= 3.1.4",
   "lattice"
 ]
@@ -24,3 +25,10 @@ dev-dependencies = [
 
 [tool.uv.sources]
 lattice = {git = "https://github.com/bigladder/lattice.git"}
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build]
+packages = ["lattice"]
