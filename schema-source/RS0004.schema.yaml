@@ -138,7 +138,7 @@ GridVariablesCooling:
     indoor_coil_air_mass_flow_rate:
       Description: "Mass flow rate of air entering the indoor coil"
       Data Type: "[Numeric][1..]"
-      Constraints: ">=0.0"
+      Constraints: ">0.0"
       Units: "kg/s"
       Required: True
       Scalable: True
@@ -179,11 +179,11 @@ LookupVariablesCooling:
     gross_power:
       Description: "Gross power draw (of the outdoor unit)"
       Data Type: "[Numeric][1..]"
-      Constraints: ">=0.0"
+      Constraints: ">0.0"
       Units: "W"
       Required: True
       Scalable: True
-      Notes: ["Includes compressor, outdoor fan, and any auxiliary power used by the unit's controls and any crankcase heater",
+      Notes: ["Includes compressor, outdoor fan, and any auxiliary power used by the unit's controls and any sump heater",
               "Shall not include power drawn by the indoor fan"]
     operation_state:
       Description: "The operation state at the operating conditions"
@@ -326,8 +326,8 @@ LookupVariablesStandby:
     gross_power:
       Description: "Gross power draw (of the outdoor unit)"
       Data Type: "[Numeric][1..]"
-      Constraints: ">=0.0"
+      Constraints: ">0.0"
       Units: "W"
       Required: True
       Scalable: True
-      Notes: "Includes any auxiliary power used by the unit's controls and any crankcase heater"
+      Notes: "Includes any auxiliary power used by the unit's controls and any sump heater"
