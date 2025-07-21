@@ -138,7 +138,7 @@ GridVariablesCooling:
     indoor_coil_air_mass_flow_rate:
       Description: "Mass flow rate of air entering the indoor coil"
       Data Type: "[Numeric][1..]"
-      Constraints: ">0.0"
+      Constraints: ">=0.0"
       Units: "kg/s"
       Required: True
       Scalable: True
@@ -179,7 +179,7 @@ LookupVariablesCooling:
     gross_power:
       Description: "Gross power draw (of the outdoor unit)"
       Data Type: "[Numeric][1..]"
-      Constraints: ">0.0"
+      Constraints: ">=0.0"
       Units: "W"
       Required: True
       Scalable: True
@@ -228,7 +228,7 @@ GridVariablesHeating:
     indoor_coil_air_mass_flow_rate:
       Description: "Mass flow rate of air entering the indoor coil"
       Data Type: "[Numeric][1..]"
-      Constraints: ">0"
+      Constraints: ">=0"
       Units: "kg/s"
       Required: True
       Scalable: True
@@ -246,7 +246,7 @@ LookupVariablesHeating:
     gross_steady_state_capacity:
       Description: "Total heat added by the indoor coil under steady-state conditions (i.e., does not include the impact of frost accumulation or defrost operation)"
       Data Type: "[Numeric][1..]"
-      Constraints: ">0"
+      Constraints: ">=0"
       Units: "W"
       Required: True
       Scalable: True
@@ -256,7 +256,7 @@ LookupVariablesHeating:
     gross_integrated_capacity:
       Description: "Total heat added by the indoor coil integrated over the time between defrost terminations"
       Data Type: "[Numeric][1..]"
-      Constraints: ">0"
+      Constraints: ">=0"
       Units: "W"
       Required: True
       Scalable: True
@@ -266,7 +266,7 @@ LookupVariablesHeating:
     gross_steady_state_power:
       Description: "Gross power draw of the outdoor unit under steady-state conditions (i.e., does not include the impact of frost accumulation or defrost operation)"
       Data Type: "[Numeric][1..]"
-      Constraints: ">0"
+      Constraints: ">=0"
       Units: "W"
       Required: True
       Scalable: True
@@ -277,7 +277,7 @@ LookupVariablesHeating:
     gross_integrated_power:
       Description: "Gross power draw of the outdoor unit integrated over the time between defrost terminations"
       Data Type: "[Numeric][1..]"
-      Constraints: ">0"
+      Constraints: ">=0"
       Units: "W"
       Required: True
       Scalable: True
@@ -326,7 +326,7 @@ LookupVariablesStandby:
     gross_power:
       Description: "Gross power draw (of the outdoor unit)"
       Data Type: "[Numeric][1..]"
-      Constraints: ">0.0"
+      Constraints: ">=0.0"
       Units: "W"
       Required: True
       Scalable: True
