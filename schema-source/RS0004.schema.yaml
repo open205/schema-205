@@ -183,7 +183,7 @@ LookupVariablesCooling:
       Units: "W"
       Required: True
       Scalable: True
-      Notes: ["Includes compressor, outdoor fan, and any auxiliary power used by the unit's controls and any sump heater",
+      Notes: ["Includes compressor, outdoor fan, and any auxiliary power used by the unit's controls and any crankcase heater",
               "Shall not include power drawn by the indoor fan"]
     operation_state:
       Description: "The operation state at the operating conditions"
@@ -273,7 +273,7 @@ LookupVariablesHeating:
       Notes:
         - "Sometimes also referred to as \"instantaneous\" power"
         - "Does not include power drawn by the indoor fan"
-        - "Includes compressor, outdoor fan, and any auxiliary power used by the unit's controls and any sump heater"
+        - "Includes compressor, outdoor fan, and any auxiliary power used by the unit's controls and any crankcase heater"
     gross_integrated_power:
       Description: "Gross power draw of the outdoor unit integrated over the time between defrost terminations"
       Data Type: "[Numeric][1..]"
@@ -284,7 +284,7 @@ LookupVariablesHeating:
       Notes:
         - "Sometimes referred to as \"frost accumulation\" power"
         - "Does not include power drawn by the indoor fan"
-        - "Includes compressor, outdoor fan, and any auxiliary power used by the unit's defrost process, controls, and any sump heater"
+        - "Includes compressor, outdoor fan, and any auxiliary power used by the unit's defrost process, controls, and any crankcase heater"
     defrost_cycle_frequency:
       Description: "Frequency of defrost terminations under the current operating conditions"
       Data Type: "[Numeric][1..]"
@@ -330,4 +330,4 @@ LookupVariablesStandby:
       Units: "W"
       Required: True
       Scalable: True
-      Notes: "Includes any auxiliary power used by the unit's controls and any sump heater"
+      Notes: "Includes any auxiliary power used by the unit's controls and any crankcase heater"
