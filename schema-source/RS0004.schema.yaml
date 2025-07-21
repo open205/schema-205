@@ -70,21 +70,19 @@ Performance:
       Data Type: "<SpeedControlType>"
       Required: True
     cooling_cycling_degradation_coefficient:
-      Description: "Cooling cycling degradation coefficient (C~D~^c^) as described in AHRI 210/240"
+      Description: "Cooling cycling degradation coefficient (C~D~^c^)"
       Data Type: "Numeric"
       Units: "-"
       Constraints: [">=0.0","<1.0"]
       Required: "if performance_capabilities contains(COOLING)"
-      Notes: ["Used for the lowest stage when the unit cycles to meet load",
-              "***Informative note:*** 340/360 specifies a fixed cycling degradation coefficient of approximately 0.12"]
+      Notes: ["Used for the lowest stage when the unit cycles to meet load"]
     heating_cycling_degradation_coefficient:
-      Description: "Heating cycling degradation coefficient (C~D~^h^) as described in AHRI 210/240"
+      Description: "Heating cycling degradation coefficient (C~D~^h^)"
       Data Type: "Numeric"
       Units: "-"
       Constraints: [">=0.0","<1.0"]
       Required: "if performance_capabilities contains(HEATING)"
-      Notes: ["Used for the lowest stage when the unit cycles to meet load",
-              "***Informative note:*** 340/360 specifies a fixed cycling degradation coefficient of approximately 0.12"]
+      Notes: ["Used for the lowest stage when the unit cycles to meet load"]
     scaling:
       Description: "Specifies the range the performance data can be scaled to represent different capacity equipment"
       Data Type: "{Scaling}"
