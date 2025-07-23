@@ -200,12 +200,13 @@ PerformanceCapabilities:
     HEATING:
       Description: "Indicates that the equipment provides explicitly controlled heating and the representation contains heating-related performance data"
       Display Text: "Heating"
-    DEHUMIDIFICATION:
-      Description: "Indicates that the equipment provides explicitly controlled dehumidification and the representation contains dehumidification-related performance data"
-      Display Text: "Dehumidification"
-    HUMIDIFICATION:
-      Description: "Indicates that the equipment provides explicitly controlled humidification and the representation contains humidification-related performance data"
-      Display Text: "Humidification"
+    # TODO: Reserved for future use
+    # DEHUMIDIFICATION:
+    #   Description: "Indicates that the equipment provides explicitly controlled dehumidification and the representation contains dehumidification-related performance data"
+    #   Display Text: "Dehumidification"
+    # HUMIDIFICATION:
+    #   Description: "Indicates that the equipment provides explicitly controlled humidification and the representation contains humidification-related performance data"
+    #   Display Text: "Humidification"
 
 
 #Common Data Groups
