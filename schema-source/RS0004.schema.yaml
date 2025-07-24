@@ -297,6 +297,11 @@ LookupVariablesHeating:
       Constraints: [">=0","<=1.0"]
       Units: "-"
       Required: True
+    operation_state:
+      Description: "The operation state at the operating conditions"
+      Data Type: "[<OperationState>]"
+      Units: "-"
+      Required: True
 
 PerformanceMapStandby:
   Object Type: "Performance Map"
