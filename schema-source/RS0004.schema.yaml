@@ -95,6 +95,10 @@ Performance:
       Description: "Data group describing heating performance over a range of conditions"
       Data Type: "{PerformanceMapHeating}"
       Required: "if performance_capabilities contains(HEATING)"
+    performance_map_defrost_degradation:
+      Description: "Data group describing heating performance degradation due to defrost operation over a range of conditions"
+      Data Type: "{PerformanceMapDefrostDegradation}"
+      Required: "if performance_capabilities contains(HEATING)"
     performance_map_standby:
       Description: "Data group describing standby performance"
       Data Type: "{PerformanceMapStandby}"
@@ -212,12 +216,6 @@ GridVariablesHeating:
       Constraints: ">=0"
       Units: "K"
       Required: True
-    outdoor_coil_entering_relative_humidity:
-      Description: "Relative humidity of the air entering the outdoor coil"
-      Data Type: "[Numeric][1..]"
-      Constraints: [">=0","<=1.0"]
-      Units: "-"
-      Required: True
     indoor_coil_entering_dry_bulb_temperature:
       Description: "Dry bulb temperature of the air entering the indoor coil"
       Data Type: "[Numeric][1..]"
@@ -253,16 +251,6 @@ LookupVariablesHeating:
       Notes:
         - "Sometimes also referred to as \"instantaneous\" capacity"
         - "Does not account for heat added by the fan"
-    gross_integrated_capacity:
-      Description: "Total heat added by the indoor coil integrated over the time between defrost terminations"
-      Data Type: "[Numeric][1..]"
-      Constraints: ">=0"
-      Units: "W"
-      Required: True
-      Scalable: True
-      Notes:
-        - "Sometimes referred to as \"frost accumulation\" capacity"
-        - "Does not account for heat added by the fan"
     gross_steady_state_power:
       Description: "Gross power draw of the outdoor unit under steady-state conditions (i.e., does not include the impact of frost accumulation or defrost operation)"
       Data Type: "[Numeric][1..]"
@@ -274,17 +262,62 @@ LookupVariablesHeating:
         - "Sometimes also referred to as \"instantaneous\" power"
         - "Does not include power drawn by the indoor fan"
         - "Includes compressor, outdoor fan, and any auxiliary power used by the unit's controls and any crankcase heater"
-    gross_integrated_power:
-      Description: "Gross power draw of the outdoor unit integrated over the time between defrost terminations"
+    operation_state:
+      Description: "The operation state at the operating conditions"
+      Data Type: "[<OperationState>]"
+      Units: "-"
+      Required: True
+
+PerformanceMapDefrostDegradation:
+  Object Type: "Performance Map"
+  Data Elements:
+    grid_variables:
+      Description: "Data group defining the grid variables for heating performance degradation due to defrost operation"
+      Data Type: "{GridVariablesDefrostDegradation}"
+      Required: True
+    lookup_variables:
+      Description: "Data group defining the lookup variables for heating performance degradation due to defrost operation"
+      Data Type: "{LookupVariablesDefrostDegradation}"
+      Required: True
+
+GridVariablesDefrostDegradation:
+  Object Type: "Grid Variables"
+  Data Elements:
+    outdoor_coil_entering_dry_bulb_temperature:
+      Description: "Dry bulb temperature of the air entering the outdoor coil"
       Data Type: "[Numeric][1..]"
       Constraints: ">=0"
-      Units: "W"
+      Units: "K"
       Required: True
-      Scalable: True
-      Notes:
-        - "Sometimes referred to as \"frost accumulation\" power"
-        - "Does not include power drawn by the indoor fan"
-        - "Includes compressor, outdoor fan, and any auxiliary power used by the unit's defrost process, controls, and any crankcase heater"
+    outdoor_coil_entering_relative_humidity:
+      Description: "Relative humidity of the air entering the outdoor coil"
+      Data Type: "[Numeric][1..]"
+      Constraints: ">=0, <=1.0"
+      Units: "-"
+      Required: True
+    compressor_sequence_number:
+      Description: "Index indicating the relative order of the compressor speed/stage"
+      Data Type: "[Numeric][1..]"
+      Constraints: ">=0"
+      Units: "-"
+      Notes: "Expressed in order from initial stage/speed to final stage/speed"
+      Required: True
+
+LookupVariablesDefrostDegradation:
+  Object Type: "Lookup Variables"
+  Data Elements:
+    capacity_correction_factor:
+      Description: "Correction factor to the steady-state heat added by the indoor coil during defrost operation"
+      Data Type: "[Numeric][1..]"
+      Constraints: ">=0, <=1"
+      Units: "-"
+      Required: True
+    power_correction_factor:
+      Description: "Correction factor to the steady-state power draw of the outdoor unit during defrost operation"
+      Data Type: "[Numeric][1..]"
+      Constraints: ">=0, <=1"
+      Units: "-"
+      Required: True
     defrost_cycle_frequency:
       Description: "Frequency of defrost terminations under the current operating conditions"
       Data Type: "[Numeric][1..]"
@@ -294,9 +327,9 @@ LookupVariablesHeating:
     defrost_time_fraction:
       Description: "Fraction of time between defrost terminations that the defrost process is engaged"
       Data Type: "[Numeric][1..]"
-      Constraints: [">=0","<=1.0"]
+      Constraints: ">=0, <=1"
       Units: "-"
-      Required: True
+      Required: True   
 
 PerformanceMapStandby:
   Object Type: "Performance Map"
