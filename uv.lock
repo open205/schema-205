@@ -939,8 +939,9 @@ wheels = [
 [[package]]
 name = "schema205"
 version = "2.0.0"
-source = { virtual = "." }
+source = { editable = "." }
 dependencies = [
+    { name = "cbor2" },
     { name = "jinja2" },
     { name = "jsonschema" },
     { name = "lattice" },
@@ -957,6 +958,7 @@ dev = [
 
 [package.metadata]
 requires-dist = [
+    { name = "cbor2" },
     { name = "jinja2", specifier = ">=3.1.4" },
     { name = "jsonschema" },
     { name = "lattice", git = "https://github.com/bigladder/lattice.git" },

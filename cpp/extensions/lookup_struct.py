@@ -3,7 +3,7 @@ import copy
 from dataclasses import dataclass
 from lattice.cpp.header_entries import DataElement, HeaderEntry, Struct
 # from lattice.cpp.header_entries import register_data_group_operation
-from lattice.cpp.header_translator import PluginInterface
+from lattice.cpp.header_translator import HeaderEntryExtensionInterface
 
 @dataclass
 class LookupStruct(HeaderEntry):
@@ -30,7 +30,7 @@ class LookupStruct(HeaderEntry):
         return struct
 
 
-class LookupStructPlugin(PluginInterface, base_class="LookupVariablesTemplate"):
+class LookupStructPlugin(HeaderEntryExtensionInterface, base_class="LookupVariablesTemplate"):
     """"""
     def process_data_group(self, parent_node: HeaderEntry):
         for entry in parent_node.child_entries:

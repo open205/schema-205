@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 from lattice.cpp.header_entries import HeaderEntry, Struct, DataElement
-from lattice.cpp.header_translator import PluginInterface
+from lattice.cpp.header_translator import HeaderEntryExtensionInterface
 
 @dataclass
 class CounterEnum(HeaderEntry):
@@ -26,7 +26,7 @@ class CounterEnum(HeaderEntry):
         return entry
 
 
-class GridVarCounterEnumPlugin(PluginInterface, base_class="GridVariablesTemplate"):
+class GridVarCounterEnumPlugin(HeaderEntryExtensionInterface, base_class="GridVariablesTemplate"):
     """"""
     def process_data_group(self, parent_node: HeaderEntry):
         for entry in parent_node.child_entries:
@@ -37,7 +37,7 @@ class GridVarCounterEnumPlugin(PluginInterface, base_class="GridVariablesTemplat
                 self.process_data_group(entry)
 
 
-class LookupVarCounterEnumPlugin(PluginInterface, base_class="LookupVariablesTemplate"):
+class LookupVarCounterEnumPlugin(HeaderEntryExtensionInterface, base_class="LookupVariablesTemplate"):
     """"""
     def process_data_group(self, parent_node: HeaderEntry):
         for entry in parent_node.child_entries:

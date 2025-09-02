@@ -2,7 +2,7 @@ import re
 import logging
 from dataclasses import dataclass, field
 from lattice.cpp.header_entries import DataElement, Struct, HeaderEntry, FunctionalHeaderEntry, MemberFunctionOverrideDeclaration
-from lattice.cpp.header_translator import PluginInterface
+from lattice.cpp.header_translator import HeaderEntryExtensionInterface
 from lattice.cpp.cpp_entries import ImplementationEntry, ElementSerialization, CPPExtensionInterface
 
 
@@ -32,7 +32,7 @@ class PerformanceMapOverload(FunctionalHeaderEntry):
         complete_decl += self._indent + " ".join([self._f_ret, self._f_name, self.args]) + self._closure
         return complete_decl
 
-class PerformanceOverloadPlugin(PluginInterface, base_class="PerformanceMapTemplate"):
+class PerformanceOverloadPlugin(HeaderEntryExtensionInterface, base_class="PerformanceMapTemplate"):
     """"""
     def process_data_group(self, parent_node: HeaderEntry):
         for entry in parent_node.child_entries:
