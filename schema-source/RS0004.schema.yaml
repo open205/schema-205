@@ -241,8 +241,8 @@ GridVariablesHeating:
 LookupVariablesHeating:
   Object Type: "Lookup Variables"
   Data Elements:
-    gross_steady_state_capacity:
-      Description: "Total heat added by the indoor coil under steady-state conditions (i.e., does not include the impact of frost accumulation or defrost operation)"
+    gross_frost_free_capacity:
+      Description: "Total heat added by the indoor coil when there is no frost forming on the coil"
       Data Type: "[Numeric][1..]"
       Constraints: ">=0"
       Units: "W"
@@ -251,8 +251,8 @@ LookupVariablesHeating:
       Notes:
         - "Sometimes also referred to as \"instantaneous\" capacity"
         - "Does not account for heat added by the fan"
-    gross_steady_state_power:
-      Description: "Gross power draw of the outdoor unit under steady-state conditions (i.e., does not include the impact of frost accumulation or defrost operation)"
+    gross_frost_free_power:
+      Description: "Gross power draw of the outdoor unit  when there is no frost forming on the coil"
       Data Type: "[Numeric][1..]"
       Constraints: ">=0"
       Units: "W"
@@ -307,29 +307,25 @@ LookupVariablesDefrostDegradation:
   Object Type: "Lookup Variables"
   Data Elements:
     capacity_correction_factor:
-      Description: "Correction factor to the steady-state heat added by the indoor coil during defrost operation"
+      Description: "Correction factor to the frost-free heat added by the indoor coil over the time between defrost terminations"
       Data Type: "[Numeric][1..]"
       Constraints: ">=0, <=1"
       Units: "-"
       Required: True
     power_correction_factor:
-      Description: "Correction factor to the steady-state power draw of the outdoor unit during defrost operation"
+      Description: "Correction factor to the frost-free power draw due to the defrost time fraction"
       Data Type: "[Numeric][1..]"
-      Constraints: ">=0, <=1"
+      Constraints: ">=0"
       Units: "-"
       Required: True
-    defrost_cycle_frequency:
-      Description: "Frequency of defrost terminations under the current operating conditions"
-      Data Type: "[Numeric][1..]"
-      Units: "Hz"
-      Required: True
-      Notes: "This is the inverse of the duration between defrost terminations, a value of zero implies defrost is not occurring"
+      Notes: "A factor greater than 1.0 implies electric strip heat is used to defrost the outdoor coil rather than using a reverse cycle"
     defrost_time_fraction:
       Description: "Fraction of time between defrost terminations that the defrost process is engaged"
       Data Type: "[Numeric][1..]"
       Constraints: ">=0, <=1"
       Units: "-"
-      Required: True   
+      Required: True
+      Note: "This value is used by the application software to determine when to apply supplemental heating during defrost"
 
 PerformanceMapStandby:
   Object Type: "Performance Map"
