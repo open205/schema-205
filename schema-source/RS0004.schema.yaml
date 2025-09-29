@@ -231,11 +231,12 @@ GridVariablesHeating:
       Required: True
       Scalable: True
     compressor_sequence_number:
-      Description: "Index indicating the relative order of the compressor speed/stage"
-      Data Type: "[Numeric][1..]"
-      Constraints: ">=0"
+      Description: "Index indicating the relative capacity order of the compressor speed/stage expressed in order from lowest capacity (starting at 1) to highest capacity"
+      Data Type: "[Integer][1..]"
+      Constraints: ">=1"
       Units: "-"
-      Notes: "Expressed in order from initial stage/speed to final stage/speed"
+      Notes: ["If `compressor_speed_control_type` is `DISCRETE`, sequence numbers shall be provided for each discrete stage of the compressor(s)",
+              "If `compressor_speed_control_type` is `CONTINUOUS`, sufficient sequence numbers shall be provided to capture the continuous operation of the compressor(s)"]
       Required: True
 
 LookupVariablesHeating:
@@ -244,17 +245,18 @@ LookupVariablesHeating:
     gross_frost_free_capacity:
       Description: "Total heat added by the indoor coil when there is no frost forming on the coil"
       Data Type: "[Numeric][1..]"
-      Constraints: ">=0"
+      Constraints: ">=0.0"
       Units: "W"
       Required: True
       Scalable: True
       Notes:
         - "Sometimes also referred to as \"instantaneous\" capacity"
         - "Does not account for heat added by the fan"
+
     gross_frost_free_power:
-      Description: "Gross power draw of the outdoor unit  when there is no frost forming on the coil"
+      Description: "Gross power draw of the outdoor unit when there is no frost forming on the coil"
       Data Type: "[Numeric][1..]"
-      Constraints: ">=0"
+      Constraints: ">=0.0"
       Units: "W"
       Required: True
       Scalable: True
@@ -267,16 +269,16 @@ LookupVariablesHeating:
       Data Type: "[<OperationState>]"
       Units: "-"
       Required: True
-
+      
 PerformanceMapDefrostDegradation:
   Object Type: "Performance Map"
   Data Elements:
     grid_variables:
-      Description: "Data group defining the grid variables for heating performance degradation due to defrost operation"
+      Description: "Data group defining the grid variables for heating performance degradation due to the effects of frost formation and associated defrost operation"
       Data Type: "{GridVariablesDefrostDegradation}"
       Required: True
     lookup_variables:
-      Description: "Data group defining the lookup variables for heating performance degradation due to defrost operation"
+      Description: "Data group defining the lookup variables for heating performance degradation due to the effects of frost formation and associated defrost operation"
       Data Type: "{LookupVariablesDefrostDegradation}"
       Required: True
 
@@ -292,37 +294,39 @@ GridVariablesDefrostDegradation:
     outdoor_coil_entering_relative_humidity:
       Description: "Relative humidity of the air entering the outdoor coil"
       Data Type: "[Numeric][1..]"
-      Constraints: ">=0, <=1.0"
+      Constraints: ">=0.0, <=1.0"
       Units: "-"
       Required: True
     compressor_sequence_number:
-      Description: "Index indicating the relative order of the compressor speed/stage"
-      Data Type: "[Numeric][1..]"
-      Constraints: ">=0"
+      Description: "Index indicating the relative capacity order of the compressor speed/stage expressed in order from lowest capacity (starting at 1) to highest capacity"
+      Data Type: "[Integer][1..]"
+      Constraints: ">=1"
       Units: "-"
-      Notes: "Expressed in order from initial stage/speed to final stage/speed"
+      Notes: ["If `compressor_speed_control_type` is `DISCRETE`, sequence numbers shall be provided for each discrete stage of the compressor(s)",
+              "If `compressor_speed_control_type` is `CONTINUOUS`, sufficient sequence numbers shall be provided to capture the continuous operation of the compressor(s)"]
       Required: True
 
 LookupVariablesDefrostDegradation:
   Object Type: "Lookup Variables"
   Data Elements:
     capacity_correction_factor:
-      Description: "Correction factor to the frost-free heat added by the indoor coil over the time between defrost terminations"
+      Description: "Factor representing the average adjustment to the frost-free heat added by the indoor coil over the time between defrost terminations"
       Data Type: "[Numeric][1..]"
-      Constraints: ">=0, <=1"
+      Constraints: ">=0.0, <=1.0"
       Units: "-"
+      Notes: "A value of 1.0 indicates no frost formation or defrost related degradation"
       Required: True
     power_correction_factor:
-      Description: "Correction factor to the frost-free power draw due to the defrost time fraction"
+      Description: "Factor representing the average adjustment to the frost-free power over the time between defrost terminations"
       Data Type: "[Numeric][1..]"
-      Constraints: ">=0"
+      Constraints: ">=0.0"
       Units: "-"
       Required: True
-      Notes: "A factor greater than 1.0 implies electric strip heat is used to defrost the outdoor coil rather than using a reverse cycle"
+      Notes: "A factor greater than 1.0 indicates electric resistance strip heat might be applied to defrost the outdoor coil"
     defrost_time_fraction:
       Description: "Fraction of time between defrost terminations that the defrost process is engaged"
       Data Type: "[Numeric][1..]"
-      Constraints: ">=0, <=1"
+      Constraints: ">=0.0, <=1.0"
       Units: "-"
       Required: True
       Note: "This value is used by the application software to determine when to apply supplemental heating during defrost"
