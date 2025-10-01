@@ -1,130 +1,96 @@
-import schema205.validate
-import schema205.markdown
-import schema205.json_translate
-import schema205.cpp_translate
-import schema205.render_template
-import os
+from pathlib import Path
 from doit.tools import create_folder
-from schema205.util import snake_style
+from lattice import Lattice
+from lattice.cpp.extension_loader import load_extensions
 
-BUILD_PATH = os.path.join(os.path.dirname(__file__), 'build')
-SOURCE_PATH = os.path.join(os.path.dirname(__file__), 'schema-source')
-DOCS_PATH = os.path.join(BUILD_PATH,"docs")
-SCHEMA_PATH = os.path.join(BUILD_PATH,"schema")
-HEADER_PATH = os.path.join(BUILD_PATH, "include")
-CPP_PATH = os.path.join(BUILD_PATH, "cpp")
-RENDERED_TEMPLATE_PATH = os.path.realpath(
-        os.path.join(BUILD_PATH,"rendered_template"))
+DOIT_CONFIG = {'default_tasks': ['generate_meta_schemas', 'validate_schemas', 'generate_markdown']}
 
-def collect_source_files():
-  file_list = []
-  for file_name in sorted(os.listdir('schema-source')):
-    if '.schema.yaml' in file_name:
-      file_list.append(os.path.join(SOURCE_PATH,file_name))
-  return file_list
+BUILD_PATH = Path(__file__).absolute().with_name("build")
+create_folder(BUILD_PATH)
+SOURCE_PATH = Path(__file__).absolute().parent
 
-def collect_cpp_generators():
-  return [os.path.join('schema205', generator_py) for generator_py in ['cpp_entries.py', 'header_entries.py', 'cpp_translate.py']]
+data_model_205 = Lattice(SOURCE_PATH, BUILD_PATH, build_output_directory_name=None, build_validation=False)
 
-def collect_target_files(target_dir, extension):
-  file_list = []
-  for file_name in sorted(os.listdir('schema-source')):
-    if '.schema.yaml' in file_name:
-      file_name_root = os.path.splitext(os.path.splitext(file_name)[0])[0]
-      file_list.append(os.path.join(target_dir,f'{file_name_root}.schema.{extension}'))
-  return file_list
-
-def collect_lib_target_files(target_dir, extension):
-  file_list = []
-  for file_name in sorted(os.listdir('schema-source')):
-    if '.schema.yaml' in file_name:
-      file_name_root = snake_style(os.path.splitext(os.path.splitext(file_name)[0])[0])
-      file_list.append(os.path.join(target_dir,f'{file_name_root}.{extension}'))
-      file_list.append(os.path.join(target_dir,f'{file_name_root}_factory.{extension}'))
-  return file_list
-
-def task_validate():
-  '''Validates source-schema against meta-schema'''
+def task_generate_meta_schemas():
+  '''Generates JSON meta-schema from source-schema and meta.schema.yaml'''
   return {
-    'file_dep': [os.path.join("meta-schema","meta.schema.json")] + collect_source_files(),
-    'actions': [(schema205.validate.validate_dir,[SOURCE_PATH])]
-  }
-
-def task_doc():
-  '''Generates Markdown tables from source-schema'''
-  return {
-    'file_dep': collect_source_files() + [
-        os.path.join('schema205','markdown.py'),
-        os.path.join('schema205','md','__init__.py'),
-        os.path.join('schema205','md','schema_table.py'),
-        os.path.join('schema205','md','grid_table.py'),
-        ],
-    'targets': collect_target_files(DOCS_PATH,'md'),
-    'task_dep': ['validate'],
+    'file_dep': [schema.file_path for schema in data_model_205.schemas],
+    'targets': [schema.meta_schema_path for schema in data_model_205.schemas],
     'actions': [
-      (create_folder, [DOCS_PATH]),
-      (schema205.markdown.write_dir,[SOURCE_PATH, DOCS_PATH])
+      (data_model_205.generate_meta_schemas,[])
       ],
     'clean': True
   }
 
-def task_render_template():
-  '''
-  Demonstrate how to render a template
-  '''
-  template_dir = os.path.realpath(
-          os.path.join('rendering_examples', 'template_rendering'))
-  out_file = os.path.join(RENDERED_TEMPLATE_PATH, 'main.md')
-  log_file = os.path.join(RENDERED_TEMPLATE_PATH, 'error-log.txt')
-  return {
-          'file_dep': collect_source_files() + [
-              os.path.join(template_dir, 'main.md.j2'),
-              os.path.join('schema205', 'markdown.py'),
-              os.path.join('schema205', 'md', '__init__.py'),
-              os.path.join('schema205', 'md', 'schema_table.py'),
-              os.path.join('schema205', 'md', 'grid_table.py'),
-              os.path.join('schema205', 'render_template.py'),
-              ],
-          'targets': [out_file, log_file],
-          'task_dep': ['validate'],
-          'actions': [
-              (create_folder, [RENDERED_TEMPLATE_PATH]),
-              (schema205.render_template.main,
-                  ['main.md.j2', out_file, template_dir],
-                  {"log_file": log_file})],
-          'clean': True,
-          }
+def task_validate_schemas():
+    """Validate the data model schemas against the JSON meta schema"""
+    return {
+      'file_dep': [schema.file_path for schema in data_model_205.schemas],
+      'task_dep': ["generate_meta_schemas"],
+      'actions': [(data_model_205.validate_schemas, [])]
+    }
 
-def task_schema():
-  '''Generates JSON schema from source-schema'''
-  return {
-    'file_dep': [os.path.join('schema205', 'json_translate.py')] + collect_source_files(),
-    'targets': collect_target_files(SCHEMA_PATH,'json'),
-    'task_dep': ['validate'],
-    'actions': [
-      (create_folder, [SCHEMA_PATH]),
-      (schema205.json_translate.translate_dir,[SOURCE_PATH, SCHEMA_PATH])
-      ],
-    'clean': True
-  }
+def task_generate_json_schemas():
+    """Generate JSON schemas"""
+    return {
+        "task_dep": ["validate_schemas"],
+        "file_dep": [schema.file_path for schema in data_model_205.schemas]
+        + [schema.meta_schema_path for schema in data_model_205.schemas],
+        "targets": [schema.json_schema_path for schema in data_model_205.schemas],
+        "actions": [(data_model_205.generate_json_schemas, [])],
+        "clean": True,
+    }
 
-def task_cpp():
+def task_validate_example_files():
+    """Validate example files against JSON schema"""
+    return {
+        "file_dep": [schema.json_schema_path for schema in data_model_205.schemas]
+        + data_model_205.examples,
+        "task_dep": ["generate_json_schemas"],
+        "actions": [(data_model_205.validate_example_files, [])],
+    }
+
+
+def task_generate_markdown():
+    """Generate markdown documentation from templates"""
+    return {
+        "targets": [template.markdown_output_path for template in data_model_205.doc_templates],
+        "file_dep": [schema.file_path for schema in data_model_205.schemas]
+        + [template.path for template in data_model_205.doc_templates],
+        "task_dep": [f"validate_schemas"],
+        "actions": [(data_model_205.generate_markdown_documents, [])],
+        "clean": True,
+    }
+
+
+def task_generate_web_docs():
+    """Generate web documentation from templates"""
+    return {
+        "task_dep": [f"validate_schemas", f"generate_json_schemas", f"validate_example_files"],
+        "file_dep": [schema.file_path for schema in data_model_205.schemas]
+        + [template.path for template in data_model_205.doc_templates],
+        "targets": [Path(data_model_205.web_docs_directory_path, "public")],
+        "actions": [(data_model_205.generate_web_documentation, [])],
+        "clean": True,
+    }
+
+
+def task_generate_cpp_project():
   '''Generates CPP source files from common-schema'''
   return {
-    'file_dep': collect_source_files() + collect_cpp_generators(),
-    'targets': collect_lib_target_files(HEADER_PATH,'h') + collect_lib_target_files(CPP_PATH,'cpp'),
-    'task_dep': ['validate'],
+    'file_dep': [schema.file_path for schema in data_model_205.schemas],
+    'targets': [schema.cpp_header_file_path for schema in data_model_205.schemas]
+                + [schema.cpp_source_file_path for schema in data_model_205.schemas]
+                + data_model_205.cpp_support_headers,
+    'task_dep': ['validate_schemas'],
     'actions': [
-      (create_folder, [HEADER_PATH]),
-      (create_folder, [CPP_PATH]),
-      (schema205.cpp_translate.translate_all_to_source,[SOURCE_PATH, HEADER_PATH, CPP_PATH, "tk205"])
+      (load_extensions, [Path(SOURCE_PATH, "cpp", "extensions")]),
+      (data_model_205.generate_cpp_project, [])
       ],
     'clean': True
   }
 
-def task_test():
-  '''Performs unit tests and example file validation tests'''
-  return {
-    'task_dep': ['schema'],
-    'actions': ['pytest -v test']
-  }
+
+# def task_test():
+#     """Run unit tests"""
+#     return {"actions": ["pytest -v test"]}

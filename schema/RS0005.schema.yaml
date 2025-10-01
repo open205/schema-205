@@ -1,0 +1,155 @@
+Schema:
+  Object Type: "Meta"
+  References:
+    - "ASHRAE205"
+    - "RS0006"
+  Title: "Motor"
+  Description: "Schema for ASHRAE 205 annex RS0005: Motor"
+  Version: "2.0.0"
+  Root Data Group: "RS0005"
+
+# Data Groups
+RS0005:
+  Object Type: "Data Group"
+  Data Group Template: RepresentationSpecificationTemplate
+  Data Elements:
+    metadata:
+      Description: "Metadata data group"
+      Data Type: "{Metadata}"
+      Constraints: schema_name="RS0005"
+      Required: True
+    description:
+      Description: "Data group describing product and rating information"
+      Data Type: "{Description}"
+    performance:
+      Description: "Data group containing performance information"
+      Data Type: "{Performance}"
+      Required: True
+
+Description:
+  Object Type: "Data Group"
+  Data Elements:
+    product_information:
+      Description: "Data group describing product information"
+      Data Type: "{ProductInformation}"
+
+ProductInformation:
+  Object Type: "Data Group"
+  Data Elements:
+    manufacturer:
+      Description: "Manufacturer name"
+      Data Type: "String"
+    model_number:
+      Description: "Model number"
+      Data Type: "Pattern"
+      Notes: "Pattern shall match all model numbers that can be represented by the representation"
+    nominal_voltage:
+      Description: "Nominal voltage"
+      Data Type: "Numeric"
+      Units: "V"
+      Constraints: ">=0.0"
+    nominal_frequency:
+      Description: "Nominal frequency"
+      Data Type: "Numeric"
+      Units: "Hz"
+      Constraints: ">=0.0"
+
+Performance:
+  Object Type: "Data Group"
+  Data Elements:
+    maximum_power:
+      Description: "Maximum operational input power to the motor"
+      Data Type: "Numeric"
+      Units: "W"
+      Constraints: ">=0.0"
+      Notes: "Operational limit set to prevent overheating or overcurrent, not the rated name plate power"
+      Required: True
+      Scalable: True
+    standby_power:
+      Description: "Power draw when motor is not operating"
+      Data Type: "Numeric"
+      Units: "W"
+      Constraints: ">=0.0"
+      Required: True
+      Scalable: True
+    number_of_poles:
+      Description: "Number of poles"
+      Data Type: "Integer"
+      Required: True
+      Constraints: [">0", "%2"]
+    drive_representation:
+      Description: "The corresponding Standard 205 drive representation"
+      Data Type: "{RS0006}"
+    scaling:
+      Description: "Specifies the range the performance data can be scaled to represent different capacity equipment"
+      Data Type: "{Scaling}"
+      Notes: "If not present, scaling of the performance data is not allowed"
+    performance_map:
+      Description: "Data group describing motor performance when operating"
+      Data Type: "{PerformanceMap}"
+      Notes: ["If no performance map is defined, the motor shall be assumed to transfer all electric power directly to mechanical shaft power",
+              "***Informative note:*** This field may be omitted for motor-driven equipment where motor efficiencies are incorporated into their performance data"]
+
+PerformanceMap:
+  Object Type: "Data Group"
+  Data Group Template: PerformanceMapTemplate
+  Data Elements:
+    grid_variables:
+      Description: "Data group describing grid variables for motor performance"
+      Data Type: "{GridVariables}"
+      Required: True
+    lookup_variables:
+      Description: "Data group describing lookup variables for motor performance"
+      Data Type: "{LookupVariables}"
+      Required: True
+
+GridVariables:
+  Object Type: "Data Group"
+  Data Group Template: GridVariablesTemplate
+  Data Elements:
+    shaft_power:
+      Description: "Delivered rotational shaft power"
+      Data Type: "[Numeric]"
+      Constraints:
+      - ">=0.0"
+      - "[1..]"
+      Units: "W"
+      Required: True
+      Scalable: True
+    shaft_rotational_speed:
+      Description: "Rotational speed of shaft"
+      Data Type: "[Numeric]"
+      Constraints:
+      - ">=0.0"
+      - "[1..]"
+      Units: "rev/s"
+      Required: True
+
+LookupVariables:
+  Object Type: "Data Group"
+  Data Group Template: LookupVariablesTemplate
+  Data Elements:
+    efficiency:
+      Description: "Efficiency of motor"
+      Data Type: "[Numeric]"
+      Constraints:
+      - ">=0.0"
+      - "<=1.0"
+      - "[1..]"
+      Units: "-"
+      Notes: "Defined as the ratio of mechanical shaft power to electrical input power of the motor"
+      Required: True
+    power_factor:
+      Description: "Power factor of the motor"
+      Data Type: "[Numeric]"
+      Constraints:
+      - ">=0.0"
+      - "<=1.0"
+      - "[1..]"
+      Units: "-"
+      Required: True
+    operation_state:
+      Description: "The operation state at the operating conditions"
+      Data Type: "[<OperationState>]"
+      Units: "-"
+      Required: True

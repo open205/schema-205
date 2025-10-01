@@ -1,0 +1,238 @@
+Schema:
+  Object Type: "Meta"
+  References:
+    - "ASHRAE205"
+    - "RS0003"
+    - "RS0004"
+  Title: "Unitary Cooling Air-Conditioning Equipment"
+  Description: "Schema for ASHRAE 205 annex RS0002: Unitary Cooling Air-Conditioning Equipment"
+  Version: "2.0.0"
+  Root Data Group: "RS0002"
+  Unit Systems:
+    IPUnits:
+      - "-"
+      - ft
+      - Btu/h
+      - kW
+      - Btu/W-h
+
+# Local Enumerations
+FanPosition:
+  Object Type: "Enumeration"
+  Enumerators:
+    BLOW_THROUGH:
+      Description: "Fan is placed upstream of the indoor coil"
+      Display Text: "Blow Through"
+    DRAW_THROUGH:
+      Description: "Fan is placed downstream of the indoor coil"
+      Display Text: "Draw Through"
+
+AHRI210240TestStandardYear:
+  Object Type: "Enumeration"
+  Enumerators:
+    IP_2008:
+      Description: "Ratings defined using IP unit version of the standard, 2008 edition.[@AHRI2102008]"
+      Display Text: "2008"
+    IP_2017:
+      Description: "Ratings defined using IP unit version of the standard, 2017 edition.[@AHRI2102017]"
+      Display Text: "2017"
+    IP_2023:
+      Description: "Ratings defined using IP unit version of the standard, 2023 edition.[@AHRI2102023]"
+      Display Text: "2023"
+
+AHRI210240CompressorStagingType:
+  Object Type: "Enumeration"
+  Enumerators:
+    SINGLE_STAGE:
+      Description: "Single, fixed capacity compressor"
+      Display Text: "Single Stage"
+    TWO_STAGE:
+      Description: "Compressor or group of compressors operating with only two stages of capacity"
+      Display Text: "Two-Stage"
+    VARIABLE_STAGE:
+      Description: "Variable speed compressor or compressor or group of compressors with three or more stages of capacity"
+      Display Text: "Variable Stage"
+
+AHRI340360TestStandardYear:
+  Object Type: "Enumeration"
+  Enumerators:
+    IP_2007:
+      Description: "Ratings defined using IP unit version of the standard, 2007 edition.[@AHRI3402007]"
+      Display Text: "2007"
+    IP_2015:
+      Description: "Ratings defined using IP unit version of the standard, 2015 edition.[@AHRI3402015]"
+      Display Text: "2015"
+    IP_2019:
+      Description: "Ratings defined using IP unit version of the standard, 2019 edition.[@AHRI3402019]"
+      Display Text: "2019"
+    IP_2022:
+      Description: "Ratings defined using IP unit version of the standard, 2022 edition.[@AHRI3402022]"
+      Display Text: "2022"
+
+AHRI340360CapacityControlType:
+  Object Type: "Enumeration"
+  Enumerators:
+    FIXED_CAPACITY:
+      Description: "Limited to a single stage of refrigeration capacity"
+      Display Text: "Fixed Capacity"
+    STAGED_CAPACITY:
+      Description: "Limited to multiple fixed or discrete stages of refrigeration capacity"
+      Display Text: "Staged Capacity"
+    PROPORTIONAL_CAPACITY:
+      Description: "Compressor capacity can be modulated continuously or in steps not more than 5% of the rated capacity"
+      Display Text: "Proportional Capacity"
+
+# Data Groups
+RS0002:
+  Object Type: "Data Group"
+  Data Group Template: RepresentationSpecificationTemplate
+  Data Elements:
+    metadata:
+      Description: "Metadata data group"
+      Data Type: "{Metadata}"
+      Constraints: schema_name="RS0002"
+      Required: True
+    description:
+      Description: "Data group describing product and rating information"
+      Data Type: "{Description}"
+    performance:
+      Description: "Data group containing performance information"
+      Data Type: "{Performance}"
+      Required: True
+
+Description:
+  Object Type: "Data Group"
+  Data Elements:
+    product_information:
+      Description: "Data group describing product information"
+      Data Type: "{ProductInformation}"
+    rating_ahri_210_240:
+      Description: "Data group containing information relevant to products rated under AHRI 210/240"
+      Data Type: "{RatingAHRI210240}"
+    rating_ahri_340_360:
+      Description: "Data group containing information relevant to products rated under AHRI 340/360"
+      Data Type: "{RatingAHRI340360}"
+
+ProductInformation:
+  Object Type: "Data Group"
+  Data Elements:
+    manufacturer:
+      Description: "Package manufacturer name"
+      Data Type: "String"
+    model_number:
+      Description: "Package model number"
+      Data Type: "Pattern"
+      Notes: "Pattern shall match all model numbers that can be represented by the representation"
+
+RatingAHRI210240:
+  Object Type: "Data Group"
+  Data Group Template: "RatingTemplate"
+  Data Elements:
+    rating_reproducible_from_data:
+      Data Type: "Boolean"
+    certified_reference_number:
+      Description: "AHRI certified reference number"
+      Data Type: "String"
+    test_standard_year:
+      Description: "Year of the AHRI test standard"
+      Data Type: "<AHRI210240TestStandardYear>"
+    rating_source:
+      Description: "Source of this rating data"
+      Data Type: "String"
+      Notes: "Used by data publisher to document methods (e.g., software and version) used to generate rating data"
+    staging_type:
+      Description: "Type of compressor staging"
+      Data Type: "<AHRI210240CompressorStagingType>"
+    seer:
+      Description: "Seasonal Energy Efficiency Ratio"
+      Data Type: "Numeric"
+      Units: "Btu/W-h"
+      Constraints: ">0.0"
+      Notes: "Used for versions of the test standard up through 2017"
+    seer2:
+      Description: "Seasonal Energy Efficiency Ratio"
+      Data Type: "Numeric"
+      Units: "Btu/W-h"
+      Constraints: ">0.0"
+      Notes: "Used for versions of the test standard from 2023"
+    eer:
+      Description: "Full stage Energy Efficiency Ratio (at 'A' operating conditions)"
+      Data Type: "Numeric"
+      Units: "Btu/W-h"
+      Constraints: ">0.0"
+      Notes: "Used for versions of the test standard up through 2017"
+    eer2:
+      Description: "Full stage Energy Efficiency Ratio (at 'A' operating conditions)"
+      Data Type: "Numeric"
+      Units: "Btu/W-h"
+      Constraints: ">0.0"
+      Notes: "Used for versions of the test standard from 2023"
+    cooling_capacity:
+      Description: "Full stage net total cooling capacity (at 'A' operating conditions)"
+      Data Type: "Numeric"
+      Units: "Btu/h"
+      Constraints: ">=0.0"
+      Notes: "At high stage for multi-stage equipment"
+
+RatingAHRI340360:
+  Object Type: "Data Group"
+  Data Group Template: "RatingTemplate"
+  Data Elements:
+    rating_reproducible_from_data:
+      Data Type: "Boolean"
+    certified_reference_number:
+      Description: "AHRI Certified Reference Number"
+      Data Type: "String"
+    test_standard_year:
+      Description: "Name and version of the AHRI test standard"
+      Data Type: "<AHRI340360TestStandardYear>"
+    rating_source:
+      Description: "Source of this rating data"
+      Data Type: "String"
+      Notes: "Used by data publisher to document methods (e.g., software and version) used to generate rating data"
+    capacity_control_type:
+      Description: "Type of capacity control"
+      Data Type: "<AHRI340360CapacityControlType>"
+    ieer:
+      Description: "Integrated Energy Efficiency Ratio"
+      Data Type: "Numeric"
+      Units: "Btu/W-h"
+      Constraints: ">0.0"
+    eer:
+      Description: "Energy Efficiency Ratio at Standard Rating Conditions"
+      Data Type: "Numeric"
+      Units: "Btu/W-h"
+      Constraints: ">0.0"
+    cooling_capacity:
+      Description: "Net total cooling capacity at Standard Rating Conditions"
+      Data Type: "Numeric"
+      Units: "Btu/h"
+      Constraints: ">=0.0"
+
+Performance:
+  Object Type: "Data Group"
+  Data Elements:
+    standby_power:
+      Description: "Continuous unit power draw regardless of fan or DX system operation"
+      Data Type: "Numeric"
+      Units: "W"
+      Constraints: ">=0.0"
+      Notes: "Includes on-board controls and other power not included in the fan or dx system representations"
+      Required: True
+      Scalable: True
+    indoor_fan_representation:
+      Description: "The corresponding Standard 205 fan assembly representation"
+      Data Type: "{RS0003}"
+      Notes: "Required if the indoor fan is packaged with the unitary equipment"
+    fan_position:
+      Description: "Position of the fan relative to the cooling coil"
+      Data Type: "<FanPosition>"
+      Required: "if indoor_fan_representation"
+    dx_system_representation:
+      Description: "The corresponding Standard 205 direct expansion system representation"
+      Data Type: "{RS0004}"
+      Required: True
+    scaling:
+      Description: "Specifies the range the performance data can be scaled to represent different capacity equipment"
+      Data Type: "{Scaling}"
+      Notes: "If not present, scaling of the performance data is not allowed"

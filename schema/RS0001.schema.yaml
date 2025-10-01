@@ -1,0 +1,637 @@
+---
+# RS0001.schema.yaml
+# The purpose of this "RS0001 schema" is to provide a single source generator format to
+# generate RS0001 standard materials, both normative and informative.
+
+Schema:
+  Object Type: "Meta"
+  References:
+    - "ASHRAE205"
+  Title: "Chiller"
+  Description: "Schema for ASHRAE 205 annex RS0001: Chiller"
+  Version: "3.0.0"
+  Root Data Group: "RS0001"
+  Unit Systems:
+    IPUnits:
+      - "-"
+      - ft
+      - Btu/h
+      - kW
+
+# Local Enumerations
+AHRI550590TestStandardYear:
+  Object Type: "Enumeration"
+  Enumerators:
+    IP_2015:
+      Description: "Ratings and design points defined using IP unit version of the standard, 2015 edition[@AHRI5502015]"
+      Display Text: "AHRI 550/590 2015"
+    IP_2015_ADDENDUM_1:
+      Description: "Ratings and design points defined using IP unit version of the standard, 2015 edition with Addendum 1[@AHRI550A12015]"
+      Display Text: "AHRI 550/590 2015 Addendum 1"
+    IP_2018:
+      Description: "Ratings and design points defined using IP unit version of the standard, 2018 edition[@AHRI5502018]"
+      Display Text: "AHRI 550/590 2018"
+    IP_2020:
+      Description: "Ratings and design points defined using IP unit version of the standard, 2020 edition[@AHRI5502020]"
+      Display Text: "AHRI 550/590 2020"
+    IP_2020_ADDENDUM_1:
+      Description: "Ratings and design points defined using IP unit version of the standard, 2020 edition with Addendum 1[@AHRI550A12020]"
+      Display Text: "AHRI 550/590 2020 Addendum 1"
+    IP_2023:
+      Description: "Ratings and design points defined using IP unit version of the standard, 2023 edition[@AHRI5502023]"
+      Display Text: "AHRI 550/590 2023"
+
+AHRI551591TestStandardYear:
+  Object Type: "Enumeration"
+  Enumerators:
+    SI_2015:
+      Description: "Ratings and design points defined using SI unit version of the standard, 2015 edition[@AHRI5512015]"
+      Display Text: "AHRI 551/591 2015"
+    SI_2015_ADDENDUM_1:
+      Description: "Ratings and design points defined using SI unit version of the standard, 2015 edition with Addendum 1[@AHRI551A12015]"
+      Display Text: "AHRI 551/591 2015 Addendum 1"
+    SI_2018:
+      Description: "Ratings and design points defined using SI unit version of the standard, 2018 edition[@AHRI5512018]"
+      Display Text: "AHRI 551/591 2018"
+    SI_2020:
+      Description: "Ratings and design points defined using SI unit version of the standard, 2020 edition[@AHRI5512020]"
+      Display Text: "AHRI 551/591 2020"
+    SI_2020_ADDENDUM_1:
+      Description: "Ratings and design points defined using SI unit version of the standard, 2020 edition with Addendum 1[@AHRI551A12020]"
+      Display Text: "AHRI 551/591 2020 Addendum 1"
+    SI_2023:
+      Description: "Ratings and design points defined using SI unit version of the standard, 2023 edition[@AHRI5512023]"
+      Display Text: "AHRI 551/591 2023"
+
+# Data Groups
+RS0001:
+  Object Type: "Data Group"
+  Data Group Template: RepresentationSpecificationTemplate
+  Data Elements:
+    metadata:
+      Description: "Metadata data group"
+      Data Type: "{Metadata}"
+      Constraints: schema_name="RS0001"
+      Required: True
+    description:
+      Description: "Data group describing product and rating information"
+      Data Type: "{Description}"
+    performance:
+      Description: "Data group containing performance information"
+      Data Type: "{Performance}"
+      Required: True
+
+Description:
+  Object Type: "Data Group"
+  Data Group Template: RatingTemplate
+  Data Elements:
+    rating_reproducible_from_data:
+      Data Type: "Boolean"
+    product_information:
+      Description: "Data group describing product information"
+      Data Type: "{ProductInformation}"
+    rating_ahri_550_590:
+      Description: "Data group containing information relevant to products rated under AHRI 550/590"
+      Data Type: "{RatingAHRI550590}"
+    rating_ahri_551_591:
+      Description: "Data group containing information relevant to products rated under AHRI 551/591"
+      Data Type: "{RatingAHRI551591}"
+
+ProductInformation:
+  Object Type: "Data Group"
+  Data Elements:
+    manufacturer:
+      Description: "Manufacturer name"
+      Data Type: "String"
+    model_number:
+      Description: "Model number"
+      Data Type: "Pattern"
+      Notes: "Pattern shall match all model numbers that can be represented by the representation"
+    nominal_voltage:
+      Description: "Unit nominal voltage"
+      Data Type: "Numeric"
+      Units: "V"
+      Constraints: ">=0.0"
+      Notes: "If the unit can operate at multiple voltages, the lower of the two shall be stated"
+    nominal_frequency:
+      Description: "Unit nominal frequency"
+      Data Type: "Numeric"
+      Units: "Hz"
+      Constraints: ">=0.0"
+      Notes: "Power supply frequency for the intended region of installation"
+    compressor_type:
+      Description: "Type of compressor"
+      Data Type: "<CompressorType>"
+    liquid_data_source:
+      Description: "Source of the liquid properties data"
+      Data Type: "String"
+      Notes: "Example: 'ASHRAE Handbook Fundamentals 2013 chapter 31'"
+    refrigerant:
+      Description: "Refrigerant used in the chiller"
+      Data Type: "String"
+      Notes: "The string shall start with 'R-' and then include the refrigerant number designation conforming to ANSI/ASHRAE Standard 34[@ASHRAE34]"
+    hot_gas_bypass_installed:
+      Description: "Indicates if a hot-gas bypass valve is installed on the chiller"
+      Data Type: "Boolean"
+
+RatingAHRI550590:
+  Object Type: "Data Group"
+  Data Group Template: RatingTemplate
+  Data Elements:
+    rating_reproducible_from_data:
+      Data Type: "Boolean"
+    certified_reference_number:
+      Description: "AHRI certified reference number"
+      Data Type: "String"
+    test_standard_year:
+      Description: "Year of the AHRI test standard"
+      Data Type: "<AHRI550590TestStandardYear>"
+    rating_source:
+      Description: "Source of this rating data"
+      Data Type: "String"
+      Notes: "Used by data publisher to document methods (e.g., software and version) used to generate rating data"
+    net_refrigerating_capacity:
+      Description: "Rated net refrigeration capacity"
+      Data Type: "Numeric"
+      Units: "Btu/h"
+      Constraints: ">=0.0"
+      Notes: "The capacity of the evaporator available for cooling of the thermal load external to the chiller; calculated using only the sensible heat transfer"
+    input_power:
+      Description: "Combined power input of all components of the unit, including auxiliary power and excluding integral pumps"
+      Data Type: "Numeric"
+      Units: "kW"
+      Constraints: ">=0.0"
+    cop:
+      Description: "Ratio of the net refrigerating capacity to the total input power at the rating conditions"
+      Data Type: "Numeric"
+      Units: "-"
+      Constraints: ">0.0"
+    iplv_ip:
+      Description: "The Integrated Part-Load Value efficiency of merit calculated at the standard rating conditions"
+      Data Type: "Numeric"
+      Units: "-"
+    nplv_ip:
+      Description: "The Non-Standard Part-Load Value efficiency of merit calculated at the conditions other than the IPLV.IP conditions"
+      Data Type: "Numeric"
+      Units: "-"
+
+RatingAHRI551591:
+  Object Type: "Data Group"
+  Data Group Template: RatingTemplate
+  Data Elements:
+    rating_reproducible_from_data:
+      Data Type: "Boolean"
+    certified_reference_number:
+      Description: "AHRI certified reference number"
+      Data Type: "String"
+    test_standard_year:
+      Description: "Year of the AHRI test standard"
+      Data Type: "<AHRI551591TestStandardYear>"
+    rating_source:
+      Description: "Source of this rating data"
+      Data Type: "String"
+      Notes: "Used by data publisher to document methods (e.g., software and version) used to generate rating data"
+    net_refrigerating_capacity:
+      Description: "Rated net refrigeration capacity"
+      Data Type: "Numeric"
+      Units: "kW"
+      Constraints: ">=0.0"
+      Notes: "The capacity of the evaporator available for cooling of the thermal load external to the chiller; calculated using only the sensible heat transfer"
+    input_power:
+      Description: "Combined power input of all components of the unit, including auxiliary power and excluding integral pumps"
+      Data Type: "Numeric"
+      Units: "kW"
+      Constraints: ">=0.0"
+    cop:
+      Description: "Ratio of the net refrigerating capacity to the total input power at the rating conditions"
+      Data Type: "Numeric"
+      Units: "-"
+      Constraints: ">0.0"
+    iplv_si:
+      Description: "The Integrated Part-Load Value efficiency of merit calculated at the standard rating conditions"
+      Data Type: "Numeric"
+      Units: "-"
+    nplv_si:
+      Description: "The Non-Standard Part-Load Value efficiency of merit calculated at the conditions other than the IPLV.SI conditions"
+      Data Type: "Numeric"
+      Units: "-"
+
+Performance:
+  Object Type: "Data Group"
+  Data Elements:
+    condenser_type:
+      Description: "Heat rejection method of the condenser"
+      Data Type: "<CondenserType>"
+      Required: True
+    evaporator_liquid_type:
+      Description: "Type of liquid in evaporator"
+      Data Type: "{LiquidMixture}"
+      Required: True
+      Notes: ["`LiquidMixture` specifies liquid constituents and their concentrations",
+              "Density shall be evaluated at the evaporator inlet liquid temperature"]
+    condenser_liquid_type:
+      Description: "Type of liquid in condenser"
+      Data Type: "{LiquidMixture}"
+      Required: "if condenser_type=LIQUID"
+      Notes: ["`LiquidMixture` specifies liquid constituents and their concentrations",
+              "Density shall be evaluated at the condenser inlet liquid temperature"]
+    evaporator_fouling_factor:
+      Description: "Factor of heat transfer inhibition due to heat exchanger fouling layer"
+      Data Type: "Numeric"
+      Units: "m2-K/W"
+      Constraints: ">=0.0"
+      Required: True
+      Notes: ["Evaporator fouling factor at which the performance map was created",
+              "May be different from the certification data supplied"]
+    condenser_fouling_factor:
+      Description: "Factor of heat transfer inhibition due to heat exchanger fouling layer"
+      Data Type: "Numeric"
+      Units: "m2-K/W"
+      Constraints: ">=0.0"
+      Required: "if condenser_type=LIQUID"
+      Notes: ["Condenser fouling factor at which the performance map was created",
+              "May be different from the certification data supplied"]
+    compressor_speed_control_type:
+      Description: "Type of compressor speed control"
+      Data Type: "<SpeedControlType>"
+      Required: True
+    cycling_degradation_coefficient:
+      Description: "Cycling degradation coefficient (C~D~) as described in AHRI 550/590 or AHRI 551/591"
+      Data Type: "Numeric"
+      Units: "-"
+      Constraints: [">=0.0", "<=1.0"]
+      Required: True
+      Notes: "Used when the unit cycles to meet a setpoint"
+    scaling:
+      Description: "Specifies the range the performance data can be scaled to represent different capacity equipment"
+      Data Type: "{Scaling}"
+      Notes: "If not present, scaling of the performance data is not allowed"
+    performance_map_cooling:
+      Description: "Data group describing cooling performance over a range of conditions"
+      Data Type: "({PerformanceMapCoolingLiquid}, {PerformanceMapCoolingAir}, {PerformanceMapCoolingEvaporative})"
+      Constraints: condenser_type(LIQUID, AIR, EVAPORATIVE)
+      Required: True
+    performance_map_standby:
+      Description: "Data group describing standby performance"
+      Data Type: "{PerformanceMapStandby}"
+      Required: True
+    performance_map_evaporator_liquid_pressure_differential:
+      Description: "Data group describing the liquid pressure differential through the evaporator"
+      Data Type: "{PerformanceMapEvaporatorLiquidPressureDifferential}"
+      Required: True
+    performance_map_condenser_liquid_pressure_differential:
+      Description: "Data group describing the liquid pressure differential through the condenser"
+      Data Type: "{PerformanceMapCondenserLiquidPressureDifferential}"
+      Required: "if condenser_type=LIQUID"
+
+PerformanceMapCoolingLiquid:
+  Object Type: "Data Group"
+  Data Group Template: PerformanceMapTemplate
+  Data Elements:
+    grid_variables:
+      Description: "Data group defining the grid variables for cooling performance"
+      Data Type: "{GridVariablesCoolingLiquid}"
+      Required: True
+    lookup_variables:
+      Description: "Data group defining the lookup variables for cooling performance"
+      Data Type: "{LookupVariablesCoolingLiquid}"
+      Required: True
+
+GridVariablesCoolingLiquid:
+  Object Type: "Data Group"
+  Data Group Template: GridVariablesTemplate
+  Data Elements:
+    evaporator_liquid_volumetric_flow_rate: &evaporator_liquid_volumetric_flow_rate
+      Description: "Chilled liquid (evaporator) flow"
+      Data Type: "[Numeric]"
+      Units: "m3/s"
+      Constraints:
+      - ">0.0"
+      - "[1..]"
+      Required: True
+      Scalable: True
+    evaporator_liquid_leaving_temperature: &evaporator_liquid_leaving_temperature
+      Description: "Leaving evaporator liquid temperature"
+      Data Type: "[Numeric]"
+      Units: "K"
+      Constraints:
+      - ">0.0"
+      - "[1..]"
+      Required: True
+    condenser_liquid_volumetric_flow_rate: &condenser_liquid_volumetric_flow_rate
+      Description: "Condenser liquid flow"
+      Data Type: "[Numeric]"
+      Units: "m3/s"
+      Constraints: ">0.0"
+      Required: True
+      Scalable: True
+    condenser_liquid_entering_temperature: &condenser_liquid_entering_temperature
+      Description: "Entering condenser liquid temperature"
+      Data Type: "[Numeric]"
+      Units: "K"
+      Constraints: ">0.0"
+      Required: True
+    compressor_sequence_number: &compressor_sequence_number
+      Description: "Index indicating the relative capacity order of the compressor speed/stage expressed in order from lowest capacity (starting at 1) to highest capacity"
+      Data Type: "[Integer]"
+      Constraints:
+      - ">=1"
+      - "[1..]"
+      Units: "-"
+      Notes: ["If `compressor_speed_control_type` is `DISCRETE`, sequence numbers shall be provided for each discrete stage of the compressor(s)",
+              "If `compressor_speed_control_type` is `CONTINUOUS`, sufficient sequence numbers shall be provided to capture the continuous operation of the compressor(s)"]
+      Required: True
+
+LookupVariablesCoolingLiquid:
+  Object Type: "Data Group"
+  Data Group Template: LookupVariablesTemplate
+  Data Elements:
+    input_power: &input_power
+      Description: "Total power input"
+      Data Type: "[Numeric]"
+      Units: "W"
+      Constraints:
+      - ">=0.0"
+      - "[1..]"
+      Required: True
+      Scalable: True
+      Notes: "All power consumed by the chiller, including controls, motors, variable speed drives, purge units, sump heaters, fans, etc."
+    net_evaporator_capacity: &net_evaporator_capacity
+      Description: "Refrigeration capacity"
+      Data Type: "[Numeric]"
+      Units: "W"
+      Constraints:
+      - ">=0.0"
+      - "[1..]"
+      Required: True
+      Scalable: True
+      Notes: "The available cooling capacity of the evaporator to the thermal load calculated using only the sensible heat transfer"
+    net_condenser_capacity: &net_condenser_capacity
+      Description: "Condenser heat rejection"
+      Data Type: "[Numeric]"
+      Units: "W"
+      Constraints:
+      - ">=0.0"
+      - "[1..]"
+      Required: True
+      Scalable: True
+      Notes: "The capacity of the condenser transferred to the condenser cooling stream using only the sensible heat transfer"
+    oil_cooler_heat: &oil_cooler_heat
+      Description: "Heat transferred to another liquid crossing the control volume boundary from the chiller oil cooler."
+      Data Type: "[Numeric]"
+      Units: "W"
+      Constraints:
+      - ">=0.0"
+      - "[1..]"
+      Required: True
+      Scalable: True
+      Notes: "Set as 0 if not present or if heat rejection is met by condenser"
+    auxiliary_heat: &auxiliary_heat
+      Description: "Heat transferred to another liquid crossing the control volume boundary from the chiller auxiliaries (motor, motor controller, inverter drive, starter, etc)."
+      Data Type: "[Numeric]"
+      Units: "W"
+      Constraints:
+      - ">=0.0"
+      - "[1..]"
+      Required: True
+      Scalable: True
+      Notes: "Set as 0 if not present or if heat rejection is met by condenser"
+    operation_state: &operation_state
+      Description: "The operation state at the operating conditions"
+      Data Type: "[<OperationState>]"
+      Units: "-"
+      Required: True
+
+PerformanceMapCoolingAir:
+  Object Type: "Data Group"
+  Data Group Template: PerformanceMapTemplate
+  Data Elements:
+    grid_variables:
+      Description: "Data group defining the grid variables for cooling performance"
+      Data Type: "{GridVariablesCoolingAir}"
+      Required: True
+    lookup_variables:
+      Description: "Data group defining the lookup variables for cooling performance"
+      Data Type: "{LookupVariablesCoolingAir}"
+      Required: True
+
+GridVariablesCoolingAir: &GridVariablesCoolingAir
+  Object Type: "Data Group"
+  Data Group Template: GridVariablesTemplate
+  Data Elements:
+    evaporator_liquid_volumetric_flow_rate: *evaporator_liquid_volumetric_flow_rate
+    evaporator_liquid_leaving_temperature: *evaporator_liquid_leaving_temperature
+    condenser_air_entering_drybulb_temperature:
+      Description: "Entering condenser air drybulb temperature"
+      Data Type: "[Numeric]"
+      Units: "K"
+      Constraints: ">0.0"
+      Required: True
+    condenser_air_entering_relative_humidity:
+      Description: "Entering condenser air relative humidity"
+      Data Type: "[Numeric]"
+      Units: "-"
+      Constraints:
+        - ">=0.0, <=1.0"
+        - "[1..]"
+      Required: True
+    ambient_pressure:
+      Description: "Ambient pressure used to calculate the performance"
+      Data Type: "[Numeric]"
+      Units: "Pa"
+      Constraints:
+        - ">0.0"
+        - "[1..]"
+      Required: True
+      Notes: "Informative Note: the intent of the ambient pressure is to capture the pressure at the installation and not changes in the ambient pressure due to weather effects"
+    compressor_sequence_number: *compressor_sequence_number
+
+LookupVariablesCoolingAir:
+  Object Type: "Data Group"
+  Data Group Template: LookupVariablesTemplate
+  Data Elements:
+    input_power: *input_power
+    net_evaporator_capacity: *net_evaporator_capacity
+    net_condenser_capacity: *net_condenser_capacity
+    condenser_air_volumetric_flow_rate: &condenser_air_volumetric_flow_rate
+      Description: "Condenser air flow"
+      Data Type: "[Numeric]"
+      Units: "m3/s"
+      Constraints: ">0.0"
+      Required: True
+      Scalable: True
+    oil_cooler_heat: *oil_cooler_heat
+    auxiliary_heat: *auxiliary_heat
+    operation_state: *operation_state
+
+
+PerformanceMapCoolingEvaporative:
+  Object Type: "Data Group"
+  Data Group Template: PerformanceMapTemplate
+  Data Elements:
+    grid_variables:
+      Description: "Data group defining the grid variables for cooling performance"
+      Data Type: "{GridVariablesCoolingEvaporative}"
+      Required: True
+    lookup_variables:
+      Description: "Data group defining the lookup variables for cooling performance"
+      Data Type: "{LookupVariablesCoolingEvaporative}"
+      Required: True
+
+GridVariablesCoolingEvaporative: *GridVariablesCoolingAir
+
+LookupVariablesCoolingEvaporative:
+  Object Type: "Data Group"
+  Data Group Template: LookupVariablesTemplate
+  Data Elements:
+    input_power: *input_power
+    net_evaporator_capacity: *net_evaporator_capacity
+    net_condenser_capacity: *net_condenser_capacity
+    condenser_air_volumetric_flow_rate: *condenser_air_volumetric_flow_rate
+    evaporation_rate:
+      Description: "Rate at which water evaporates from the condenser."
+      Data Type: "[Numeric]"
+      Units: "m3/s"
+      Constraints: ">=0.0"
+      Required: True
+      Scalable: True
+      Notes: "Does not include blow down or drift losses."
+    oil_cooler_heat: *oil_cooler_heat
+    auxiliary_heat: *auxiliary_heat
+    operation_state: *operation_state
+
+PerformanceMapStandby:
+  Object Type: "Data Group"
+  Data Group Template: PerformanceMapTemplate
+  Data Elements:
+    grid_variables:
+      Description: "Data group defining the grid variables for standby performance"
+      Data Type: "{GridVariablesStandby}"
+      Required: True
+    lookup_variables:
+      Description: "Data group defining the lookup variables for standby performance"
+      Data Type: "{LookupVariablesStandby}"
+      Required: True
+
+GridVariablesStandby:
+  Object Type: "Data Group"
+  Data Group Template: GridVariablesTemplate
+  Data Elements:
+    environment_dry_bulb_temperature:
+      Description: "Dry bulb temperature of the air in the environment of the chiller"
+      Data Type: "[Numeric]"
+      Units: "K"
+      Constraints:
+      - ">0.0"
+      - "[1..]"
+      Required: True
+
+LookupVariablesStandby:
+  Object Type: "Data Group"
+  Data Group Template: LookupVariablesTemplate
+  Data Elements:
+    input_power:
+      Description: "Total power consumed in standby operation"
+      Data Type: "[Numeric]"
+      Units: "W"
+      Constraints:
+      - ">=0.0"
+      - "[1..]"
+      Required: True
+      Scalable: True
+      Notes: ["Includes devices that cycle on and off (e.g., purge units and sump units) and devices that draw continuous power (e.g., fans and controls)",
+              "Expressed as a time averaged power consumption"]
+
+PerformanceMapEvaporatorLiquidPressureDifferential:
+  Object Type: "Data Group"
+  Data Group Template: PerformanceMapTemplate
+  Data Elements:
+    grid_variables:
+      Description: "Data group defining the grid variables for the evaporator liquid pressure differential"
+      Data Type: "{GridVariablesEvaporatorLiquidPressureDifferential}"
+      Required: True
+    lookup_variables:
+      Description: "Data group defining the lookup variables for the evaporator liquid pressure differential"
+      Data Type: "{LookupVariablesEvaporatorLiquidPressureDifferential}"
+      Required: True
+
+GridVariablesEvaporatorLiquidPressureDifferential:
+  Object Type: "Data Group"
+  Data Group Template: GridVariablesTemplate
+  Data Elements:
+    evaporator_liquid_volumetric_flow_rate:
+      Description: "Chilled liquid (evaporator) flow"
+      Data Type: "[Numeric]"
+      Units: "m3/s"
+      Constraints:
+      - ">0.0"
+      - "[1..]"
+      Required: True
+    evaporator_liquid_leaving_temperature:
+      Description: "Leaving evaporator liquid temperature"
+      Data Type: "[Numeric]"
+      Units: "K"
+      Constraints:
+      - ">0.0"
+      - "[1..]"
+      Required: True
+
+LookupVariablesEvaporatorLiquidPressureDifferential:
+  Object Type: "Data Group"
+  Data Group Template: LookupVariablesTemplate
+  Data Elements:
+    evaporator_liquid_differential_pressure:
+      Description: "Pressure difference across the evaporator"
+      Data Type: "[Numeric]"
+      Units: "Pa"
+      Constraints:
+      - ">0.0"
+      - "[1..]"
+      Required: True
+
+PerformanceMapCondenserLiquidPressureDifferential:
+  Object Type: "Data Group"
+  Data Group Template: PerformanceMapTemplate
+  Data Elements:
+    grid_variables:
+      Description: "Data group defining the grid variables for the condenser liquid pressure differential"
+      Data Type: "{GridVariablesCondenserLiquidPressureDifferential}"
+      Required: True
+    lookup_variables:
+      Description: "Data group defining the lookup variables for the condenser liquid pressure differential"
+      Data Type: "{LookupVariablesCondenserLiquidPressureDifferential}"
+      Required: True
+
+GridVariablesCondenserLiquidPressureDifferential:
+  Object Type: "Data Group"
+  Data Group Template: GridVariablesTemplate
+  Data Elements:
+    condenser_liquid_volumetric_flow_rate:
+      Description: "Condenser liquid flow"
+      Data Type: "[Numeric]"
+      Units: "m3/s"
+      Constraints:
+      - ">0.0"
+      - "[1..]"
+      Required: True
+    condenser_liquid_entering_temperature:
+      Description: "Entering condenser liquid temperature"
+      Data Type: "[Numeric]"
+      Units: "K"
+      Constraints:
+      - ">0.0"
+      - "[1..]"
+      Required: True
+
+LookupVariablesCondenserLiquidPressureDifferential:
+  Object Type: "Data Group"
+  Data Group Template: LookupVariablesTemplate
+  Data Elements:
+    condenser_liquid_differential_pressure:
+      Description: "Pressure difference across the condenser"
+      Data Type: "[Numeric]"
+      Units: "Pa"
+      Constraints:
+      - ">0.0"
+      - "[1..]"
+      Required: True

@@ -16,73 +16,12 @@ This repository ships with the [DoIt!](https://pydoit.org/) task automation tool
 
 The following DoIt! tasks are available:
 
-- `doc`: Generates Markdown tables from common-schema
-- `render_template`: Demonstrate how to render a template
-- `schema`: Generates JSON schema from common-schema
-- `test`: Performs unit tests and example file validation tests
-- `validate`: Validates common-schema against meta-schema
-
-Details of some of the tasks above are explained more below.
-
-### Rendering a Jinja Template: `render_template`
-
-This task takes an example template using the [Jinja](https://palletsprojects.com/p/jinja/) templating system and renders it.
-The example file used is located at `rendering_examples/template_rendering/main.md`.
-The base file is written in the [Markdown](https://commonmark.org/) language.
-It includes examples of using the `add_schema_table` hook to insert Schema 205 tables into markdown text.
-
-The rendered result appears in `build/rendered_template/main.md`.
-
-
-Using Schema 205 for Rendering Tables
--------------------------------------
-
-If you would like to use this repository as a library to assist with rendering your own files, this section will give you some tips on how to set that up and use the `add_schema_table` hook.
-
-1. We recommend starting a new repository to hold your document and to use version control
-
-    > mkdir my-project
-    > cd my-project
-    > git init
-
-2. Within that new repository, use the [Poetry](https://python-poetry.org/docs/#installation) python package management tool:
-
-    # assuming you have poetry installed...
-    > poetry init
-
-3. Edit `pyproject.toml` to add this repository as a dependency. You can do that by either installing this repository as a submodule. Note: set develop to `true` if you plan to develop on schema205 while building your documentation:
-
-    [tool.poetry.dependencies]
-    python = "^3.7"
-    schema205 = { path = "./schema-205/", develop = false }
-
-4. Create a `src` directory containing your markdown as Jinja templates.
-
-5. Lastly, install DoIt! and setup a `dodo.py` file such as the following:
-
-```python
-import os
-import os.path
-import glob
-from schema205.render_template import main as render_template
-
-def task_render_markdown():
-    """
-    Render a Markdown Template to Markdown
-    """
-    BUILD_DIR = 'build'
-    os.makedirs(BUILD_DIR, exist_ok=True)
-    src_dir = 'src'
-    main_source = "main.md"
-    return {
-        'actions': [
-            (render_template, [os.path.join(src_dir, main_source), os.path.join(BUILD_DIR, main_source), "src"]),
-        ],
-        'targets': [os.path.join(BUILD_DIR, main_source)],
-        'file_dep': list(glob.glob(os.path.join(src_dir, '*.md'))),
-        'clean': True,
-    }
-```
+- `generate_markdown`: Generates Markdown tables from common-schema
+- `generate_web_docs`: Generates web documentation from templates
+- `generate_meta_schemas`: Generates validation files for common-schema
+- `generate_json_schemas`: Generates JSON schema from common-schema
+- `validate_schemas`: Validates common-schema against meta-schema
+- `generate_cpp_project`: Generates header and source files, with basic CMake build integration
 
 
 Development Workflow
@@ -94,96 +33,19 @@ For those who wish to develop the Schema205 repository directly, we are using th
 
 Following are some considerations you should go through to configure your environment correctly for development and exploration.
 
-1. **Install Poetry**
-
-    Be sure to install [Poetry](https://python-poetry.org/docs/#installation) per the instructions from the Poetry website.
-
-2. **Install Python and support multiple Python versions on one machine**
-
-    If you don't desire to support multiple versions of Python, then you need only ensure that you have at least one version of Python installed. This project requires Python 3.7 or higher. Please see the [Python Website](https://www.python.org/) for installation instructions for your operating system.
-
-    If you wish to support multiple versions of Python during development, there are several options. One simple option is to just ensure you start up your command prompt (i.e., shell) with the Python version you wish to develop with.
-
-    For something more sophisticated, we recommend [mini-conda](https://docs.conda.io/en/latest/miniconda.html), a free minimal installer for Conda. Conda is an open-source package and environment management system that runs on Windows, macOS, and Linux.  Use the following steps:
-
-    a) [install mini-conda](https://docs.conda.io/en/latest/miniconda.html).
-
-    b) [start conda](https://docs.conda.io/projects/conda/en/latest/user-guide/getting-started.html#starting-conda).  This will bring up a shell window that "knows" about conda capabilities.  Windows note: be sure to follow the recommended start procedure -- generally conda *cannot* be started from a native shell prompt (due to path issues).
-
-    c) Create an environment for the version of Python you would like to use with Poetry and this project by typing the following at the conda shell:
-
-    > (base) conda create -n py37 python=3.7
-
-    Note: these environments persist between usage so you only need to create the environment once.
-
-    This will create a conda environment named "py37" that only has Python 3.7 (and its dependencies) installed.
-    If you want to use Python 3.9, you could type `conda create -n py39 python=3.9`, for example.
-    The `-n` flag is short for the `--name` of the new conda environment.
-    You have a lot of freedom for the names provided there are no spaces or exotic characters.
-    The `python=3.7` part specifies that the new conda environment will use Python version 3.7.
-    You can create as many environments with differing versions of Python as you desire.
-
-    Once the desired environments are created, you can activate an environment by typing:
-
-    > (base) conda activate py37
-
-    When you are done with the environment, type:
-
-    > (py37) conda deactivate
-
-    ... or simply close your command shell when done.
-
-    Once you've created the environment you desire, on subsequent use, you just need to start conda and activate the environment you want.
-
-    Select the desired Python environment and activate it before proceeding to the next step.
-
-3. **Install dependencies**
-
-    To install dependencies, go to the root folder of this repository and type:
-
-    > poetry install
-
-    This will install all of the normal and developer dependencies.
-    If you have done this previously and there are no changes to the library versions being used, nothing will happen.
-
-4. **Using an editor**
+1. **WIP: Using uv to install the package and dependencies**
+1. **Using an editor**
 
     You can use any editor you desire to edit or explore the Python code and schema documents in our repository.
 
     We recommend [Visual Studio Code](https://code.visualstudio.com/) because of its strong Python integration.
 
-    To get Visual Studio Code to work with Poetry, first follow steps 1-3 above.
+    1. From a command shell
+    1. From inside VS Code
 
-    macOS: a) if you do not have command-line integration, [follow these instructions](https://code.visualstudio.com/docs/setup/mac#_launching-from-the-command-line), and restart your shell. b) follow steps 1-3.
+1. **Use the project**
 
-    Windows: Follow steps 1-3 above.  The `code` command (see below) is already integrated into your shell.
-
-    From within your running Python environment, type:
-
-    > poetry shell
-
-    This activates the virtual environment for Poetry.  Then enter:
-
-    ```
-    > cd toolkit-205/schema-205
-    > code .
-    ```
-
-    This launches Visual Studio Code from within your Poetry environment.
-    At the bottom left, choose the Python version you wish to use with the given environment.
-
-    Open a terminal window TODO
-
-    You're now ready to develop using Visual Studio Code!
-
-5. **Use the project**
-
-    To run the various scripts and commands of the project, you can use the [DoIt!](https://pydoit.org/) file as follows:
-
-    > poetry run doit
-
-    The first part of the command, `poetry run`, uses Poetry to place the remaining part of the command within a Python virtual environment with all dependencies setup.
-    The second part of the command, `doit`, runs all of the tasks available in the `dodo.py` file.
+    WIP: doit instructions
 
 
 ### Developing with Toolkit 205

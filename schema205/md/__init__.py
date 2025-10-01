@@ -1,3 +1,0 @@
-"""
-Markdown package helpers.
-"""

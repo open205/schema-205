@@ -1,0 +1,132 @@
+Schema:
+  Object Type: "Meta"
+  References:
+    - "ASHRAE205"
+  Title: "Mechanical Drive"
+  Description: "Schema for ASHRAE 205 annex RS0007: Mechanical Drive" # TODO: Scope includes power transmission couplings. Allow chaining of drives?
+  Version: "2.0.0"
+  Root Data Group: "RS0007"
+
+# Local Enumerations
+DriveType:
+  Object Type: "Enumeration"
+  Enumerators:
+    V_BELT:
+      Description: "V-Belt"
+      Display Text: "V-Belt"
+    COGGED_BELT:
+      Description: "Cogged Belt"
+      Display Text: "Cogged Belt"
+    SYNCHRONOUS_BELT:
+      Description: "Synchronous Belt"
+      Display Text: "Synchronous Belt"
+    GEAR:
+      Description: "Gear"
+      Display Text: "Gear"
+    CHAIN:
+      Description: "Chain"
+      Display Text: "Chain"
+
+# Data Groups
+RS0007:
+  Object Type: "Data Group"
+  Data Group Template: RepresentationSpecificationTemplate
+  Data Elements:
+    metadata:
+      Description: "Metadata data group"
+      Data Type: "{Metadata}"
+      Constraints: schema_name="RS0007"
+      Required: True
+    description:
+      Description: "Data group describing product and rating information"
+      Data Type: "{Description}"
+    performance:
+      Description: "Data group containing performance information"
+      Data Type: "{Performance}"
+      Required: True
+
+Description:
+  Object Type: "Data Group"
+  Data Elements:
+    product_information:
+      Description: "Data group describing product information"
+      Data Type: "{ProductInformation}"
+
+ProductInformation:
+  Object Type: "Data Group"
+  Data Elements:
+      manufacturer:
+        Description: "Manufacturer name"
+        Data Type: "String"
+      model_number:
+        Description: "Model number"
+        Data Type: "Pattern"
+        Notes: "Pattern shall match all model numbers that can be represented by the representation"
+      drive_type:
+        Description: "Type of mechanical drive"
+        Data Type: "<DriveType>"
+
+Performance:
+  Object Type: "Data Group"
+  Data Elements:
+    speed_ratio:
+      Description: "Ratio of input shaft speed to output shaft speed"
+      Data Type: "Numeric" # TODO: Should this be a list or a range of options?
+      Units: "-"
+      Constraints: ">0.0"
+      Required: True
+    scaling:
+      Description: "Specifies the range the performance data can be scaled to represent different capacity equipment"
+      Data Type: "{Scaling}"
+      Notes: "If not present, scaling of the performance data is not allowed"
+    performance_map:
+      Description: "Data group describing drive performance when operating"
+      Data Type: "{PerformanceMap}"
+      Required: True
+
+PerformanceMap:
+  Object Type: "Data Group"
+  Data Group Template: PerformanceMapTemplate
+  Data Elements:
+    grid_variables:
+      Description: "Data group describing grid variables for drive performance"
+      Data Type: "{GridVariables}"
+      Required: True
+    lookup_variables:
+      Description: "Data group describing lookup variables for drive performance"
+      Data Type: "{LookupVariables}"
+      Required: True
+
+GridVariables:
+  Object Type: "Data Group"
+  Data Group Template: GridVariablesTemplate
+  Data Elements:
+    output_power:
+      Description: "Output shaft power"
+      Data Type: "[Numeric]"
+      Constraints:
+      - ">=0.0"
+      - "[1..]"
+      Units: "W"
+      Required: True
+      Scalable: True
+
+LookupVariables:
+  Object Type: "Data Group"
+  Data Group Template: LookupVariablesTemplate
+  Data Elements:
+    efficiency:
+      Description: "Efficiency of drive"
+      Data Type: "[Numeric]"
+      Constraints:
+      - ">=0.0"
+      - "<=1.0"
+      - "[1..]"
+      Units: "-"
+      Notes: "Defined as the ratio of output shaft power to input shaft power"
+      Required: True
+    operation_state:
+      Description: "The operation state at the operating conditions"
+      Data Type: "[<OperationState>]"
+      Units: "-"
+      Required: True

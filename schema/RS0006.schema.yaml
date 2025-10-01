@@ -1,0 +1,149 @@
+Schema:
+  Object Type: "Meta"
+  References:
+    - "ASHRAE205"
+  Title: "Electronic Motor Drive"
+  Description: "Schema for ASHRAE 205 annex RS0006: Electronic Motor Drive"
+  Version: "2.0.0"
+  Root Data Group: "RS0006"
+
+# Local Enumerations
+CoolingMethod:
+  Object Type: "Enumeration"
+  Enumerators:
+    PASSIVE_COOLED:
+      Description: "Drive is cooled using natural air convection within the surrounding environment"
+      Display Text: "Passive Cooled"
+      Notes: "All drive efficiency losses are assumed to be added as heat to the surrounding environment"
+    ACTIVE_AIR_COOLED:
+      Description: "Drive is cooled using forced air convection within the surrounding environment"
+      Display Text: "Active Air Cooled"
+      Notes: ["Electrical power required for the active cooling system shall be included in the efficiency of the drive",
+              "All drive efficiency losses are assumed to be added as heat to the surrounding environment"]
+    ACTIVE_LIQUID_COOLED:
+      Description: "Drive is cooled using forced liquid convection, transferring heat to the liquid"
+      Display Text: "Active Liquid Cooled"
+      Notes: ["Any liquid pumping power shall be modeled external to the drive by the application software",
+              "All drive efficiency losses are assumed to be added as heat to the liquid stream"]
+
+# Data Groups
+RS0006:
+  Object Type: "Data Group"
+  Data Group Template: RepresentationSpecificationTemplate
+  Data Elements:
+    metadata:
+      Description: "Metadata data group"
+      Data Type: "{Metadata}"
+      Constraints: schema_name="RS0006"
+      Required: True
+    description:
+      Description: "Data group describing product and rating information"
+      Data Type: "{Description}"
+    performance:
+      Description: "Data group containing performance information"
+      Data Type: "{Performance}"
+      Required: True
+
+Description:
+  Object Type: "Data Group"
+  Data Elements:
+    product_information:
+      Description: "Data group describing product information"
+      Data Type: "{ProductInformation}"
+
+ProductInformation:
+  Object Type: "Data Group"
+  Data Elements:
+      manufacturer:
+        Description: "Manufacturer name"
+        Data Type: "String"
+      model_number:
+        Description: "Model number"
+        Data Type: "Pattern"
+        Notes: "Pattern shall match all model numbers that can be represented by the representation"
+
+Performance:
+  Object Type: "Data Group"
+  Data Elements:
+    maximum_power:
+      Description: "Maximum power draw of the drive"
+      Data Type: "Numeric"
+      Units: "W"
+      Constraints: ">=0.0"
+      Required: True
+      Scalable: True
+    standby_power:
+      Description: "Power draw when the motor is not operating"
+      Data Type: "Numeric"
+      Units: "W"
+      Constraints: ">=0.0"
+      Required: True
+      Scalable: True
+    cooling_method:
+      Description: "Method used to cool the drive"
+      Data Type: "<CoolingMethod>"
+      Required: True
+    scaling:
+      Description: "Specifies the range the performance data can be scaled to represent different capacity equipment"
+      Data Type: "{Scaling}"
+      Notes: "If not present, scaling of the performance data is not allowed"
+    performance_map:
+      Description: "Data group describing drive performance when operating"
+      Data Type: "{PerformanceMap}"
+      Required: True
+
+PerformanceMap:
+  Object Type: "Data Group"
+  Data Group Template: PerformanceMapTemplate
+  Data Elements:
+    grid_variables:
+      Description: "Data group describing grid variables for drive performance"
+      Data Type: "{GridVariables}"
+      Required: True
+    lookup_variables:
+      Description: "Data group describing lookup variables for drive performance"
+      Data Type: "{LookupVariables}"
+      Required: True
+
+GridVariables:
+  Object Type: "Data Group"
+  Data Group Template: GridVariablesTemplate
+  Data Elements:
+    output_power:
+      Description: "Power delivered to the motor"
+      Data Type: "[Numeric]"
+      Constraints:
+      - ">=0.0"
+      - "[1..]"
+      Units: "W"
+      Required: True
+      Scalable: True
+    output_frequency:
+      Description: "Frequency delivered to the motor"
+      Data Type: "[Numeric]"
+      Constraints:
+      - ">=0.0"
+      - "[1..]"
+      Units: "Hz"
+      Required: True
+
+LookupVariables:
+  Object Type: "Data Group"
+  Data Group Template: LookupVariablesTemplate
+  Data Elements:
+    efficiency:
+      Description: "Efficiency of drive"
+      Data Type: "[Numeric]"
+      Constraints:
+      - ">=0.0"
+      - "<=1.0"
+      - "[1..]"
+      Units: "-"
+      Notes: ["Defined as the ratio of electrical output power (to the motor) to electrical input power (to the drive)",
+              "Input power shall include any power required to provide active air cooling for the drive"]
+      Required: True
+    operation_state:
+      Description: "The operation state at the operating conditions"
+      Data Type: "[<OperationState>]"
+      Units: "-"
+      Required: True

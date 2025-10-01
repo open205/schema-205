@@ -1,0 +1,206 @@
+# ASHRAE205.schema.yaml
+# The purpose of this "open205 schema" is to provide a single source generator format from which
+# all open205 standard materials, both normative and informative, will be created.
+
+# YAML single-source files will be created in accordance with the open205 schema.
+
+# Meta
+
+Schema:
+  Object Type: "Meta"
+  Title: "ASHRAE 205"
+  Description: "Base schema for ASHRAE 205 representations"
+  Version: "2.0.1"
+
+
+#Data Group Templates
+
+PerformanceMapTemplate:
+  Object Type: "Data Group Template"
+  Required Data Elements:
+    grid_variables:
+      Required: True
+    lookup_variables:
+      Required: True
+
+GridVariablesTemplate:
+  Object Type: "Data Group Template"
+  Required Data Types:
+    - "[Numeric]"
+    - "[Integer]"
+  Data Elements Required: True
+
+LookupVariablesTemplate:
+  Object Type: "Data Group Template"
+  Required Data Types:
+    - "[Numeric]"
+    - "[Integer]"
+    - "[<OperationState>]"
+  Data Elements Required: True
+
+RepresentationSpecificationTemplate:
+  Object Type: "Data Group Template"
+  Required Data Elements:
+    metadata:
+      Required: True
+    performance:
+      Required: True
+    description:
+      Required: False
+
+RatingTemplate:
+  Object Type: "Data Group Template"
+  Required Data Elements:
+    rating_reproducible_from_data:
+      Data Type: Boolean
+  Unit System: IPUnits
+
+# Common Enumerations
+
+SchemaType:
+  Object Type: "Enumeration"
+  Enumerators:
+    RS0001:
+      Description: "Chiller"
+    RS0002:
+      Description: "Unitary Cooling Air-Conditioning Equipment"
+    RS0003:
+      Description: "Fan Assembly"
+    RS0004:
+      Description: "Air-to-Air Direct Expansion Refrigerant System"
+    RS0005:
+      Description: "Motor"
+    RS0006:
+      Description: "Electronic Motor Drive"
+    RS0007:
+      Description: "Mechanical Drive"
+
+CompressorType:
+  Object Type: "Enumeration"
+  Enumerators:
+    RECIPROCATING:
+      Description: "Reciprocating compressor"
+      Display Text: "Reciprocating"
+    SCREW:
+      Description: "Screw compressor"
+      Display Text: "Screw"
+    CENTRIFUGAL:
+      Description: "Centrifugal compressor"
+      Display Text: "Centrifugal"
+    ROTARY:
+      Description: "Rotary compressor"
+      Display Text: "Rotary"
+    SCROLL:
+      Description: "Scroll compressor"
+      Display Text: "Scroll"
+
+SpeedControlType:
+  Object Type: "Enumeration"
+  Enumerators:
+    DISCRETE:
+      Description: "Loading is controlled by cycling between one or more discrete stages"
+      Display Text: "Discrete"
+    CONTINUOUS:
+      Description: "Loading is controlled by continuously varying the speed"
+      Display Text: "Continuous"
+
+CondenserType:
+  Object Type: "Enumeration"
+  Enumerators:
+    AIR:
+      Description: "Air-cooled condenser"
+      Display Text: "Air"
+    LIQUID:
+      Description: "Liquid-cooled condenser"
+      Display Text: "Liquid"
+    EVAPORATIVE:
+      Description: "Evaporative condenser"
+      Display Text: "Evaporative"
+      Notes: "Evaporative condensers include adiabatically-cooled condensers"
+
+LiquidConstituent:
+  Object Type: "Enumeration"
+  Enumerators:
+    WATER:
+      Description: "Water"
+      Display Text: "Water"
+    PROPYLENE_GLYCOL:
+      Description: "Propylene glycol"
+      Display Text: "Propylene Glycol"
+    ETHYLENE_GLYCOL:
+      Description: "Ethylene glycol"
+      Display Text: "Ethylene Glycol"
+    SODIUM_CHLORIDE:
+      Description: "Sodium chloride"
+      Display Text: "Sodium Chloride"
+    CALCIUM_CHLORIDE:
+      Description: "Calcium chloride"
+      Display Text: "Calcium Chloride"
+    ETHANOL:
+      Description: "Ethanol"
+      Display Text: "Ethanol"
+    METHANOL:
+      Description: "Methanol"
+      Display Text: "Methanol"
+
+ConcentrationType:
+  Object Type: "Enumeration"
+  Enumerators:
+    BY_VOLUME:
+      Description: "Concentration is defined as a fraction of total liquid mixture volume"
+      Display Text: "By Volume"
+    BY_MASS:
+      Description: "Concentration is defined as a fraction of total liquid mixture mass"
+      Display Text: "By Mass"
+
+OperationState:
+  Object Type: "Enumeration"
+  Enumerators:
+    NORMAL:
+      Description: "Indicates that the equipment is in normal operating state"
+      Display Text: "Normal"
+    STANDBY:
+      Description: "Indicates that the equipment is in standby operating state"
+      Display Text: "Standby"
+# Reusable Data Groups
+LiquidMixture:
+  Object Type: "Data Group"
+  Data Elements:
+    liquid_components:
+      Description: "An array of all liquid components within the liquid mixture"
+      Data Type: "[{LiquidComponent}]"
+      Required: True
+      Notes: "Array may contain a single component"
+    concentration_type:
+      Description: "Defines whether concentration is defined on a volume or mass basis"
+      Data Type: "<ConcentrationType>"
+      Required: True
+
+LiquidComponent:
+  Object Type: "Data Group"
+  Data Elements:
+    liquid_constituent:
+      Description: "Substance of this component of the mixture"
+      Data Type: "<LiquidConstituent>"
+      Required: True
+    concentration:
+      Description: "Concentration of this component of the mixture"
+      Data Type: "Numeric"
+      Constraints: [">=0.0", "<=1.0"]
+      Notes: "If omitted, assume equal distribution with any other component with no defined concentration (e.g., can be left blank for the primary component)"
+
+Scaling:
+  Object Type: "Data Group"
+  Data Elements:
+    minimum:
+      Description: "Minimum scaling factor"
+      Data Type: "Numeric"
+      Units: "-"
+      Constraints: [">0.0", "<=1.0"]
+      Notes: "If not specified, may be scaled down to any value greater than zero"
+    maximum:
+      Description: "Maximum scaling factor"
+      Data Type: "Numeric"
+      Units: "-"
+      Constraints: [">=1.0"]
+      Notes: "If not specified, unlimited"
