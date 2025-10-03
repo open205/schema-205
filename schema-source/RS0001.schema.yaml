@@ -278,6 +278,7 @@ PerformanceMapCoolingLiquid:
     lookup_variables:
       Description: "Data group defining the lookup variables for cooling performance"
       Data Type: "{LookupVariablesCoolingLiquid}"
+      Cycling Order: "{evaporator_liquid_volumetric_flow_rate, evaporator_liquid_leaving_temperature, condenser_liquid_volumetric_flow_rate, condenser_liquid_entering_temperature, compressor_sequence_number}"
       Required: True
 
 GridVariablesCoolingLiquid:
@@ -377,6 +378,7 @@ PerformanceMapCoolingAir:
     lookup_variables:
       Description: "Data group defining the lookup variables for cooling performance"
       Data Type: "{LookupVariablesCoolingAir}"
+      Cycling Order: "{evaporator_liquid_volumetric_flow_rate, evaporator_liquid_leaving_temperature, condenser_air_entering_drybulb_temperature, condenser_air_entering_relative_humidity, ambient_pressure, compressor_sequence_number}"
       Required: True
 
 GridVariablesCoolingAir: &GridVariablesCoolingAir
@@ -433,6 +435,7 @@ PerformanceMapCoolingEvaporative:
     lookup_variables:
       Description: "Data group defining the lookup variables for cooling performance"
       Data Type: "{LookupVariablesCoolingEvaporative}"
+      Cycling Order: "{evaporator_liquid_volumetric_flow_rate, evaporator_liquid_leaving_temperature, condenser_air_entering_drybulb_temperature, condenser_air_entering_relative_humidity, ambient_pressure, compressor_sequence_number}"
       Required: True
 
 GridVariablesCoolingEvaporative: *GridVariablesCoolingAir
@@ -466,6 +469,7 @@ PerformanceMapStandby:
     lookup_variables:
       Description: "Data group defining the lookup variables for standby performance"
       Data Type: "{LookupVariablesStandby}"
+      Cycling Order: "{environment_dry_bulb_temperature}"
       Required: True
 
 GridVariablesStandby:
@@ -501,6 +505,7 @@ PerformanceMapEvaporatorLiquidPressureDifferential:
     lookup_variables:
       Description: "Data group defining the lookup variables for the evaporator liquid pressure differential"
       Data Type: "{LookupVariablesEvaporatorLiquidPressureDifferential}"
+      Cycling Order: "{evaporator_liquid_volumetric_flow_rate, evaporator_liquid_leaving_temperature}"
       Required: True
 
 GridVariablesEvaporatorLiquidPressureDifferential:
@@ -539,6 +544,7 @@ PerformanceMapCondenserLiquidPressureDifferential:
     lookup_variables:
       Description: "Data group defining the lookup variables for the condenser liquid pressure differential"
       Data Type: "{LookupVariablesCondenserLiquidPressureDifferential}"
+      Cycling Order: "{condenser_liquid_volumetric_flow_rate, condenser_liquid_entering_temperature}"
       Required: True
 
 GridVariablesCondenserLiquidPressureDifferential:

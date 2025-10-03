@@ -46,7 +46,7 @@ def string_out_tables(instance, base_level=1, style="2 Columns"):
     if len(struct['data_groups']) > 0:
       for dg, data_elements in struct['data_groups'].items():
           output_file.writelines(schema_table.create_table_from_list(
-            ["Name", "Description", "Data Type", "Units", "Constraints", "Req", "Scalable", "Notes"],
+            ["Name", "Description", "Data Type", "Units", "Constraints", "Req", "Scalable", "Cycling Order", "Notes"],
             data_elements,
             description=dg,
             level=base_level + 1,

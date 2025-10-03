@@ -93,6 +93,7 @@ PerformanceMap:
     lookup_variables:
       Description: "Data group describing lookup variables for drive performance"
       Data Type: "{LookupVariables}"
+      Cycling Order: "{output_power}"
       Required: True
 
 GridVariables:

@@ -236,6 +236,7 @@ PerformanceMapContinuous:
     lookup_variables:
       Description: "Data group describing lookup variables for continuous fan performance"
       Data Type: "{LookupVariablesContinuous}"
+      Cycling Order: "{standard_air_volumetric_flow_rate, static_pressure_difference}"
       Required: True
 
 GridVariablesContinuous:
@@ -289,6 +290,7 @@ PerformanceMapDiscrete:
     lookup_variables:
       Description: "Data group describing lookup variables for discrete fan performance"
       Data Type: "{LookupVariablesDiscrete}"
+      Cycling Order: "{speed_number, static_pressure_difference}"
       Required: True
 
 GridVariablesDiscrete:

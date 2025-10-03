@@ -95,6 +95,7 @@ PerformanceMapCooling:
     lookup_variables:
       Description: "Data group defining the lookup variables for cooling performance"
       Data Type: "{LookupVariablesCooling}"
+      Cycling Order: "{outdoor_coil_entering_dry_bulb_temperature, indoor_coil_entering_relative_humidity, indoor_coil_entering_dry_bulb_temperature, indoor_coil_air_mass_flow_rate, compressor_sequence_number, ambient_absolute_air_pressure}"
       Required: True
 
 GridVariablesCooling:
@@ -186,6 +187,7 @@ PerformanceMapStandby:
     lookup_variables:
       Description: "Data group defining the lookup variables for standby performance"
       Data Type: "{LookupVariablesStandby}"
+      Cycling Order: "{outdoor_coil_environment_dry_bulb_temperature}"
       Required: True
 
 GridVariablesStandby:
