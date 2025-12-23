@@ -128,9 +128,6 @@ RatingAHRI210240:
   Object Type: "Data Group"
   Data Group Template: "RatingTemplate"
   Data Elements:
-    rating_reproducible_from_data:
-      Description: ""
-      Type: "Boolean"
     certified_reference_number:
       Description: "AHRI certified reference number"
       Type: "String"
@@ -179,9 +176,6 @@ RatingAHRI340360:
   Object Type: "Data Group"
   Data Group Template: "RatingTemplate"
   Data Elements:
-    rating_reproducible_from_data:
-      Description: ""
-      Type: "Boolean"
     certified_reference_number:
       Description: "AHRI Certified Reference Number"
       Type: "String"

@@ -63,9 +63,6 @@ Scalable:
 
 RatingTemplate:
   Object Type: "Data Group Template"
-  Required Data Elements:
-    rating_reproducible_from_data:
-      Type: Boolean
   Unit System: IPUnits
 
 # Common Enumerations
