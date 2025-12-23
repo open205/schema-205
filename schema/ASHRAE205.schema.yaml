@@ -15,6 +15,20 @@ Schema:
 
 #Data Group Templates
 
+RepresentationSpecificationTemplate:
+  Object Type: "Data Group Template"
+  Required Data Elements:
+    metadata:
+      Required: True
+    performance:
+      Required: True
+    description:
+      Required: False
+
+PerformanceTemplate:
+  Object Type: "Data Group Template"
+  Custom Attributes: ["Scalable"]
+
 PerformanceMapTemplate:
   Object Type: "Data Group Template"
   Required Data Elements:
@@ -29,6 +43,7 @@ GridVariablesTemplate:
     - "[Numeric]"
     - "[Integer]"
   Data Elements Required: True
+  Custom Attributes: ["Scalable"]
 
 LookupVariablesTemplate:
   Object Type: "Data Group Template"
@@ -38,21 +53,19 @@ LookupVariablesTemplate:
     - "[<OperationState>]"
   Data Elements Required: True
 
-RepresentationSpecificationTemplate:
-  Object Type: "Data Group Template"
-  Required Data Elements:
-    metadata:
-      Required: True
-    performance:
-      Required: True
-    description:
-      Required: False
+  Custom Attributes: ["Scalable"]
+
+Scalable:
+  Object Type: "Custom Attribute"
+  Type: Boolean
+  Description: "Indicates whether the value can be scaled"
+  Applies To: ["Numeric"]
 
 RatingTemplate:
   Object Type: "Data Group Template"
   Required Data Elements:
     rating_reproducible_from_data:
-      Data Type: Boolean
+      Type: Boolean
   Unit System: IPUnits
 
 # Common Enumerations
@@ -168,12 +181,12 @@ LiquidMixture:
   Data Elements:
     liquid_components:
       Description: "An array of all liquid components within the liquid mixture"
-      Data Type: "[{LiquidComponent}]"
+      Type: "[{LiquidComponent}]"
       Required: True
       Notes: "Array may contain a single component"
     concentration_type:
       Description: "Defines whether concentration is defined on a volume or mass basis"
-      Data Type: "<ConcentrationType>"
+      Type: "<ConcentrationType>"
       Required: True
 
 LiquidComponent:
@@ -181,11 +194,12 @@ LiquidComponent:
   Data Elements:
     liquid_constituent:
       Description: "Substance of this component of the mixture"
-      Data Type: "<LiquidConstituent>"
+      Type: "<LiquidConstituent>"
       Required: True
     concentration:
       Description: "Concentration of this component of the mixture"
-      Data Type: "Numeric"
+      Type: "Numeric"
+      Units: "-"
       Constraints: [">=0.0", "<=1.0"]
       Notes: "If omitted, assume equal distribution with any other component with no defined concentration (e.g., can be left blank for the primary component)"
 
@@ -194,13 +208,13 @@ Scaling:
   Data Elements:
     minimum:
       Description: "Minimum scaling factor"
-      Data Type: "Numeric"
+      Type: "Numeric"
       Units: "-"
       Constraints: [">0.0", "<=1.0"]
       Notes: "If not specified, may be scaled down to any value greater than zero"
     maximum:
       Description: "Maximum scaling factor"
-      Data Type: "Numeric"
+      Type: "Numeric"
       Units: "-"
       Constraints: [">=1.0"]
       Notes: "If not specified, unlimited"

@@ -29,23 +29,31 @@ Development Workflow
 
 ### Setting Up Schema 205 for Development
 
-For those who wish to develop the Schema205 repository directly, we are using the [Poetry](https://python-poetry.org/docs/#installation) python package management and dependency tool.
+For those who wish to develop the Schema205 repository directly, we are using the [uv](https://docs.astral.sh/uv/getting-started/installation/) python package management and dependency tool.
 
 Following are some considerations you should go through to configure your environment correctly for development and exploration.
 
-1. **WIP: Using uv to install the package and dependencies**
-1. **Using an editor**
+1. **Install uv**
 
-    You can use any editor you desire to edit or explore the Python code and schema documents in our repository.
+    Be sure to install [uv](https://docs.astral.sh/uv/getting-started/installation/) per the instructions from the uv website.
 
-    We recommend [Visual Studio Code](https://code.visualstudio.com/) because of its strong Python integration.
+2. **Install dependencies**
 
-    1. From a command shell
-    1. From inside VS Code
+    To install dependencies, go to the root folder of this repository and type:
 
-1. **Use the project**
+    > uv sync
 
-    WIP: doit instructions
+    This will install all of the normal and developer dependencies.
+    If you have done this previously and there are no changes to the library versions being used, nothing will happen.
+
+3. **Use the project**
+
+    To run the various scripts and commands of the project, you can use the [DoIt!](https://pydoit.org/) file as follows:
+
+    > uv run doit
+
+    The first part of the command, `uv run`, uses uv to place the remaining part of the command within a Python virtual environment with all dependencies setup.
+    The second part of the command, `doit`, runs all of the tasks available in the `dodo.py` file.
 
 
 ### Developing with Toolkit 205
@@ -69,10 +77,10 @@ The general development workflow for making changes to Schema 205 are as follows
 
 3. Make the necessary source code changes in both the *Toolkit 205* repository and the *Schema 205* submodule repository
 
-4. Ensure all *Toolkit 205* tests are passing locally (see the earlier section on setting up Poetry):
+4. Ensure all *Toolkit 205* tests are passing locally (see the earlier section on setting up uv):
 
     ```
-    poetry run pytest
+    doit run pytest
     ```
 
 5. Commit changes to the *Schema 205* submodule repository on its new branch:
