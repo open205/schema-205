@@ -221,30 +221,42 @@ Performance:
       Description: "Type of liquid in evaporator"
       Type: "{LiquidMixture}"
       Required: True
-      Notes: ["`LiquidMixture` specifies liquid constituents and their concentrations",
-              "Density shall be evaluated at the evaporator inlet liquid temperature"]
+      Notes:
+        [
+          "`LiquidMixture` specifies liquid constituents and their concentrations",
+          "Density shall be evaluated at the evaporator inlet liquid temperature",
+        ]
     condenser_liquid_type:
       Description: "Type of liquid in condenser"
       Type: "{LiquidMixture}"
       Required: "if condenser_type=LIQUID"
-      Notes: ["`LiquidMixture` specifies liquid constituents and their concentrations",
-              "Density shall be evaluated at the condenser inlet liquid temperature"]
+      Notes:
+        [
+          "`LiquidMixture` specifies liquid constituents and their concentrations",
+          "Density shall be evaluated at the condenser inlet liquid temperature",
+        ]
     evaporator_fouling_factor:
       Description: "Factor of heat transfer inhibition due to heat exchanger fouling layer"
       Type: "Numeric"
       Units: "m2-K/W"
       Constraints: ">=0.0"
       Required: True
-      Notes: ["Evaporator fouling factor at which the performance map was created",
-              "May be different from the certification data supplied"]
+      Notes:
+        [
+          "Evaporator fouling factor at which the performance map was created",
+          "May be different from the certification data supplied",
+        ]
     condenser_fouling_factor:
       Description: "Factor of heat transfer inhibition due to heat exchanger fouling layer"
       Type: "Numeric"
       Units: "m2-K/W"
       Constraints: ">=0.0"
       Required: "if condenser_type=LIQUID"
-      Notes: ["Condenser fouling factor at which the performance map was created",
-              "May be different from the certification data supplied"]
+      Notes:
+        [
+          "Condenser fouling factor at which the performance map was created",
+          "May be different from the certification data supplied",
+        ]
     compressor_speed_control_type:
       Description: "Type of compressor speed control"
       Type: "<SpeedControlType>"
@@ -295,44 +307,55 @@ GridVariablesCoolingLiquid:
   Object Type: "Data Group"
   Data Group Template: GridVariablesTemplate
   Data Elements:
-    evaporator_liquid_volumetric_flow_rate: &evaporator_liquid_volumetric_flow_rate
+    evaporator_liquid_volumetric_flow_rate:
+      &evaporator_liquid_volumetric_flow_rate
       Description: "Chilled liquid (evaporator) flow"
       Type: "[Numeric]"
       Units: "m3/s"
       Constraints:
-      - ">0.0"
-      - "[1..]"
+        - ">0.0"
+        - "[1..]"
       Required: True
       Scalable: True
-    evaporator_liquid_leaving_temperature: &evaporator_liquid_leaving_temperature
+    evaporator_liquid_leaving_temperature:
+      &evaporator_liquid_leaving_temperature
       Description: "Leaving evaporator liquid temperature"
       Type: "[Numeric]"
       Units: "K"
       Constraints:
-      - ">0.0"
-      - "[1..]"
+        - ">=0.0"
+        - "[1..]"
       Required: True
-    condenser_liquid_volumetric_flow_rate: &condenser_liquid_volumetric_flow_rate
+    condenser_liquid_volumetric_flow_rate:
+      &condenser_liquid_volumetric_flow_rate
       Description: "Condenser liquid flow"
       Type: "[Numeric]"
       Units: "m3/s"
-      Constraints: ">0.0"
+      Constraints:
+        - ">0.0"
+        - "[1..]"
       Required: True
       Scalable: True
-    condenser_liquid_entering_temperature: &condenser_liquid_entering_temperature
+    condenser_liquid_entering_temperature:
+      &condenser_liquid_entering_temperature
       Description: "Entering condenser liquid temperature"
       Type: "[Numeric]"
       Units: "K"
-      Constraints: ">0.0"
+      Constraints:
+        - ">=0.0"
+        - "[1..]"
       Required: True
     compressor_sequence_number: &compressor_sequence_number
       Description: "Index indicating the relative capacity order of the compressor speed/stage expressed in order from lowest capacity (starting at 1) to highest capacity"
       Type: "[Integer]"
       Constraints:
-      - ">=1"
-      - "[1..]"
-      Notes: ["If `compressor_speed_control_type` is `DISCRETE`, sequence numbers shall be provided for each discrete stage of the compressor(s)",
-              "If `compressor_speed_control_type` is `CONTINUOUS`, sufficient sequence numbers shall be provided to capture the continuous operation of the compressor(s)"]
+        - ">=1"
+        - "[1..]"
+      Notes:
+        [
+          "If `compressor_speed_control_type` is `DISCRETE`, sequence numbers shall be provided for each discrete stage of the compressor(s)",
+          "If `compressor_speed_control_type` is `CONTINUOUS`, sufficient sequence numbers shall be provided to capture the continuous operation of the compressor(s)",
+        ]
       Required: True
 
 LookupVariablesCoolingLiquid:
@@ -344,8 +367,8 @@ LookupVariablesCoolingLiquid:
       Type: "[Numeric]"
       Units: "W"
       Constraints:
-      - ">=0.0"
-      - "[1..]"
+        - ">=0.0"
+        - "[1..]"
       Required: True
       Scalable: True
       Notes: "All power consumed by the chiller, including controls, motors, variable speed drives, purge units, sump heaters, fans, etc."
@@ -354,8 +377,8 @@ LookupVariablesCoolingLiquid:
       Type: "[Numeric]"
       Units: "W"
       Constraints:
-      - ">=0.0"
-      - "[1..]"
+        - ">=0.0"
+        - "[1..]"
       Required: True
       Scalable: True
       Notes: "The available cooling capacity of the evaporator to the thermal load calculated using only the sensible heat transfer"
@@ -364,8 +387,8 @@ LookupVariablesCoolingLiquid:
       Type: "[Numeric]"
       Units: "W"
       Constraints:
-      - ">=0.0"
-      - "[1..]"
+        - ">=0.0"
+        - "[1..]"
       Required: True
       Scalable: True
       Notes: "The capacity of the condenser transferred to the condenser cooling stream using only the sensible heat transfer"
@@ -374,8 +397,8 @@ LookupVariablesCoolingLiquid:
       Type: "[Numeric]"
       Units: "W"
       Constraints:
-      - ">=0.0"
-      - "[1..]"
+        - ">=0.0"
+        - "[1..]"
       Required: True
       Scalable: True
       Notes: "Set as 0 if not present or if heat rejection is met by condenser"
@@ -384,14 +407,15 @@ LookupVariablesCoolingLiquid:
       Type: "[Numeric]"
       Units: "W"
       Constraints:
-      - ">=0.0"
-      - "[1..]"
+        - ">=0.0"
+        - "[1..]"
       Required: True
       Scalable: True
       Notes: "Set as 0 if not present or if heat rejection is met by condenser"
     operation_state: &operation_state
       Description: "The operation state at the operating conditions"
       Type: "[<OperationState>]"
+      Constraints: "[1..]"
       Required: True
 
 PerformanceMapCoolingAir:
@@ -417,7 +441,9 @@ GridVariablesCoolingAir: &GridVariablesCoolingAir
       Description: "Entering condenser air drybulb temperature"
       Type: "[Numeric]"
       Units: "K"
-      Constraints: ">0.0"
+      Constraints:
+        - ">=0.0"
+        - "[1..]"
       Required: True
     condenser_air_entering_relative_humidity:
       Description: "Entering condenser air relative humidity"
@@ -449,13 +475,14 @@ LookupVariablesCoolingAir:
       Description: "Condenser air flow"
       Type: "[Numeric]"
       Units: "m3/s"
-      Constraints: ">0.0"
+      Constraints:
+        - ">=0.0"
+        - "[1..]"
       Required: True
       Scalable: True
     oil_cooler_heat: *oil_cooler_heat
     auxiliary_heat: *auxiliary_heat
     operation_state: *operation_state
-
 
 PerformanceMapCoolingEvaporative:
   Object Type: "Data Group"
@@ -484,7 +511,9 @@ LookupVariablesCoolingEvaporative:
       Description: "Rate at which water evaporates from the condenser."
       Type: "[Numeric]"
       Units: "m3/s"
-      Constraints: ">=0.0"
+      Constraints:
+        - ">=0.0"
+        - "[1..]"
       Required: True
       Scalable: True
       Notes: "Does not include blow down or drift losses."
@@ -514,8 +543,8 @@ GridVariablesStandby:
       Type: "[Numeric]"
       Units: "K"
       Constraints:
-      - ">0.0"
-      - "[1..]"
+        - ">=0.0"
+        - "[1..]"
       Required: True
 
 LookupVariablesStandby:
@@ -527,12 +556,15 @@ LookupVariablesStandby:
       Type: "[Numeric]"
       Units: "W"
       Constraints:
-      - ">=0.0"
-      - "[1..]"
+        - ">=0.0"
+        - "[1..]"
       Required: True
       Scalable: True
-      Notes: ["Includes devices that cycle on and off (e.g., purge units and sump units) and devices that draw continuous power (e.g., fans and controls)",
-              "Expressed as a time averaged power consumption"]
+      Notes:
+        [
+          "Includes devices that cycle on and off (e.g., purge units and sump units) and devices that draw continuous power (e.g., fans and controls)",
+          "Expressed as a time averaged power consumption",
+        ]
 
 PerformanceMapEvaporatorLiquidPressureDifferential:
   Object Type: "Data Group"
@@ -556,16 +588,16 @@ GridVariablesEvaporatorLiquidPressureDifferential:
       Type: "[Numeric]"
       Units: "m3/s"
       Constraints:
-      - ">0.0"
-      - "[1..]"
+        - ">0.0"
+        - "[1..]"
       Required: True
     evaporator_liquid_leaving_temperature:
       Description: "Leaving evaporator liquid temperature"
       Type: "[Numeric]"
       Units: "K"
       Constraints:
-      - ">0.0"
-      - "[1..]"
+        - ">=0.0"
+        - "[1..]"
       Required: True
 
 LookupVariablesEvaporatorLiquidPressureDifferential:
@@ -577,8 +609,8 @@ LookupVariablesEvaporatorLiquidPressureDifferential:
       Type: "[Numeric]"
       Units: "Pa"
       Constraints:
-      - ">0.0"
-      - "[1..]"
+        - ">=0.0"
+        - "[1..]"
       Required: True
 
 PerformanceMapCondenserLiquidPressureDifferential:
@@ -603,16 +635,16 @@ GridVariablesCondenserLiquidPressureDifferential:
       Type: "[Numeric]"
       Units: "m3/s"
       Constraints:
-      - ">0.0"
-      - "[1..]"
+        - ">0.0"
+        - "[1..]"
       Required: True
     condenser_liquid_entering_temperature:
       Description: "Entering condenser liquid temperature"
       Type: "[Numeric]"
       Units: "K"
       Constraints:
-      - ">0.0"
-      - "[1..]"
+        - ">=0.0"
+        - "[1..]"
       Required: True
 
 LookupVariablesCondenserLiquidPressureDifferential:
@@ -624,6 +656,6 @@ LookupVariablesCondenserLiquidPressureDifferential:
       Type: "[Numeric]"
       Units: "Pa"
       Constraints:
-      - ">0.0"
-      - "[1..]"
+        - ">=0.0"
+        - "[1..]"
       Required: True
