@@ -1,0 +1,191 @@
+Schema:
+  Object Type: "Meta"
+  References:
+    - "ASHRAE205"
+  Title: "Forced-Circulation Air-Cooling and Air-Heating Coils"
+  Description: "Schema for ASHRAE 205 annex RS0008: Forced-Circulation Air-Cooling and Air-Heating Coils" 
+  Version: "1.0.0"
+  Root Data Group: "RS0008"
+
+# Local Enumerations
+
+# Data Groups
+RS0008:
+  Object Type: "Data Group"
+  Data Elements:
+    metadata:
+      Description: "Metadata data group"
+      Data Type: "{Metadata}"
+      Constraints: "schema=RS0008"
+      Required: True
+    description:
+      Description: "Data group describing product and rating information"
+      Data Type: "{Description}"
+    performance:
+      Description: "Data group containing performance information"
+      Data Type: "{Performance}"
+      Required: True
+
+AHRI410TestStandardVersion:
+  Object Type: "Enumeration"
+  Enumerators:
+    IP_SI_2023:
+      Display Text: "2023"
+
+Description:
+  Object Type: "Data Group"
+  Data Elements:
+    product_information:
+      Description: "Data group describing product information"
+      Data Type: "{ProductInformation}"
+    rating_ahri_410:
+      Description: "Data group containing information relevant to products rated under AHRI 410"
+      Data Type: "{RatingAHRI410}"
+
+ProductInformation:
+  Object Type: "Data Group"
+  Data Elements:
+      manufacturer:
+        Description: "Manufacturer name"
+        Data Type: "String"
+      model_number:
+        Description: "Model number"
+        Data Type: "Pattern"
+        Notes: "Pattern shall match all model numbers that can be represented by the representation"
+
+RatingAHRI410:
+  Object Type: "Rating Data Group"
+  Data Elements:
+    test_standard_version:
+      Description: "Version of the AHRI test standard"
+      Data Type: "<AHRI410TestStandardVersion>"
+      Required: True
+    manufacturer_data_source_version:
+      Description: "Version of the software used to generate the AHRI rating and the performance maps"
+      Data Type: "String"
+      Required: True
+
+Performance:
+  Object Type: "Data Group"
+  Data Elements:
+    liquid_type:
+      Description: "Type of liquid in coil"
+      Data Type: "{LiquidMixture}"
+      Required: True
+      Notes: ["`LiquidMixture` specifies liquid constituents and their concentrations",
+              "Density shall be evaluated at the coil inlet liquid temperature"]
+    performance_map_cooling:
+      Description: "Data group describing cooling performance over a range of conditions"
+      Data Type: "{PerformanceMapCooling}"
+      Required: True
+    performance_map_heating:
+      Description: "Data group describing heating performance over a range of conditions"
+      Data Type: "{PerformanceMapHeating}"
+      Required: True
+
+PerformanceMapCooling:
+  Object Type: "Performance Map"
+  Data Elements:
+    grid_variables:
+      Description: "Data group describing grid variables for cooling performance"
+      Data Type: "{GridVariablesCooling}"
+      Required: True
+    lookup_variables:
+      Description: "Data group describing lookup variables for cooling performance"
+      Data Type: "{LookupVariablesCooling}"
+      Required: True
+
+GridVariablesCooling:
+  Object Type: "Grid Variables"
+  Data Elements:
+    air_entering_dry_bulb_temperature: &entering_air_temperature
+      Description: "Dry bulb temperature of the air entering the coil"
+      Data Type: "[Numeric][1..]"
+      Constraints: ">=0.0"
+      Units: "K"
+      Required: True
+    air_entering_relative_humidity:
+      Description: "Relative humidity of the air entering the coil"
+      Data Type: "[Numeric][1..]"
+      Constraints: [">=0.0","<=1.0"]
+      Units: "-"
+      Notes: "As measured immediately before entering the coil (i.e., after the fan in a blow-through configuration)"
+      Required: True
+    liquid_entering_temperature: &entering_liquid_temperature
+      Description: "Temperature of the liquid entering the indoor coil"
+      Data Type: "[Numeric][1..]"
+      Constraints: ">=0.0"
+      Units: "K"
+      Required: True
+    air_volumetric_flow_rate: &entering_air_flow
+      Description: "Volumetric flow rate of air entering the coil"
+      Data Type: "[Numeric][1..]"
+      Constraints: ">0.0"
+      Units: "m3/s"
+      Required: True
+    liquid_volumetric_flow_rate: &entering_liquid_flow
+      Description: "Volumetric flow rate of liquid entering the coil"
+      Data Type: "[Numeric][1..]"
+      Constraints: ">0.0"
+      Units: "m3/s"
+      Required: True
+    ambient_pressure: &ambient_pressure
+      Description: "Ambient pressure used to calculate the performance"
+      Data Type: "[Numeric][1..]"
+      Units: "Pa"
+      Constraints: ">0.0"
+      Required: True
+      Notes: "Informative Note: the intent of the ambient pressure is to capture the pressure at the installation and not changes in the ambient pressure due to weather effects"
+
+LookupVariablesCooling:
+  Object Type: "Lookup Variables"
+  Data Elements:
+    air_leaving_dry_bulb_temperature: &leaving_air_temperature
+      Description: "Dry bulb temperature of the air leaving the coil"
+      Data Type: "[Numeric][1..]"
+      Constraints: ">=0.0"
+      Units: "K"
+      Required: True
+    air_leaving_relative_humidity:
+      Description: "Relative humidity of the air leaving the coil"
+      Data Type: "[Numeric][1..]"
+      Constraints: [">=0.0","<=1.0"]
+      Units: "-"
+      Required: True
+    liquid_leaving_temperature: &leaving_liquid_temperature
+      Description: "Temperature of the liquid leaving the indoor coil"
+      Data Type: "[Numeric][1..]"
+      Constraints: ">=0.0"
+      Units: "K"
+      Required: True
+    air_pressure_drop: &air_pressure_drop
+      Description: "Air pressure drop across the coil"
+      Data Type: "[Numeric][1..]"
+      Units: "Pa"
+      Range: ">=0.0"
+      Required: True
+    liquid_preasure_drop: &liquid_pressure_drop
+      Description: "Liquid pressure drop through the coil"
+      Data Type: "[Numeric][1..]"
+      Units: "Pa"
+      Range: ">=0.0"
+      Required: True
+
+GridVariablesHeating:
+  Object Type: "Grid Variables"
+  Data Elements:
+    air_entering_dry_bulb_temperature: *entering_air_temperature
+    liquid_entering_temperature: *entering_liquid_temperature
+    air_volumetric_flow_rate: *entering_air_flow
+    liquid_volumetric_flow_rate: *entering_liquid_flow
+    ambient_pressure: *ambient_pressure
+
+LookupVariablesHeating:
+  Object Type: "Lookup Variables"
+  Data Elements:
+    air_leaving_dry_bulb_temperature: *leaving_air_temperature
+    liquid_leaving_temperature: *leaving_liquid_temperature
+    air_pressure_drop: *air_pressure_drop
+    liquid_preasure_drop: *liquid_pressure_drop
+
+
