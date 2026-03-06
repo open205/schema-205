@@ -39,9 +39,7 @@ def dump(content, output_file_path):
 def compare_dicts(original, modified, error_list):
     o = load(original)
     m = load(modified)
-    return dict_compare(
-        o, m, error_list, level=0, lineage=None, hide_value_mismatches=False
-    )
+    return dict_compare(o, m, error_list, level=0, lineage=None, hide_value_mismatches=False)
 
 
 # https://stackoverflow.com/questions/4527942/comparing-two-dictionaries-and-checking-how-many-key-value-pairs-are-equal
@@ -68,13 +66,9 @@ def dict_compare(
                 removed = [k for k in d1_keys if k not in d2_keys]
                 err = ""
                 if added and not hide_key_mismatches:
-                    errors.append(
-                        f"Keys added to second dictionary at level {level}, lineage {lineage}: {added}"
-                    )
+                    errors.append(f"Keys added to second dictionary at level {level}, lineage {lineage}: {added}")
                 if removed and not hide_key_mismatches:
-                    errors.append(
-                        f"Keys removed from first dictionary at level {level}, lineage {lineage}: {removed}."
-                    )
+                    errors.append(f"Keys removed from first dictionary at level {level}, lineage {lineage}: {removed}.")
                 return False
             else:
                 # Enter this part of the code if both dictionaries have all keys shared at this level
@@ -100,7 +94,6 @@ def dict_compare(
 
 # -------------------------------------------------------------------------------------------------
 class DataGroup:
-
     def __init__(self, name, type_list, ref_list=None):
         self._name = name
         self._types = type_list
@@ -134,9 +127,7 @@ class DataGroup:
                     if req == True:
                         required.append(e)
                 elif req.startswith("if"):
-                    self._construct_requirement_if_then(
-                        elements, dependencies, req[3:], e
-                    )
+                    self._construct_requirement_if_then(elements, dependencies, req[3:], e)
                 # Include required text (even if it is translated into enforceable JSON schema syntax)
                 elements["properties"][e]["requiredText"] = str(element["Required"])
             if "Constraints" in element:
@@ -155,7 +146,7 @@ class DataGroup:
         dependencies_list: dict,
         requirement_str: str,
         requirement: str,
-    ):
+    ) -> None:
         """
         Construct paired if-then json entries for conditional requirements.
 
@@ -165,8 +156,7 @@ class DataGroup:
         :param requirement:             requirement is present if requirement_str indicates it
         """
         separator = r"\sand\s"
-        collector = "allOf"
-        selector_dict = {"properties": {collector: dict()}}
+        selector_dict = {"properties": {}}
         requirement_list = re.split(separator, requirement_str)
         dependent_req = r"(?P<selector>[0-9a-zA-Z_]*)((?P<is_equal>!?=)(?P<selector_state>[0-9a-zA-Z_]*))?"
 
@@ -183,10 +173,8 @@ class DataGroup:
                         selector_state = True
                     elif "false" in selector_state.lower():
                         selector_state = False
-                    selector_dict["properties"][collector][selector] = (
-                        {"const": selector_state}
-                        if is_equal
-                        else {"not": {"const": selector_state}}
+                    selector_dict["properties"][selector] = (
+                        {"const": selector_state} if is_equal else {"not": {"const": selector_state}}
                     )
                 else:  # prerequisite type
                     if dependencies_list.get(selector):
@@ -194,15 +182,13 @@ class DataGroup:
                     else:
                         dependencies_list[selector] = [requirement]
 
-        if selector_dict["properties"][collector].keys():
+        if selector_dict["properties"].keys():
             # Conditional requirements are each a member of a list
             if conditionals_list.get("allOf") == None:
                 conditionals_list["allOf"] = list()
 
             for conditional_req in conditionals_list["allOf"]:
-                if (
-                    conditional_req.get("if") == selector_dict
-                ):  # condition already exists
+                if conditional_req.get("if") == selector_dict:  # condition already exists
                     conditional_req["then"]["required"].append(requirement)
                     return
             conditionals_list["allOf"].append(dict())
@@ -237,9 +223,7 @@ class DataGroup:
                 self._get_simple_type(m[0], target_property_entry["items"])
                 # target_property_entry['items'][k] = v
                 if "Constraints" in parent_dict:
-                    self._get_simple_constraints(
-                        parent_dict["Constraints"], target_dict["items"]
-                    )
+                    self._get_simple_constraints(parent_dict["Constraints"], target_dict["items"])
             else:
                 # If the type is oneOf a set
                 m = re.match(r"\((.*)\)", parent_dict["Data Type"])
@@ -252,30 +236,22 @@ class DataGroup:
                     for s, t in zip(selections.split(","), types):
                         # c = c.strip()
                         target_dict["allOf"].append(dict())
-                        self._construct_selection_if_then(
-                            target_dict["allOf"][-1], selection_key, s, entry_name
-                        )
+                        self._construct_selection_if_then(target_dict["allOf"][-1], selection_key, s, entry_name)
                         self._get_simple_type(
                             t,
                             target_dict["allOf"][-1]["then"]["properties"][entry_name],
                         )
                 else:
                     # 1. 'type' entry
-                    self._get_simple_type(
-                        parent_dict["Data Type"], target_property_entry
-                    )
+                    self._get_simple_type(parent_dict["Data Type"], target_property_entry)
                     # 2. 'm[in/ax]imum' entry
                     if "Constraints" in parent_dict:
-                        self._get_simple_constraints(
-                            parent_dict["Constraints"], target_property_entry
-                        )
+                        self._get_simple_constraints(parent_dict["Constraints"], target_property_entry)
         except KeyError as ke:
             # print('KeyError; no key exists called', ke)
             pass
 
-    def _construct_selection_if_then(
-        self, target_dict_to_append, selector, selection, entry_name
-    ):
+    def _construct_selection_if_then(self, target_dict_to_append, selector, selection, entry_name):
         """
         Construct paired if-then json entries for allOf collections translated from source-schema
         "choice" Constraints.
@@ -288,9 +264,7 @@ class DataGroup:
                                         Constraint
         """
         target_dict_to_append["if"] = {
-            "properties": {
-                selector: {"const": "".join(ch for ch in selection if ch.isalnum())}
-            }
+            "properties": {selector: {"const": "".join(ch for ch in selection if ch.isalnum())}}
         }
         target_dict_to_append["then"] = {"properties": {entry_name: dict()}}
 
@@ -332,9 +306,7 @@ class DataGroup:
             if "/" in type_str:
                 # e.g., "Numeric/Null" becomes a list of 'type's
                 # return ('type', [self._types[t] for t in type_str.split('/')])
-                target_dict_to_append["type"] = [
-                    self._types[t] for t in type_str.split("/")
-                ]
+                target_dict_to_append["type"] = [self._types[t] for t in type_str.split("/")]
             else:
                 target_dict_to_append["type"] = self._types[type_str]
         except KeyError:
@@ -349,37 +321,25 @@ class DataGroup:
         :param target_dict:         json property node
         """
         if constraints_str is not None:
-            constraints = (
-                constraints_str
-                if isinstance(constraints_str, list)
-                else [constraints_str]
-            )
+            constraints = constraints_str if isinstance(constraints_str, list) else [constraints_str]
             minimum = None
             maximum = None
             for c in constraints:
                 if "string" in target_dict["type"]:  # String pattern match
-                    target_dict["pattern"] = c.replace(
-                        '"', ""
-                    )  # TODO: Find better way to remove quotes.
+                    target_dict["pattern"] = c.replace('"', "")  # TODO: Find better way to remove quotes.
                 else:
                     try:
                         # TODO: any exotic constraint type with numerals in it, such as schmea=RS0001, will be processed here
-                        numerical_value = re.findall(r"[+-]?[0-9]*\.?[0-9]+|[0-9]+", c)[
-                            0
-                        ]
+                        numerical_value = re.findall(r"[+-]?[0-9]*\.?[0-9]+|[0-9]+", c)[0]
                         if ">" in c:
                             minimum = (
-                                float(numerical_value)
-                                if "number" in target_dict["type"]
-                                else int(numerical_value)
+                                float(numerical_value) if "number" in target_dict["type"] else int(numerical_value)
                             )
                             mn = "exclusiveMinimum" if "=" not in c else "minimum"
                             target_dict[mn] = minimum
                         elif "<" in c:
                             maximum = (
-                                float(numerical_value)
-                                if "number" in target_dict["type"]
-                                else int(numerical_value)
+                                float(numerical_value) if "number" in target_dict["type"] else int(numerical_value)
                             )
                             mx = "exclusiveMaximum" if "=" not in c else "maximum"
                             target_dict[mx] = maximum
@@ -397,12 +357,9 @@ class DataGroup:
 
 # -------------------------------------------------------------------------------------------------
 class Enumeration:
-
     def __init__(self, name, description=None):
         self._name = name
-        self._enumerants = (
-            list()
-        )  # list of tuple:[value, description, display_text, notes]
+        self._enumerants = list()  # list of tuple:[value, description, display_text, notes]
         self.entry = dict()
         self.entry[self._name] = dict()
         if description:
@@ -445,9 +402,7 @@ class JSON_translator:
         }
         self._references.clear()
         self._source_dir = os.path.dirname(os.path.abspath(input_file_path))
-        self._schema_name = os.path.splitext(
-            os.path.splitext(os.path.basename(input_file_path))[0]
-        )[0]
+        self._schema_name = os.path.splitext(os.path.splitext(os.path.basename(input_file_path))[0])[0]
         self._fundamental_data_types.clear()
         self._contents = load(input_file_path)
         sch = dict()
@@ -470,9 +425,7 @@ class JSON_translator:
                                 {
                                     base_level_tag: {
                                         "type": "string",
-                                        "pattern": self._contents[base_level_tag][
-                                            "JSON Schema Pattern"
-                                        ],
+                                        "pattern": self._contents[base_level_tag]["JSON Schema Pattern"],
                                     }
                                 }
                             ),
@@ -486,9 +439,7 @@ class JSON_translator:
                     "Lookup Variables",
                     "Rating Data Group",
                 ]:
-                    dg = DataGroup(
-                        base_level_tag, self._fundamental_data_types, self._references
-                    )
+                    dg = DataGroup(base_level_tag, self._fundamental_data_types, self._references)
                     sch = {
                         **sch,
                         **(
@@ -508,11 +459,7 @@ class JSON_translator:
         if "Version" in schema_section:
             self._schema["version"] = schema_section["Version"]
         if "Root Data Group" in schema_section:
-            self._schema["$ref"] = (
-                self._schema_name
-                + ".schema.json#/definitions/"
-                + schema_section["Root Data Group"]
-            )
+            self._schema["$ref"] = self._schema_name + ".schema.json#/definitions/" + schema_section["Root Data Group"]
         # Create a dictionary of available external objects for reference
         refs = [self._schema_name]
         if "References" in schema_section:
@@ -539,14 +486,8 @@ class JSON_translator:
             ]:
                 external_objects.append(base_item)
             self._references[ref_file] = external_objects
-            for base_item in [
-                name
-                for name in ext_dict
-                if ext_dict[name]["Object Type"] == "Data Type"
-            ]:
-                self._fundamental_data_types[base_item] = ext_dict[base_item][
-                    "JSON Schema Type"
-                ]
+            for base_item in [name for name in ext_dict if ext_dict[name]["Object Type"] == "Data Type"]:
+                self._fundamental_data_types[base_item] = ext_dict[base_item]["JSON Schema Type"]
 
     def _process_enumeration(self, name_key):
         """Collect all Enumerators in an Enumeration block."""
@@ -555,12 +496,8 @@ class JSON_translator:
         definition = Enumeration(name_key, description)
         for key in enums:
             try:
-                descr = (
-                    enums[key]["Description"] if "Description" in enums[key] else None
-                )
-                displ = (
-                    enums[key]["Display Text"] if "Display Text" in enums[key] else None
-                )
+                descr = enums[key]["Description"] if "Description" in enums[key] else None
+                displ = enums[key]["Display Text"] if "Display Text" in enums[key] else None
                 notes = enums[key]["Notes"] if "Notes" in enums[key] else None
                 definition.add_enumerator(key, descr, displ, notes)
             except TypeError:  # key's value is None
@@ -577,9 +514,7 @@ def print_comparison(original_dir, generated_dir, file_name_root, err):
         err,
     )
     if not same:
-        print(
-            f"\nError(s) while matching {file_name_root}: Original(1) vs Generated(2)"
-        )
+        print(f"\nError(s) while matching {file_name_root}: Original(1) vs Generated(2)")
         for e in err:
             print(e)
     else:
@@ -600,9 +535,7 @@ def translate_dir(input_dir_path, output_dir_path):
     for file_name in sorted(os.listdir(input_dir_path)):
         if ".schema.yaml" in file_name:
             file_name_root = os.path.splitext(os.path.splitext(file_name)[0])[0]
-            schema_instance = j.load_common_schema(
-                os.path.join(input_dir_path, file_name)
-            )
+            schema_instance = j.load_common_schema(os.path.join(input_dir_path, file_name))
             dump(
                 schema_instance,
                 os.path.join(output_dir_path, file_name_root + ".schema.json"),

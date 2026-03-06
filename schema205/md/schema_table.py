@@ -1,6 +1,7 @@
 """
 Specifics for setting up schema tables.
 """
+
 from copy import deepcopy
 
 import re
@@ -14,7 +15,7 @@ def write_header(heading, level=1):
     - level: integer, level > 0, the markdown level
     RETURN: string
     """
-    return ("#"*level) + " " + heading + "\n\n"
+    return ("#" * level) + " " + heading + "\n\n"
 
 
 def process_string_types(string_types):
@@ -26,9 +27,14 @@ def process_string_types(string_types):
     new_list = []
     for str_typ in string_types:
         new_item = deepcopy(str_typ)
-        if 'Is Regex' in new_item and new_item['Is Regex']:
-            new_item['JSON Schema Pattern'] = '(Not applicable)'
-        new_item['JSON Schema Pattern'] = new_item['JSON Schema Pattern'].replace('*',r'\*').replace(r'(?','\n'r'(?').replace(r'-[','\n'r'-[')
+        if "Is Regex" in new_item and new_item["Is Regex"]:
+            new_item["JSON Schema Pattern"] = "(Not applicable)"
+        new_item["JSON Schema Pattern"] = (
+            new_item["JSON Schema Pattern"]
+            .replace("*", r"\*")
+            .replace(r"(?", "\n" r"(?")
+            .replace(r"-[", "\n" r"-[")
+        )
         new_list.append(new_item)
     return new_list
 
@@ -57,36 +63,38 @@ def data_elements_dict_from_data_groups(data_groups):
     for dat_gr in data_groups:
         data_elements = []
         for element in data_groups[dat_gr]["Data Elements"]:
-            new_obj = data_groups[dat_gr]["Data Elements"][element]
+            new_obj = deepcopy(data_groups[dat_gr]["Data Elements"][element])
             new_obj["Name"] = f"`{element}`"
-            if 'Required' in new_obj:
+            if "Required" in new_obj:
                 if new_obj["Required"] == True:
-                    check = u'\N{check mark}'
-                    new_obj["Req"] = f"${check}$" if new_obj["Required"] else ''
+                    check = "\N{check mark}"
+                    new_obj["Req"] = f"${check}$" if new_obj["Required"] else ""
                 elif new_obj["Required"] == False:
-                    new_obj["Req"] = ''
+                    new_obj["Req"] = ""
                 else:
                     new_obj["Req"] = f"`{new_obj['Required']}`"
-                new_obj.pop('Required')
-            new_obj['Data Type'] = f"`{new_obj['Data Type']}`"
-            if 'Constraints' in new_obj:
-                gte = u'\N{GREATER-THAN OR EQUAL TO}'
-                lte = u'\N{LESS-THAN OR EQUAL TO}'
+                new_obj.pop("Required")
+            new_obj["Data Type"] = f"`{new_obj['Data Type']}`"
+            if "Constraints" in new_obj:
+                gte = "\N{GREATER-THAN OR EQUAL TO}"
+                lte = "\N{LESS-THAN OR EQUAL TO}"
                 if type(new_obj["Constraints"]) is list:
                     new_obj["Constraints"] = ", ".join(new_obj["Constraints"])
-                new_obj["Constraints"] = f"`{new_obj['Constraints'].replace('<=',lte).replace('>=',gte)}`"
-            if 'Units' in new_obj:
-                if new_obj['Units'] == '-':
-                    new_obj['Units'] = r'\-'
+                new_obj["Constraints"] = (
+                    f"`{new_obj['Constraints'].replace('<=',lte).replace('>=',gte)}`"
+                )
+            if "Units" in new_obj:
+                if new_obj["Units"] == "-":
+                    new_obj["Units"] = r"\-"
                 else:
-                    new_obj['Units'] = new_obj['Units'].replace('-',r'·')
-                    new_obj['Units'] = re.sub(r'(\d+)',r'^\1^',new_obj['Units'])
-            if 'Scalable' in new_obj:
+                    new_obj["Units"] = new_obj["Units"].replace("-", r"·")
+                    new_obj["Units"] = re.sub(r"(\d+)", r"^\1^", new_obj["Units"])
+            if "Scalable" in new_obj:
                 if new_obj["Scalable"] == True:
-                    check = u'\N{check mark}'
+                    check = "\N{check mark}"
                     new_obj["Scalable"] = f"${check}$"
                 else:
-                    new_obj["Scalable"] = ''
+                    new_obj["Scalable"] = ""
             compress_notes(new_obj)
             data_elements.append(new_obj)
         output[dat_gr] = data_elements
@@ -131,13 +139,13 @@ def load_structure_from_object(instance):
         object_type = instance[obj]["Object Type"]
         if object_type == "Data Type":
             new_obj = instance[obj]
-            new_obj["Data Type"] = f'`{obj}`'
-            new_obj["Examples"] = ', '.join(new_obj["Examples"])
+            new_obj["Data Type"] = f"`{obj}`"
+            new_obj["Examples"] = ", ".join(new_obj["Examples"])
             data_types.append(new_obj)
         elif object_type == "String Type":
             new_obj = instance[obj]
-            new_obj["String Type"] = f'`{obj}`'
-            new_obj["Examples"] = ', '.join(new_obj["Examples"])
+            new_obj["String Type"] = f"`{obj}`"
+            new_obj["Examples"] = ", ".join(new_obj["Examples"])
             string_types.append(new_obj)
         elif object_type == "Enumeration":
             new_obj = instance[obj]
@@ -150,18 +158,16 @@ def load_structure_from_object(instance):
         else:
             print(f"Unknown object type: {object_type}.")
     return {
-        'data_types': data_types,
-        'string_types': process_string_types(string_types),
-        'enumerations': enumerators_dict_from_enumerations(enumerations),
-        'data_groups': data_elements_dict_from_data_groups(data_groups),
+        "data_types": data_types,
+        "string_types": process_string_types(string_types),
+        "enumerations": enumerators_dict_from_enumerations(enumerations),
+        "data_groups": data_elements_dict_from_data_groups(data_groups),
     }
 
+
 def create_table_from_list(
-        columns,
-        data_list,
-        description=None,
-        style="2 Columns",
-        level=1):
+    columns, data_list, description=None, style="2 Columns", level=1
+):
     """
     - columns: array of string, the column headers
     - data_list: array of dict with keys corresponding to columns array
@@ -172,7 +178,7 @@ def create_table_from_list(
     if len(data_list) == 0:
         return ""
     if style == "Table":
-        data = {col:[] for col in columns}
+        data = {col: [] for col in columns}
         for col in columns:
             data[col] = []
             for item in data_list:
@@ -184,14 +190,14 @@ def create_table_from_list(
     if style == "Descriptions":
         table_string = write_header(f"{description} {{-}}", level)
         for item in data_list:
-            table_string += write_header(f"{item[columns[0]]} {{-}}", level+1) + "\n"
+            table_string += write_header(f"{item[columns[0]]} {{-}}", level + 1) + "\n"
             for attribute in item:
                 if attribute != columns[0]:
                     table_string += f"> {attribute}:\n>\n>   ~ {item[attribute]}\n>\n"
             table_string += "\n"
     if style == "2 Columns":
         second_column_name = "Attributes"
-        data = {columns[0]:[], second_column_name: []}
+        data = {columns[0]: [], second_column_name: []}
         for item in data_list:
             data[columns[0]].append(item[columns[0]])
             details = ""
@@ -199,7 +205,12 @@ def create_table_from_list(
                 for attribute in item:
                     if attribute == column:
                         details += f"{attribute}:\n\n  ~ {item[attribute]}\n\n"
-            data[second_column_name].append(details[:-1]) # drop last new line
-        table_string = grid_table.string_out_table(data, [columns[0],second_column_name], description) + "\n\n"
+            data[second_column_name].append(details[:-1])  # drop last new line
+        table_string = (
+            grid_table.string_out_table(
+                data, [columns[0], second_column_name], description
+            )
+            + "\n\n"
+        )
 
     return table_string

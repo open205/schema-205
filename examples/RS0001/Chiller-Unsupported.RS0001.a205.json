@@ -2,7 +2,7 @@
     "metadata": {
         "data_model": "ASHRAE_205",
         "schema": "RS0001",
-        "schema_version": "2.2.2",
+        "schema_version": "999.2.2",
         "description": "Water-Cooled Chiller with Constant Efficiency",
         "id": "123e4567-e89b-12d3-a456-426614174000",
         "data_timestamp": "2020-05-07T00:00Z",
@@ -23,6 +23,7 @@
         }
     },
     "performance": {
+        "condenser_type": "LIQUID",
         "evaporator_liquid_type": {
             "liquid_components": [
                 {
@@ -283,46 +284,46 @@
                     0
                 ],
                 "operation_state": [
-                   "NORMAL",
-                   "NORMAL",
-                   "NORMAL",
-                   "NORMAL",
-                   "NORMAL",
-                   "NORMAL",
-                   "NORMAL",
-                   "NORMAL",
-                   "NORMAL",
-                   "NORMAL",
-                   "NORMAL",
-                   "NORMAL",
-                   "NORMAL",
-                   "NORMAL",
-                   "NORMAL",
-                   "NORMAL",
-                   "NORMAL",
-                   "NORMAL",
-                   "NORMAL",
-                   "NORMAL",
-                   "NORMAL",
-                   "NORMAL",
-                   "NORMAL",
-                   "NORMAL",
-                   "NORMAL",
-                   "NORMAL",
-                   "NORMAL",
-                   "NORMAL",
-                   "NORMAL",
-                   "NORMAL",
-                   "NORMAL",
-                   "NORMAL",
-                   "NORMAL",
-                   "NORMAL",
-                   "NORMAL",
-                   "NORMAL",
-                   "NORMAL",
-                   "NORMAL",
-                   "NORMAL",
-                   "NORMAL"
+                    "NORMAL",
+                    "NORMAL",
+                    "NORMAL",
+                    "NORMAL",
+                    "NORMAL",
+                    "NORMAL",
+                    "NORMAL",
+                    "NORMAL",
+                    "NORMAL",
+                    "NORMAL",
+                    "NORMAL",
+                    "NORMAL",
+                    "NORMAL",
+                    "NORMAL",
+                    "NORMAL",
+                    "NORMAL",
+                    "NORMAL",
+                    "NORMAL",
+                    "NORMAL",
+                    "NORMAL",
+                    "NORMAL",
+                    "NORMAL",
+                    "NORMAL",
+                    "NORMAL",
+                    "NORMAL",
+                    "NORMAL",
+                    "NORMAL",
+                    "NORMAL",
+                    "NORMAL",
+                    "NORMAL",
+                    "NORMAL",
+                    "NORMAL",
+                    "NORMAL",
+                    "NORMAL",
+                    "NORMAL",
+                    "NORMAL",
+                    "NORMAL",
+                    "NORMAL",
+                    "NORMAL",
+                    "NORMAL"
                 ]
             }
         },
@@ -340,12 +341,12 @@
                 ]
             }
         },
-        "performance_map_evaporator_liquid_pressure_differential":{
+        "performance_map_evaporator_liquid_pressure_differential": {
             "grid_variables": {
                 "evaporator_liquid_volumetric_flow_rate": [
                     0.0755
                 ],
-                "evaporator_liquid_leaving_temperature":[
+                "evaporator_liquid_leaving_temperature": [
                     279.82,
                     281.82
                 ]
@@ -355,14 +356,14 @@
                     74400,
                     74400
                 ]
-            }            
+            }
         },
-        "performance_map_condenser_liquid_pressure_differential":{
+        "performance_map_condenser_liquid_pressure_differential": {
             "grid_variables": {
                 "condenser_liquid_volumetric_flow_rate": [
                     0.0957
                 ],
-                "condenser_liquid_entering_temperature":[
+                "condenser_liquid_entering_temperature": [
                     294.15,
                     302.59
                 ]
@@ -372,7 +373,7 @@
                     23600,
                     23600
                 ]
-            }            
+            }
         }
     }
 }
