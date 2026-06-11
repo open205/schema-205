@@ -30,10 +30,7 @@ def process_string_types(string_types):
         if "Is Regex" in new_item and new_item["Is Regex"]:
             new_item["JSON Schema Pattern"] = "(Not applicable)"
         new_item["JSON Schema Pattern"] = (
-            new_item["JSON Schema Pattern"]
-            .replace("*", r"\*")
-            .replace(r"(?", "\n" r"(?")
-            .replace(r"-[", "\n" r"-[")
+            new_item["JSON Schema Pattern"].replace("*", r"\*").replace(r"(?", "\n" r"(?").replace(r"-[", "\n" r"-[")
         )
         new_list.append(new_item)
     return new_list
@@ -67,7 +64,7 @@ def data_elements_dict_from_data_groups(data_groups):
             new_obj["Name"] = f"`{element}`"
             if "Required" in new_obj:
                 if new_obj["Required"] == True:
-                    check = "\N{check mark}"
+                    check = "\N{CHECK MARK}"
                     new_obj["Req"] = f"${check}$" if new_obj["Required"] else ""
                 elif new_obj["Required"] == False:
                     new_obj["Req"] = ""
@@ -80,9 +77,7 @@ def data_elements_dict_from_data_groups(data_groups):
                 lte = "\N{LESS-THAN OR EQUAL TO}"
                 if type(new_obj["Constraints"]) is list:
                     new_obj["Constraints"] = ", ".join(new_obj["Constraints"])
-                new_obj["Constraints"] = (
-                    f"`{new_obj['Constraints'].replace('<=',lte).replace('>=',gte)}`"
-                )
+                new_obj["Constraints"] = f"`{new_obj['Constraints'].replace('<=', lte).replace('>=', gte)}`"
             if "Units" in new_obj:
                 if new_obj["Units"] == "-":
                     new_obj["Units"] = r"\-"
@@ -91,10 +86,12 @@ def data_elements_dict_from_data_groups(data_groups):
                     new_obj["Units"] = re.sub(r"(\d+)", r"^\1^", new_obj["Units"])
             if "Scalable" in new_obj:
                 if new_obj["Scalable"] == True:
-                    check = "\N{check mark}"
+                    check = "\N{CHECK MARK}"
                     new_obj["Scalable"] = f"${check}$"
                 else:
                     new_obj["Scalable"] = ""
+            if "Cycling Order" in new_obj:
+                new_obj["Cycling Order"] = f"`[{', '.join(new_obj['Cycling Order'])}]`"
             compress_notes(new_obj)
             data_elements.append(new_obj)
         output[dat_gr] = data_elements
@@ -165,9 +162,7 @@ def load_structure_from_object(instance):
     }
 
 
-def create_table_from_list(
-    columns, data_list, description=None, style="2 Columns", level=1
-):
+def create_table_from_list(columns, data_list, description=None, style="2 Columns", level=1):
     """
     - columns: array of string, the column headers
     - data_list: array of dict with keys corresponding to columns array
@@ -206,11 +201,6 @@ def create_table_from_list(
                     if attribute == column:
                         details += f"{attribute}:\n\n  ~ {item[attribute]}\n\n"
             data[second_column_name].append(details[:-1])  # drop last new line
-        table_string = (
-            grid_table.string_out_table(
-                data, [columns[0], second_column_name], description
-            )
-            + "\n\n"
-        )
+        table_string = grid_table.string_out_table(data, [columns[0], second_column_name], description) + "\n\n"
 
     return table_string
