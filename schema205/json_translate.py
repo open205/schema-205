@@ -119,6 +119,8 @@ class DataGroup:
                 elements["properties"][e]["units"] = element["Units"]
             if "Scalable" in element:
                 elements["properties"][e]["scalable"] = element["Scalable"]
+            if "Cycling Order" in element:
+                elements["properties"][e]["cyclingOrder"] = element["Cycling Order"]
             if "Notes" in element:
                 elements["properties"][e]["notes"] = element["Notes"]
             if "Required" in element:

@@ -54,16 +54,16 @@ Description:
 ProductInformation:
   Object Type: "Data Group"
   Data Elements:
-      manufacturer:
-        Description: "Manufacturer name"
-        Data Type: "String"
-      model_number:
-        Description: "Model number"
-        Data Type: "Pattern"
-        Notes: "Pattern shall match all model numbers that can be represented by the representation"
-      drive_type:
-        Description: "Type of mechanical drive"
-        Data Type: "<DriveType>"
+    manufacturer:
+      Description: "Manufacturer name"
+      Data Type: "String"
+    model_number:
+      Description: "Model number"
+      Data Type: "Pattern"
+      Notes: "Pattern shall match all model numbers that can be represented by the representation"
+    drive_type:
+      Description: "Type of mechanical drive"
+      Data Type: "<DriveType>"
 
 Performance:
   Object Type: "Data Group"
@@ -93,6 +93,8 @@ PerformanceMap:
     lookup_variables:
       Description: "Data group describing lookup variables for drive performance"
       Data Type: "{LookupVariables}"
+      Cycling Order:
+        - output_power
       Required: True
 
 GridVariables:
@@ -112,7 +114,7 @@ LookupVariables:
     efficiency:
       Description: "Efficiency of drive"
       Data Type: "[Numeric][1..]"
-      Constraints: [">=0.0","<=1.0"]
+      Constraints: [">=0.0", "<=1.0"]
       Units: "-"
       Notes: "Defined as the ratio of output shaft power to input shaft power"
       Required: True

@@ -40,9 +40,7 @@ def make_error_string(msg, args_str):
     - args_str: string, original arguments
     RETURN: string, an error message
     """
-    return (
-        "\n---\nERROR\n" + msg + f"\nin call to `add_schema_table({args_str})`\n---\n"
-    )
+    return "\n---\nERROR\n" + msg + f"\nin call to `add_schema_table({args_str})`\n---\n"
 
 
 def render_header(level_and_content):
@@ -142,9 +140,7 @@ def load_yaml_source(schema_dir, source, args_str):
     src_path = os.path.join(schema_dir, source + ".schema.yaml")
     if not os.path.exists(src_path):
         return (
-            make_error_string(
-                f'Schema source "{source}" ("{src_path}") doesn\'t exist!', args_str
-            ),
+            make_error_string(f'Schema source "{source}" ("{src_path}") doesn\'t exist!', args_str),
             None,
         )
     with open(src_path, encoding="utf-8", mode="r") as input_file:
@@ -169,29 +165,21 @@ def make_add_schema_table(schema_dir=None, error_log=None):
     """
     schema_dir = determine_schema_dir(schema_dir)
 
-    def add_schema_table(
-        source, table_name, description=None, level=1, style="2 Columns"
-    ):
+    def add_schema_table(source, table_name, description=None, level=1, style="2 Columns"):
         args_str = make_args_string(locals())
         err, data = load_yaml_source(schema_dir, source, args_str)
         if err is not None:
             return log_error(err, error_log)
-        return write_schema_table(
-            data, table_name, description, level, style, error_log
-        )
+        return write_schema_table(data, table_name, description, level, style, error_log)
 
     return add_schema_table
 
 
-def write_schema_table(
-    table_dict, table_name, description=None, level=1, style="2 Columns", error_log=None
-):
+def write_schema_table(table_dict, table_name, description=None, level=1, style="2 Columns", error_log=None):
     if description is None:
         description = table_name
     struct = schema_table.load_structure_from_object(table_dict)
-    err, target, table_type = extract_target_data(
-        struct, canonicalize_string(table_name)
-    )
+    err, target, table_type = extract_target_data(struct, canonicalize_string(table_name))
     if err is not None:
         return log_error(err, error_log)
     columns = {
@@ -211,6 +199,8 @@ def write_schema_table(
             "Constraints",
             "Req",
             "Notes",
+            "Scalable",
+            "Cycling Order",
         ],
     }
     return schema_table.create_table_from_list(
@@ -223,15 +213,11 @@ def write_schema_table(
 
 
 def make_add_schema_table_from_string(error_log=None):
-    def add_schema_table_from_string(
-        yaml_string, table_name=None, description=None, level=1, style="2 Columns"
-    ):
+    def add_schema_table_from_string(yaml_string, table_name=None, description=None, level=1, style="2 Columns"):
         data = yaml.safe_load(yaml_string)
         if table_name is None:
             table_name = [name for name in data][0]
-        return write_schema_table(
-            data, table_name, description, level, style, error_log
-        )
+        return write_schema_table(data, table_name, description, level, style, error_log)
 
     return add_schema_table_from_string
 
