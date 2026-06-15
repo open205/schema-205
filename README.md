@@ -16,22 +16,12 @@ This repository ships with the [DoIt!](https://pydoit.org/) task automation tool
 
 The following DoIt! tasks are available:
 
-- `doc`: Generates Markdown tables from common-schema
-- `render_template`: Demonstrate how to render a template
-- `schema`: Generates JSON schema from common-schema
-- `test`: Performs unit tests and example file validation tests
-- `validate`: Validates common-schema against meta-schema
-
-Details of some of the tasks above are explained more below.
-
-### Rendering a Jinja Template: `render_template`
-
-This task takes an example template using the [Jinja](https://palletsprojects.com/p/jinja/) templating system and renders it.
-The example file used is located at `rendering_examples/template_rendering/main.md`.
-The base file is written in the [Markdown](https://commonmark.org/) language.
-It includes examples of using the `add_schema_table` hook to insert Schema 205 tables into markdown text.
-
-The rendered result appears in `build/rendered_template/main.md`.
+- `generate_markdown`: Generates Markdown tables from common-schema
+- `generate_web_docs`: Generates web documentation from templates
+- `generate_meta_schemas`: Generates validation files for common-schema
+- `generate_json_schemas`: Generates JSON schema from common-schema
+- `validate_schemas`: Validates common-schema against meta-schema
+- `generate_cpp_project`: Generates header and source files, with basic CMake build integration
 
 
 Development Workflow

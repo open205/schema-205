@@ -10,18 +10,19 @@ Schema:
 # Data Groups
 RS0004:
   Object Type: "Data Group"
+  Data Group Template: RepresentationSpecificationTemplate
   Data Elements:
     metadata:
       Description: "Metadata data group"
-      Data Type: "{Metadata}"
-      Constraints: "schema=RS0004"
+      Type: "{Metadata}"
+      Constraints: schema_name="RS0004"
       Required: True
     description:
       Description: "Data group describing product and rating information"
-      Data Type: "{Description}"
+      Type: "{Description}"
     performance:
       Description: "Data group containing performance information"
-      Data Type: "{Performance}"
+      Type: "{Performance}"
       Required: True
 
 Description:
@@ -29,91 +30,92 @@ Description:
   Data Elements:
     product_information:
       Description: "Data group describing product information"
-      Data Type: "{ProductInformation}"
+      Type: "{ProductInformation}"
 
 ProductInformation:
   Object Type: "Data Group"
   Data Elements:
     outdoor_unit_manufacturer:
       Description: "Outdoor unit manufacturer name"
-      Data Type: "String"
+      Type: "String"
     outdoor_unit_model_number:
       Description: "Outdoor unit model number"
-      Data Type: "Pattern"
+      Type: "Pattern"
       Notes: "Pattern shall match all model numbers that can be represented by the representation"
     indoor_unit_manufacturer:
       Description: "Indoor unit manufacturer name"
-      Data Type: "String"
+      Type: "String"
       Notes: "May be omitted for packaged systems with a single manufacturer"
     indoor_unit_model_number:
       Description: "Indoor unit model number"
-      Data Type: "Pattern"
+      Type: "Pattern"
       Notes: "Pattern shall match all model numbers that can be represented by the representation"
     refrigerant:
       Description: "Refrigerant used"
-      Data Type: "String"
+      Type: "String"
       Notes: "The string shall start with 'R-' and then include the refrigerant number designation conforming to ANSI/ASHRAE Standard 34[@ASHRAE34]"
     compressor_type:
       Description: "Type of compressor"
-      Data Type: "<CompressorType>"
+      Type: "<CompressorType>"
 
 Performance:
   Object Type: "Data Group"
   Data Elements:
     performance_capabilities:
       Description: "An array of unique operating modes that indicate the capabilities of the equipment"
-      Data Type: "[<PerformanceCapabilities>]"
+      Type: "[<PerformanceCapabilities>]"
       # TODO: Constraints: unique https://json-schema.org/understanding-json-schema/reference/array#uniqueItems
       Required: True
     compressor_speed_control_type:
       Description: "Method used to control different speeds of the compressor"
-      Data Type: "<SpeedControlType>"
+      Type: "<SpeedControlType>"
       Required: True
     cooling_cycling_degradation_coefficient:
       Description: "Cooling cycling degradation coefficient (C~D~^c^)"
-      Data Type: "Numeric"
+      Type: "Numeric"
       Units: "-"
       Constraints: [">=0.0", "<1.0"]
       Required: "if performance_capabilities contains(COOLING)"
       Notes: ["Used for the lowest stage when the unit cycles to meet load"]
     heating_cycling_degradation_coefficient:
       Description: "Heating cycling degradation coefficient (C~D~^h^)"
-      Data Type: "Numeric"
+      Type: "Numeric"
       Units: "-"
       Constraints: [">=0.0", "<1.0"]
       Required: "if performance_capabilities contains(HEATING)"
       Notes: ["Used for the lowest stage when the unit cycles to meet load"]
     scaling:
       Description: "Specifies the range the performance data can be scaled to represent different capacity equipment"
-      Data Type: "{Scaling}"
+      Type: "{Scaling}"
       Notes: "If not present, scaling of the performance data is not allowed"
     performance_map_cooling:
       Description: "Data group describing cooling performance over a range of conditions"
-      Data Type: "{PerformanceMapCooling}"
+      Type: "{PerformanceMapCooling}"
       Required: "if performance_capabilities contains(COOLING)"
     performance_map_heating:
       Description: "Data group describing heating performance over a range of conditions"
-      Data Type: "{PerformanceMapHeating}"
+      Type: "{PerformanceMapHeating}"
       Required: "if performance_capabilities contains(HEATING)"
     performance_map_defrost_correction:
       Description: "Data group describing the impact on heating performance due to frost formation, defrost operation, or both"
-      Data Type: "{PerformanceMapDefrostCorrection}"
+      Type: "{PerformanceMapDefrostCorrection}"
       Required: "if performance_capabilities contains(HEATING)"
     performance_map_standby:
       Description: "Data group describing standby performance"
-      Data Type: "{PerformanceMapStandby}"
+      Type: "{PerformanceMapStandby}"
       Required: True
 
 PerformanceMapCooling:
-  Object Type: "Performance Map"
+  Object Type: "Data Group"
+  Data Group Template: PerformanceMapTemplate
   Data Elements:
     grid_variables:
       Description: "Data group defining the grid variables for cooling performance"
-      Data Type: "{GridVariablesCooling}"
+      Type: "{GridVariablesCooling}"
       Required: True
     lookup_variables:
       Description: "Data group defining the lookup variables for cooling performance"
-      Data Type: "{LookupVariablesCooling}"
+      Type: "{LookupVariablesCooling}"
       Cycling Order:
         - outdoor_coil_entering_dry_bulb_temperature
         - indoor_coil_entering_relative_humidity
@@ -124,40 +126,51 @@ PerformanceMapCooling:
       Required: True
 
 GridVariablesCooling:
-  Object Type: "Grid Variables"
+  Object Type: "Data Group"
+  Data Group Template: GridVariablesTemplate
   Data Elements:
     outdoor_coil_entering_dry_bulb_temperature:
       Description: "Dry bulb temperature of the air entering the outdoor coil"
-      Data Type: "[Numeric][1..]"
-      Constraints: ">=0.0"
+      Type: "[Numeric]"
+      Constraints:
+        - ">=0.0"
+        - "[1..]"
       Units: "K"
       Required: True
     indoor_coil_entering_relative_humidity:
       Description: "Relative humidity of the air entering the indoor coil"
-      Data Type: "[Numeric][1..]"
-      Constraints: [">=0.0", "<=1.0"]
+      Type: "[Numeric]"
+      Constraints:
+        - ">=0.0"
+        - "<=1.0"
+        - "[1..]"
       Units: "-"
       Notes: "As measured immediately before entering the coil (i.e., after the fan in a blow-through configuration)"
       Required: True
     indoor_coil_entering_dry_bulb_temperature:
       Description: "Dry bulb temperature of the air entering the indoor coil"
-      Data Type: "[Numeric][1..]"
-      Constraints: ">=0.0"
+      Type: "[Numeric]"
+      Constraints:
+        - ">=0.0"
+        - "[1..]"
       Units: "K"
       Required: True
       Notes: "As measured immediately before entering the coil (i.e., after the fan in a blow-through configuration)"
     indoor_coil_air_mass_flow_rate:
       Description: "Mass flow rate of air entering the indoor coil"
-      Data Type: "[Numeric][1..]"
-      Constraints: ">=0.0"
+      Type: "[Numeric]"
+      Constraints:
+        - ">0.0"
+        - "[1..]"
       Units: "kg/s"
       Required: True
       Scalable: True
     compressor_sequence_number:
       Description: "Index indicating the relative capacity order of the compressor speed/stage expressed in order from lowest capacity (starting at 1) to highest capacity"
-      Data Type: "[Integer][1..]"
-      Constraints: ">=1"
-      Units: "-"
+      Type: "[Integer]"
+      Constraints:
+        - ">=1"
+        - "[1..]"
       Notes:
         [
           "If `compressor_speed_control_type` is `DISCRETE`, sequence numbers shall be provided for each discrete stage of the compressor(s)",
@@ -166,34 +179,43 @@ GridVariablesCooling:
       Required: True
     ambient_absolute_air_pressure:
       Description: "Ambient absolute air pressure"
-      Data Type: "[Numeric][1..]"
-      Constraints: ">=0.0"
+      Type: "[Numeric]"
+      Constraints:
+        - ">=0.0"
+        - "[1..]"
       Units: "Pa"
       Required: True
 
 LookupVariablesCooling:
-  Object Type: "Lookup Variables"
+  Object Type: "Data Group"
+  Data Group Template: LookupVariablesTemplate
   Data Elements:
     gross_total_capacity:
       Description: "Total heat removed by the indoor coil"
-      Data Type: "[Numeric][1..]"
-      Constraints: ">=0.0"
+      Type: "[Numeric]"
+      Constraints:
+        - ">=0.0"
+        - "[1..]"
       Units: "W"
       Required: True
       Scalable: True
       Notes: "Shall not include fan heat"
     gross_sensible_capacity:
       Description: "Sensible heat removed by the indoor coil"
-      Data Type: "[Numeric][1..]"
-      Constraints: ">=0.0"
+      Type: "[Numeric]"
+      Constraints:
+        - ">=0.0"
+        - "[1..]"
       Units: "W"
       Required: True
       Scalable: True
       Notes: "Shall not include fan heat"
     gross_power:
       Description: "Gross power draw (of the outdoor unit)"
-      Data Type: "[Numeric][1..]"
-      Constraints: ">=0.0"
+      Type: "[Numeric]"
+      Constraints:
+        - ">=0.0"
+        - "[1..]"
       Units: "W"
       Required: True
       Scalable: True
@@ -204,50 +226,59 @@ LookupVariablesCooling:
         ]
     operation_state:
       Description: "The operation state at the operating conditions"
-      Data Type: "[<OperationState>]"
-      Units: "-"
+      Type: "[<OperationState>]"
+      Constraints: "[1..]"
       Required: True
 
 PerformanceMapHeating:
-  Object Type: "Performance Map"
+  Object Type: "Data Group"
+  Data Group Template: PerformanceMapTemplate
   Data Elements:
     grid_variables:
       Description: "Data group defining the grid variables for heating performance"
-      Data Type: "{GridVariablesHeating}"
+      Type: "{GridVariablesHeating}"
       Required: True
     lookup_variables:
       Description: "Data group defining the lookup variables for heating performance"
-      Data Type: "{LookupVariablesHeating}"
+      Type: "{LookupVariablesHeating}"
       Required: True
 
 GridVariablesHeating:
-  Object Type: "Grid Variables"
+  Object Type: "Data Group"
+  Data Group Template: GridVariablesTemplate
   Data Elements:
     outdoor_coil_entering_dry_bulb_temperature:
       Description: "Dry bulb temperature of the air entering the outdoor coil"
-      Data Type: "[Numeric][1..]"
-      Constraints: ">=0.0"
+      Type: "[Numeric]"
+      Constraints:
+        - ">=0.0"
+        - "[1..]"
       Units: "K"
       Required: True
     indoor_coil_entering_dry_bulb_temperature:
       Description: "Dry bulb temperature of the air entering the indoor coil"
-      Data Type: "[Numeric][1..]"
-      Constraints: ">=0.0"
+      Type: "[Numeric]"
+      Constraints:
+        - ">=0.0"
+        - "[1..]"
       Units: "K"
       Required: True
       Notes: "As measured immediately before entering the coil (i.e., after the fan in a blow-through configuration)"
     indoor_coil_air_mass_flow_rate:
       Description: "Mass flow rate of air entering the indoor coil"
-      Data Type: "[Numeric][1..]"
-      Constraints: ">=0.0"
+      Type: "[Numeric]"
+      Constraints:
+        - ">=0.0"
+        - "[1..]"
       Units: "kg/s"
       Required: True
       Scalable: True
     compressor_sequence_number:
       Description: "Index indicating the relative capacity order of the compressor speed/stage expressed in order from lowest capacity (starting at 1) to highest capacity"
-      Data Type: "[Integer][1..]"
-      Constraints: ">=1"
-      Units: "-"
+      Type: "[Integer]"
+      Constraints:
+        - ">=1"
+        - "[1..]"
       Notes:
         [
           "If `compressor_speed_control_type` is `DISCRETE`, sequence numbers shall be provided for each discrete stage of the compressor(s)",
@@ -256,12 +287,15 @@ GridVariablesHeating:
       Required: True
 
 LookupVariablesHeating:
-  Object Type: "Lookup Variables"
+  Object Type: "Data Group"
+  Data Group Template: LookupVariablesTemplate
   Data Elements:
     gross_frost_free_capacity:
       Description: "Rate of heat added by the indoor coil under steady state conditions with no frost present on the outdoor coil"
-      Data Type: "[Numeric][1..]"
-      Constraints: ">=0.0"
+      Type: "[Numeric]"
+      Constraints:
+        - ">=0.0"
+        - "[1..]"
       Units: "W"
       Required: True
       Scalable: True
@@ -271,8 +305,10 @@ LookupVariablesHeating:
 
     gross_frost_free_power:
       Description: "Gross power draw of the outdoor unit under steady state conditions with no frost present on the outdoor coil"
-      Data Type: "[Numeric][1..]"
-      Constraints: ">=0.0"
+      Type: "[Numeric]"
+      Constraints:
+        - ">=0.0"
+        - "[1..]"
       Units: "W"
       Required: True
       Scalable: True
@@ -282,101 +318,124 @@ LookupVariablesHeating:
         - "Includes compressor, outdoor fan, and any auxiliary power used by the unit's controls and any crankcase heater"
     operation_state:
       Description: "The operation state at the operating conditions"
-      Data Type: "[<OperationState>]"
-      Units: "-"
+      Type: "[<OperationState>]"
       Required: True
 
 PerformanceMapDefrostCorrection:
-  Object Type: "Performance Map"
+  Object Type: "Data Group"
+  Data Group Template: PerformanceMapTemplate
   Data Elements:
     grid_variables:
       Description: "Data group defining the grid variables for the impact on heating performance due to the effects of frost formation, defrost operation, or both"
-      Data Type: "{GridVariablesDefrostCorrection}"
+      Type: "{GridVariablesDefrostCorrection}"
       Required: True
     lookup_variables:
       Description: "Data group defining the lookup variables for the impact on heating performance due to the effects of frost formation, defrost operation, or both"
-      Data Type: "{LookupVariablesDefrostCorrection}"
+      Type: "{LookupVariablesDefrostCorrection}"
       Required: True
 
 GridVariablesDefrostCorrection:
-  Object Type: "Grid Variables"
+  Object Type: "Data Group"
+  Data Group Template: GridVariablesTemplate
   Data Elements:
     outdoor_coil_entering_dry_bulb_temperature:
       Description: "Dry bulb temperature of the air entering the outdoor coil"
-      Data Type: "[Numeric][1..]"
-      Constraints: ">=0.0"
+      Type: "[Numeric]"
+      Constraints:
+        - ">=0.0"
+        - "[1..]"
       Units: "K"
       Required: True
     outdoor_coil_entering_relative_humidity:
       Description: "Relative humidity of the air entering the outdoor coil"
-      Data Type: "[Numeric][1..]"
-      Constraints: ">=0.0, <=1.0"
+      Type: "[Numeric]"
+      Constraints:
+        - ">=0.0"
+        - "<=1.0"
+        - "[1..]"
       Units: "-"
       Required: True
     compressor_sequence_number:
       Description: "Index indicating the relative capacity order of the compressor speed/stage expressed in order from lowest capacity (starting at 1) to highest capacity"
-      Data Type: "[Integer][1..]"
-      Constraints: ">=1"
-      Units: "-"
+      Type: "[Integer]"
+      Constraints:
+        - ">=1"
+        - "[1..]"
       Notes: "Shall be consistent with the values of `compressor_sequence_number` in `GridVariablesHeating`"
       Required: True
 
 LookupVariablesDefrostCorrection:
-  Object Type: "Lookup Variables"
+  Object Type: "Data Group"
+  Data Group Template: LookupVariablesTemplate
   Data Elements:
     capacity_correction_factor:
       Description: "Factor representing the correction to the gross frost-free heating capacity to account for impacts of frost formation, defrost operation, or both over the integrated time period"
-      Data Type: "[Numeric][1..]"
-      Constraints: ">=0.0, <=1.0"
+      Type: "[Numeric]"
+      Constraints:
+        - ">=0.0"
+        - "<=1.0"
+        - "[1..]"
       Units: "-"
       Notes: "A value of 1.0 indicates no frost formation or defrost operation"
       Required: True
     power_correction_factor:
       Description: "Factor representing the correction to the gross frost-free power to account for impacts of frost formation, defrost operation, or both over the integrated time period"
-      Data Type: "[Numeric][1..]"
-      Constraints: ">=0.0"
+      Type: "[Numeric]"
+      Constraints:
+        - ">=0.0"
+        - "[1..]"
       Units: "-"
       Required: True
       Notes: "A factor greater than 1.0 indicates electric resistance strip heat might be applied to defrost the outdoor coil"
     defrost_time_fraction:
       Description: "Fraction of integrated time period when defrost operation is active"
-      Data Type: "[Numeric][1..]"
-      Constraints: ">=0.0, <=1.0"
+      Type: "[Numeric]"
+      Constraints:
+        - ">=0.0"
+        - "<=1.0"
+        - "[1..]"
       Units: "-"
       Required: True
       Notes: "***Informative note:*** This value is used to inform application software when it may need to control supplemental heating during defrost"
 
 PerformanceMapStandby:
-  Object Type: "Performance Map"
+  Object Type: "Data Group"
+  Data Group Template: PerformanceMapTemplate
   Data Elements:
     grid_variables:
       Description: "Data group defining the grid variables for standby performance"
-      Data Type: "{GridVariablesStandby}"
+      Type: "{GridVariablesStandby}"
       Required: True
     lookup_variables:
       Description: "Data group defining the lookup variables for standby performance"
-      Data Type: "{LookupVariablesStandby}"
+      Type: "{LookupVariablesStandby}"
       Cycling Order:
         - outdoor_coil_environment_dry_bulb_temperature
       Required: True
 
 GridVariablesStandby:
-  Object Type: "Grid Variables"
+  Object Type: "Data Group"
+  Data Group Template: GridVariablesTemplate
   Data Elements:
     outdoor_coil_environment_dry_bulb_temperature:
       Description: "Dry bulb temperature of the air in the environment of the outdoor coil"
-      Data Type: "[Numeric][1..]"
-      Constraints: ">=0.0"
+      Type: "[Numeric]"
+      Constraints:
+        - ">=0.0"
+        - "[1..]"
       Units: "K"
       Required: True
 
 LookupVariablesStandby:
-  Object Type: "Lookup Variables"
+  Object Type: "Data Group"
+  Data Group Template: LookupVariablesTemplate
   Data Elements:
     gross_power:
       Description: "Gross power draw (of the outdoor unit)"
-      Data Type: "[Numeric][1..]"
-      Constraints: ">=0.0"
+      Type: "[Numeric]"
+      Constraints:
+        - ">=0.0"
+        - "[1..]"
       Units: "W"
       Required: True
       Scalable: True
