@@ -1,5 +1,5 @@
 version = 1
-revision = 2
+revision = 3
 requires-python = ">=3.10"
 resolution-markers = [
     "python_full_version >= '3.12'",
@@ -460,7 +460,7 @@ wheels = [
 [[package]]
 name = "lattice"
 version = "0.0.0"
-source = { git = "https://github.com/bigladder/lattice.git?branch=232-pdf-fixes#1ed10087f4544681db79da1b872629ed19804c29" }
+source = { git = "https://github.com/bigladder/lattice.git?branch=232-pdf-fixes#6fd95b42dc084d27e4ae4c0645b900e2f6b3bfff" }
 dependencies = [
     { name = "atheneum-forge" },
     { name = "casefy" },
