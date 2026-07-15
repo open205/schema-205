@@ -1,27 +1,29 @@
 {
     "metadata": {
-        "data_model": "ASHRAE_205",
-        "schema": "RS0002",
+        "schema_author": "ASHRAE_205",
+        "schema_name": "RS0002",
         "schema_version": "2.0.0",
-        "description": "2 speed, 3.0 ton, 14.3 SEER2 air conditioner",
+        "author": "ASHRAE SSPC 205",
         "id": "745e3293-5945-461c-8d0b-08fdc9cb8fee",
-        "data_timestamp": "2024-02-22T15:24Z",
-        "data_version": 2,
-        "data_source": "https://github.com/bigladder/resdx",
+        "description": "2 speed, 3.0 ton, 14.3 SEER2 air conditioner",
+        "time_of_creation": "2024-02-22T15:24Z",
+        "version": "2.0.0",
+        "source": "https://github.com/bigladder/resdx",
         "disclaimer": "This data is synthetic and does not represent any physical products."
     },
     "performance": {
         "standby_power": 0.0,
         "indoor_fan_representation": {
             "metadata": {
-                "data_model": "ASHRAE_205",
-                "schema": "RS0003",
+                "schema_author": "ASHRAE_205",
+                "schema_name": "RS0003",
                 "schema_version": "2.0.0",
-                "description": "1200 cfm Electronically Commutated Motor (ECM) fan (0.300 W/cfm @ 0.50 in. H2O)",
+                "author": "ASHRAE SSPC 205",
                 "id": "78ac40d1-6c7c-4123-9654-15dfec865ada",
-                "data_timestamp": "2024-02-22T15:25Z",
-                "data_version": 2,
-                "data_source": "https://github.com/bigladder/resdx",
+                "description": "1200 cfm Electronically Commutated Motor (ECM) fan (0.300 W/cfm @ 0.50 in. H2O)",
+                "time_of_creation": "2024-02-22T15:25Z",
+                "version": "2.0.0",
+                "source": "https://github.com/bigladder/resdx",
                 "disclaimer": "This data is synthetic and does not represent any physical products."
             },
             "performance": {
@@ -40,14 +42,15 @@
                 "installation_speed_control_type": "FIXED",
                 "motor_representation": {
                     "metadata": {
-                        "data_model": "ASHRAE_205",
-                        "schema": "RS0005",
+                        "schema_author": "ASHRAE_205",
+                        "schema_name": "RS0005",
                         "schema_version": "2.0.0",
-                        "description": "Placeholder motor representation (performance characterized in parent RS0003 fan assembly)",
+                        "author": "ASHRAE SSPC 205",
                         "id": "819caeda-28c6-4266-aaab-7a19e3802f1a",
-                        "data_timestamp": "2024-02-22T15:25Z",
-                        "data_version": 2,
-                        "data_source": "https://github.com/bigladder/resdx",
+                        "description": "Placeholder motor representation (performance characterized in parent RS0003 fan assembly)",
+                        "time_of_creation": "2024-02-22T15:25Z",
+                        "version": "2.0.0",
+                        "source": "https://github.com/bigladder/resdx",
                         "disclaimer": "This data is synthetic and does not represent any physical products."
                     },
                     "performance": {
@@ -285,20 +288,22 @@
         "fan_position": "DRAW_THROUGH",
         "dx_system_representation": {
             "metadata": {
-                "data_model": "ASHRAE_205",
-                "schema": "RS0004",
+                "schema_author": "ASHRAE_205",
+                "schema_name": "RS0004",
                 "schema_version": "2.0.0",
-                "description": "36.6 kBtu/h, 3.65 COP, 0.73 SHR cooling coil",
+                "author": "ASHRAE SSPC 205",
                 "id": "77cad429-e628-43f6-996a-473e36f8c01f",
-                "data_timestamp": "2024-02-22T15:24Z",
-                "data_version": 2,
-                "data_source": "https://github.com/bigladder/resdx",
+                "description": "36.6 kBtu/h, 3.65 COP, 0.73 SHR cooling coil",
+                "time_of_creation": "2024-02-22T15:24Z",
+                "version": "2.0.0",
+                "source": "https://github.com/bigladder/resdx",
                 "disclaimer": "This data is synthetic and does not represent any physical products."
             },
             "performance": {
-                "performance_capabilities": ["COOLING"],
+                "performance_capabilities": [
+                    "COOLING"
+                ],
                 "compressor_speed_control_type": "DISCRETE",
-                "cycling_degradation_coefficient": 0.1,
                 "performance_map_cooling": {
                     "grid_variables": {
                         "outdoor_coil_entering_dry_bulb_temperature": [
@@ -8552,7 +8557,8 @@
                             0.0
                         ]
                     }
-                }
+                },
+                "cooling_cycling_degradation_coefficient": 0.1
             }
         }
     }

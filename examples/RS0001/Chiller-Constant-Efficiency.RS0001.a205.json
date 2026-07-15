@@ -1,25 +1,30 @@
 {
     "metadata": {
-        "data_model": "ASHRAE_205",
-        "schema": "RS0001",
+        "schema_author": "ASHRAE_205",
+        "schema_name": "RS0001",
         "schema_version": "2.0.0",
-        "description": "Water-Cooled Chiller with Constant Efficiency",
+        "author": "ASHRAE SSPC 205",
         "id": "123e4567-e89b-12d3-a456-426614174000",
-        "data_timestamp": "2020-05-07T00:00Z",
-        "data_version": 1,
+        "description": "Water-Cooled Chiller with Constant Efficiency",
+        "time_of_creation": "2020-05-07T00:00Z",
+        "version": "1.0.0",
         "disclaimer": "Example data not to be used for simulation",
         "notes": "An example representation that applies a constant COP of 5.9"
     },
     "description": {
         "product_information": {
-            "manufacturer": "ABC Chillers",
-            "model_number": "Chiller A1B2",
             "nominal_voltage": 460,
             "nominal_frequency": 60,
             "compressor_type": "CENTRIFUGAL",
             "liquid_data_source": "AHRI_550_590_2015",
             "refrigerant": "R-134A",
-            "hot_gas_bypass_installed": false
+            "hot_gas_bypass_installed": false,
+            "product_identifiers": [
+                {
+                    "brand": "ABC Chillers",
+                    "model_number": "Chiller A1B2"
+                }
+            ]
         }
     },
     "performance": {
@@ -284,46 +289,46 @@
                     0
                 ],
                 "operation_state": [
-                   "NORMAL",
-                   "NORMAL",
-                   "NORMAL",
-                   "NORMAL",
-                   "NORMAL",
-                   "NORMAL",
-                   "NORMAL",
-                   "NORMAL",
-                   "NORMAL",
-                   "NORMAL",
-                   "NORMAL",
-                   "NORMAL",
-                   "NORMAL",
-                   "NORMAL",
-                   "NORMAL",
-                   "NORMAL",
-                   "NORMAL",
-                   "NORMAL",
-                   "NORMAL",
-                   "NORMAL",
-                   "NORMAL",
-                   "NORMAL",
-                   "NORMAL",
-                   "NORMAL",
-                   "NORMAL",
-                   "NORMAL",
-                   "NORMAL",
-                   "NORMAL",
-                   "NORMAL",
-                   "NORMAL",
-                   "NORMAL",
-                   "NORMAL",
-                   "NORMAL",
-                   "NORMAL",
-                   "NORMAL",
-                   "NORMAL",
-                   "NORMAL",
-                   "NORMAL",
-                   "NORMAL",
-                   "NORMAL"
+                    "NORMAL",
+                    "NORMAL",
+                    "NORMAL",
+                    "NORMAL",
+                    "NORMAL",
+                    "NORMAL",
+                    "NORMAL",
+                    "NORMAL",
+                    "NORMAL",
+                    "NORMAL",
+                    "NORMAL",
+                    "NORMAL",
+                    "NORMAL",
+                    "NORMAL",
+                    "NORMAL",
+                    "NORMAL",
+                    "NORMAL",
+                    "NORMAL",
+                    "NORMAL",
+                    "NORMAL",
+                    "NORMAL",
+                    "NORMAL",
+                    "NORMAL",
+                    "NORMAL",
+                    "NORMAL",
+                    "NORMAL",
+                    "NORMAL",
+                    "NORMAL",
+                    "NORMAL",
+                    "NORMAL",
+                    "NORMAL",
+                    "NORMAL",
+                    "NORMAL",
+                    "NORMAL",
+                    "NORMAL",
+                    "NORMAL",
+                    "NORMAL",
+                    "NORMAL",
+                    "NORMAL",
+                    "NORMAL"
                 ]
             }
         },
@@ -341,12 +346,12 @@
                 ]
             }
         },
-        "performance_map_evaporator_liquid_pressure_differential":{
+        "performance_map_evaporator_liquid_pressure_differential": {
             "grid_variables": {
                 "evaporator_liquid_volumetric_flow_rate": [
                     0.0755
                 ],
-                "evaporator_liquid_leaving_temperature":[
+                "evaporator_liquid_leaving_temperature": [
                     279.82,
                     281.82
                 ]
@@ -358,12 +363,12 @@
                 ]
             }
         },
-        "performance_map_condenser_liquid_pressure_differential":{
+        "performance_map_condenser_liquid_pressure_differential": {
             "grid_variables": {
                 "condenser_liquid_volumetric_flow_rate": [
                     0.0957
                 ],
-                "condenser_liquid_entering_temperature":[
+                "condenser_liquid_entering_temperature": [
                     294.15,
                     302.59
                 ]

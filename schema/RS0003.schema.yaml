@@ -94,12 +94,9 @@ Description:
 ProductInformation:
   Object Type: "Data Group"
   Data Elements:
-    manufacturer:
-      Description: "Assembly/unit manufacturer name"
-      Type: "String"
-    model_number:
-      Description: "Assembly/unit model number"
-      Type: "Pattern"
+    product_identifiers:
+      Description: "Brand and model number pairs identifying the equipment"
+      Type: "[{ProductIdentifier}]"
       Notes: "Pattern shall match all model numbers that can be represented by the representation"
     impeller_type:
       Description: "Type of impeller in fan assembly"

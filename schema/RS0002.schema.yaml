@@ -116,12 +116,9 @@ Description:
 ProductInformation:
   Object Type: "Data Group"
   Data Elements:
-    manufacturer:
-      Description: "Package manufacturer name"
-      Type: "String"
-    model_number:
-      Description: "Package model number"
-      Type: "Pattern"
+    product_identifiers:
+      Description: "Brand and model number pairs identifying the equipment"
+      Type: "[{ProductIdentifier}]"
       Notes: "Pattern shall match all model numbers that can be represented by the representation"
 
 RatingAHRI210240:

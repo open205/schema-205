@@ -35,21 +35,13 @@ Description:
 ProductInformation:
   Object Type: "Data Group"
   Data Elements:
-    outdoor_unit_manufacturer:
-      Description: "Outdoor unit manufacturer name"
-      Type: "String"
-    outdoor_unit_model_number:
-      Description: "Outdoor unit model number"
-      Type: "Pattern"
-      Notes: "Pattern shall match all model numbers that can be represented by the representation"
-    indoor_unit_manufacturer:
-      Description: "Indoor unit manufacturer name"
-      Type: "String"
-      Notes: "May be omitted for packaged systems with a single manufacturer"
-    indoor_unit_model_number:
-      Description: "Indoor unit model number"
-      Type: "Pattern"
-      Notes: "Pattern shall match all model numbers that can be represented by the representation"
+    outdoor_unit_product_identifiers:
+      Description: "Brand and model number pairs identifying the outdoor unit"
+      Type: "[{ProductIdentifier}]"
+    indoor_unit_product_identifiers:
+      Description: "Brand and model number pairs identifying the indoor unit"
+      Type: "[{ProductIdentifier}]"
+      Notes: "May be omitted for packaged systems"
     refrigerant:
       Description: "Refrigerant used"
       Type: "String"

@@ -1,13 +1,14 @@
 {
     "metadata": {
-        "data_model": "ASHRAE_205",
-        "schema": "RS0001",
+        "schema_author": "ASHRAE_205",
+        "schema_name": "RS0001",
         "schema_version": "3.0.0",
-        "description": "ASHRAE 90.1-2022 Appendix J curve set 'Y': 300.0+ ton, 5.50 COP, 6.15 IPLV liquid-cooled, positive displacement compressor chiller",
+        "author": "ASHRAE SSPC 205",
         "id": "c18ff78a-b4c9-4e09-ab5d-973ed4be86e2",
-        "data_timestamp": "2025-02-18T13:40Z",
-        "data_version": 3,
-        "data_source": "https://github.com/bigladder/chiller",
+        "description": "ASHRAE 90.1-2022 Appendix J curve set 'Y': 300.0+ ton, 5.50 COP, 6.15 IPLV liquid-cooled, positive displacement compressor chiller",
+        "time_of_creation": "2025-02-18T13:40Z",
+        "version": "3.0.0",
+        "source": "https://github.com/bigladder/chiller",
         "disclaimer": "This data is synthetic and does not represent any physical products.",
         "notes": "Based on ASHRAE 90.1-2022 Appendix J curve set 'Y' for Performance Rating Method (PRM)"
     },
