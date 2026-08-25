@@ -83,15 +83,21 @@ RS0001:
 
 Description:
   Object Type: "Data Group"
-  Data Group Template: RatingTemplate
   Data Elements:
     product_information:
       Description: "Data group describing product information"
       Type: "{ProductInformation}"
-    ahri_550_590_rating:
+    ratings:
+      Description: "Data group containing rating information"
+      Type: "{Ratings}"
+
+Ratings:
+  Object Type: "Data Group"
+  Data Elements:
+    ahri_550_590:
       Description: "Data group containing information relevant to products rated under AHRI 550/590"
       Type: "{AHRI550590Rating}"
-    ahri_551_591_rating:
+    ahri_551_591:
       Description: "Data group containing information relevant to products rated under AHRI 551/591"
       Type: "{AHRI551591Rating}"
 
