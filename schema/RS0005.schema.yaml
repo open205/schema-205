@@ -93,7 +93,7 @@ Performance:
 
 PerformanceMap:
   Object Type: "Data Group"
-  Data Group Template: PerformanceMapTemplate
+  Data Group Template: LookupTableTemplate
   Data Elements:
     grid_variables:
       Description: "Data group describing grid variables for motor performance"

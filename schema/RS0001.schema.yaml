@@ -281,18 +281,18 @@ Performance:
       Description: "Data group describing standby performance"
       Type: "{StandbyPerformanceMap}"
       Required: True
-    evaporator_liquid_pressure_differential_performance_map:
+    evaporator_liquid_pressure_differential:
       Description: "Data group describing the liquid pressure differential through the evaporator"
-      Type: "{EvaporatorLiquidPressureDifferentialPerformanceMap}"
+      Type: "{EvaporatorLiquidPressureDifferential}"
       Required: True
-    condenser_liquid_pressure_differential_performance_map:
+    condenser_liquid_pressure_differential:
       Description: "Data group describing the liquid pressure differential through the condenser"
-      Type: "{CondenserLiquidPressureDifferentialPerformanceMap}"
+      Type: "{CondenserLiquidPressureDifferential}"
       Required: "if condenser_type=LIQUID"
 
 CoolingLiquidPerformanceMap:
   Object Type: "Data Group"
-  Data Group Template: PerformanceMapTemplate
+  Data Group Template: LookupTableTemplate
   Data Elements:
     grid_variables:
       Description: "Data group defining the grid variables for cooling performance"
@@ -426,7 +426,7 @@ CoolingLiquidLookupVariables:
 
 CoolingAirPerformanceMap:
   Object Type: "Data Group"
-  Data Group Template: PerformanceMapTemplate
+  Data Group Template: LookupTableTemplate
   Data Elements:
     grid_variables:
       Description: "Data group defining the grid variables for cooling performance"
@@ -499,7 +499,7 @@ CoolingAirLookupVariables:
 
 CoolingEvaporativePerformanceMap:
   Object Type: "Data Group"
-  Data Group Template: PerformanceMapTemplate
+  Data Group Template: LookupTableTemplate
   Data Elements:
     grid_variables:
       Description: "Data group defining the grid variables for cooling performance"
@@ -543,7 +543,7 @@ CoolingEvaporativeLookupVariables:
 
 StandbyPerformanceMap:
   Object Type: "Data Group"
-  Data Group Template: PerformanceMapTemplate
+  Data Group Template: LookupTableTemplate
   Data Elements:
     grid_variables:
       Description: "Data group defining the grid variables for standby performance"
@@ -588,9 +588,9 @@ StandbyLookupVariables:
           "Expressed as a time averaged power consumption",
         ]
 
-EvaporatorLiquidPressureDifferentialPerformanceMap:
+EvaporatorLiquidPressureDifferential:
   Object Type: "Data Group"
-  Data Group Template: PerformanceMapTemplate
+  Data Group Template: LookupTableTemplate
   Data Elements:
     grid_variables:
       Description: "Data group defining the grid variables for the evaporator liquid pressure differential"
@@ -638,9 +638,9 @@ EvaporatorLiquidPressureDifferentialLookupVariables:
         - "[1..]"
       Required: True
 
-CondenserLiquidPressureDifferentialPerformanceMap:
+CondenserLiquidPressureDifferential:
   Object Type: "Data Group"
-  Data Group Template: PerformanceMapTemplate
+  Data Group Template: LookupTableTemplate
   Data Elements:
     grid_variables:
       Description: "Data group defining the grid variables for the condenser liquid pressure differential"

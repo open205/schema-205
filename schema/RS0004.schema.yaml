@@ -99,7 +99,7 @@ Performance:
 
 CoolingPerformanceMap:
   Object Type: "Data Group"
-  Data Group Template: PerformanceMapTemplate
+  Data Group Template: LookupTableTemplate
   Data Elements:
     grid_variables:
       Description: "Data group defining the grid variables for cooling performance"
@@ -224,7 +224,7 @@ CoolingLookupVariables:
 
 HeatingPerformanceMap:
   Object Type: "Data Group"
-  Data Group Template: PerformanceMapTemplate
+  Data Group Template: LookupTableTemplate
   Data Elements:
     grid_variables:
       Description: "Data group defining the grid variables for heating performance"
@@ -315,7 +315,7 @@ HeatingLookupVariables:
 
 DefrostCorrectionPerformanceMap:
   Object Type: "Data Group"
-  Data Group Template: PerformanceMapTemplate
+  Data Group Template: LookupTableTemplate
   Data Elements:
     grid_variables:
       Description: "Data group defining the grid variables for the impact on heating performance due to the effects of frost formation, defrost operation, or both"
@@ -392,7 +392,7 @@ DefrostCorrectionLookupVariables:
 
 StandbyPerformanceMap:
   Object Type: "Data Group"
-  Data Group Template: PerformanceMapTemplate
+  Data Group Template: LookupTableTemplate
   Data Elements:
     grid_variables:
       Description: "Data group defining the grid variables for standby performance"

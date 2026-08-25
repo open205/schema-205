@@ -28,7 +28,7 @@ PerformanceTemplate:
   Object Type: "Data Group Template"
   Custom Attributes: ["Scalable"]
 
-PerformanceMapTemplate:
+LookupTableTemplate:
   Object Type: "Data Group Template"
   Required Data Elements:
     grid_variables:

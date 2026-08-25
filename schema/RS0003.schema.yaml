@@ -219,7 +219,22 @@ AssemblyComponent:
 
 SystemCurve:
   Object Type: "Data Group"
-  Custom Attributes: ["Scalable"]
+  Data Group Template: LookupTableTemplate
+  Data Elements:
+    grid_variables:
+      Description: "Data group defining the grid variables for the system curve"
+      Type: "{SystemCurveGridVariables}"
+      Required: True
+    lookup_variables:
+      Description: "Data group defining the lookup variables for the system curve"
+      Type: "{SystemCurveLookupVariables}"
+      Cycling Order:
+        - standard_air_volumetric_flow_rate
+      Required: True
+
+SystemCurveGridVariables:
+  Object Type: "Data Group"
+  Data Group Template: GridVariablesTemplate
   Data Elements:
     standard_air_volumetric_flow_rate:
       Description: "Volumetric air flow rate through an air distribution system at standard air conditions"
@@ -230,19 +245,24 @@ SystemCurve:
       Units: "m3/s"
       Required: True
       Scalable: True
+
+SystemCurveLookupVariables:
+  Object Type: "Data Group"
+  Data Group Template: LookupVariablesTemplate
+  Data Elements:
     static_pressure_difference:
       Description: "Static pressure difference of an air distribution system"
       Type: "[Numeric]"
       Constraints:
         - ">=0.0"
-        - "[2..]"
+        - "[1..]"
       Units: "Pa"
       Required: True
       Scalable: True
 
 ContinuousPerformanceMap:
   Object Type: "Data Group"
-  Data Group Template: PerformanceMapTemplate
+  Data Group Template: LookupTableTemplate
   Data Elements:
     grid_variables:
       Description: "Data group describing grid variables for continuous fan performance"
@@ -309,7 +329,7 @@ ContinuousLookupVariables:
 
 DiscretePerformanceMap:
   Object Type: "Data Group"
-  Data Group Template: PerformanceMapTemplate
+  Data Group Template: LookupTableTemplate
   Data Elements:
     grid_variables:
       Description: "Data group describing grid variables for discrete fan performance"

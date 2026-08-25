@@ -32,7 +32,7 @@
             "concentration_type": "BY_VOLUME"
         },
         "evaporator_fouling_factor": 0.0,
-        "evaporator_liquid_pressure_differential_performance_map": {
+        "evaporator_liquid_pressure_differential": {
             "grid_variables": {
                 "evaporator_liquid_volumetric_flow_rate": [
                     0.05274050382416204
@@ -64,7 +64,7 @@
             "concentration_type": "BY_VOLUME"
         },
         "condenser_fouling_factor": 0.0,
-        "condenser_liquid_pressure_differential_performance_map": {
+        "condenser_liquid_pressure_differential": {
             "grid_variables": {
                 "condenser_liquid_volumetric_flow_rate": [
                     0.06691856604777864

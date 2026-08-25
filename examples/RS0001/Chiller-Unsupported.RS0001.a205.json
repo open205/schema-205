@@ -346,7 +346,7 @@
                 ]
             }
         },
-        "evaporator_liquid_pressure_differential_performance_map": {
+        "evaporator_liquid_pressure_differential": {
             "grid_variables": {
                 "evaporator_liquid_volumetric_flow_rate": [
                     0.0755
@@ -363,7 +363,7 @@
                 ]
             }
         },
-        "condenser_liquid_pressure_differential_performance_map": {
+        "condenser_liquid_pressure_differential": {
             "grid_variables": {
                 "condenser_liquid_volumetric_flow_rate": [
                     0.0957
