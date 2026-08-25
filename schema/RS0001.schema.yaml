@@ -132,9 +132,11 @@ RatingAHRI550590:
   Object Type: "Data Group"
   Data Group Template: RatingTemplate
   Data Elements:
-    certified_reference_number:
-      Description: "AHRI certified reference number"
-      Type: "String"
+    certified_reference_numbers:
+      Description: "AHRI certified reference numbers"
+      Type: "[String]"
+      Constraints: '"^[0-9]+$"'
+      Notes: "One entry per unique AHRI certified reference number applicable to the products covered by the representation"
     test_standard_year:
       Description: "Year of the AHRI test standard"
       Type: "<AHRI550590TestStandardYear>"
@@ -171,9 +173,11 @@ RatingAHRI551591:
   Object Type: "Data Group"
   Data Group Template: RatingTemplate
   Data Elements:
-    certified_reference_number:
-      Description: "AHRI certified reference number"
-      Type: "String"
+    certified_reference_numbers:
+      Description: "AHRI certified reference numbers"
+      Type: "[String]"
+      Constraints: '"^[0-9]+$"'
+      Notes: "One entry per unique AHRI certified reference number applicable to the products covered by the representation"
     test_standard_year:
       Description: "Year of the AHRI test standard"
       Type: "<AHRI551591TestStandardYear>"
