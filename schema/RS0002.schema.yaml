@@ -106,12 +106,12 @@ Description:
     product_information:
       Description: "Data group describing product information"
       Type: "{ProductInformation}"
-    rating_ahri_210_240:
+    ahri_210_240_rating:
       Description: "Data group containing information relevant to products rated under AHRI 210/240"
-      Type: "{RatingAHRI210240}"
-    rating_ahri_340_360:
+      Type: "{AHRI210240Rating}"
+    ahri_340_360_rating:
       Description: "Data group containing information relevant to products rated under AHRI 340/360"
-      Type: "{RatingAHRI340360}"
+      Type: "{AHRI340360Rating}"
 
 ProductInformation:
   Object Type: "Data Group"
@@ -121,7 +121,7 @@ ProductInformation:
       Type: "[{ProductIdentifier}]"
       Notes: "Pattern shall match all model numbers that can be represented by the representation"
 
-RatingAHRI210240:
+AHRI210240Rating:
   Object Type: "Data Group"
   Data Group Template: "RatingTemplate"
   Data Elements:
@@ -171,7 +171,7 @@ RatingAHRI210240:
       Constraints: ">=0.0"
       Notes: "At high stage for multi-stage equipment"
 
-RatingAHRI340360:
+AHRI340360Rating:
   Object Type: "Data Group"
   Data Group Template: "RatingTemplate"
   Data Elements:

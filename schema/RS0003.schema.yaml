@@ -185,7 +185,7 @@ Performance:
       Notes: "If not present, scaling of the performance data is not allowed"
     performance_map:
       Description: "Data group describing fan assembly performance when operating"
-      Type: "({PerformanceMapContinuous}, {PerformanceMapDiscrete})"
+      Type: "({ContinuousPerformanceMap}, {DiscretePerformanceMap})"
       Constraints: "operation_speed_control_type(CONTINUOUS, DISCRETE)"
       Required: True
 
@@ -240,23 +240,23 @@ SystemCurve:
       Required: True
       Scalable: True
 
-PerformanceMapContinuous:
+ContinuousPerformanceMap:
   Object Type: "Data Group"
   Data Group Template: PerformanceMapTemplate
   Data Elements:
     grid_variables:
       Description: "Data group describing grid variables for continuous fan performance"
-      Type: "{GridVariablesContinuous}"
+      Type: "{ContinuousGridVariables}"
       Required: True
     lookup_variables:
       Description: "Data group describing lookup variables for continuous fan performance"
-      Type: "{LookupVariablesContinuous}"
+      Type: "{ContinuousLookupVariables}"
       Cycling Order:
         - standard_air_volumetric_flow_rate
         - static_pressure_difference
       Required: True
 
-GridVariablesContinuous:
+ContinuousGridVariables:
   Object Type: "Data Group"
   Data Group Template: GridVariablesTemplate
   Data Elements:
@@ -279,7 +279,7 @@ GridVariablesContinuous:
       Notes: "Any static pressure deduction (or addition) for wet coil is specified by `wet_pressure_difference` in 'assembly_components' data group"
       Required: True
 
-LookupVariablesContinuous:
+ContinuousLookupVariables:
   Object Type: "Data Group"
   Data Group Template: LookupVariablesTemplate
   Data Elements:
@@ -307,23 +307,23 @@ LookupVariablesContinuous:
       Constraints: "[1..]"
       Required: True
 
-PerformanceMapDiscrete:
+DiscretePerformanceMap:
   Object Type: "Data Group"
   Data Group Template: PerformanceMapTemplate
   Data Elements:
     grid_variables:
       Description: "Data group describing grid variables for discrete fan performance"
-      Type: "{GridVariablesDiscrete}"
+      Type: "{DiscreteGridVariables}"
       Required: True
     lookup_variables:
       Description: "Data group describing lookup variables for discrete fan performance"
-      Type: "{LookupVariablesDiscrete}"
+      Type: "{DiscreteLookupVariables}"
       Cycling Order:
         - speed_number
         - static_pressure_difference
       Required: True
 
-GridVariablesDiscrete:
+DiscreteGridVariables:
   Object Type: "Data Group"
   Data Group Template: GridVariablesTemplate
   Data Elements:
@@ -345,7 +345,7 @@ GridVariablesDiscrete:
       Notes: "Any static pressure deduction (or addition) for wet coil is specified by `wet_pressure_difference` in 'assembly_components' data group"
       Required: True
 
-LookupVariablesDiscrete:
+DiscreteLookupVariables:
   Object Type: "Data Group"
   Data Group Template: LookupVariablesTemplate
   Data Elements:

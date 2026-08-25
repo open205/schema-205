@@ -88,12 +88,12 @@ Description:
     product_information:
       Description: "Data group describing product information"
       Type: "{ProductInformation}"
-    rating_ahri_550_590:
+    ahri_550_590_rating:
       Description: "Data group containing information relevant to products rated under AHRI 550/590"
-      Type: "{RatingAHRI550590}"
-    rating_ahri_551_591:
+      Type: "{AHRI550590Rating}"
+    ahri_551_591_rating:
       Description: "Data group containing information relevant to products rated under AHRI 551/591"
-      Type: "{RatingAHRI551591}"
+      Type: "{AHRI551591Rating}"
 
 ProductInformation:
   Object Type: "Data Group"
@@ -128,7 +128,7 @@ ProductInformation:
       Description: "Indicates if a hot-gas bypass valve is installed on the chiller"
       Type: "Boolean"
 
-RatingAHRI550590:
+AHRI550590Rating:
   Object Type: "Data Group"
   Data Group Template: RatingTemplate
   Data Elements:
@@ -169,7 +169,7 @@ RatingAHRI550590:
       Type: "Numeric"
       Units: "-"
 
-RatingAHRI551591:
+AHRI551591Rating:
   Object Type: "Data Group"
   Data Group Template: RatingTemplate
   Data Elements:
@@ -272,35 +272,35 @@ Performance:
       Description: "Specifies the range the performance data can be scaled to represent different capacity equipment"
       Type: "{Scaling}"
       Notes: "If not present, scaling of the performance data is not allowed"
-    performance_map_cooling:
+    cooling_performance_map:
       Description: "Data group describing cooling performance over a range of conditions"
-      Type: "({PerformanceMapCoolingLiquid}, {PerformanceMapCoolingAir}, {PerformanceMapCoolingEvaporative})"
+      Type: "({CoolingLiquidPerformanceMap}, {CoolingAirPerformanceMap}, {CoolingEvaporativePerformanceMap})"
       Constraints: condenser_type(LIQUID, AIR, EVAPORATIVE)
       Required: True
-    performance_map_standby:
+    standby_performance_map:
       Description: "Data group describing standby performance"
-      Type: "{PerformanceMapStandby}"
+      Type: "{StandbyPerformanceMap}"
       Required: True
-    performance_map_evaporator_liquid_pressure_differential:
+    evaporator_liquid_pressure_differential_performance_map:
       Description: "Data group describing the liquid pressure differential through the evaporator"
-      Type: "{PerformanceMapEvaporatorLiquidPressureDifferential}"
+      Type: "{EvaporatorLiquidPressureDifferentialPerformanceMap}"
       Required: True
-    performance_map_condenser_liquid_pressure_differential:
+    condenser_liquid_pressure_differential_performance_map:
       Description: "Data group describing the liquid pressure differential through the condenser"
-      Type: "{PerformanceMapCondenserLiquidPressureDifferential}"
+      Type: "{CondenserLiquidPressureDifferentialPerformanceMap}"
       Required: "if condenser_type=LIQUID"
 
-PerformanceMapCoolingLiquid:
+CoolingLiquidPerformanceMap:
   Object Type: "Data Group"
   Data Group Template: PerformanceMapTemplate
   Data Elements:
     grid_variables:
       Description: "Data group defining the grid variables for cooling performance"
-      Type: "{GridVariablesCoolingLiquid}"
+      Type: "{CoolingLiquidGridVariables}"
       Required: True
     lookup_variables:
       Description: "Data group defining the lookup variables for cooling performance"
-      Type: "{LookupVariablesCoolingLiquid}"
+      Type: "{CoolingLiquidLookupVariables}"
       Cycling Order:
         - evaporator_liquid_volumetric_flow_rate
         - evaporator_liquid_leaving_temperature
@@ -309,7 +309,7 @@ PerformanceMapCoolingLiquid:
         - compressor_sequence_number
       Required: True
 
-GridVariablesCoolingLiquid:
+CoolingLiquidGridVariables:
   Object Type: "Data Group"
   Data Group Template: GridVariablesTemplate
   Data Elements:
@@ -364,7 +364,7 @@ GridVariablesCoolingLiquid:
         ]
       Required: True
 
-LookupVariablesCoolingLiquid:
+CoolingLiquidLookupVariables:
   Object Type: "Data Group"
   Data Group Template: LookupVariablesTemplate
   Data Elements:
@@ -424,17 +424,17 @@ LookupVariablesCoolingLiquid:
       Constraints: "[1..]"
       Required: True
 
-PerformanceMapCoolingAir:
+CoolingAirPerformanceMap:
   Object Type: "Data Group"
   Data Group Template: PerformanceMapTemplate
   Data Elements:
     grid_variables:
       Description: "Data group defining the grid variables for cooling performance"
-      Type: "{GridVariablesCoolingAir}"
+      Type: "{CoolingAirGridVariables}"
       Required: True
     lookup_variables:
       Description: "Data group defining the lookup variables for cooling performance"
-      Type: "{LookupVariablesCoolingAir}"
+      Type: "{CoolingAirLookupVariables}"
       Cycling Order:
         - evaporator_liquid_volumetric_flow_rate
         - evaporator_liquid_leaving_temperature
@@ -444,7 +444,7 @@ PerformanceMapCoolingAir:
         - compressor_sequence_number
       Required: True
 
-GridVariablesCoolingAir: &GridVariablesCoolingAir
+CoolingAirGridVariables: &CoolingAirGridVariables
   Object Type: "Data Group"
   Data Group Template: GridVariablesTemplate
   Data Elements:
@@ -477,7 +477,7 @@ GridVariablesCoolingAir: &GridVariablesCoolingAir
       Notes: "Informative Note: the intent of the ambient pressure is to capture the pressure at the installation and not changes in the ambient pressure due to weather effects"
     compressor_sequence_number: *compressor_sequence_number
 
-LookupVariablesCoolingAir:
+CoolingAirLookupVariables:
   Object Type: "Data Group"
   Data Group Template: LookupVariablesTemplate
   Data Elements:
@@ -497,17 +497,17 @@ LookupVariablesCoolingAir:
     auxiliary_heat: *auxiliary_heat
     operation_state: *operation_state
 
-PerformanceMapCoolingEvaporative:
+CoolingEvaporativePerformanceMap:
   Object Type: "Data Group"
   Data Group Template: PerformanceMapTemplate
   Data Elements:
     grid_variables:
       Description: "Data group defining the grid variables for cooling performance"
-      Type: "{GridVariablesCoolingEvaporative}"
+      Type: "{CoolingEvaporativeGridVariables}"
       Required: True
     lookup_variables:
       Description: "Data group defining the lookup variables for cooling performance"
-      Type: "{LookupVariablesCoolingEvaporative}"
+      Type: "{CoolingEvaporativeLookupVariables}"
       Cycling Order:
         - evaporator_liquid_volumetric_flow_rate
         - evaporator_liquid_leaving_temperature
@@ -517,9 +517,9 @@ PerformanceMapCoolingEvaporative:
         - compressor_sequence_number
       Required: True
 
-GridVariablesCoolingEvaporative: *GridVariablesCoolingAir
+CoolingEvaporativeGridVariables: *CoolingAirGridVariables
 
-LookupVariablesCoolingEvaporative:
+CoolingEvaporativeLookupVariables:
   Object Type: "Data Group"
   Data Group Template: LookupVariablesTemplate
   Data Elements:
@@ -541,22 +541,22 @@ LookupVariablesCoolingEvaporative:
     auxiliary_heat: *auxiliary_heat
     operation_state: *operation_state
 
-PerformanceMapStandby:
+StandbyPerformanceMap:
   Object Type: "Data Group"
   Data Group Template: PerformanceMapTemplate
   Data Elements:
     grid_variables:
       Description: "Data group defining the grid variables for standby performance"
-      Type: "{GridVariablesStandby}"
+      Type: "{StandbyGridVariables}"
       Required: True
     lookup_variables:
       Description: "Data group defining the lookup variables for standby performance"
-      Type: "{LookupVariablesStandby}"
+      Type: "{StandbyLookupVariables}"
       Cycling Order:
         - environment_dry_bulb_temperature
       Required: True
 
-GridVariablesStandby:
+StandbyGridVariables:
   Object Type: "Data Group"
   Data Group Template: GridVariablesTemplate
   Data Elements:
@@ -569,7 +569,7 @@ GridVariablesStandby:
         - "[1..]"
       Required: True
 
-LookupVariablesStandby:
+StandbyLookupVariables:
   Object Type: "Data Group"
   Data Group Template: LookupVariablesTemplate
   Data Elements:
@@ -588,23 +588,23 @@ LookupVariablesStandby:
           "Expressed as a time averaged power consumption",
         ]
 
-PerformanceMapEvaporatorLiquidPressureDifferential:
+EvaporatorLiquidPressureDifferentialPerformanceMap:
   Object Type: "Data Group"
   Data Group Template: PerformanceMapTemplate
   Data Elements:
     grid_variables:
       Description: "Data group defining the grid variables for the evaporator liquid pressure differential"
-      Type: "{GridVariablesEvaporatorLiquidPressureDifferential}"
+      Type: "{EvaporatorLiquidPressureDifferentialGridVariables}"
       Required: True
     lookup_variables:
       Description: "Data group defining the lookup variables for the evaporator liquid pressure differential"
-      Type: "{LookupVariablesEvaporatorLiquidPressureDifferential}"
+      Type: "{EvaporatorLiquidPressureDifferentialLookupVariables}"
       Cycling Order:
         - evaporator_liquid_volumetric_flow_rate
         - evaporator_liquid_leaving_temperature
       Required: True
 
-GridVariablesEvaporatorLiquidPressureDifferential:
+EvaporatorLiquidPressureDifferentialGridVariables:
   Object Type: "Data Group"
   Data Group Template: GridVariablesTemplate
   Data Elements:
@@ -625,7 +625,7 @@ GridVariablesEvaporatorLiquidPressureDifferential:
         - "[1..]"
       Required: True
 
-LookupVariablesEvaporatorLiquidPressureDifferential:
+EvaporatorLiquidPressureDifferentialLookupVariables:
   Object Type: "Data Group"
   Data Group Template: LookupVariablesTemplate
   Data Elements:
@@ -638,23 +638,23 @@ LookupVariablesEvaporatorLiquidPressureDifferential:
         - "[1..]"
       Required: True
 
-PerformanceMapCondenserLiquidPressureDifferential:
+CondenserLiquidPressureDifferentialPerformanceMap:
   Object Type: "Data Group"
   Data Group Template: PerformanceMapTemplate
   Data Elements:
     grid_variables:
       Description: "Data group defining the grid variables for the condenser liquid pressure differential"
-      Type: "{GridVariablesCondenserLiquidPressureDifferential}"
+      Type: "{CondenserLiquidPressureDifferentialGridVariables}"
       Required: True
     lookup_variables:
       Description: "Data group defining the lookup variables for the condenser liquid pressure differential"
-      Type: "{LookupVariablesCondenserLiquidPressureDifferential}"
+      Type: "{CondenserLiquidPressureDifferentialLookupVariables}"
       Cycling Order:
         - condenser_liquid_volumetric_flow_rate
         - condenser_liquid_entering_temperature
       Required: True
 
-GridVariablesCondenserLiquidPressureDifferential:
+CondenserLiquidPressureDifferentialGridVariables:
   Object Type: "Data Group"
   Data Group Template: GridVariablesTemplate
   Data Elements:
@@ -675,7 +675,7 @@ GridVariablesCondenserLiquidPressureDifferential:
         - "[1..]"
       Required: True
 
-LookupVariablesCondenserLiquidPressureDifferential:
+CondenserLiquidPressureDifferentialLookupVariables:
   Object Type: "Data Group"
   Data Group Template: LookupVariablesTemplate
   Data Elements:

@@ -32,7 +32,7 @@
             "concentration_type": "BY_VOLUME"
         },
         "evaporator_fouling_factor": 0.0,
-        "performance_map_evaporator_liquid_pressure_differential": {
+        "evaporator_liquid_pressure_differential_performance_map": {
             "grid_variables": {
                 "evaporator_liquid_volumetric_flow_rate": [
                     0.03390460960124702
@@ -64,7 +64,7 @@
             "concentration_type": "BY_VOLUME"
         },
         "condenser_fouling_factor": 0.0,
-        "performance_map_condenser_liquid_pressure_differential": {
+        "condenser_liquid_pressure_differential_performance_map": {
             "grid_variables": {
                 "condenser_liquid_volumetric_flow_rate": [
                     0.04342396574867613
@@ -85,7 +85,7 @@
                 ]
             }
         },
-        "performance_map_cooling": {
+        "cooling_performance_map": {
             "grid_variables": {
                 "evaporator_liquid_volumetric_flow_rate": [
                     0.03390460960124702
@@ -511,7 +511,7 @@
                 ]
             }
         },
-        "performance_map_standby": {
+        "standby_performance_map": {
             "grid_variables": {
                 "environment_dry_bulb_temperature": [
                     293.15

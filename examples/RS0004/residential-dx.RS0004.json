@@ -17,7 +17,7 @@
         ],
         "compressor_speed_control_type": "DISCRETE",
         "cooling_cycling_degradation_coefficient": 0.1,
-        "performance_map_cooling": {
+        "cooling_performance_map": {
             "grid_variables": {
                 "outdoor_coil_entering_dry_bulb_temperature": [
                     285.9277777777778,
@@ -8257,7 +8257,7 @@
                 ]
             }
         },
-        "performance_map_standby": {
+        "standby_performance_map": {
             "grid_variables": {
                 "outdoor_coil_environment_dry_bulb_temperature": [
                     282.65000000000003,
