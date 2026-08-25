@@ -35,21 +35,13 @@ Description:
 ProductInformation:
   Object Type: "Data Group"
   Data Elements:
-    outdoor_unit_manufacturer:
-      Description: "Outdoor unit manufacturer name"
-      Type: "String"
-    outdoor_unit_model_number:
-      Description: "Outdoor unit model number"
-      Type: "Pattern"
-      Notes: "Pattern shall match all model numbers that can be represented by the representation"
-    indoor_unit_manufacturer:
-      Description: "Indoor unit manufacturer name"
-      Type: "String"
-      Notes: "May be omitted for packaged systems with a single manufacturer"
-    indoor_unit_model_number:
-      Description: "Indoor unit model number"
-      Type: "Pattern"
-      Notes: "Pattern shall match all model numbers that can be represented by the representation"
+    outdoor_unit_product_identifiers:
+      Description: "Brand and model number pairs identifying the outdoor unit"
+      Type: "[{ProductIdentifier}]"
+    indoor_unit_product_identifiers:
+      Description: "Brand and model number pairs identifying the indoor unit"
+      Type: "[{ProductIdentifier}]"
+      Notes: "May be omitted for packaged systems"
     refrigerant:
       Description: "Refrigerant used"
       Type: "String"
@@ -88,34 +80,34 @@ Performance:
       Description: "Specifies the range the performance data can be scaled to represent different capacity equipment"
       Type: "{Scaling}"
       Notes: "If not present, scaling of the performance data is not allowed"
-    performance_map_cooling:
+    cooling_performance_map:
       Description: "Data group describing cooling performance over a range of conditions"
-      Type: "{PerformanceMapCooling}"
+      Type: "{CoolingPerformanceMap}"
       Required: "if performance_capabilities contains(COOLING)"
-    performance_map_heating:
+    heating_performance_map:
       Description: "Data group describing heating performance over a range of conditions"
-      Type: "{PerformanceMapHeating}"
+      Type: "{HeatingPerformanceMap}"
       Required: "if performance_capabilities contains(HEATING)"
-    performance_map_defrost_correction:
+    defrost_correction_performance_map:
       Description: "Data group describing the impact on heating performance due to frost formation, defrost operation, or both"
-      Type: "{PerformanceMapDefrostCorrection}"
+      Type: "{DefrostCorrectionPerformanceMap}"
       Required: "if performance_capabilities contains(HEATING)"
-    performance_map_standby:
+    standby_performance_map:
       Description: "Data group describing standby performance"
-      Type: "{PerformanceMapStandby}"
+      Type: "{StandbyPerformanceMap}"
       Required: True
 
-PerformanceMapCooling:
+CoolingPerformanceMap:
   Object Type: "Data Group"
-  Data Group Template: PerformanceMapTemplate
+  Data Group Template: LookupTableTemplate
   Data Elements:
     grid_variables:
       Description: "Data group defining the grid variables for cooling performance"
-      Type: "{GridVariablesCooling}"
+      Type: "{CoolingGridVariables}"
       Required: True
     lookup_variables:
       Description: "Data group defining the lookup variables for cooling performance"
-      Type: "{LookupVariablesCooling}"
+      Type: "{CoolingLookupVariables}"
       Cycling Order:
         - outdoor_coil_entering_dry_bulb_temperature
         - indoor_coil_entering_relative_humidity
@@ -125,7 +117,7 @@ PerformanceMapCooling:
         - ambient_absolute_air_pressure
       Required: True
 
-GridVariablesCooling:
+CoolingGridVariables:
   Object Type: "Data Group"
   Data Group Template: GridVariablesTemplate
   Data Elements:
@@ -186,7 +178,7 @@ GridVariablesCooling:
       Units: "Pa"
       Required: True
 
-LookupVariablesCooling:
+CoolingLookupVariables:
   Object Type: "Data Group"
   Data Group Template: LookupVariablesTemplate
   Data Elements:
@@ -230,20 +222,20 @@ LookupVariablesCooling:
       Constraints: "[1..]"
       Required: True
 
-PerformanceMapHeating:
+HeatingPerformanceMap:
   Object Type: "Data Group"
-  Data Group Template: PerformanceMapTemplate
+  Data Group Template: LookupTableTemplate
   Data Elements:
     grid_variables:
       Description: "Data group defining the grid variables for heating performance"
-      Type: "{GridVariablesHeating}"
+      Type: "{HeatingGridVariables}"
       Required: True
     lookup_variables:
       Description: "Data group defining the lookup variables for heating performance"
-      Type: "{LookupVariablesHeating}"
+      Type: "{HeatingLookupVariables}"
       Required: True
 
-GridVariablesHeating:
+HeatingGridVariables:
   Object Type: "Data Group"
   Data Group Template: GridVariablesTemplate
   Data Elements:
@@ -286,7 +278,7 @@ GridVariablesHeating:
         ]
       Required: True
 
-LookupVariablesHeating:
+HeatingLookupVariables:
   Object Type: "Data Group"
   Data Group Template: LookupVariablesTemplate
   Data Elements:
@@ -321,20 +313,20 @@ LookupVariablesHeating:
       Type: "[<OperationState>]"
       Required: True
 
-PerformanceMapDefrostCorrection:
+DefrostCorrectionPerformanceMap:
   Object Type: "Data Group"
-  Data Group Template: PerformanceMapTemplate
+  Data Group Template: LookupTableTemplate
   Data Elements:
     grid_variables:
       Description: "Data group defining the grid variables for the impact on heating performance due to the effects of frost formation, defrost operation, or both"
-      Type: "{GridVariablesDefrostCorrection}"
+      Type: "{DefrostCorrectionGridVariables}"
       Required: True
     lookup_variables:
       Description: "Data group defining the lookup variables for the impact on heating performance due to the effects of frost formation, defrost operation, or both"
-      Type: "{LookupVariablesDefrostCorrection}"
+      Type: "{DefrostCorrectionLookupVariables}"
       Required: True
 
-GridVariablesDefrostCorrection:
+DefrostCorrectionGridVariables:
   Object Type: "Data Group"
   Data Group Template: GridVariablesTemplate
   Data Elements:
@@ -361,10 +353,10 @@ GridVariablesDefrostCorrection:
       Constraints:
         - ">=1"
         - "[1..]"
-      Notes: "Shall be consistent with the values of `compressor_sequence_number` in `GridVariablesHeating`"
+      Notes: "Shall be consistent with the values of `compressor_sequence_number` in `HeatingGridVariables`"
       Required: True
 
-LookupVariablesDefrostCorrection:
+DefrostCorrectionLookupVariables:
   Object Type: "Data Group"
   Data Group Template: LookupVariablesTemplate
   Data Elements:
@@ -398,22 +390,22 @@ LookupVariablesDefrostCorrection:
       Required: True
       Notes: "***Informative note:*** This value is used to inform application software when it may need to control supplemental heating during defrost"
 
-PerformanceMapStandby:
+StandbyPerformanceMap:
   Object Type: "Data Group"
-  Data Group Template: PerformanceMapTemplate
+  Data Group Template: LookupTableTemplate
   Data Elements:
     grid_variables:
       Description: "Data group defining the grid variables for standby performance"
-      Type: "{GridVariablesStandby}"
+      Type: "{StandbyGridVariables}"
       Required: True
     lookup_variables:
       Description: "Data group defining the lookup variables for standby performance"
-      Type: "{LookupVariablesStandby}"
+      Type: "{StandbyLookupVariables}"
       Cycling Order:
         - outdoor_coil_environment_dry_bulb_temperature
       Required: True
 
-GridVariablesStandby:
+StandbyGridVariables:
   Object Type: "Data Group"
   Data Group Template: GridVariablesTemplate
   Data Elements:
@@ -426,7 +418,7 @@ GridVariablesStandby:
       Units: "K"
       Required: True
 
-LookupVariablesStandby:
+StandbyLookupVariables:
   Object Type: "Data Group"
   Data Group Template: LookupVariablesTemplate
   Data Elements:

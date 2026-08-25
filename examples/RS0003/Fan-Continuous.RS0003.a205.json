@@ -1,19 +1,24 @@
 {
     "metadata": {
-        "data_model": "ASHRAE_205",
-        "schema": "RS0003",
+        "schema_author": "ASHRAE_205",
+        "schema_name": "RS0003",
         "schema_version": "2.0.0",
-        "description": "Continuous Fan",
+        "author": "ASHRAE SSPC 205",
         "id": "123e4567-e89b-12d3-a456-426614174000",
-        "data_timestamp": "2020-05-11T00:00Z",
-        "data_version": 1,
+        "description": "Continuous Fan",
+        "time_of_creation": "2020-05-11T00:00Z",
+        "version": "1.0.0",
         "disclaimer": "Example data not to be used for simulation"
     },
     "description": {
         "product_information": {
-            "manufacturer": "ABC Fans",
-            "model_number": "Cont 1a2b",
-            "impeller_type": "CENTRIFUGAL_AIR_FOIL"
+            "impeller_type": "CENTRIFUGAL_AIR_FOIL",
+            "product_identifiers": [
+                {
+                    "brand": "ABC Fans",
+                    "model_number": "Cont 1a2b"
+                }
+            ]
         }
     },
     "performance": {
@@ -24,26 +29,30 @@
         "maximum_impeller_rotational_speed": 28,
         "minimum_impeller_rotational_speed": 15,
         "stability_curve": {
-            "standard_air_volumetric_flow_rate": [
-                0,
-                0.000943895,
-                0.002831685,
-                0.004719475,
-                0.006607264,
-                0.008495054,
-                0.010382844,
-                0.012270634
-            ],
-            "static_pressure_difference": [
-                0,
-                32.498504,
-                118.995288,
-                258.04708,
-                478.320248,
-                808.48116,
-                1277.196184,
-                1913.131688
-            ]
+            "grid_variables": {
+                "standard_air_volumetric_flow_rate": [
+                    0,
+                    0.000943895,
+                    0.002831685,
+                    0.004719475,
+                    0.006607264,
+                    0.008495054,
+                    0.010382844,
+                    0.012270634
+                ]
+            },
+            "lookup_variables": {
+                "static_pressure_difference": [
+                    0,
+                    32.498504,
+                    118.995288,
+                    258.04708,
+                    478.320248,
+                    808.48116,
+                    1277.196184,
+                    1913.131688
+                ]
+            }
         },
         "operation_speed_control_type": "CONTINUOUS",
         "installation_speed_control_type": "FIXED",
@@ -363,7 +372,7 @@
                     28560.31,
                     30126.280000000002
                 ],
-                "operation_state" :[
+                "operation_state": [
                     "NORMAL",
                     "NORMAL",
                     "NORMAL",

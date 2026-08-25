@@ -106,31 +106,37 @@ Description:
     product_information:
       Description: "Data group describing product information"
       Type: "{ProductInformation}"
-    rating_ahri_210_240:
+    ratings:
+      Description: "Data group containing rating information"
+      Type: "{Ratings}"
+
+Ratings:
+  Object Type: "Data Group"
+  Data Elements:
+    ahri_210_240:
       Description: "Data group containing information relevant to products rated under AHRI 210/240"
-      Type: "{RatingAHRI210240}"
-    rating_ahri_340_360:
+      Type: "{AHRI210240Rating}"
+    ahri_340_360:
       Description: "Data group containing information relevant to products rated under AHRI 340/360"
-      Type: "{RatingAHRI340360}"
+      Type: "{AHRI340360Rating}"
 
 ProductInformation:
   Object Type: "Data Group"
   Data Elements:
-    manufacturer:
-      Description: "Package manufacturer name"
-      Type: "String"
-    model_number:
-      Description: "Package model number"
-      Type: "Pattern"
+    product_identifiers:
+      Description: "Brand and model number pairs identifying the equipment"
+      Type: "[{ProductIdentifier}]"
       Notes: "Pattern shall match all model numbers that can be represented by the representation"
 
-RatingAHRI210240:
+AHRI210240Rating:
   Object Type: "Data Group"
   Data Group Template: "RatingTemplate"
   Data Elements:
-    certified_reference_number:
-      Description: "AHRI certified reference number"
-      Type: "String"
+    certified_reference_numbers:
+      Description: "AHRI certified reference numbers"
+      Type: "[String]"
+      Constraints: '"^[0-9]+$"'
+      Notes: "One entry per unique AHRI certified reference number applicable to the products covered by the representation"
     test_standard_year:
       Description: "Year of the AHRI test standard"
       Type: "<AHRI210240TestStandardYear>"
@@ -172,13 +178,15 @@ RatingAHRI210240:
       Constraints: ">=0.0"
       Notes: "At high stage for multi-stage equipment"
 
-RatingAHRI340360:
+AHRI340360Rating:
   Object Type: "Data Group"
   Data Group Template: "RatingTemplate"
   Data Elements:
-    certified_reference_number:
-      Description: "AHRI Certified Reference Number"
-      Type: "String"
+    certified_reference_numbers:
+      Description: "AHRI Certified Reference Numbers"
+      Type: "[String]"
+      Constraints: '"^[0-9]+$"'
+      Notes: "One entry per unique AHRI certified reference number applicable to the products covered by the representation"
     test_standard_year:
       Description: "Name and version of the AHRI test standard"
       Type: "<AHRI340360TestStandardYear>"

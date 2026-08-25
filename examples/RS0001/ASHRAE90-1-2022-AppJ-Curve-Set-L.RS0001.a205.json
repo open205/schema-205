@@ -1,13 +1,14 @@
 {
     "metadata": {
-        "data_model": "ASHRAE_205",
-        "schema": "RS0001",
+        "schema_author": "ASHRAE_205",
+        "schema_name": "RS0001",
         "schema_version": "3.0.0",
-        "description": "ASHRAE 90.1-2022 Appendix J curve set 'L': 150.0+ ton, 2.84 COP, 4.72 IPLV air-cooled,  compressor chiller",
+        "author": "ASHRAE SSPC 205",
         "id": "94e04b83-ace8-4fc3-8082-7c046896acbe",
-        "data_timestamp": "2025-02-18T13:40Z",
-        "data_version": 3,
-        "data_source": "https://github.com/bigladder/chiller",
+        "description": "ASHRAE 90.1-2022 Appendix J curve set 'L': 150.0+ ton, 2.84 COP, 4.72 IPLV air-cooled,  compressor chiller",
+        "time_of_creation": "2025-02-18T13:40Z",
+        "version": "3.0.0",
+        "source": "https://github.com/bigladder/chiller",
         "disclaimer": "This data is synthetic and does not represent any physical products.",
         "notes": "Based on ASHRAE 90.1-2022 Appendix J curve set 'L' for Energy Cost Budget (ECB) Path B"
     },
@@ -30,7 +31,7 @@
             "concentration_type": "BY_VOLUME"
         },
         "evaporator_fouling_factor": 0.0,
-        "performance_map_evaporator_liquid_pressure_differential": {
+        "evaporator_liquid_pressure_differential": {
             "grid_variables": {
                 "evaporator_liquid_volumetric_flow_rate": [
                     0.030137430756664026
@@ -52,7 +53,7 @@
             }
         },
         "condenser_type": "AIR",
-        "performance_map_cooling": {
+        "cooling_performance_map": {
             "grid_variables": {
                 "evaporator_liquid_volumetric_flow_rate": [
                     0.030137430756664026
@@ -547,7 +548,7 @@
                 ]
             }
         },
-        "performance_map_standby": {
+        "standby_performance_map": {
             "grid_variables": {
                 "environment_dry_bulb_temperature": [
                     293.15

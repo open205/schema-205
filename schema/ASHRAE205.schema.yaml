@@ -28,7 +28,7 @@ PerformanceTemplate:
   Object Type: "Data Group Template"
   Custom Attributes: ["Scalable"]
 
-PerformanceMapTemplate:
+LookupTableTemplate:
   Object Type: "Data Group Template"
   Required Data Elements:
     grid_variables:
@@ -197,6 +197,19 @@ PerformanceCapabilities:
     #   Display Text: "Humidification"
 
 # Reusable Data Groups
+ProductIdentifier:
+  Object Type: "Data Group"
+  Data Elements:
+    brand:
+      Description: "Brand name under which the equipment is sold"
+      Type: "String"
+      Required: True
+    model_number:
+      Description: "Model number of the equipment"
+      Type: "Pattern"
+      Required: True
+      Notes: "Pattern shall match all model numbers that can be represented by the representation"
+
 LiquidMixture:
   Object Type: "Data Group"
   Data Elements:

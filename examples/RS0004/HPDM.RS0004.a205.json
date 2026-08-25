@@ -1,31 +1,42 @@
 {
 	"metadata": {
+		"schema_author": "ASHRAE_205",
+		"schema_name": "RS0004",
 		"schema_version": "2.0.0",
-		"data_model": "ASHRAE_205",
-		"schema": "RS0004",
-		"description": "DX System with two-stage cooling",
+		"author": "Oak Ridge National Laboratory",
 		"id": "123e4567-e89b-12d3-a456-426614174000",
-		"data_timestamp": "2022-04-10T00:00Z",
-		"data_version": 1,
-		"data_source": "Heat Pump Design Model by Oak Ridge National Laboratory",
+		"description": "DX System with two-stage cooling",
+		"time_of_creation": "2022-04-10T00:00Z",
+		"version": "1.0.0",
+		"source": "Heat Pump Design Model",
 		"disclaimer": "Example data not to be used for simulation",
 		"notes": "An example representation that applies a two-stage residential air conditioner having a SEER of 16.0. "
 	},
 	"description": {
 		"product_information": {
-			"outdoor_unit_manufacturer": "ABC HVAC",
-			"outdoor_unit_model_number": "DX AB12",
-			"indoor_unit_manufacturer": "ABC HVAC",
-			"indoor_unit_model_number": "DX AB12",
 			"refrigerant": "R-410A",
-			"compressor_type": "SCROLL"
+			"compressor_type": "SCROLL",
+			"outdoor_unit_product_identifiers": [
+				{
+					"brand": "ABC HVAC",
+					"model_number": "DX AB12"
+				}
+			],
+			"indoor_unit_product_identifiers": [
+				{
+					"brand": "ABC HVAC",
+					"model_number": "DX AB12"
+				}
+			]
 		}
 	},
 	"performance": {
-		"performance_capabilities": ["COOLING"],
+		"performance_capabilities": [
+			"COOLING"
+		],
 		"compressor_speed_control_type": "DISCRETE",
 		"cooling_cycling_degradation_coefficient": 0.1,
-		"performance_map_cooling": {
+		"cooling_performance_map": {
 			"grid_variables": {
 				"outdoor_coil_entering_dry_bulb_temperature": [
 					285.928,
@@ -55,8 +66,8 @@
 					305.368
 				],
 				"indoor_coil_air_mass_flow_rate": [
-					0.50,
-					0.80,
+					0.5,
+					0.8,
 					1.11,
 					1.42
 				],
@@ -35921,7 +35932,7 @@
 				]
 			}
 		},
-		"performance_map_standby": {
+		"standby_performance_map": {
 			"grid_variables": {
 				"outdoor_coil_environment_dry_bulb_temperature": [
 					283.15,

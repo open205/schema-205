@@ -460,7 +460,7 @@ wheels = [
 [[package]]
 name = "lattice"
 version = "0.0.0"
-source = { git = "https://github.com/bigladder/lattice.git?branch=232-pdf-fixes#6fd95b42dc084d27e4ae4c0645b900e2f6b3bfff" }
+source = { git = "https://github.com/bigladder/lattice.git?branch=205-metadata-security-fields#6c5834e8dcb74176f500186b625beca7bf12e416" }
 dependencies = [
     { name = "atheneum-forge" },
     { name = "casefy" },
@@ -1345,7 +1345,7 @@ dev = [
 ]
 
 [package.metadata]
-requires-dist = [{ name = "lattice", git = "https://github.com/bigladder/lattice.git?branch=232-pdf-fixes" }]
+requires-dist = [{ name = "lattice", git = "https://github.com/bigladder/lattice.git?branch=205-metadata-security-fields" }]
 
 [package.metadata.requires-dev]
 dev = [

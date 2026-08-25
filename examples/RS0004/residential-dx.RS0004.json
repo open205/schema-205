@@ -1,20 +1,23 @@
 {
     "metadata": {
-        "data_model": "ASHRAE_205",
-        "schema": "RS0004",
+        "schema_author": "ASHRAE_205",
+        "schema_name": "RS0004",
         "schema_version": "2.0.0",
-        "description": "36.6 kBtu/h, 3.65 COP, 0.73 SHR cooling coil",
+        "author": "ASHRAE SSPC 205",
         "id": "77cad429-e628-43f6-996a-473e36f8c01f",
-        "data_timestamp": "2024-02-22T15:24Z",
-        "data_version": 2,
-        "data_source": "https://github.com/bigladder/resdx",
+        "description": "36.6 kBtu/h, 3.65 COP, 0.73 SHR cooling coil",
+        "time_of_creation": "2024-02-22T15:24Z",
+        "version": "2.0.0",
+        "source": "https://github.com/bigladder/resdx",
         "disclaimer": "This data is synthetic and does not represent any physical products."
     },
     "performance": {
-        "performance_capabilities": ["COOLING"],
+        "performance_capabilities": [
+            "COOLING"
+        ],
         "compressor_speed_control_type": "DISCRETE",
-        "cycling_degradation_coefficient": 0.1,
-        "performance_map_cooling": {
+        "cooling_cycling_degradation_coefficient": 0.1,
+        "cooling_performance_map": {
             "grid_variables": {
                 "outdoor_coil_entering_dry_bulb_temperature": [
                     285.9277777777778,
@@ -8254,7 +8257,7 @@
                 ]
             }
         },
-        "performance_map_standby": {
+        "standby_performance_map": {
             "grid_variables": {
                 "outdoor_coil_environment_dry_bulb_temperature": [
                     282.65000000000003,

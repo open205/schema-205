@@ -1,13 +1,14 @@
 {
     "metadata": {
-        "data_model": "ASHRAE_205",
-        "schema": "RS0001",
+        "schema_author": "ASHRAE_205",
+        "schema_name": "RS0001",
         "schema_version": "3.0.0",
-        "description": "ASHRAE 90.1-2022 Appendix J curve set 'V': 0.0-150.0 ton, 4.45 COP, 5.20 IPLV liquid-cooled, positive displacement compressor chiller",
+        "author": "ASHRAE SSPC 205",
         "id": "0f3f19d2-3b61-465e-b72d-cf57d0860d09",
-        "data_timestamp": "2025-02-18T13:40Z",
-        "data_version": 3,
-        "data_source": "https://github.com/bigladder/chiller",
+        "description": "ASHRAE 90.1-2022 Appendix J curve set 'V': 0.0-150.0 ton, 4.45 COP, 5.20 IPLV liquid-cooled, positive displacement compressor chiller",
+        "time_of_creation": "2025-02-18T13:40Z",
+        "version": "3.0.0",
+        "source": "https://github.com/bigladder/chiller",
         "disclaimer": "This data is synthetic and does not represent any physical products.",
         "notes": "Based on ASHRAE 90.1-2022 Appendix J curve set 'V' for Performance Rating Method (PRM)"
     },
@@ -31,7 +32,7 @@
             "concentration_type": "BY_VOLUME"
         },
         "evaporator_fouling_factor": 0.0,
-        "performance_map_evaporator_liquid_pressure_differential": {
+        "evaporator_liquid_pressure_differential": {
             "grid_variables": {
                 "evaporator_liquid_volumetric_flow_rate": [
                     0.01130153653374901
@@ -63,7 +64,7 @@
             "concentration_type": "BY_VOLUME"
         },
         "condenser_fouling_factor": 0.0,
-        "performance_map_condenser_liquid_pressure_differential": {
+        "condenser_liquid_pressure_differential": {
             "grid_variables": {
                 "condenser_liquid_volumetric_flow_rate": [
                     0.015020782676443373
@@ -84,7 +85,7 @@
                 ]
             }
         },
-        "performance_map_cooling": {
+        "cooling_performance_map": {
             "grid_variables": {
                 "evaporator_liquid_volumetric_flow_rate": [
                     0.01130153653374901
@@ -510,7 +511,7 @@
                 ]
             }
         },
-        "performance_map_standby": {
+        "standby_performance_map": {
             "grid_variables": {
                 "environment_dry_bulb_temperature": [
                     293.15
